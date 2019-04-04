@@ -1,0 +1,12 @@
+{
+    "name": "code4all",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.16.4",
+        "body-parser": "^1.18.3"
+    }
+}
