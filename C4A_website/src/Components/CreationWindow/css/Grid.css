@@ -1,0 +1,4 @@
+:local(.grid) {
+    background-color: yellow;
+    flex: 3;
+}

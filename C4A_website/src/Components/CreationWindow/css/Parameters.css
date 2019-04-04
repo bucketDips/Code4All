@@ -1,0 +1,4 @@
+:local(.parameters) {
+    background-color: violet;
+    flex: 2;
+}

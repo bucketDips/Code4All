@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import style from './App.css';
 
 import ToolBox from './Components/CreationWindow/components/ToolBox';
 import Grid from './Components/CreationWindow/components/Grid';
@@ -25,13 +25,17 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <ToolBox />
-        <Grid />
-        <Code />
-        <Details />
-        <Parameters />
-        <Patterns />
+      <div className={style.app}>
+        <div className={style.top_panel}>
+          <ToolBox />
+          <Grid />
+          <Code />
+        </div>
+        <div className={style.bottom_panel}>
+          <Parameters />
+          <Patterns />
+          <Details />
+        </div>
       </div>
     );
   }

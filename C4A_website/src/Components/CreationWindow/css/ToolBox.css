@@ -1,3 +1,4 @@
 :local(.toolbox) {
     background-color: red;
+    flex: 0.7;
 }
