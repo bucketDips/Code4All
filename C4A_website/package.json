@@ -1,16 +1,25 @@
 {
-  "name": "c4a-website",
-  "version": "0.0.0",
-  "scripts": {
-    "start": "npm install && nodemon ./bin/www"
-  },
+  "name": "c4a_website",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "cookie-parser": "~1.4.4",
-    "debug": "~4.1.1",
-    "express": "~4.16.4",
-    "http-errors": "~1.7.2",
-    "morgan": "~1.9.1",
-    "nodemon": "^1.18.10"
-  }
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "2.1.8"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
