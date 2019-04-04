@@ -1,47 +1,37 @@
 import React, { Component } from 'react';
 import './App.css';
-import Test from './Components/Test';
-import AddTestItem from './Components/AddTestItem';
+
+import ToolBox from './Components/CreationWindow/components/ToolBox';
+import Grid from './Components/CreationWindow/components/Grid';
+import Code from './Components/CreationWindow/components/Code';
+import Details from './Components/CreationWindow/components/Details';
+import Parameters from './Components/CreationWindow/components/Parameters';
+import Patterns from './Components/CreationWindow/components/Patterns';
 
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      projects: []
+      
     }
   }
 
   componentWillMount() {
     this.setState({
-      projects: [
-        {
-          title : 'Projet 1',
-          category : 'Important'
-        },
-        {
-          title : 'Projet 2',
-          category : 'Moins Important'
-        },
-        {
-          title : 'Projet 3',
-          category : 'Pas important du tout'
-        }
-      ]
+      
     });
-  }
-
-  handleAddTestItem(project) {
-    let projects = this.state.projects;
-    projects.push(project);
-    this.setState({projects:projects});
   }
 
   render() {
     return (
       <div className="App">
-        <AddTestItem addTestItem={this.handleAddTestItem.bind(this)}/>
-        <Test projects={this.state.projects} />
+        <ToolBox />
+        <Grid />
+        <Code />
+        <Details />
+        <Parameters />
+        <Patterns />
       </div>
     );
   }
