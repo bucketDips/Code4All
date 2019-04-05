@@ -1,4 +1,56 @@
 :local(.toolbox) {
-    background-color: red;
     flex: 0.7;
+}
+
+#toolbox_ul {
+    margin: 0;
+    padding: 0;
+}
+
+:local(.toolboxelement) {
+    margin: 0 auto;
+    list-style-type: none;
+    width: 100%;
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    box-sizing: border-box;
+    padding: 2%;
+    display: flex;
+}
+
+:local(.toolboxelement) .image {
+    height: 4vh;
+    flex: 0.5;
+}
+
+:local(.toolboxelement) .name {
+    height: 4vh;
+    line-height: 4vh;
+    flex: 2.2;
+    font-family: "Gill Sans", sans-serif;
+    font-weight: 600;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+}
+
+:local(.toolboxelement):hover {
+    cursor: pointer;
+    background-color: lightgray;
+}
+
+:local(.toolboxelement):hover .tooltiptext {
+    visibility: visible;
+    left: 10%; 
+    margin-top: 2.5%;
 }

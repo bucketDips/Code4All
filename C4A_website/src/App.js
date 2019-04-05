@@ -13,13 +13,29 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      
+      options: []
     }
   }
 
   componentWillMount() {
     this.setState({
-      
+      options: [
+        {
+          title : 'PC',
+          description : 'Un personnage jouable par l\'utilisateur',
+          image: process.env.PUBLIC_URL + '/stickman.png'
+        },
+        {
+          title : 'NPC',
+          description : 'Un personnage non jouable par l\'utilisateur',
+          image: process.env.PUBLIC_URL + '/fighting_stickman.png'
+        },
+        {
+          title : 'Bloc',
+          description : 'Un bloc',
+          image: process.env.PUBLIC_URL + '/bloc.png'
+        },
+      ]
     });
   }
 
@@ -27,7 +43,7 @@ class App extends Component {
     return (
       <div className={style.app}>
         <div className={style.top_panel}>
-          <ToolBox />
+          <ToolBox options={this.state.options} />
           <Grid />
           <Code />
         </div>

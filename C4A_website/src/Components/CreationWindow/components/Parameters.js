@@ -6,8 +6,8 @@ class Parameters extends Component {
   render() {
     return (
         <div className={styles.parameters}>
-            <h3 class="title">Ici les paramètres</h3>
-            <div class="content">
+            <h3 className="title">Ici les paramètres</h3>
+            <div className="content">
             
             </div>
         </div>

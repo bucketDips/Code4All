@@ -6,8 +6,8 @@ class Code extends Component {
   render() {
     return (
         <div className={styles.code}>
-            <h3 class="title">Ici le code</h3>
-            <div class="content">
+            <h3 className="title">Ici le code</h3>
+            <div className="content">
             
             </div>
         </div>

@@ -6,8 +6,8 @@ class Details extends Component {
   render() {
     return (
         <div className={styles.details}>
-            <h3 class="title">Ici les détails</h3>
-            <div class="content">
+            <h3 className="title">Ici les détails</h3>
+            <div className="content">
             
             </div>
         </div>
