@@ -9,47 +9,28 @@ class Case extends Component {
         }
     }
 
-    getStyle() {
-        var style = {
-            height: this.props.size.height + "px",
-            width: this.props.size.width + "px",
-            backgroundColor: 'red',
-            display: 'inline-block',
-            marginLeft: this.props.size.defaultSpace
-        };
-
-        return style;
-    }
-
-    componentWillMount() {
+    setStyle(color) {
         if(this.props.size) {
+            var style = {
+                backgroundColor: color,
+                gridColumn: this.props.size.column + 1,
+                gridRow: this.props.size.line + 1,
+            };
             this.setState({
-                style: this.getStyle()
+                style: style
             })
         }
     }
 
-    onHover() {
-        var style = this.getStyle();
-        style.backgroundColor = 'brown';
-        this.setState({
-            style: style
-        })
-    }
-
-    onExit() {
-        this.setState({
-            style: this.getStyle()
-        })
+    componentWillMount() {
+        this.setStyle("red");
     }
 
     render() {
-        if(this.props.size) {
-            return (
-                <li style={this.state.style} className="case" onMouseOver={this.onHover.bind(this)} onMouseLeave={this.onExit.bind(this)}>
-                </li>
-            );
-        }
+        return (
+            <div style={this.state.style} className="case" onMouseOver={this.setStyle.bind(this, "brown")} onMouseLeave={this.setStyle.bind(this, "red")}>
+            </div>
+        );
     }
 }
 
