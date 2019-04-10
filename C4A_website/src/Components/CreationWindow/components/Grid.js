@@ -105,7 +105,7 @@ class Grid extends Component {
                 {this.state.gridProperties.cases}
               </div>
             </div>
-            <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={0} max={100} default={30}/>
+            <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={30}/>
         </div>
     );
   }

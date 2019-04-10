@@ -26,7 +26,7 @@ class ParametersGrid extends Component {
                 <CustomSlider
                     changeSize={this.changeLinesValue.bind(this)} 
                     min={1} 
-                    max={100} 
+                    max={50} 
                     default={this.props.parameters.lines} 
                 />
 
@@ -34,7 +34,7 @@ class ParametersGrid extends Component {
                 <CustomSlider
                     changeSize={this.changeColumnsValue.bind(this)} 
                     min={1} 
-                    max={100} 
+                    max={50} 
                     default={this.props.parameters.columns} 
                 />
             </div>
