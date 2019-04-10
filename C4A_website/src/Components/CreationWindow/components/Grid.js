@@ -9,20 +9,17 @@ class Grid extends Component {
   constructor() {
     super();
     this.state = {
-      lines: 50,
-      columns: 50,
-      size: 30,
-      cases: []
+      gridProperties: {}
     }
   }
 
   fillCases() {
-    let cases = this.state.cases;
+    let cases = [];
 
-    for(var line = 0; line < this.state.lines; line++) {
+    for(var line = 0; line < this.state.gridProperties.lines; line++) {
       let line = [];
 
-      for(var column = 0; column < this.state.columns; column++) {
+      for(var column = 0; column < this.state.gridProperties.columns; column++) {
         let size = {
           line: line,
           column: column,
@@ -32,33 +29,83 @@ class Grid extends Component {
       cases.push(line);
     }
 
-    this.setState({cases: cases});
+    let properties = this.state.gridProperties;
+
+    properties.cases = cases;
+
+    this.setState({gridProperties: properties});
   }
 
   componentWillMount() {
-    this.fillCases();
+    let properties = {
+      lines: this.props.parameters.lines,
+      columns: this.props.parameters.columns,
+      size: this.props.parameters.size,
+      cases: this.props.parameters.cases
+    };
+    this.setState(
+      {
+        gridProperties: properties
+      },
+      function() {
+        this.fillCases();
+      }
+    );
+  }
+
+  componentWillReceiveProps() {
+    let properties = {
+      lines: this.props.parameters.lines,
+      columns: this.props.parameters.columns,
+      size: this.state.gridProperties.size,
+      cases: this.props.parameters.cases
+    };
+    this.setState(
+      {
+        gridProperties: properties
+      },
+      function() {
+        this.fillCases();
+      }
+    );
   }
 
   changeSizeValue(newSize) {
-    this.setState({size: newSize});
+    let properties = this.state.gridProperties;
+    properties.size = newSize;
+    this.setState({gridProperties: properties});
+  }
+
+  askEditGrid(e){
+    let parameters = {
+      type: "GRID",
+      lines: this.state.gridProperties.lines,
+      columns: this.state.gridProperties.columns,
+    }
+    this.props.changeParametersWindow(parameters);
+    e.preventDefault();
   }
 
   render() {
     return (
         <div className={styles.grid}>
-            <h3 className="title">Ici la grille</h3>
+            <h3 className="title">Ici la grille
+              <form className="form-edit-grid" onSubmit={this.askEditGrid.bind(this)}>
+                <input type="image" className="grid-edit" alt="edit button" src={process.env.PUBLIC_URL + '/edit.png'} />
+              </form>
+            </h3>
             <div className="content">
               <div style={{
                 whiteSpace:"nowrap",
                 display:"grid",
                 gridGap: "1px",
-                gridAutoRows: "minmax(" + this.state.size + "px," +  this.state.size + "px)",
-                gridAutoColumns: "minmax(" + this.state.size + "px," +  this.state.size + "px)",
+                gridAutoRows: "minmax(" + this.state.gridProperties.size + "px," +  this.state.gridProperties.size + "px)",
+                gridAutoColumns: "minmax(" + this.state.gridProperties.size + "px," +  this.state.gridProperties.size + "px)",
               }}>
-                {this.state.cases}
+                {this.state.gridProperties.cases}
               </div>
             </div>
-            <CustomSlider changeSize={this.changeSizeValue.bind(this)}/>
+            <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={0} max={100} default={30}/>
         </div>
     );
   }

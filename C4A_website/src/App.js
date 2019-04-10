@@ -13,7 +13,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      options: []
+      options: [],
+      gridProperties: {}
     }
   }
 
@@ -35,8 +36,28 @@ class App extends Component {
           description : 'Un bloc',
           image: process.env.PUBLIC_URL + '/bloc.png'
         },
-      ]
+      ],
+      parameters: {
+        type: "NONE"
+      },
+      gridProperties: {
+        lines: 5,
+        columns: 10,
+        size: 30,
+        cases: []
+      }
     });
+  }
+
+  onChangeParameters(parameters) {
+    this.setState({parameters: parameters});
+  }
+
+  onChangeGridParameters(parameters) {
+    let properties = this.state.gridProperties;
+    properties.lines = parameters.lines;
+    properties.columns = parameters.columns;
+    this.setState({gridProperties: properties});
   }
 
   render() {
@@ -44,11 +65,17 @@ class App extends Component {
       <div className={style.app}>
         <div className={style.top_panel}>
           <ToolBox options={this.state.options} />
-          <Grid />
+          <Grid 
+            parameters={this.state.gridProperties}
+            changeParametersWindow={this.onChangeParameters.bind(this)}
+          />
           <Code />
         </div>
         <div className={style.bottom_panel}>
-          <Parameters />
+          <Parameters 
+            parameters={this.state.parameters}
+            changeGridParameters={this.onChangeGridParameters.bind(this)} 
+          />
           <Patterns />
           <Details />
         </div>

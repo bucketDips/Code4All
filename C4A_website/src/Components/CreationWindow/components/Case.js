@@ -23,12 +23,12 @@ class Case extends Component {
     }
 
     componentWillMount() {
-        this.setStyle("red");
+        this.setStyle("darkgrey");
     }
 
     render() {
         return (
-            <div style={this.state.style} className="case" onMouseOver={this.setStyle.bind(this, "brown")} onMouseLeave={this.setStyle.bind(this, "red")}>
+            <div style={this.state.style} className="case" onMouseOver={this.setStyle.bind(this, "black")} onMouseLeave={this.setStyle.bind(this, "darkgrey")}>
             </div>
         );
     }

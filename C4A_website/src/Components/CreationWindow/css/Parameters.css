@@ -1,3 +1,18 @@
 :local(.parameters) {
     flex: 2;
 }
+
+:local(.parametersgrid) {
+    
+}
+
+.custom-slider {
+    width: 200px;
+    right: 30px;
+    bottom: 40px;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: white;
+    border-radius: 10px;
+}

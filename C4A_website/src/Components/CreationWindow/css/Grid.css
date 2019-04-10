@@ -6,6 +6,16 @@
 
 :local(.grid) .content {
     overflow: scroll;   
+    background-color: darkslategrey;
+}
+
+.grid-edit {
+    width: 1vw;
+    margin-left: 1vw;
+}
+
+.form-edit-grid {
+    float: right;
 }
 
 .custom-slider {

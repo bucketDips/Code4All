@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 
-import styles from '../css/Grid.css'
 import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
 
@@ -32,8 +31,8 @@ class CustomSlider extends Component {
 
   render() {
     return (
-        <div className="custom-slider">
-            <Slider min={0} max={100} defaultValue={30} handle={this.handle.bind(this)} onChange={this.changeValue.bind(this)} />
+        <div className={this.props.className}>
+            <Slider min={this.props.min} max={this.props.max} defaultValue={this.props.default} handle={this.handle.bind(this)} onChange={this.changeValue.bind(this)} />
         </div>
     );
   }
