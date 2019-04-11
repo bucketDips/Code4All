@@ -8,8 +8,6 @@ import Details from './Components/CreationWindow/components/Details';
 import Parameters from './Components/CreationWindow/components/Parameters';
 import Patterns from './Components/CreationWindow/components/Patterns';
 
-import * as data from '../'
-
 class App extends Component {
 
   constructor() {
