@@ -37,11 +37,13 @@ class Grid extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props.parameters.background)
     let properties = {
       lines: this.props.parameters.lines,
       columns: this.props.parameters.columns,
       size: this.props.parameters.size,
       cases: this.props.parameters.cases,
+      background: this.props.parameters.background
     };
     this.setState(
       {
@@ -58,7 +60,8 @@ class Grid extends Component {
       lines: this.props.parameters.lines,
       columns: this.props.parameters.columns,
       size: this.state.gridProperties.size,
-      cases: this.props.parameters.cases
+      cases: this.props.parameters.cases,
+      background: this.props.parameters.background
     };
     this.setState(
       {
@@ -87,6 +90,16 @@ class Grid extends Component {
   }
 
   render() {
+    let background = this.state.gridProperties.background == null ? "" : 
+    (<img alt="grid img" style={{
+      gridColumnStart: 1,
+      gridRowStart: 1,
+      zIndex: 2,
+      width: this.state.gridProperties.columns * (this.state.gridProperties.size + 1),
+      height: this.state.gridProperties.lines * (this.state.gridProperties.size + 1),
+      objectFit: "cover"
+    }} src={this.state.gridProperties.background} />)
+
     return (
         <div className={styles.grid}>
             <h3 className="title">Ici la grille
@@ -103,14 +116,7 @@ class Grid extends Component {
                 gridAutoColumns: this.state.gridProperties.size + "px",
               }}>
                 {this.state.gridProperties.cases}
-                <img alt="grid img" style={{
-                  gridColumnStart: 1,
-                  gridRowStart: 1,
-                  zIndex: 2,
-                  width: this.state.gridProperties.columns * (this.state.gridProperties.size + 1),
-                  height: this.state.gridProperties.lines * (this.state.gridProperties.size + 1),
-                  objectFit: "cover"
-                }} src={process.env.PUBLIC_URL + '/patterns/nature.jpg'} />
+                {background}
               </div>
             </div>
             <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={30}/>

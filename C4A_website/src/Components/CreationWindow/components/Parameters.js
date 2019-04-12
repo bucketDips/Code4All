@@ -13,7 +13,11 @@ class Parameters extends Component {
   renderSwitch(parameters) {
       switch(parameters.type) {
         case 'GRID':
-          return <ParametersGrid parameters={parameters} changeGridParameters={this.changeGridParameters.bind(this)} />
+          return <ParametersGrid
+                    patterns={this.props.patterns}
+                    parameters={parameters} 
+                    changeGridParameters={this.changeGridParameters.bind(this)} 
+                  />
         case 'NONE':
           return <div></div>;
         default:

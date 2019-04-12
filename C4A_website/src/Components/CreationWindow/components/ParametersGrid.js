@@ -19,6 +19,17 @@ class ParametersGrid extends Component {
   }
 
   render() {
+    let patterns;
+    if(this.props.patterns) {
+      patterns = this.props.patterns.map(pattern => {
+        console.log(pattern);
+        return (<option style=
+          {{
+            backgroundImage: `url(https://www.visitportugal.com/sites/www.visitportugal.com/files/mediateca/23_660x371.jpg)`,
+          }}>portugal</option>)
+      });
+    }
+
     return (
         <div className={styles.parametersgrid}>
             <div className="content">
@@ -37,6 +48,10 @@ class ParametersGrid extends Component {
                     max={50} 
                     default={this.props.parameters.columns} 
                 />
+
+                <select id="select">
+                  {patterns}
+                </select>
             </div>
         </div>
     );

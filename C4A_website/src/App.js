@@ -50,7 +50,8 @@ class App extends Component {
         lines: 5,
         columns: 10,
         size: 30,
-        cases: []
+        cases: [],
+        background: null
       }
     });
   }
@@ -70,23 +71,37 @@ class App extends Component {
     console.log(patternId);
   }
 
+  onChangeGridPattern(patternId) {
+    console.log(patternId);
+    Axios.get(process.env.PUBLIC_URL + '/patterns/files.json').then(response => {
+      response.data.forEach(element => {
+        console.log(element);
+      });
+    });
+  }
+
   render() {
     return (
       <div className={style.app}>
         <div className={style.top_panel}>
-          <ToolBox options={this.state.options} />
+          <ToolBox 
+            options={this.state.options} />
           <Grid 
             parameters={this.state.gridProperties}
             changeParametersWindow={this.onChangeParameters.bind(this)}
+            changeGridPattern={this.onChangeGridPattern.bind(this)}
           />
           <Code />
         </div>
         <div className={style.bottom_panel}>
           <Parameters 
+            patterns={this.state.patterns} 
             parameters={this.state.parameters}
             changeGridParameters={this.onChangeGridParameters.bind(this)} 
           />
-          <Patterns patterns={this.state.patterns} deletePattern={this.handleDeletePattern.bind(this)} />
+          <Patterns 
+            patterns={this.state.patterns} 
+            deletePattern={this.handleDeletePattern.bind(this)} />
           <Details />
         </div>
       </div>
