@@ -17,16 +17,16 @@ class Grid extends Component {
     let cases = [];
 
     for(var line = 0; line < this.state.gridProperties.lines; line++) {
-      let line = [];
+      let cells = [];
 
       for(var column = 0; column < this.state.gridProperties.columns; column++) {
         let size = {
           line: line,
           column: column,
         }
-        line.push(<Case size={size} />);
+        cells.push(<Case size={size} />);
       }
-      cases.push(line);
+      cases.push(cells);
     }
 
     let properties = this.state.gridProperties;
@@ -41,7 +41,7 @@ class Grid extends Component {
       lines: this.props.parameters.lines,
       columns: this.props.parameters.columns,
       size: this.props.parameters.size,
-      cases: this.props.parameters.cases
+      cases: this.props.parameters.cases,
     };
     this.setState(
       {
@@ -99,10 +99,18 @@ class Grid extends Component {
                 whiteSpace:"nowrap",
                 display:"grid",
                 gridGap: "1px",
-                gridAutoRows: "minmax(" + this.state.gridProperties.size + "px," +  this.state.gridProperties.size + "px)",
-                gridAutoColumns: "minmax(" + this.state.gridProperties.size + "px," +  this.state.gridProperties.size + "px)",
+                gridAutoRows: this.state.gridProperties.size + "px",
+                gridAutoColumns: this.state.gridProperties.size + "px",
               }}>
                 {this.state.gridProperties.cases}
+                <img alt="grid img" style={{
+                  gridColumnStart: 1,
+                  gridRowStart: 1,
+                  zIndex: 2,
+                  width: this.state.gridProperties.columns * (this.state.gridProperties.size + 1),
+                  height: this.state.gridProperties.lines * (this.state.gridProperties.size + 1),
+                  objectFit: "cover"
+                }} src={process.env.PUBLIC_URL + '/patterns/nature.jpg'} />
               </div>
             </div>
             <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={30}/>

@@ -1,3 +1,10 @@
-{
-    "oki": "oki"
-}
+[
+    {
+        "id": 1,
+        "nom": "nature.jpg"
+    },
+    {
+        "id": 2,
+        "nom": "nature2.png"
+    }
+]

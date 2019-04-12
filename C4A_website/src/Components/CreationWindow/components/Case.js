@@ -15,6 +15,8 @@ class Case extends Component {
                 backgroundColor: color,
                 gridColumn: this.props.size.column + 1,
                 gridRow: this.props.size.line + 1,
+                zIndex: 4,
+                opacity: "0.33"
             };
             this.setState({
                 style: style

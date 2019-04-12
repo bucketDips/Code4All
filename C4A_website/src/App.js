@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import Axios from 'axios';
 import style from './App.css';
-
 import ToolBox from './Components/CreationWindow/components/ToolBox';
 import Grid from './Components/CreationWindow/components/Grid';
 import Code from './Components/CreationWindow/components/Code';
@@ -14,11 +14,17 @@ class App extends Component {
     super();
     this.state = {
       options: [],
-      gridProperties: {}
+      parameters: {},
+      gridProperties: {},
+      patterns: []
     }
   }
 
   componentWillMount() {
+    Axios.get(process.env.PUBLIC_URL + '/patterns/files.json').then(response => {
+      this.setState({patterns: response.data})
+    });
+
     this.setState({
       options: [
         {
@@ -45,8 +51,7 @@ class App extends Component {
         columns: 10,
         size: 30,
         cases: []
-      },
-      patterns: []
+      }
     });
   }
 
@@ -59,6 +64,10 @@ class App extends Component {
     properties.lines = parameters.lines;
     properties.columns = parameters.columns;
     this.setState({gridProperties: properties});
+  }
+
+  handleDeletePattern(patternId) {
+    console.log(patternId);
   }
 
   render() {
@@ -77,7 +86,7 @@ class App extends Component {
             parameters={this.state.parameters}
             changeGridParameters={this.onChangeGridParameters.bind(this)} 
           />
-          <Patterns />
+          <Patterns patterns={this.state.patterns} deletePattern={this.handleDeletePattern.bind(this)} />
           <Details />
         </div>
       </div>

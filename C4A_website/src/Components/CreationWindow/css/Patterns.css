@@ -1,3 +1,31 @@
 :local(.patterns) {
     flex: 2;
+    overflow-y: scroll;
+}
+
+:local(.pattern) {
+    
+}
+
+.patterns-content {
+    
+}
+
+.pattern-image {
+    overflow: hidden;
+    width: 80%;
+    height: 30px;
+    object-fit: none;
+    background-color: honeydew;
+    border: 1px solid black;
+}
+
+.pattern-delete{
+    width: 1.4vw;
+    padding-right: 1vw;
+    padding-top: 5%;
+}
+
+.form-delete-grid{
+    float: right;
 }
