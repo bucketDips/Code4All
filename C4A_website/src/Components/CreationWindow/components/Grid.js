@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Case from './Case'
 import CustomSlider from '../components/CustomSlider'
+import Block from '../components/Block'
 import styles from '../css/Grid.css'
 
 class Grid extends Component {
@@ -37,7 +38,6 @@ class Grid extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props.parameters.background)
     let properties = {
       lines: this.props.parameters.lines,
       columns: this.props.parameters.columns,
@@ -81,7 +81,7 @@ class Grid extends Component {
     this.setState({gridProperties: properties});
   }
 
-  askEditGrid(e){
+  askEditGrid(e) {
     let parameters = {
       type: "GRID",
       lines: this.state.gridProperties.lines,
@@ -93,16 +93,38 @@ class Grid extends Component {
     e.preventDefault();
   }
 
+  askEditBlock(parameters) {
+    this.props.changeParametersWindow(parameters);
+  }
+
   render() {
     let background = this.state.gridProperties.background == null ? "" : 
-    (<img alt="grid img" style={{
+    (<div style={{
       gridColumnStart: 1,
       gridRowStart: 1,
       zIndex: 2,
-      width: this.state.gridProperties.columns * (this.state.gridProperties.size + 1),
-      height: this.state.gridProperties.lines * (this.state.gridProperties.size + 1),
-      objectFit: "cover"
-    }} src={this.state.gridProperties.background} />)
+      gridColumnEnd: this.state.gridProperties.columns + 1,
+      gridRowEnd: this.state.gridProperties.lines + 1,
+      backgroundImage: `url(${this.state.gridProperties.background})`,
+      backgroundSize: "cover"
+    }} />)
+
+    let blocks;
+
+    if(this.props.blocks) {
+        blocks = this.props.blocks.map(block => {
+          return (<Block
+            rowStart={block.rowStart}
+            columnStart={block.columnStart}
+            width={block.width}
+            height={block.height}
+            background={block.background}  
+            changeParametersWindow={this.askEditBlock.bind(this)}
+            />)
+        });
+    }
+
+    console.log(this.props.neutralElements);
 
     return (
         <div className={styles.grid}>
@@ -120,6 +142,7 @@ class Grid extends Component {
                 gridAutoColumns: this.state.gridProperties.size + "px",
               }}>
                 {this.state.gridProperties.cases}
+                {blocks}
                 {background}
               </div>
             </div>

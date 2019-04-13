@@ -16,7 +16,8 @@ class App extends Component {
       options: [],
       parameters: {},
       gridProperties: {},
-      patterns: []
+      patterns: [],
+      neutralElements: []
     }
   }
 
@@ -53,7 +54,16 @@ class App extends Component {
         cases: [],
         background: process.env.PUBLIC_URL + 'patterns/nature.jpg',
         backgroundId: 1
-      }
+      },
+      blocks: [
+        {
+          rowStart: 3,
+          columnStart: 3,
+          width: 2,
+          height: 2,
+          background: process.env.PUBLIC_URL + 'patterns/mario.png',
+        }
+      ]
     });
   }
 
@@ -91,6 +101,7 @@ class App extends Component {
             options={this.state.options} />
           <Grid 
             parameters={this.state.gridProperties}
+            blocks={this.state.blocks}
             changeParametersWindow={this.onChangeParameters.bind(this)}
             changeGridPattern={this.onChangeGridPattern.bind(this)}
           />
