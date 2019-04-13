@@ -51,7 +51,8 @@ class App extends Component {
         columns: 10,
         size: 30,
         cases: [],
-        background: null
+        background: process.env.PUBLIC_URL + 'patterns/nature.jpg',
+        backgroundId: 1
       }
     });
   }
@@ -64,6 +65,8 @@ class App extends Component {
     let properties = this.state.gridProperties;
     properties.lines = parameters.lines;
     properties.columns = parameters.columns;
+    properties.background = parameters.background;
+    properties.backgroundId = parameters.backgroundId;
     this.setState({gridProperties: properties});
   }
 

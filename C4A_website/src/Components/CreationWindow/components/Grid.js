@@ -43,7 +43,8 @@ class Grid extends Component {
       columns: this.props.parameters.columns,
       size: this.props.parameters.size,
       cases: this.props.parameters.cases,
-      background: this.props.parameters.background
+      background: this.props.parameters.background,
+      backgroundId: this.props.parameters.backgroundId
     };
     this.setState(
       {
@@ -61,7 +62,8 @@ class Grid extends Component {
       columns: this.props.parameters.columns,
       size: this.state.gridProperties.size,
       cases: this.props.parameters.cases,
-      background: this.props.parameters.background
+      background: this.props.parameters.background,
+      backgroundId: this.state.gridProperties.backgroundId
     };
     this.setState(
       {
@@ -84,6 +86,8 @@ class Grid extends Component {
       type: "GRID",
       lines: this.state.gridProperties.lines,
       columns: this.state.gridProperties.columns,
+      background: this.state.gridProperties.background,
+      backgroundId: this.state.gridProperties.backgroundId
     }
     this.props.changeParametersWindow(parameters);
     e.preventDefault();

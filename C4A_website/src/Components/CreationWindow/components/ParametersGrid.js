@@ -18,15 +18,27 @@ class ParametersGrid extends Component {
     this.props.changeGridParameters(params);
   }
 
+  changePatternValue(e) {
+    let params = this.props.parameters;
+    if(e.target.value === "0") {
+      params.background = null;
+      params.backgroundId = null;
+    }
+    else {
+      params.background = process.env.PUBLIC_URL + 'patterns/' + this.props.patterns[e.target.value - 1].nom;
+      params.backgroundId = e.target.value;
+    }
+    this.props.changeGridParameters(params);
+  }
+
   render() {
     let patterns;
     if(this.props.patterns) {
       patterns = this.props.patterns.map(pattern => {
-        console.log(pattern);
-        return (<option style=
-          {{
-            backgroundImage: `url(https://www.visitportugal.com/sites/www.visitportugal.com/files/mediateca/23_660x371.jpg)`,
-          }}>portugal</option>)
+        if(pattern.id === this.props.parameters.backgroundId) {
+          return (<option selected value={pattern.id}>{pattern.id}</option>)
+        }
+        return (<option value={pattern.id}>{pattern.id}</option>)
       });
     }
 
@@ -49,7 +61,9 @@ class ParametersGrid extends Component {
                     default={this.props.parameters.columns} 
                 />
 
-                <select id="select">
+                <label>Pattern : </label>
+                <select id="select" onChange={this.changePatternValue.bind(this)}>
+                  <option value="0">none</option>
                   {patterns}
                 </select>
             </div>
