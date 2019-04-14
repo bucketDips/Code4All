@@ -52,16 +52,18 @@ class App extends Component {
         columns: 10,
         size: 30,
         cases: [],
-        background: process.env.PUBLIC_URL + 'patterns/nature.jpg',
-        backgroundId: 1
+        background: null,
+        backgroundId: null
       },
       blocks: [
         {
+          id: 1,
           rowStart: 3,
           columnStart: 3,
           width: 2,
           height: 2,
           background: process.env.PUBLIC_URL + 'patterns/mario.png',
+          backgroundId: 3
         }
       ]
     });
@@ -78,6 +80,18 @@ class App extends Component {
     properties.background = parameters.background;
     properties.backgroundId = parameters.backgroundId;
     this.setState({gridProperties: properties});
+  }
+
+  onChangeBlockParameters(parameters) {
+    console.log(parameters);
+    let blocks = this.state.blocks;
+    blocks.forEach(block => {
+      if(block.id === parameters.id) {
+        block.background = parameters.background;
+        block.backgroundId = parameters.backgroundId;
+      }
+    });
+    this.setState({blocks: blocks});
   }
 
   handleDeletePattern(patternId) {
@@ -112,6 +126,7 @@ class App extends Component {
             patterns={this.state.patterns} 
             parameters={this.state.parameters}
             changeGridParameters={this.onChangeGridParameters.bind(this)} 
+            changeBlockParameters={this.onChangeBlockParameters.bind(this)} 
           />
           <Patterns 
             patterns={this.state.patterns} 

@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import styles from '../css/Block.css'
 
 class Block extends Component {
-
-    askEditBlock(e) {
+    askEditBlock() {
         let parameters = {
             type: "BLOCK",
+            id: this.props.id,
             columnStart: this.props.columnStart,
             rowStart: this.props.rowStart,
             width: this.props.width,
-            height: this.props.height
+            height: this.props.height,
+            background: this.props.background,
+            backgroundId: this.props.backgroundId
         }
         this.props.changeParametersWindow(parameters);
-        e.preventDefault();
     }
 
     render() {
@@ -26,9 +27,12 @@ class Block extends Component {
                 backgroundImage: `url(${this.props.background})`,
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",
-                backgroundPosition: "center"
+                backgroundPosition: "center",
+                cursor: "pointer"
               }}
-              className={styles.block} onMouseDownCapture={e => console.log(e)} onClick={this.askEditBlock.bind(this)}>
+              className={styles.block} 
+              onMouseDown={this.askEditBlock.bind(this)}
+              >
             </div>
         );
     }

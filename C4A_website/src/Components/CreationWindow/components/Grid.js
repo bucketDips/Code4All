@@ -63,7 +63,7 @@ class Grid extends Component {
       size: this.state.gridProperties.size,
       cases: this.props.parameters.cases,
       background: this.props.parameters.background,
-      backgroundId: this.state.gridProperties.backgroundId
+      backgroundId: this.props.parameters.backgroundId
     };
     this.setState(
       {
@@ -114,17 +114,17 @@ class Grid extends Component {
     if(this.props.blocks) {
         blocks = this.props.blocks.map(block => {
           return (<Block
+            id={block.id}
             rowStart={block.rowStart}
             columnStart={block.columnStart}
             width={block.width}
             height={block.height}
-            background={block.background}  
+            background={block.background}
+            backgroundId={block.backgroundId}
             changeParametersWindow={this.askEditBlock.bind(this)}
             />)
         });
     }
-
-    console.log(this.props.neutralElements);
 
     return (
         <div className={styles.grid}>
