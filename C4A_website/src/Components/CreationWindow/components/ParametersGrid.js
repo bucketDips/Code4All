@@ -26,12 +26,13 @@ class ParametersGrid extends Component {
     }
     else {
       params.background = process.env.PUBLIC_URL + 'patterns/' + this.props.patterns[e.target.value - 1].nom;
-      params.backgroundId = e.target.value;
+      params.backgroundId = Number(e.target.value);
     }
     this.props.changeGridParameters(params);
   }
 
   render() {
+    console.log(this.props.parameters);
     let patterns;
     if(this.props.patterns) {
       patterns = this.props.patterns.map(pattern => {
