@@ -1,9 +1,305 @@
 var express = require('express');
 var router = express.Router();
+var mysql = require('mysql');
+var md5 = require('md5');
+var con = require('./connexionDatabase.js');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/getUser/:id', function(request, res, next) {
+	var id = request.params.id;
+	function getLastRecord(id) {
+		return new Promise(function(resolve, reject) {
+			var sql = "select * from users where id='"+id+"';";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+	  });
+	}
+	getLastRecord(id).then(function(rows){ res.send(rows); });
+});
+
+
+//get id from name
+router.get('/getUserId/:email', function(request, res, next) {
+	var email = request.params.email;
+	function getLastRecord(email) {
+		return new Promise(function(resolve, reject) {
+			var sql = "select id from users where email='"+email+"';";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+	  });
+	}
+	getLastRecord(email).then(function(rows){
+		if (!rows["0"])
+		{
+			res.send("falseUser")
+		}
+		// res.send((rows["0"].id).toString);
+		res.send("id:"+rows["0"].id);
+	});
+
+});
+router.get('/resetPwd/:email', function(request, res, next) {
+	var email = request.params.email;
+	function getLastRecord(pseudo) {
+		return new Promise(function(resolve, reject) {
+			var sql = "select id, email from users where email='"+email+"';";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+	  });
+	}
+	function changePwd(id, pwd)
+	{
+		pwd=md5(pwd)
+		console.log(pwd)
+		return new Promise(function(resolve, reject) {
+			var sql = "update users set password='"+pwd+"' where id='"+id+"';";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+	  });
+	}
+	getLastRecord(email).then(function(rows){
+		if (!rows["0"])
+		{
+			res.send("falseUser")
+			return;
+		}
+
+		function makeRandomPwd() {
+			var text = "";
+			var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,*!?";
+
+			for (var i = 0; i < 8; i++)
+				text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+			return text;
+		}
+		var newPwd=makeRandomPwd();
+		// res.send((rows["0"].id).toString);
+		var email=rows["0"].email;
+		console.log(rows["0"])
+		var send = require('gmail-send')({
+		  user: 'beyourbet@gmail.com', // creer adresse pour cod4all
+		  pass: 'Beyourbet2018',
+		  to:   email,
+		  subject: 'Réinitialisation de votre mot de passe',
+		  text:    'Votre nouveau mot de passe est ' + newPwd
+		});
+		changePwd(rows["0"].id, newPwd);
+		send({}, function (err, res) {
+		  console.log('* [example 1.1] send() callback returned: err:', err, '; res:', res);
+		})
+		res.send("id:"+rows["0"].id);
+	});
+
+});
+/* GET all users */
+router.get('/getAllUser', function(request, res, next) {
+
+	function getLastRecord() {
+		return new Promise(function(resolve, reject) {
+			var sql = "select * from users;";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+		});
+	}
+	getLastRecord().then(function(rows){ res.send(rows); });
+});
+
+
+
+
+
+
+
+
+/* UPDATE user with id */
+router.put('/update/:id/:pseudo/:email', function(request, res, next) {
+	var id = request.params.id;
+	var pseudo = request.params.pseudo;
+	var email = request.params.email;
+	function getLastRecord(id, pseudo, email) {
+		return new Promise(function(resolve, reject) {
+			var sql = "update users set name='"+pseudo+"', email='"+email+"' where id = "+id+";";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			  });
+			});
+	}
+	getLastRecord(id, pseudo, email).then(function(rows){ res.send(rows); });
+});
+
+
+/* DELETE user with id */
+router.delete('/delete/:id', function(request, res, next) {
+	var id = request.params.id;
+	function getLastRecord(id){
+		return new Promise(function(resolve, reject) {
+			var sql = "delete from users where id = "+id+";";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+		});
+	}
+	getLastRecord(id).then(function(rows){ res.send(rows); });
+});
+
+router.get('/connect/:email/:pwd', function(request, res, next) {
+	var email = request.params.email;
+	var pwd = md5(request.params.pwd);
+	// var pwd = request.params.pwd;
+	console.log(email + " " + pwd);
+	function getLastRecord(email) {
+		return new Promise(function(resolve, reject) {
+			var sql = "select * from users where email='"+email+"';";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+		});
+	}
+	getLastRecord(email).then(function(rows){
+		console.log(JSON.stringify(rows))
+
+		if (!rows["0"])
+		{
+			jsonResponse = {
+				res:"falseUSER"
+			}
+			res.send(JSON.stringify(jsonResponse));
+			return;
+		}
+		if (rows["0"].password == pwd)
+		{
+			var jsonResponse = {
+				res:true,
+				id:rows["0"].id
+			}
+
+		}
+
+		else
+		{
+			jsonResponse = {
+				res:"falsePwd"
+			}
+		}
+		res.send(JSON.stringify(jsonResponse));
+	});
+});
+
+
+
+
+
+
+
+router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
+	var pseudo = request.params.pseudo;
+	var pwd = md5(request.params.pwd);
+	var email = request.params.email;
+	function getLastRecord(pseudo,pwd, email){
+		return new Promise(function(resolve, reject) {
+			var sql = "insert into users(name, password, email) values('"+pseudo+"','"+pwd+"','"+email+"');";
+			con.query(sql, function (err, rows, fields) {
+				if (err)
+				{
+					return resolve(err);
+				}
+				resolve(rows);
+			});
+		});
+	}
+	getLastRecord(pseudo, pwd, email).then(function(rows){
+		var error = rows["sqlMessage"];
+		if (error)
+		{
+			console.log(error)
+			if (error.indexOf("email") >= 0)
+				res.send("duplicateEmail")
+		}
+		else
+		{
+			res.send("true");
+		}
+	});
+});
+
+router.post('/changPwd/:email/:pwd/:newPwd', function(request, res, next) {
+	var email = request.params.email;
+	var pwd = md5(request.params.pwd);
+	var newPwd = md5(request.params.newPwd);
+	function getLastRecord(pseudo) {
+		return new Promise(function(resolve, reject) {
+			var sql = "select * from users where email='"+email+"';";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+		});
+	}
+	function changePassword(email, pwd) {
+		return new Promise(function(resolve, reject) {
+			var sql = "update users set password='"+pwd+"' where email='"+email+"';";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+		});
+	}
+	getLastRecord(email).then(function(rows){
+		console.log("rows = " + JSON.stringify(rows))
+		console.log("pwd = " + pwd)
+		console.log("BASEpwd = " + rows["0"].pwd)
+		if (rows["0"].password == pwd)
+			changePassword(email, newPwd).then(function(rows){ res.send(true); });
+		else
+			res.send(false);
+	});
+});
+
+router.post('/changEmail/:email/:pwd/:newEmail', function(request, res, next) {
+	var email = request.params.email;
+	var pwd = md5(request.params.pwd);
+	var newEmail = request.params.newEmail;
+	function getLastRecord(pseudo) {
+		return new Promise(function(resolve, reject) {
+			var sql = "select * from users where email='"+email+"';";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+		});
+	}
+	function changeEmail(email, newEmail) {
+		return new Promise(function(resolve, reject) {
+			var sql = "update users set email='"+newEmail+"' where email='"+email+"';";
+			con.query(sql, function (err, rows, fields) {
+				if (err)return reject(err);
+				resolve(rows);
+			});
+		});
+	}
+	getLastRecord(email).then(function(rows){
+		console.log("rows = " + JSON.stringify(rows))
+		console.log("pwd = " + pwd)
+
+		if (rows.length > 0 && rows["0"].password == pwd)
+			changeEmail(email, newEmail).then(function(rows){ res.send(true); });
+		else
+			res.send(false);
+	});
 });
 
 module.exports = router;
