@@ -16,7 +16,8 @@ class App extends Component {
       options: [],
       parameters: {},
       gridProperties: {},
-      patterns: []
+      patterns: [],
+      neutralElements: []
     }
   }
 
@@ -51,8 +52,20 @@ class App extends Component {
         columns: 10,
         size: 30,
         cases: [],
-        background: null
-      }
+        background: null,
+        backgroundId: null
+      },
+      blocks: [
+        {
+          id: 1,
+          rowStart: 1,
+          columnStart: 1,
+          width: 1,
+          height: 1,
+          background: process.env.PUBLIC_URL + 'patterns/mario.png',
+          backgroundId: 3
+        }
+      ]
     });
   }
 
@@ -64,7 +77,24 @@ class App extends Component {
     let properties = this.state.gridProperties;
     properties.lines = parameters.lines;
     properties.columns = parameters.columns;
+    properties.background = parameters.background;
+    properties.backgroundId = parameters.backgroundId;
     this.setState({gridProperties: properties});
+  }
+
+  onChangeBlockParameters(parameters) {
+    let blocks = this.state.blocks;
+    blocks.forEach(block => {
+      if(block.id === parameters.id) {
+        block.rowStart = parameters.rowStart;
+        block.columnStart = parameters.columnStart;
+        block.width = parameters.width;
+        block.height = parameters.height;
+        block.background = parameters.background;
+        block.backgroundId = parameters.backgroundId;
+      }
+    });
+    this.setState({blocks: blocks});
   }
 
   handleDeletePattern(patternId) {
@@ -88,6 +118,7 @@ class App extends Component {
             options={this.state.options} />
           <Grid 
             parameters={this.state.gridProperties}
+            blocks={this.state.blocks}
             changeParametersWindow={this.onChangeParameters.bind(this)}
             changeGridPattern={this.onChangeGridPattern.bind(this)}
           />
@@ -95,9 +126,11 @@ class App extends Component {
         </div>
         <div className={style.bottom_panel}>
           <Parameters 
+            gridProperties={this.state.gridProperties}
             patterns={this.state.patterns} 
             parameters={this.state.parameters}
             changeGridParameters={this.onChangeGridParameters.bind(this)} 
+            changeBlockParameters={this.onChangeBlockParameters.bind(this)} 
           />
           <Patterns 
             patterns={this.state.patterns} 

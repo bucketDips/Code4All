@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ParametersGrid from './ParametersGrid';
+import ParametersBlock from './ParametersBlock';
 
 import styles from '../css/Parameters.css'
 
@@ -10,6 +11,10 @@ class Parameters extends Component {
     this.props.changeGridParameters(parameters);
   }
 
+  changeBlockParameters(parameters) {
+    this.props.changeBlockParameters(parameters);
+  }
+
   renderSwitch(parameters) {
       switch(parameters.type) {
         case 'GRID':
@@ -17,6 +22,13 @@ class Parameters extends Component {
                     patterns={this.props.patterns}
                     parameters={parameters} 
                     changeGridParameters={this.changeGridParameters.bind(this)} 
+                  />
+        case 'BLOCK':
+          return <ParametersBlock
+                    patterns={this.props.patterns}
+                    gridProperties={this.props.gridProperties}
+                    parameters={parameters}
+                    changeBlockParameters={this.changeBlockParameters.bind(this)}
                   />
         case 'NONE':
           return <div></div>;
