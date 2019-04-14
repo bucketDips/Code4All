@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 
 import styles from '../css/ToolBox.css'
 
 class ToolBoxElement extends Component {
   render() {
+    console.log(this.props.index)
     return (
-      <li className={styles.toolboxelement}>
-        <div className="name">{this.props.element.title}</div>
-        <img alt={this.props.element.title} className="image" src={this.props.element.image}/>
-        <span className="tooltiptext">{this.props.element.description}</span>
-      </li>
+      <Draggable draggableId={this.props.element.title} index={this.props.index}>
+      {(provided, snapshot) => (
+        <React.Fragment>
+          <div 
+          className={styles.toolboxelement}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+          >
+                  <div>{this.props.element.title}</div>
+          </div>
+          {snapshot.isDragging && (
+            <div style={{transform: "none !important"}}>{this.props.element.title}</div>
+          )}
+        </React.Fragment>
+      )}
+      </Draggable>
     );
   }
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 
 class Case extends Component {
 
@@ -30,8 +31,16 @@ class Case extends Component {
 
     render() {
         return (
-            <div style={this.state.style} className="case" onMouseOver={this.setStyle.bind(this, "black")} onMouseDown={this.setStyle.bind(this, "green")} onMouseLeave={this.setStyle.bind(this, "darkgrey")}>
-            </div>
+            <Droppable droppableId={this.props.index}>
+            {provided => (
+                <div 
+                ref={provided.innerRef}
+                {...provided.droppableProps} 
+                style={this.state.style} className="case" onMouseOver={this.setStyle.bind(this, "black")} onMouseDown={this.setStyle.bind(this, "green")} onMouseLeave={this.setStyle.bind(this, "darkgrey")}>
+                {provided.placeholder}
+                </div>
+            )}
+            </Droppable>
         );
     }
 }

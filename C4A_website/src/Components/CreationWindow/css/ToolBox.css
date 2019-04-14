@@ -10,13 +10,13 @@
 :local(.toolboxelement) {
     margin: 0 auto;
     list-style-type: none;
-    width: 100%;
+    /*width: 100%;
     border-bottom: 2px solid black;
     border-left: 2px solid black;
     border-right: 2px solid black;
     box-sizing: border-box;
     padding: 2%;
-    display: flex;
+    display: flex;*/
 }
 
 :local(.toolboxelement) .image {
