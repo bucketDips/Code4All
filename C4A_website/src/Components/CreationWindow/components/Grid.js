@@ -16,6 +16,7 @@ class Grid extends Component {
 
   fillCases() {
     let cases = [];
+    let index = 0;
 
     for(var line = 0; line < this.state.gridProperties.lines; line++) {
       let cells = [];
@@ -25,7 +26,8 @@ class Grid extends Component {
           line: line,
           column: column,
         }
-        cells.push(<Case size={size} />);
+        cells.push(<Case size={size} index={String(index)} />);
+        index += 1;
       }
       cases.push(cells);
     }

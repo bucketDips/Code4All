@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 import ToolBoxElement from './ToolBoxElement';
 
 import styles from '../css/ToolBox.css'
@@ -8,8 +9,8 @@ class ToolBox extends Component {
   render() {
     let options;
     if(this.props.options) {
-      options = this.props.options.map(option => {
-        return (<ToolBoxElement key={option.title} element={option} />)
+      options = this.props.options.map((option, index) => {
+        return (<ToolBoxElement key={option.title} element={option} index={index} />)
       })
     }
 
@@ -17,9 +18,17 @@ class ToolBox extends Component {
         <div className={styles.toolbox}>
             <h3 className="title">Ici la toolbox</h3>
             <div className="content">
-              <ul id="toolbox_ul">
-                  {options}
-              </ul>
+              <Droppable droppableId={100} isDropDisabled={true} isDragDisabled={true}>
+              {provided => (
+                <ul 
+                ref={provided.innerRef}
+                {...provided.droppableProps} 
+                id="toolbox_ul">
+                    {options}
+                    {provided.placeholder}
+                </ul>
+              )}
+              </Droppable>
             </div>
         </div>
     );

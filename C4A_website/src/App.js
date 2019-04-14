@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd'
 import Axios from 'axios';
 import style from './App.css';
 import ToolBox from './Components/CreationWindow/components/ToolBox';
@@ -39,7 +40,7 @@ class App extends Component {
           image: process.env.PUBLIC_URL + '/fighting_stickman.png'
         },
         {
-          title : 'Bloc',
+          title : 'BLOCK',
           description : 'Un bloc',
           image: process.env.PUBLIC_URL + '/bloc.png'
         },
@@ -110,34 +111,42 @@ class App extends Component {
     });
   }
 
+  onDragEnd = result => {
+    if(result.draggableId === "BLOCK") {
+      
+    }
+  }
+
   render() {
     return (
-      <div className={style.app}>
-        <div className={style.top_panel}>
-          <ToolBox 
-            options={this.state.options} />
-          <Grid 
-            parameters={this.state.gridProperties}
-            blocks={this.state.blocks}
-            changeParametersWindow={this.onChangeParameters.bind(this)}
-            changeGridPattern={this.onChangeGridPattern.bind(this)}
-          />
-          <Code />
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <div className={style.app}>
+          <div className={style.top_panel}>
+            <ToolBox 
+              options={this.state.options} />
+            <Grid 
+              parameters={this.state.gridProperties}
+              blocks={this.state.blocks}
+              changeParametersWindow={this.onChangeParameters.bind(this)}
+              changeGridPattern={this.onChangeGridPattern.bind(this)}
+            />
+            <Code />
+          </div>
+          <div className={style.bottom_panel}>
+            <Parameters 
+              gridProperties={this.state.gridProperties}
+              patterns={this.state.patterns} 
+              parameters={this.state.parameters}
+              changeGridParameters={this.onChangeGridParameters.bind(this)} 
+              changeBlockParameters={this.onChangeBlockParameters.bind(this)} 
+            />
+            <Patterns 
+              patterns={this.state.patterns} 
+              deletePattern={this.handleDeletePattern.bind(this)} />
+            <Details />
+          </div>
         </div>
-        <div className={style.bottom_panel}>
-          <Parameters 
-            gridProperties={this.state.gridProperties}
-            patterns={this.state.patterns} 
-            parameters={this.state.parameters}
-            changeGridParameters={this.onChangeGridParameters.bind(this)} 
-            changeBlockParameters={this.onChangeBlockParameters.bind(this)} 
-          />
-          <Patterns 
-            patterns={this.state.patterns} 
-            deletePattern={this.handleDeletePattern.bind(this)} />
-          <Details />
-        </div>
-      </div>
+      </DragDropContext>
     );
   }
 }
