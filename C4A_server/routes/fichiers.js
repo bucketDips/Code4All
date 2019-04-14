@@ -4,6 +4,7 @@ var mysql = require('mysql');
 var md5 = require('md5');
 var con = require('./connexionDatabase.js');
 var formidable = require('formidable');
+var fs = require('fs');
 
 /* GET users listing. */
 router.get('/getFile/:fileId', function(request, res, next) {
@@ -17,12 +18,13 @@ router.post('/upload', function(request, res, next) {
         getLastRecord(files).then(function(rows){
             var oldpath = files[Object.keys(files)[0]].path;
             var newpath = __dirname +"\\FichiersUtilisateur\\" + rows.insertId;
-            fs.rename(oldpath, newpath, function (err) {
-                if (err) throw err;
-
-                res.end();
-            });
+			fs.copyFile(oldpath, newpath, (err) => {
+				if (err) throw err;
+				console.log(oldpath + ' was copied to '+newpath);
+				res.end();
+			});
         });
+		
 
 
     });
