@@ -6,16 +6,28 @@ import CustomSlider from '../components/CustomSlider'
 
 class ParametersBlock extends Component {
 
-  changeRowsSValue(e) {
-    /*let params = this.props.parameters;
-    params.lines = e;
-    this.props.changeGridParameters(params);*/
+  changeRowsValue(e) {
+    let params = this.props.parameters;
+    params.rowStart = e;
+    this.props.changeBlockParameters(params);
   }
 
   changeColumnsValue(e) {
-    /*let params = this.props.parameters;
-    params.columns = e;
-    this.props.changeGridParameters(params);*/
+    let params = this.props.parameters;
+    params.columnStart = e;
+    this.props.changeBlockParameters(params);
+  }
+
+  changeWidth(e) {
+    let params = this.props.parameters;
+    params.width = e;
+    this.props.changeBlockParameters(params);
+  }
+
+  changeHeight(e) {
+    let params = this.props.parameters;
+    params.height = e;
+    this.props.changeBlockParameters(params);
   }
 
   changePatternValue(e) {
@@ -50,15 +62,33 @@ class ParametersBlock extends Component {
                 <label>Start column : </label>
                 <CustomSlider
                     min={1} 
-                    max={50} 
+                    max={this.props.gridProperties.columns - this.props.parameters.width + 1} 
                     default={this.props.parameters.columnStart} 
+                    changeSize={this.changeColumnsValue.bind(this)}
                 />
 
                 <label>Start row : </label>
                 <CustomSlider
                     min={1} 
-                    max={50} 
+                    max={this.props.gridProperties.lines - this.props.parameters.height + 1} 
                     default={this.props.parameters.rowStart} 
+                    changeSize={this.changeRowsValue.bind(this)}
+                />
+
+                <label>Width : </label>
+                <CustomSlider
+                    min={1} 
+                    max={this.props.gridProperties.columns - this.props.parameters.columnStart + 1} 
+                    default={this.props.parameters.width} 
+                    changeSize={this.changeWidth.bind(this)}
+                />
+
+                <label>Height : </label>
+                <CustomSlider
+                    min={1} 
+                    max={this.props.gridProperties.lines - this.props.parameters.rowStart + 1}
+                    default={this.props.parameters.height} 
+                    changeSize={this.changeHeight.bind(this)}
                 />
 
                 <label>Pattern : </label>

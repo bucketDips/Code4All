@@ -58,10 +58,10 @@ class App extends Component {
       blocks: [
         {
           id: 1,
-          rowStart: 3,
-          columnStart: 3,
-          width: 2,
-          height: 2,
+          rowStart: 1,
+          columnStart: 1,
+          width: 1,
+          height: 1,
           background: process.env.PUBLIC_URL + 'patterns/mario.png',
           backgroundId: 3
         }
@@ -83,10 +83,13 @@ class App extends Component {
   }
 
   onChangeBlockParameters(parameters) {
-    console.log(parameters);
     let blocks = this.state.blocks;
     blocks.forEach(block => {
       if(block.id === parameters.id) {
+        block.rowStart = parameters.rowStart;
+        block.columnStart = parameters.columnStart;
+        block.width = parameters.width;
+        block.height = parameters.height;
         block.background = parameters.background;
         block.backgroundId = parameters.backgroundId;
       }
@@ -123,6 +126,7 @@ class App extends Component {
         </div>
         <div className={style.bottom_panel}>
           <Parameters 
+            gridProperties={this.state.gridProperties}
             patterns={this.state.patterns} 
             parameters={this.state.parameters}
             changeGridParameters={this.onChangeGridParameters.bind(this)} 

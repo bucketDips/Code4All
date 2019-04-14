@@ -106,7 +106,7 @@ class Grid extends Component {
       gridColumnEnd: this.state.gridProperties.columns + 1,
       gridRowEnd: this.state.gridProperties.lines + 1,
       backgroundImage: `url(${this.state.gridProperties.background})`,
-      backgroundSize: "cover"
+      backgroundSize: "100% 100%"
     }} />)
 
     let blocks;

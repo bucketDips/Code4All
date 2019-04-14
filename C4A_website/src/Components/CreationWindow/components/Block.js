@@ -25,7 +25,7 @@ class Block extends Component {
                 gridRowEnd: this.props.rowStart + this.props.height,
                 zIndex: 10,
                 backgroundImage: `url(${this.props.background})`,
-                backgroundSize: "contain",
+                backgroundSize: "100% 100%",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 cursor: "pointer"

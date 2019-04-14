@@ -26,6 +26,7 @@ class Parameters extends Component {
         case 'BLOCK':
           return <ParametersBlock
                     patterns={this.props.patterns}
+                    gridProperties={this.props.gridProperties}
                     parameters={parameters}
                     changeBlockParameters={this.changeBlockParameters.bind(this)}
                   />
