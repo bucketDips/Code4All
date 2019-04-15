@@ -5,11 +5,66 @@ var md5 = require('md5');
 var con = require('./connexionDatabase.js');
 var formidable = require('formidable');
 var fs = require('fs');
+var path = require('path');
+const mimeType = {
+    '.ico': 'image/x-icon',
+    '.html': 'text/html',
+    '.js': 'text/javascript',
+    '.json': 'application/json',
+    '.css': 'text/css',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.wav': 'audio/wav',
+    '.mp3': 'audio/mpeg',
+    '.svg': 'image/svg+xml',
+    '.pdf': 'application/pdf',
+    '.doc': 'application/msword',
+    '.eot': 'appliaction/vnd.ms-fontobject',
+    '.ttf': 'application/font-sfnt'
+};
 
 /* GET users listing. */
 router.get('/getFile/:fileId', function(request, res, next) {
     var fileId = request.params.fileId;
-    fs.get
+    function getFileNameFromBatabase(fileId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select * from fichier where id ='"+fileId+"';";
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    getFileNameFromBatabase(fileId).then(rows => {
+        if (!rows["0"])
+        {
+            res.send("false");
+        }
+        var pathFile = __dirname +"\\FichiersUtilisateur\\" + rows["0"].id;
+        var pathname = __dirname +"\\FichiersUtilisateur\\" + rows["0"].name;
+        res.download(pathFile,  rows["0"].name);
+        // fs.rename(pathFile, pathname, (err) => {
+        //     if (err) throw err;
+        //     fs.readFile(pathname, function(err, data){
+        //         if(err){
+        //             res.statusCode = 500;
+        //             res.end(`Error getting the file: ${err}.`);
+        //         }
+        //         console.log(data);
+        //         fs.rename(pathname, pathFile, (err) => {
+        //             if (err) throw err;
+        //             const ext = path.parse(pathname).ext;
+        //
+        //             res.setHeader('Content-type', mimeType[ext] || 'text/plain' );
+        //             res.send(data);
+        //         });
+        //
+        //
+        //     });
+        //
+        // });
+
+    })
 
 });
 router.post('/upload', function(request, res, next) {
@@ -30,7 +85,7 @@ router.post('/upload', function(request, res, next) {
     });
     function getLastRecord(files) {
         return new Promise(function(resolve, reject) {
-            var sql = "insert into fichier(NOM) values ('"+files[Object.keys(files)[0]].name+"')"
+            var sql = "insert into fichier(name) values ('"+files[Object.keys(files)[0]].name+"')"
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
