@@ -15,6 +15,10 @@ class Parameters extends Component {
     this.props.changeBlockParameters(parameters);
   }
 
+  onDeleteBlock(id) {
+    this.props.deleteBlock(id);
+  }
+
   renderSwitch(parameters) {
       switch(parameters.type) {
         case 'GRID':
@@ -29,6 +33,7 @@ class Parameters extends Component {
                     gridProperties={this.props.gridProperties}
                     parameters={parameters}
                     changeBlockParameters={this.changeBlockParameters.bind(this)}
+                    deleteBlock={this.onDeleteBlock.bind(this)}
                   />
         case 'NONE':
           return <div></div>;

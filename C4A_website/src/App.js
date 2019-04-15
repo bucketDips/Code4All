@@ -57,16 +57,8 @@ class App extends Component {
         backgroundId: null
       },
       blocks: [
-        {
-          id: 1,
-          rowStart: 1,
-          columnStart: 1,
-          width: 1,
-          height: 1,
-          background: process.env.PUBLIC_URL + 'patterns/mario.png',
-          backgroundId: 3
-        }
-      ]
+      ],
+      blockMaxId: 0
     });
   }
 
@@ -111,9 +103,44 @@ class App extends Component {
     });
   }
 
+  onDeleteBlock(id) {
+    let blocks = this.state.blocks;
+    let b;
+    blocks.forEach(block => {
+      if(block.id === id) {
+        b = block;
+      }
+    });
+    blocks.pop(b);
+    this.setState({
+      blocks: blocks,
+      parameters: {
+        type: "NONE"
+      }
+    });
+  }
+
   onDragEnd = result => {
+    if(result.destination === null) return;
     if(result.draggableId === "BLOCK") {
-      
+      let numCase = Number(result.destination.droppableId);
+      let columnId = ((numCase - 1) % (this.state.gridProperties.columns)) + 1;
+      let rowId = ((numCase - (columnId)) / this.state.gridProperties.columns) + 1;
+      this.setState({blockMaxId: this.state.blockMaxId + 1});
+
+      let block = {
+        id: this.state.blockMaxId,
+        rowStart: rowId,
+        columnStart: columnId,
+        width: 1,
+        height: 1,
+        background: process.env.PUBLIC_URL + '/bloc.png',
+        backgroundId: null
+      }
+
+      let blocks = this.state.blocks;
+      blocks.push(block);
+      this.setState({blocks: blocks});
     }
   }
 
@@ -139,6 +166,7 @@ class App extends Component {
               parameters={this.state.parameters}
               changeGridParameters={this.onChangeGridParameters.bind(this)} 
               changeBlockParameters={this.onChangeBlockParameters.bind(this)} 
+              deleteBlock={this.onDeleteBlock.bind(this)}
             />
             <Patterns 
               patterns={this.state.patterns} 

@@ -33,7 +33,7 @@ class ParametersBlock extends Component {
   changePatternValue(e) {
     let params = this.props.parameters;
     if(e.target.value === "0") {
-      params.background = null;
+      params.background = process.env.PUBLIC_URL + 'bloc.png';
       params.backgroundId = null;
     }
     else {
@@ -41,6 +41,11 @@ class ParametersBlock extends Component {
       params.backgroundId = Number(e.target.value);
     }
     this.props.changeBlockParameters(params);
+  }
+
+  handleDelete(e) {
+      this.props.deleteBlock(this.props.parameters.id);
+      e.preventDefault();
   }
 
   render() {
@@ -96,6 +101,10 @@ class ParametersBlock extends Component {
                   <option value="0">none</option>
                   {patterns}
                 </select>
+
+                <form onSubmit={this.handleDelete.bind(this)}>
+                    <input type="submit" value="delete" />
+                </form>
             </div>
         </div>
     );
