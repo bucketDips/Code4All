@@ -14,8 +14,24 @@ import styles from '../css/Code.css'
 
 class Code extends Component {
 
-  onChange(newValue) {
-    console.log('change', newValue);
+  constructor() {
+    super();
+    this.state = {
+      nonEditableLines: [],
+      editorValue: `function onLoad(editor) {
+        console.log("i've loaded");
+      }`
+    }
+  }
+
+  onChange(newValue, e) {
+    var value = this.state.editorValue;
+    console.log(newValue);
+    console.log(e);
+    if(!this.state.nonEditableLines.includes(e.start.row)) {
+      value = newValue;
+    }
+    this.setState({editorValue: value});
   }
 
   render() {
@@ -23,27 +39,25 @@ class Code extends Component {
         <div className={styles.code}>
             <h3 className="title">Ici le code</h3>
             <div className="content">
-            <AceEditor
-            placeholder="Placeholder Text"
-            mode="javascript"
-            theme="monokai"
-            name="code-editor"
-            onLoad={this.onLoad}
-            onChange={this.onChange}
-            fontSize={14}
-            showPrintMargin={true}
-            showGutter={true}
-            highlightActiveLine={true}
-            value={`function onLoad(editor) {
-            console.log("i've loaded");
-            }`}
-            setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true,
-            showLineNumbers: true,
-            tabSize: 2,
-            }}/>
+              <AceEditor
+              placeholder="Placeholder Text"
+              mode="javascript"
+              theme="monokai"
+              name="code-editor"
+              onLoad={this.onLoad}
+              onChange={this.onChange.bind(this)}
+              fontSize={14}
+              showPrintMargin={true}
+              showGutter={true}
+              highlightActiveLine={true}
+              value={this.state.editorValue}
+              setOptions={{
+              enableBasicAutocompletion: true,
+              enableLiveAutocompletion: true,
+              enableSnippets: true,
+              showLineNumbers: true,
+              tabSize: 2,
+              }}/>
             </div>
         </div>
     );
