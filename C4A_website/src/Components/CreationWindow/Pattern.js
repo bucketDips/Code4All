@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../css/Patterns.css'
+import styles from './style.css';
 
 class Pattern extends Component {
 

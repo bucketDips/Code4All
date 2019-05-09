@@ -10,7 +10,7 @@ import 'brace/theme/monokai';
 import "brace/ext/language_tools";
 import "brace/ext/searchbox";
 
-import styles from '../css/Code.css'
+import styles from './style.css';
 
 class Code extends Component {
 

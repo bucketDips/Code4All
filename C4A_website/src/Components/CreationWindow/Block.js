@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../css/Block.css'
+import styles from './style.css';
 
 class Block extends Component {
     askEditBlock() {

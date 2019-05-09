@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import Case from './Case'
-import CustomSlider from '../components/CustomSlider'
-import Block from '../components/Block'
-import styles from '../css/Grid.css'
+import CustomSlider from './CustomSlider'
+import Block from './Block'
+import styles from './style.css';
 
 class Grid extends Component {
 

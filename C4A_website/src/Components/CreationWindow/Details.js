@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import styles from '../css/Details.css'
+import styles from './style.css';
 
 class Details extends Component {
   render() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Axios from 'axios';
-import style from '../css/CreateExerciseWindow.css';
+import style from './style.css';
 import ToolBox from './ToolBox';
 import Grid from './Grid';
 import Code from './Code';

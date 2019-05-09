@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import styles from '../css/Parameters.css'
-import CustomSlider from '../components/CustomSlider'
+import styles from './style.css';
+import CustomSlider from './CustomSlider'
 
 
 class ParametersBlock extends Component {

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ParametersGrid from './ParametersGrid';
 import ParametersBlock from './ParametersBlock';
 
-import styles from '../css/Parameters.css'
+import styles from './style.css';
 
 class Parameters extends Component { 
 

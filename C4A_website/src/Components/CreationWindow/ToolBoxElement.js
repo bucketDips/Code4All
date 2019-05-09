@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
-import styles from '../css/ToolBox.css'
+import styles from './style.css';
 
 class ToolBoxElement extends Component {
   render() {
