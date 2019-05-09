@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { BrowserRouter, Route } from 'react-router-dom';
 import Axios from 'axios';
-import style from './App.css';
-import ToolBox from './Components/CreationWindow/components/ToolBox';
-import Grid from './Components/CreationWindow/components/Grid';
-import Code from './Components/CreationWindow/components/Code';
-import Details from './Components/CreationWindow/components/Details';
-import Parameters from './Components/CreationWindow/components/Parameters';
-import Patterns from './Components/CreationWindow/components/Patterns';
-import CreateExerciseWindow from './Components/CreationWindow/components/CreateExerciseWindow';
+import style from '../css/CreateExerciseWindow.css';
+import ToolBox from './ToolBox';
+import Grid from './Grid';
+import Code from './Code';
+import Details from './Details';
+import Parameters from './Parameters';
+import Patterns from './Patterns';
 
-class App extends Component {
+class CreateExerciseWindow extends Component {
 
   constructor() {
     super();
@@ -148,47 +146,39 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <Route path="/create" component={CreateExerciseWindow} />
-      </BrowserRouter>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+            <div className={style.app}>
+            <div className={style.top_panel}>
+                <ToolBox 
+                options={this.state.options} />
+                <Grid 
+                parameters={this.state.gridProperties}
+                blocks={this.state.blocks}
+                changeParametersWindow={this.onChangeParameters.bind(this)}
+                changeGridPattern={this.onChangeGridPattern.bind(this)}
+                />
+                <Code
+                grid={this.state.gridProperties}
+                />
+            </div>
+            <div className={style.bottom_panel}>
+                <Parameters 
+                gridProperties={this.state.gridProperties}
+                patterns={this.state.patterns} 
+                parameters={this.state.parameters}
+                changeGridParameters={this.onChangeGridParameters.bind(this)} 
+                changeBlockParameters={this.onChangeBlockParameters.bind(this)} 
+                deleteBlock={this.onDeleteBlock.bind(this)}
+                />
+                <Patterns 
+                patterns={this.state.patterns} 
+                deletePattern={this.handleDeletePattern.bind(this)} />
+                <Details />
+            </div>
+            </div>
+        </DragDropContext>
     );
   }
 }
 
-export default App;
-
-/*
-
-<DragDropContext onDragEnd={this.onDragEnd}>
-        <div className={style.app}>
-          <div className={style.top_panel}>
-            <ToolBox 
-              options={this.state.options} />
-            <Grid 
-              parameters={this.state.gridProperties}
-              blocks={this.state.blocks}
-              changeParametersWindow={this.onChangeParameters.bind(this)}
-              changeGridPattern={this.onChangeGridPattern.bind(this)}
-            />
-            <Code
-              grid={this.state.gridProperties}
-             />
-          </div>
-          <div className={style.bottom_panel}>
-            <Parameters 
-              gridProperties={this.state.gridProperties}
-              patterns={this.state.patterns} 
-              parameters={this.state.parameters}
-              changeGridParameters={this.onChangeGridParameters.bind(this)} 
-              changeBlockParameters={this.onChangeBlockParameters.bind(this)} 
-              deleteBlock={this.onDeleteBlock.bind(this)}
-            />
-            <Patterns 
-              patterns={this.state.patterns} 
-              deletePattern={this.handleDeletePattern.bind(this)} />
-            <Details />
-          </div>
-        </div>
-      </DragDropContext>
-
-      */
+export default CreateExerciseWindow;
