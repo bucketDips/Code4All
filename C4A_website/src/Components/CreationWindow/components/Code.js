@@ -18,9 +18,29 @@ class Code extends Component {
     super();
     this.state = {
       nonEditableLines: [],
-      editorValue: `function onLoad(editor) {
-        console.log("i've loaded");
-      }`
+      editorValue: "",
+      infoText: ""
+    }
+  }
+
+  buildEditorValue() {
+    var grid = this.props.grid;
+    var value = ("var grid = this.Grid(" + grid.lines + "," + grid.columns + "," + grid.backgroundId + ");");
+    this.setState({editorValue: value});
+  }
+
+  Grid(lines, columns, backgroundId) {
+    console.log("grid");
+  }
+
+  evalCode() {
+    // ici les vérification
+    try {
+      eval(this.state.editorValue);
+      this.setState({infoText: ""});
+    }
+    catch(error) {
+      this.setState({infoText: error.message});
     }
   }
 
@@ -32,6 +52,12 @@ class Code extends Component {
       value = newValue;
     }
     this.setState({editorValue: value});
+
+    //this.evalCode();
+  }
+
+  componentWillReceiveProps() {
+    this.buildEditorValue();
   }
 
   render() {
@@ -58,6 +84,7 @@ class Code extends Component {
               showLineNumbers: true,
               tabSize: 2,
               }}/>
+              <div id="info-text">{this.state.infoText}</div>
             </div>
         </div>
     );

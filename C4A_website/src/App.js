@@ -157,7 +157,9 @@ class App extends Component {
               changeParametersWindow={this.onChangeParameters.bind(this)}
               changeGridPattern={this.onChangeGridPattern.bind(this)}
             />
-            <Code />
+            <Code
+              grid={this.state.gridProperties}
+             />
           </div>
           <div className={style.bottom_panel}>
             <Parameters 
