@@ -11,14 +11,22 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <ProtectedRoute exact path="/" component={HomeWindow} />
-          <ProtectedRoute exact path="/create" component={CreateExerciseWindow} />
-          <NotConnectedRoute exact path="/login" component={LoginWindow} />
-          <Route component={ErrorWindow} />
-        </Switch>
-      </BrowserRouter>
+      <div>
+        <BrowserRouter>
+          <Switch>
+            <ProtectedRoute exact path="/" component={HomeWindow} />
+            <ProtectedRoute exact path="/create" component={CreateExerciseWindow} />
+            <NotConnectedRoute exact path="/login" component={LoginWindow} />
+            <Route component={ErrorWindow} />
+          </Switch>
+        </BrowserRouter>
+        <link
+          rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous"
+        />
+      </div>
     );
   }
 }
