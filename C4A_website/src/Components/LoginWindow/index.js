@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import styles from './style.css'
+
 class LoginWindow extends Component {
   render() {
     return (
