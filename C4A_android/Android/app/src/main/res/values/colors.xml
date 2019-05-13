@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#fff1c7</color>
+    <color name="colorPrimaryDark">#050c39</color>
+    <color name="red">#ff0011</color>
+    <color name="blue">#0529c9</color>
+    <color name="blue_material_design">#0827ae</color>
+    <color name="green">#08c905</color>
+    <color name="yellow">#ffe100</color>
+    <color name="purple">#7405C9</color>
+    <color name="text">#e0f2f1</color>
+    <color name="black">#000000</color>
+    <color name="semitransparentblack">#33000000</color>
+    <color name="semitransparentwhite">#E6deecef</color>
+    <color name="white">#FFFFFF</color>
+    <color name="background_material_light">#f10c0c</color>
+    <color name="primary_dark_material_light">#7b3434</color>
+    <color name="spinner_hint_text_color">#ffffcc</color>
+
+
+    <declare-styleable name="MaterialSpinner">
+        <attr name="ms_baseColor" format="color"/>
+        <attr name="ms_highlightColor" format="color"/>
+        <attr name="ms_errorColor" format="color"/>
+        <attr name="ms_error" format="string"/>
+        <attr name="ms_hint" format="string"/>
+        <attr name="ms_hintColor" format="color"/>
+        <attr name="ms_hintTextSize" format="dimension"/>
+        <attr name="ms_floatingLabelText" format="string"/>
+        <attr name="ms_floatingLabelColor" format="color"/>
+        <attr name="ms_multiline" format="boolean"/>
+        <attr name="ms_nbErrorLines" format="integer"/>
+        <attr name="ms_typeface" format="string"/>
+        <attr name="ms_alignLabels" format="boolean"/>
+        <attr name="ms_thickness" format="dimension"/>
+        <attr name="ms_thickness_error" format="dimension"/>
+        <attr name="ms_arrowSize" format="dimension"/>
+        <attr name="ms_arrowColor" format="color"/>
+        <attr name="ms_enableFloatingLabel" format="boolean"/>
+        <attr name="ms_enableErrorLabel" format="boolean"/>
+        <attr name="ms_alwaysShowFloatingLabel" format="boolean"/>
+        <attr name="ms_isRtl" format="boolean"/>
+        <attr name="ms_hintView" format="reference"/>
+        <attr name="ms_dropDownHintView" format="reference"/>
+
+    </declare-styleable>
+</resources>
