@@ -48,12 +48,16 @@ class Code extends Component {
     if(matching != null) {
       var splitted = matching[0].split("(");
       var newStr = "" + splitted[0] + "(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");";
+      newStr = this.state.editorValue.replace(matching, newStr);
     }
-
+    else {
+      var newStr = this.state.editorValue + 
+        "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");";
+    }
     this.setState(
       {
         fromProps: false,
-        editorValue: this.state.editorValue.replace(matching, newStr)
+        editorValue: newStr
       }
     );
   }
@@ -69,6 +73,7 @@ class Code extends Component {
     catch(error) {}
 
     let parameters = {
+      type: "GRID",
       lines: lines,
       columns: columns,
       background: background,
@@ -76,9 +81,6 @@ class Code extends Component {
     }
 
     this.props.changeGridParameters(parameters);
-
-    parameters.type = "GRID";
-
     this.props.changeParametersWindow(parameters);
 
     return new Grid(lines, columns, patternId);
@@ -98,24 +100,19 @@ class Code extends Component {
   }
 
   onChange(newValue, e) {
-    try{
-      if(this.state.fromProps === true) {
-        return;
+    if(this.state.fromProps === true) {
+      return;
+    }
+
+    this.setState(
+      { 
+        fromEdit: true,
+        editorValue: newValue 
       }
-
-      this.setState(
-        { 
-          fromEdit: true,
-          editorValue: newValue 
-        }
-      );
-      
-      this.evalCode();
-
-      this.setState({ fromEdit: false });
-    }
-    catch(e) {
-    }
+    );
+    
+    this.evalCode();
+    this.setState({ fromEdit: false });
   }
 
   render() {
@@ -124,7 +121,6 @@ class Code extends Component {
             <h3 className="title">Ici le code</h3>
             <div className="content">
               <AceEditor
-              placeholder="Placeholder Text"
               mode="javascript"
               theme="monokai"
               name="code-editor"
