@@ -3,9 +3,11 @@ var router = express.Router();
 var mysql = require('mysql');
 var md5 = require('md5');
 var con = require('./connexionDatabase.js');
+var config = require("./config");
+var AUTH = require('./AUTHENTIFICATION')
 
 /* GET users listing. */
-router.get('/getStudentClassesById/:id', function(request, res, next) {
+router.get('/getStudentClassesById/:id', AUTH.VERIFYAUTH, function(request, res, next) {
     var id = request.params.id;
     function getLastRecord(id) {
         return new Promise(function(resolve, reject) {
@@ -20,7 +22,7 @@ router.get('/getStudentClassesById/:id', function(request, res, next) {
     }
     getLastRecord(id).then(function(rows){ res.send(rows); });
 });
-router.get('/getProfessorClassesById/:id', function(request, res, next) {
+router.get('/getProfessorClassesById/:id', AUTH.VERIFYAUTH, function(request, res, next) {
     var id = request.params.id;
     function getLastRecord(id) {
         return new Promise(function(resolve, reject) {

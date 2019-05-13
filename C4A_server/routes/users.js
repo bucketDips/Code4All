@@ -3,9 +3,13 @@ var router = express.Router();
 var mysql = require('mysql');
 var md5 = require('md5');
 var con = require('./connexionDatabase.js');
+var jwt = require('jsonwebtoken');
+var config = require("./config");
+var AUTH = require('./AUTHENTIFICATION')
+
 
 /* GET users listing. */
-router.get('/getUser/:id', function(request, res, next) {
+router.get('/getUser/:id', AUTH.VERIFYAUTH, function(request, res, next) {
 	var id = request.params.id;
 	function getLastRecord(id) {
 		return new Promise(function(resolve, reject) {
@@ -20,8 +24,9 @@ router.get('/getUser/:id', function(request, res, next) {
 });
 
 
+
 //get id from name
-router.get('/getUserId/:email', function(request, res, next) {
+router.get('/getUserId/:email', AUTH.VERIFYAUTH, function(request, res, next) {
 	var email = request.params.email;
 	function getLastRecord(email) {
 		return new Promise(function(resolve, reject) {
@@ -101,7 +106,11 @@ router.get('/resetPwd/:email', function(request, res, next) {
 
 });
 /* GET all users */
-router.get('/getAllUser', function(request, res, next) {
+router.get('/getAllUser', AUTH.VERIFYAUTH, function(request, res, next) {
+	// if (!request.decoded){
+		// console.log("pas d'authorisation");
+		 // return failAuth(res);
+	// }
 
 	function getLastRecord() {
 		return new Promise(function(resolve, reject) {
@@ -123,7 +132,7 @@ router.get('/getAllUser', function(request, res, next) {
 
 
 /* UPDATE user with id */
-router.put('/update/:id/:pseudo/:email', function(request, res, next) {
+router.put('/update/:id/:pseudo/:email', AUTH.VERIFYAUTH,function(request, res, next) {
 	var id = request.params.id;
 	var pseudo = request.params.pseudo;
 	var email = request.params.email;
@@ -141,7 +150,7 @@ router.put('/update/:id/:pseudo/:email', function(request, res, next) {
 
 
 /* DELETE user with id */
-router.delete('/delete/:id', function(request, res, next) {
+router.delete('/delete/:id', AUTH.VERIFYAUTH,function(request, res, next) {
 	var id = request.params.id;
 	function getLastRecord(id){
 		return new Promise(function(resolve, reject) {
@@ -155,7 +164,9 @@ router.delete('/delete/:id', function(request, res, next) {
 	getLastRecord(id).then(function(rows){ res.send(rows); });
 });
 
+//connection
 router.get('/connect/:email/:pwd', function(request, res, next) {
+	
 	var email = request.params.email;
 	var pwd = md5(request.params.pwd);
 	// var pwd = request.params.pwd;
@@ -171,31 +182,48 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 	}
 	getLastRecord(email).then(function(rows){
 		console.log(JSON.stringify(rows))
-
+		var jsonResponse="";
 		if (!rows["0"])
 		{
 			jsonResponse = {
-				res:"falseUSER"
+				success:false,
+				code:"falseUSER"
 			}
 			res.send(JSON.stringify(jsonResponse));
 			return;
 		}
 		if (rows["0"].password == pwd)
 		{
-			var jsonResponse = {
-				res:true,
-				id:rows["0"].id
+			var userInfo = {
+				"email":rows["0"].email,
+				"name":rows["0"].name,
+				"id":rows["0"].id
 			}
+			jwt.sign(userInfo, config.JWTKEY, {expiresIn: config.EXPIRATIONTIME}, function(err, token) {
+				if(err) return next(err);
+				jsonResponse = {
+					success: true,
+					code : 'AUTHENTIFICATION_SUCCESS',
+					message: 'authentification réussi !',
+					token: token
+				}
+				console.log("ca devrait amrcher")
+				res.send(JSON.stringify(jsonResponse));
+			});
+			
 
 		}
 
 		else
 		{
 			jsonResponse = {
-				res:"falsePwd"
+				success:false,
+				code:"falsePwd"
 			}
+			res.send(JSON.stringify(jsonResponse));
+			
 		}
-		res.send(JSON.stringify(jsonResponse));
+		
 	});
 });
 
@@ -236,7 +264,7 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 	});
 });
 
-router.post('/changPwd/:email/:pwd/:newPwd', function(request, res, next) {
+router.post('/changPwd/:email/:pwd/:newPwd', AUTH.VERIFYAUTH,function(request, res, next) {
 	var email = request.params.email;
 	var pwd = md5(request.params.pwd);
 	var newPwd = md5(request.params.newPwd);
@@ -269,7 +297,7 @@ router.post('/changPwd/:email/:pwd/:newPwd', function(request, res, next) {
 	});
 });
 
-router.post('/changEmail/:email/:pwd/:newEmail', function(request, res, next) {
+router.post('/changEmail/:email/:pwd/:newEmail', AUTH.VERIFYAUTH, function(request, res, next) {
 	var email = request.params.email;
 	var pwd = md5(request.params.pwd);
 	var newEmail = request.params.newEmail;

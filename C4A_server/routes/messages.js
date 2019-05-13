@@ -3,9 +3,11 @@ var router = express.Router();
 var mysql = require('mysql');
 var md5 = require('md5');
 var con = require('./connexionDatabase.js');
+var config = require("./config");
+var AUTH = require('./AUTHENTIFICATION')
 
 
-router.post('/sendMessage/:IdSender/:IdDest/:subject/:msg', function(request, res, next) {
+router.post('/sendMessage/:IdSender/:IdDest/:subject/:msg',AUTH.VERIFYAUTH, function(request, res, next) {
     var IdSender = request.params.IdSender;
     var IdDest = request.params.IdDest;
     var subject = request.params.subject;
@@ -41,7 +43,7 @@ router.post('/sendMessage/:IdSender/:IdDest/:subject/:msg', function(request, re
 
     });
 });
-router.post('/sendMessageToClass/:IdSender/:IdClassDest/:subject/:msg', function(request, res, next) {
+router.post('/sendMessageToClass/:IdSender/:IdClassDest/:subject/:msg', AUTH.VERIFYAUTH,function(request, res, next) {
     var IdSender = request.params.IdSender;
     var IdDest = request.params.IdClassDest;
     var subject = request.params.subject;
@@ -81,7 +83,7 @@ router.post('/sendMessageToClass/:IdSender/:IdClassDest/:subject/:msg', function
 
 
 // Recupere les messages adressés a l'utilisateur, ainsi que ceux de toute les classRoom dans lesquelle il est
-router.get('/:getUserMsg/:id', function(request, res, next) {
+router.get('/:getUserMsg/:id', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.params.id;
     function createMessage(userId) {
         return new Promise(function(resolve, reject) {

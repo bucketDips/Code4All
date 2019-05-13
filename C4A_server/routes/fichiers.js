@@ -6,6 +6,8 @@ var con = require('./connexionDatabase.js');
 var formidable = require('formidable');
 var fs = require('fs');
 var path = require('path');
+var config = require("./config");
+var AUTH = require('./AUTHENTIFICATION')
 const mimeType = {
     '.ico': 'image/x-icon',
     '.html': 'text/html',
@@ -24,7 +26,7 @@ const mimeType = {
 };
 
 /* GET users listing. */
-router.get('/getFile/:fileId', function(request, res, next) {
+router.get('/getFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
     var fileId = request.params.fileId;
     function getFileNameFromBatabase(fileId) {
         return new Promise(function(resolve, reject) {
@@ -43,31 +45,11 @@ router.get('/getFile/:fileId', function(request, res, next) {
         var pathFile = __dirname +"\\FichiersUtilisateur\\" + rows["0"].id;
         var pathname = __dirname +"\\FichiersUtilisateur\\" + rows["0"].name;
         res.download(pathFile,  rows["0"].name);
-        // fs.rename(pathFile, pathname, (err) => {
-        //     if (err) throw err;
-        //     fs.readFile(pathname, function(err, data){
-        //         if(err){
-        //             res.statusCode = 500;
-        //             res.end(`Error getting the file: ${err}.`);
-        //         }
-        //         console.log(data);
-        //         fs.rename(pathname, pathFile, (err) => {
-        //             if (err) throw err;
-        //             const ext = path.parse(pathname).ext;
-        //
-        //             res.setHeader('Content-type', mimeType[ext] || 'text/plain' );
-        //             res.send(data);
-        //         });
-        //
-        //
-        //     });
-        //
-        // });
 
     })
 
 });
-router.post('/upload', function(request, res, next) {
+router.post('/upload', AUTH.VERIFYAUTH, function(request, res, next) {
     var form = new formidable.IncomingForm();
     form.parse(request, function (err, fields, files) {
         getLastRecord(files).then(function(rows){
