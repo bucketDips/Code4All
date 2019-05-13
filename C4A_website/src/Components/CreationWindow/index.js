@@ -91,14 +91,12 @@ class CreateExerciseWindow extends Component {
   }
 
   handleDeletePattern(patternId) {
-    console.log(patternId);
+    
   }
 
   onChangeGridPattern(patternId) {
-    console.log(patternId);
     Axios.get(process.env.PUBLIC_URL + '/patterns/files.json').then(response => {
       response.data.forEach(element => {
-        console.log(element);
       });
     });
   }
@@ -146,19 +144,23 @@ class CreateExerciseWindow extends Component {
 
   render() {
     return (
-        <DragDropContext onDragEnd={this.onDragEnd}>
             <div className={style.app}>
             <div className={style.top_panel}>
-                <ToolBox 
-                options={this.state.options} />
-                <Grid 
-                parameters={this.state.gridProperties}
-                blocks={this.state.blocks}
-                changeParametersWindow={this.onChangeParameters.bind(this)}
-                changeGridPattern={this.onChangeGridPattern.bind(this)}
-                />
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                  <ToolBox 
+                  options={this.state.options} />
+                  <Grid 
+                  parameters={this.state.gridProperties}
+                  blocks={this.state.blocks}
+                  changeParametersWindow={this.onChangeParameters.bind(this)}
+                  changeGridPattern={this.onChangeGridPattern.bind(this)}
+                  />
+                </DragDropContext>
                 <Code
                 grid={this.state.gridProperties}
+                patterns={this.state.patterns}
+                changeGridParameters={this.onChangeGridParameters.bind(this)}
+                changeParametersWindow={this.onChangeParameters.bind(this)}
                 />
             </div>
             <div className={style.bottom_panel}>
@@ -176,7 +178,6 @@ class CreateExerciseWindow extends Component {
                 <Details />
             </div>
             </div>
-        </DragDropContext>
     );
   }
 }

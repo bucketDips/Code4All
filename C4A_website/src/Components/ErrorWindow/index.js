@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import styles from './style.css'
-
 class ErrorWindow extends Component {
   render() {
     return (
