@@ -1,22 +1,23 @@
 var mysql = require('mysql');
+var config = require('./config');
 
 var connection;
 var devMod=1
 if (devMod===1)
 {
 	connection = mysql.createConnection({
-		host     : 'localhost',
-		user     : 'root',
-		password : '',
-		database : 'codeforall',
+		host     : config.DEVHOST,
+		user     : config.DEVUSER,
+		password : config.DEVPWD,
+		database : config.DB
 	});
 }
 else{
 	connection = mysql.createConnection({
-    host     : '',
-    user     : '',
-    password : '',
-    database : '',
+		host     : config.HOST,
+		user     : config.USER,
+		password : config.PWD,
+		database : config.DB
 	});
 }
 
