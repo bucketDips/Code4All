@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import auth from '../../auth';
 
-import styles from './style.css'
-
 class HomeWindow extends Component {
 
   onLogout() {

@@ -32,7 +32,6 @@ class ParametersGrid extends Component {
   }
 
   render() {
-    console.log(this.props.parameters);
     let patterns;
     if(this.props.patterns) {
       patterns = this.props.patterns.map(pattern => {

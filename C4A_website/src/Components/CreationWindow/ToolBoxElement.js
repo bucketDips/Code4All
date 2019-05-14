@@ -5,7 +5,6 @@ import styles from './style.css';
 
 class ToolBoxElement extends Component {
   render() {
-    console.log(this.props.index)
     return (
       <Draggable draggableId={this.props.element.title} index={this.props.index}>
       {(provided, snapshot) => (

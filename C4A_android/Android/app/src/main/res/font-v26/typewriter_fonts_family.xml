@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <!-- Normal -->
+    <font
+            android:font="@font/typewriter"
+            android:fontStyle="normal"
+            android:fontWeight="400"
+
+            app:font="@font/typewriter"
+            app:fontStyle="normal"
+            app:fontWeight="400" />
+
+    <!-- Bold -->
+    <font
+            android:font="@font/typewriterbold"
+            android:fontStyle="normal"
+            android:fontWeight="700"
+
+            app:font="@font/typewriterbold"
+            app:fontStyle="normal"
+            app:fontWeight="700" />
+
+    <!-- Thin -->
+    <font
+            android:font="@font/typewriterthin"
+            android:fontStyle="normal"
+            android:fontWeight="200"
+
+            app:font="@font/typewriterthin"
+            app:fontStyle="normal"
+            app:fontWeight="200" />
+
+</font-family>

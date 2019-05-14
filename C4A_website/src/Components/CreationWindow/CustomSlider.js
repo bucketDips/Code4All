@@ -32,7 +32,7 @@ class CustomSlider extends Component {
   render() {
     return (
         <div className={this.props.className}>
-            <Slider min={this.props.min} max={this.props.max} defaultValue={this.props.default} handle={this.handle.bind(this)} onChange={this.changeValue.bind(this)} />
+            <Slider min={this.props.min} max={this.props.max} value={this.props.default} handle={this.handle.bind(this)} onChange={this.changeValue.bind(this)} />
         </div>
     );
   }

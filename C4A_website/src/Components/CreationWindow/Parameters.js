@@ -6,7 +6,6 @@ import ParametersBlock from './ParametersBlock';
 import styles from './style.css';
 
 class Parameters extends Component { 
-
   changeGridParameters(parameters) {
     this.props.changeGridParameters(parameters);
   }

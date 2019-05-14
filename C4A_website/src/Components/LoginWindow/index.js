@@ -4,8 +4,6 @@ import FormControl from 'react-bootstrap/FormControl';
 
 import auth from '../../auth';
 
-import styles from './style.css'
-
 class LoginWindow extends Component {
 
   onLogin(e) {
