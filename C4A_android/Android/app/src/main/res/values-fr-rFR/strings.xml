@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Code Pour Tous</string>
+    <string name="login">Se connecter</string>
+    <string name="password">mot de passe</string>
+    <string name="username">nom d\'utilisateur</string>
+
+    <string name="network_error_network_error">Connexion à internet impossible... Vérifiez votre connexion internet</string>
+    <string name="network_error_server_error">"Le serveur n'a pas été trouvé. Réessayez plus tard "</string>
+    <string name="network_error_auth_failure">"Connexion à internet impossible... Vérifiez votre connexion internet "</string>
+    <string name="network_error_parser_error">Erreur de parsing ! Réessayez plus tard</string>
+    <string name="network_error_time_out">"Temps maximal de connexion dépassée... Verifiez votre connexion internet "</string>
+</resources>

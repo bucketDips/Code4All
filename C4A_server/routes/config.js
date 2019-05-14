@@ -9,6 +9,8 @@ exports.DEVPWD = "";
 
 exports.DB = "codeforall";
 
+exports.SERVERMAIL = "beyourbet@gmail.com";
+exports.SERVERMAILPWD = "Beyourbet2018";
 
 
 exports.PROTOCOLSERVEUR = 'http'; // http ou https
