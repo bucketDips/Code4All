@@ -163,7 +163,49 @@ router.delete('/delete/:id', AUTH.VERIFYAUTH,function(request, res, next) {
 	}
 	getLastRecord(id).then(function(rows){ res.send(rows); });
 });
+router.get('/validate/:token', function(request, res, next) {
+	
+	var validateAccount = function(id) {
+		return new Promise(function(resolve, reject) {
+			var sql = "update users set valid=1 where id="+id+";";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+		});
+	}
+	
+	var token = request.params.token;
+	request.headers.authorization = "Bearer " + token;
+	if (token && token != 'null') {
 
+        // verifies secret and checks exp
+        jwt.verify(token, config.JWTKEY, function(err, decoded) {      
+          if (err) {
+            return res.status(403).json({
+                success: true,
+                code : 'INCORRECT_TOKEN',
+                message: 'Token incorrect !'
+            })
+          }
+		  else {
+            validateAccount(decoded.id).then(function(rows){
+				res.send("user validated");
+			});
+            
+          }
+        });
+
+    }
+	else {
+		return res.status(403).json({
+                success: false,
+                code : 'NO_TOKEN',
+                message: 'Pas de token !'
+            })
+	}
+	
+});
 //connection
 router.get('/connect/:email/:pwd', function(request, res, next) {
 	
@@ -192,6 +234,7 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 			res.send(JSON.stringify(jsonResponse));
 			return;
 		}
+		
 		if (rows["0"].password == pwd)
 		{
 			var userInfo = {
@@ -201,13 +244,26 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 			}
 			jwt.sign(userInfo, config.JWTKEY, {expiresIn: config.EXPIRATIONTIME}, function(err, token) {
 				if(err) return next(err);
+				
+				if (rows["0"].valid!=1)
+				{
+					jsonResponse = {
+						success:false,
+						code:"InvalidAccount",
+						message: "Compte non confimé, verifiez vos email",
+						
+					}
+					// res.send(JSON.stringify(jsonResponse));
+					res.status(403).json(jsonResponse);
+					return;
+				}
 				jsonResponse = {
 					success: true,
 					code : 'AUTHENTIFICATION_SUCCESS',
 					message: 'authentification réussi !',
 					token: token
 				}
-				console.log("ca devrait amrcher")
+				
 				res.send(JSON.stringify(jsonResponse));
 			});
 			
