@@ -13,8 +13,6 @@
     <string name="network_error_auth_failure">Cannot connect to Internet...Please check your connection!</string>
     <string name="network_error_parser_error">Parsing error! Please try again after some time!!</string>
     <string name="network_error_time_out">Connection TimeOut! Please check your internet connection.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="c_d_button_to_my_classes">Button to my classes</string>
 
 </resources>

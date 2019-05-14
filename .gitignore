@@ -5,11 +5,11 @@ C4A_server/.idea/*
 
 
 #android
-C4A_android/Android*.iml
-C4A_android/.gradle
-C4A_android/local.properties
-C4A_android/.idea/*
-C4A_android/.DS_Store
-C4A_android/build
-C4A_android/captures
-C4A_android/.externalNativeBuild
+C4A_android/Android/*.iml
+C4A_android/Android/.gradle
+C4A_android/Android/local.properties
+C4A_android/Android/.idea/*
+C4A_android/Android/.DS_Store
+C4A_android/Android/build
+C4A_android/Android/captures
+C4A_android/Android/.externalNativeBuild

@@ -28,7 +28,7 @@ class ExerciceListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_exercice_list, container, false)
-        setupView(savedInstanceState)
+        //setupView(savedInstanceState)
         return v
     }
 
