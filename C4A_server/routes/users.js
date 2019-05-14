@@ -91,8 +91,8 @@ router.get('/resetPwd/:email', function(request, res, next) {
 		var email=rows["0"].email;
 		console.log(rows["0"])
 		var send = require('gmail-send')({
-		  user: 'beyourbet@gmail.com', // creer adresse pour cod4all
-		  pass: 'Beyourbet2018',
+		  user: config.SERVERMAIL, // creer adresse pour cod4all
+		  pass: config.SERVERMAILPWD,
 		  to:   email,
 		  subject: 'Réinitialisation de votre mot de passe',
 		  text:    'Votre nouveau mot de passe est ' + newPwd
@@ -315,7 +315,47 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 		}
 		else
 		{
-			res.send("true");
+			
+			var userInfo = {
+				"email":email,
+				"name":pseudo,
+				"id":rows.insertId
+			}
+			console.log(userInfo);
+			jwt.sign(userInfo, config.JWTKEY, {expiresIn: config.EXPIRATIONTIME}, function(err, token) {
+				if(err) return next(err);
+				
+				jsonResponse = {
+					success: true,
+					code : 'InscriptionSuccess',
+					message: 'Inscription réussie, confirmez votre inscription en consultant vos mails : ' +email,
+				}
+				var msgText = 'Bonjour,\nConfirmer Votre inscription en cliquant sur ce lien :\n'
+								+ config.PROTOCOLSERVEUR
+								+ "://"
+								+ config.HOST
+								+ ":"
+								+ config.PORTSERVEUR
+								+ "/users/validate/"
+								+ token;
+				console.log(msgText);				
+				var send = require('gmail-send')({
+					user: config.SERVERMAIL,
+					pass: config.SERVERMAILPWD,
+					to:   email,
+					subject: 'CodeForAll : Confirmer votre inscription',
+					text: msgText 
+				});
+				send({}, function (err, res) {
+					console.log('* [example 1.1] send() callback returned: err:', err, '; res:', res);
+				})
+			
+				res.send(JSON.stringify(jsonResponse));
+		
+			
+		
+			
+			});
 		}
 	});
 });
