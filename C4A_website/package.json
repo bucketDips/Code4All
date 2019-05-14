@@ -6,6 +6,7 @@
     "axios": "^0.18.0",
     "core-js": "^3",
     "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.11",
     "rc-slider": "^8.6.9",
     "react": "^16.8.6",
     "react-ace": "^6.5.0",

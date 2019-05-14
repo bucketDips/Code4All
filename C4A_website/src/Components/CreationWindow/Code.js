@@ -10,18 +10,7 @@ import "brace/ext/language_tools";
 import "brace/ext/searchbox";
 
 import styles from './style.css';
-
-class Grid {
-  constructor(lines, columns, patternId) {
-    this.lines = lines;
-    this.columns = columns;
-    this.patternId = patternId;
-  }
-
-  changePattern(patternId){};
-  addElement(element){};
-
-}
+import { Grid, Block } from './CodeClasses';
 
 class Code extends Component {
 
@@ -37,7 +26,7 @@ class Code extends Component {
   }
 
   componentWillReceiveProps(props){
-    if(this.state.fromEdit === true) {
+    if(this.state.fromEdit === true || this.state.editorValue === undefined) {
       return;
     }
 
@@ -51,8 +40,8 @@ class Code extends Component {
       newStr = this.state.editorValue.replace(matching, newStr);
     }
     else {
-      var newStr = this.state.editorValue + 
-        "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");";
+      /*var newStr = this.state.editorValue + 
+        "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");";*/
     }
     this.setState(
       {
@@ -62,15 +51,21 @@ class Code extends Component {
     );
   }
 
+  getBackground(patternId) {
+    try {
+      return process.env.PUBLIC_URL + 'patterns/' + this.props.patterns[patternId - 1].nom;
+    }
+    catch(error) {
+      return null;
+    }
+  }
+
   createGrid(lines, columns, patternId) {
     if(lines > 50 || columns > 50) {
       throw new Error("Max 50 for lines and columns.");
     }
 
-    try {
-      var background = process.env.PUBLIC_URL + 'patterns/' + this.props.patterns[patternId - 1].nom;
-    }
-    catch(error) {}
+    var background = this.getBackground(patternId);
 
     let parameters = {
       type: "GRID",
@@ -81,17 +76,28 @@ class Code extends Component {
     }
 
     this.props.changeGridParameters(parameters);
-    this.props.changeParametersWindow(parameters);
 
     return new Grid(lines, columns, patternId);
   }
 
+  createBlock(id, row, column, width, height, patternId) {
+    return new Block(id, row, column, width, height, patternId);
+  }
+
+  getDisplayBlockCode() {
+    return `
+      var blocks = grid.getBlocks();
+      this.props.modifyBlocks(blocks);
+    `;
+  }
+
   evalCode() {
     var createGrid = (lines, columns, backgroundId) => this.createGrid(lines, columns, backgroundId);
+    var createBlock = (id, row, column, width, height, patternId) => this.createBlock(id, row, column, width, height, patternId);
     // ici les vérification
 
     try {
-      eval(this.state.editorValue + "\ngrid;");
+      eval(this.state.editorValue + "\ngrid;" + this.getDisplayBlockCode());
       this.setState({infoText: ""});
     }
     catch(error) {
@@ -110,9 +116,14 @@ class Code extends Component {
         editorValue: newValue 
       }
     );
+
+    this.props.changeParametersWindow({
+      type: "NONE"
+    });
     
     this.evalCode();
     this.setState({ fromEdit: false });
+    
   }
 
   render() {
@@ -131,10 +142,10 @@ class Code extends Component {
               highlightActiveLine={true}
               value={this.state.editorValue}
               setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: true,
-              enableSnippets: true,
-              tabSize: 2,
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                enableSnippets: true,
+                tabSize: 2,
               }}/>
               <div id="info-text">{this.state.infoText}</div>
             </div>

@@ -114,18 +114,19 @@ class Grid extends Component {
     let blocks;
 
     if(this.props.blocks) {
-        blocks = this.props.blocks.map(block => {
+        blocks = Object.entries(this.props.blocks).map(block => {
           return (<Block
-            id={block.id}
-            rowStart={block.rowStart}
-            columnStart={block.columnStart}
-            width={block.width}
-            height={block.height}
-            background={block.background}
-            backgroundId={block.backgroundId}
+            id={block[1].id}
+            rowStart={block[1].rowStart}
+            columnStart={block[1].columnStart}
+            width={block[1].width}
+            height={block[1].height}
+            background={block[1].background}
+            backgroundId={block[1].backgroundId}
             changeParametersWindow={this.askEditBlock.bind(this)}
-            />)
-        });
+          />)
+        }, this);
+
     }
 
     return (

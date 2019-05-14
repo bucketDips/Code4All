@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Axios from 'axios';
+import _ from 'lodash';
 import style from './style.css';
 import ToolBox from './ToolBox';
 import Grid from './Grid';
@@ -56,9 +57,7 @@ class CreateExerciseWindow extends Component {
         background: null,
         backgroundId: null
       },
-      blocks: [
-      ],
-      blockMaxId: 0
+      blocks: {}
     });
   }
 
@@ -118,27 +117,61 @@ class CreateExerciseWindow extends Component {
     });
   }
 
+  onChangeBlocks(blocks) {
+    var stateBlocks = {};
+
+    blocks.forEach(element => {
+      if(element.patternId === undefined) {
+        element.patternId = null;
+        var background = null;
+      }
+      else {
+        background = process.env.PUBLIC_URL + 'patterns/' + this.state.patterns[element.patternId].nom;
+      }
+
+      stateBlocks[element.id] = {
+        id: element.id,
+        rowStart: element.row,
+        columnStart: element.column,
+        width: element.width,
+        height: element.height,
+        backgroundId: element.patternId,
+        background: background
+      };
+    });
+
+    this.setState({blocks: stateBlocks});
+  }
+
+  addBlock(rowId, columnId, width, height, background, backgroundId){
+    var maxKey = _.max(Object.keys(this.state.blocks), o => this.state.blocks[o]);
+    if(maxKey === undefined) {
+      maxKey = -1;
+    }
+    
+    let block = {
+      id: Number(maxKey) + 1,
+      rowStart: rowId,
+      columnStart: columnId,
+      width: width,
+      height: height,
+      background: background,
+      backgroundId: backgroundId
+    }
+
+    let blocks = this.state.blocks;
+    blocks[Number(maxKey) + 1] = block;
+    this.setState({blocks: blocks});
+  }
+
   onDragEnd = result => {
     if(result.destination === null) return;
     if(result.draggableId === "BLOCK") {
       let numCase = Number(result.destination.droppableId);
       let columnId = ((numCase - 1) % (this.state.gridProperties.columns)) + 1;
       let rowId = ((numCase - (columnId)) / this.state.gridProperties.columns) + 1;
-      this.setState({blockMaxId: this.state.blockMaxId + 1});
 
-      let block = {
-        id: this.state.blockMaxId,
-        rowStart: rowId,
-        columnStart: columnId,
-        width: 1,
-        height: 1,
-        background: process.env.PUBLIC_URL + '/bloc.png',
-        backgroundId: null
-      }
-
-      let blocks = this.state.blocks;
-      blocks.push(block);
-      this.setState({blocks: blocks});
+      this.addBlock(rowId, columnId, 1, 1, process.env.PUBLIC_URL + '/bloc.png', null);
     }
   }
 
@@ -159,6 +192,7 @@ class CreateExerciseWindow extends Component {
                 <Code
                 grid={this.state.gridProperties}
                 patterns={this.state.patterns}
+                modifyBlocks={this.onChangeBlocks.bind(this)}
                 changeGridParameters={this.onChangeGridParameters.bind(this)}
                 changeParametersWindow={this.onChangeParameters.bind(this)}
                 />
