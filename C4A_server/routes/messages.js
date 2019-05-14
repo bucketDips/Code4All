@@ -113,6 +113,40 @@ router.get('/:getUserMsg/:id', AUTH.VERIFYAUTH,function(request, res, next) {
     createMessage(userId).then(function(rows){ res.send(rows); });
 });
 
+router.post('/sendMessageToSserList/:IdSender/:IdDest/:subject/:msg', function(request, res, next) {
+    var IdSender = request.params.IdSender;
+    var targets = request.params.IdDest;
+    var subject = request.params.subject;
+    var msg = request.params.msg;
+    function createMessage(IdSender) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into messages(sender,subject,text) values ('"+IdSender+"','"+subject+"','"+msg+"')";
+            console.log(sql)
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function addMessageToUsers(targets, idMessage) {
+        var valuesList = "";
+        targets = JSON.parse(targets);
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into user_messages(target,message) values " + valuesList + ";";
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    createMessage(IdSender).then(function(rows){
+        addMessageToUsers(targets,rows.insertId).then(function(rows){
+            res.send(rows);
+        });
+
+    });
+});
+
 
 
 module.exports = router;

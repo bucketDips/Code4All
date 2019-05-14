@@ -37,6 +37,49 @@ router.get('/getProfessorClassesById/:id', AUTH.VERIFYAUTH, function(request, re
     }
     getLastRecord(id).then(function(rows){ res.send(rows); });
 });
+router.post('/addStudentToClass/:id/:classId', function(request, res, next) {
+    var id = request.params.id;
+    var classId = request.params.classId;
+    function getLastRecord(id,classId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into classroom_students(idClassRoom, idStudent) values ('"+classId+"','"+id+"');";
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    getLastRecord(id,classId).then(function(rows){ res.send(rows); });
+});
+router.post('/addProfessorToClass/:id/:classId', function(request, res, next) {
+    var id = request.params.id;
+    var classId = request.params.classId;
+    function getLastRecord(id,classId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into classroom_professors(idClassRoom, idProfessor) values ('"+classId+"','"+id+"');";
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    getLastRecord(id,classId).then(function(rows){ res.send(rows); });
+});
+
+router.post('/createClassroom/:name', function(request, res, next) {
+    var name = request.params.name;
+
+    function getLastRecord(name) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into classroom(name) values ('"+name+"');";
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    getLastRecord(name).then(function(rows){ res.send(rows); });
+});
 
 
 

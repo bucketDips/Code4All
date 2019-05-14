@@ -1,9 +1,10 @@
 #serveur
 C4A_server/node_modules/*
 C4A_server/.idea/*
-
-
-
+*.bak
+*.exe
+C4A_server/start.cmd
+C4A_server/routes/FichiersUtilisateur/*
 #android
 C4A_android/Android/*.iml
 C4A_android/Android/.gradle
