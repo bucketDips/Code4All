@@ -12,7 +12,7 @@ exports.VERIFYAUTH = function(req,res,next){
     
     var token = req.headers.authorization.split(' ')[1];
     
-    // s'il y a un token on va le traiter
+    /// s'il y a un token on va le traiter
     // token="toto";
     if (token && token != 'null') {
 
