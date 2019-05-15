@@ -1,8 +1,11 @@
 #serveur
 C4A_server/node_modules/*
+C4A_server/routes/config.js
 C4A_server/.idea/*
 *.bak
 *.exe
+*.ppk
+/.idea/*
 C4A_server/start.cmd
 C4A_server/routes/FichiersUtilisateur/*
 #android
