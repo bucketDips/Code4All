@@ -59,7 +59,7 @@
                         android:textColor="@color/white"
 
                         android:id="@+id/username" android:autofillHints="" tools:targetApi="o"
-                        android:hint="@string/username"/>
+                        android:hint="@string/username" android:text="robin.solde@gmail.com"/>
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                         android:textSize="25sp"
                         android:id="@+id/password" android:autofillHints="" tools:targetApi="o"
                         android:textColor="@color/white"
-                        android:hint="@string/password"/>
+                        android:hint="@string/password" android:text="nibors"/>
             </LinearLayout>
             <Button
                     android:text="@string/login"

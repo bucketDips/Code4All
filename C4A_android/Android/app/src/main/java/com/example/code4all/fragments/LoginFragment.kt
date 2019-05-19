@@ -1,5 +1,6 @@
 package com.example.code4all.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.android.volley.VolleyError
+import com.example.code4all.activities.LoginActivity
 import com.example.code4all.activities.MenuActivity
 import com.example.code4all.serverhandler.IAPICallbackJsonObject
 import com.example.code4all.serverhandler.ServerHandler
+import com.example.code4all.serverhandler.ServerHandler_old
 import com.example.code4all.settings.ErrorNetwork
 import com.example.code4all.tools.Log
 import com.example.code4all.viewtools.Keyboard
@@ -20,6 +23,9 @@ import org.json.JSONObject
 
 
 class LoginFragment : Fragment() {
+
+
+    val serverHandler : ServerHandler = ServerHandler.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -38,16 +44,33 @@ class LoginFragment : Fragment() {
 
     private fun onClickLogin(v: View) {
         activity?.let { Keyboard.hide(it, v) }
+
         Log.printLog("I click on the button", Log.LogType.Infos)
-        ServerHandler.getInstance().login(username.text.toString(), password.text.toString(), object: IAPICallbackJsonObject{
+        serverHandler.connect(username.text.toString(), password.text.toString(), object: IAPICallbackJsonObject{
             override fun onSuccessResponse(result: JSONObject) {
-                val intent = Intent(activity, MenuActivity::class.java)
-                startActivity(intent)
+                Log.printLog(result.toString(), Log.LogType.Infos)
+
+                val res = result.getString("success")
+                val code = result.getString("code")
+
+                if (res == "true"){
+                    val intent = Intent(activity, MenuActivity::class.java)
+                    val token = result.getString("token")
+                    intent.putExtra("token", token)
+
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(v.context, code, Toast.LENGTH_SHORT).show()
+                }
+
             }
 
             override fun onErrorResponse(error: VolleyError) {
-                val e = ErrorNetwork(error, context)
-                Toast.makeText(context, e.getErrorMessage(), Toast.LENGTH_LONG).show()
+                //val e = ErrorNetwork(error, context)
+                //Toast.makeText(context, e.getErrorMessage(), Toast.LENGTH_LONG).show()
+                Toast.makeText(v.context, "An error has occured", Toast.LENGTH_SHORT).show()
+
+                Log.printLog(error.toString(), Log.LogType.Infos)
             }
         })
 

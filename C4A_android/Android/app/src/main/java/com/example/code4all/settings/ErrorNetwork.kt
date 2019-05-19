@@ -3,7 +3,7 @@ package com.example.code4all.settings
 import android.content.Context
 import com.android.volley.*
 import com.example.code4all.R
-import com.example.code4all.serverhandler.ServerHandler
+import com.example.code4all.serverhandler.ServerHandler_old
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
@@ -19,7 +19,7 @@ constructor(volleyError: VolleyError, context: Context?) {
 
     val errorCode: String
         @Throws(JSONException::class)
-        get() = ServerHandler.getStringFromJsonObject(errorContent, ERROR_CODE_KEY)
+        get() = ServerHandler_old.getStringFromJsonObject(errorContent, ERROR_CODE_KEY)
 
     init {
         errorContent.put(ERROR_MESSAGE_KEY, setMessage(volleyError, context))
@@ -30,7 +30,7 @@ constructor(volleyError: VolleyError, context: Context?) {
         if (error.networkResponse != null) {
             if (error.networkResponse.data != null) {
                 val dataJsonMessage = JSONObject(String(error.networkResponse.data))
-                return ServerHandler.getStringFromJsonObject(dataJsonMessage, ERROR_MESSAGE_KEY)
+                return ServerHandler_old.getStringFromJsonObject(dataJsonMessage, ERROR_MESSAGE_KEY)
             }
         }
 
@@ -49,7 +49,7 @@ constructor(volleyError: VolleyError, context: Context?) {
 
     fun getErrorMessage(): String {
         try {
-            return ServerHandler.getStringFromJsonObject(errorContent, ERROR_MESSAGE_KEY)
+            return ServerHandler_old.getStringFromJsonObject(errorContent, ERROR_MESSAGE_KEY)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
