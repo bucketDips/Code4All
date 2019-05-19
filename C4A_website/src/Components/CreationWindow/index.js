@@ -76,7 +76,7 @@ class CreateExerciseWindow extends Component {
 
   onChangeBlockParameters(parameters) {
     let blocks = this.state.blocks;
-    blocks.forEach(block => {
+    Object.values(blocks).forEach(block => {
       if(block.id === parameters.id) {
         block.rowStart = parameters.rowStart;
         block.columnStart = parameters.columnStart;

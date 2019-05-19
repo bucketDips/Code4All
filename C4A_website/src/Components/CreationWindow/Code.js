@@ -25,14 +25,9 @@ class Code extends Component {
     }
   }
 
-  componentWillReceiveProps(props){
-    if(this.state.fromEdit === true || this.state.editorValue === undefined) {
-      return;
-    }
-
-    this.setState({fromProps: true});
+  displayGrid(props) {
     var str = this.state.editorValue;
-    var regex = /var\s+grid\s+=\s+createGrid\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\);{0,1}/g;
+    var regex = /var\s+grid\s+=\s+createGrid\(\s*.*\s*,\s*.*\s*,\s*.*\s*\);{0,1}/g;
     var matching = str.match(regex);
     if(matching != null) {
       var splitted = matching[0].split("(");
@@ -40,9 +35,23 @@ class Code extends Component {
       newStr = this.state.editorValue.replace(matching, newStr);
     }
     else {
-      /*var newStr = this.state.editorValue + 
-        "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");";*/
+      newStr = "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");\n" 
+        + this.state.editorValue;
     }
+
+    return newStr;
+  }
+
+  componentWillReceiveProps(props){
+    console.log(props);
+    if(this.state.fromEdit === true || this.state.editorValue === undefined) {
+      return;
+    }
+
+    this.setState({fromProps: true});
+    
+    var newStr = this.displayGrid(props);
+
     this.setState(
       {
         fromProps: false,
