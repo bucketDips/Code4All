@@ -191,6 +191,7 @@ class CreateExerciseWindow extends Component {
                 </DragDropContext>
                 <Code
                 grid={this.state.gridProperties}
+                blocks={this.state.blocks}
                 patterns={this.state.patterns}
                 modifyBlocks={this.onChangeBlocks.bind(this)}
                 changeGridParameters={this.onChangeGridParameters.bind(this)}

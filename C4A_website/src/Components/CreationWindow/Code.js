@@ -17,6 +17,7 @@ class Code extends Component {
   constructor() {
     super();
     this.state = {
+      timeout: null,
       nonEditableLines: [],
       editorValue: "",
       infoText: "",
@@ -42,8 +43,11 @@ class Code extends Component {
     return newStr;
   }
 
+  displayBlocks(props) {
+    return this.state.editorValue;
+  }
+
   componentWillReceiveProps(props){
-    console.log(props);
     if(this.state.fromEdit === true || this.state.editorValue === undefined) {
       return;
     }
@@ -51,6 +55,7 @@ class Code extends Component {
     this.setState({fromProps: true});
     
     var newStr = this.displayGrid(props);
+    this.displayBlocks(props);
 
     this.setState(
       {
@@ -118,21 +123,25 @@ class Code extends Component {
     if(this.state.fromProps === true) {
       return;
     }
-
-    this.setState(
-      { 
-        fromEdit: true,
-        editorValue: newValue 
-      }
-    );
-
-    this.props.changeParametersWindow({
-      type: "NONE"
-    });
-    
-    this.evalCode();
-    this.setState({ fromEdit: false });
-    
+    this.setState({editorValue: newValue});
+    clearTimeout(this.state.timeout);
+    this.setState({timeout: setTimeout(() => {
+      this.setState(
+        { 
+          fromEdit: true,
+        }
+      );
+  
+      this.props.changeParametersWindow({
+        type: "NONE"
+      });
+      
+      this.evalCode();
+      this.setState({ fromEdit: false });
+    }, 1000)})
+    if(this.state.fromProps === true) {
+      return;
+    }
   }
 
   render() {
