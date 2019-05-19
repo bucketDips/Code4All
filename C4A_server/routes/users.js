@@ -260,7 +260,7 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 				jsonResponse = {
 					success: true,
 					code : 'AUTHENTIFICATION_SUCCESS',
-					message: 'Authentification réussie',
+					message: 'Authentification réussie !',
 					token: token
 				}
 				
