@@ -45,6 +45,11 @@ class CreateExerciseWindow extends Component {
           description : 'Un bloc',
           image: process.env.PUBLIC_URL + '/bloc.png'
         },
+        {
+          title : 'LABEL',
+          description : 'Du texte',
+          image: process.env.PUBLIC_URL + '/txt.png'
+        }
       ],
       parameters: {
         type: "NONE"
@@ -57,7 +62,10 @@ class CreateExerciseWindow extends Component {
         background: null,
         backgroundId: null
       },
-      blocks: {}
+      blocks: {},
+      npc: {},
+      pc: {},
+      labels: {}
     });
   }
 
@@ -146,11 +154,16 @@ class CreateExerciseWindow extends Component {
     this.setState({blocks: stateBlocks});
   }
 
-  addBlock(rowId, columnId, width, height, background, backgroundId){
-    var maxKey = _.max(Object.keys(this.state.blocks), o => this.state.blocks[o]);
+  getMaxKeyOf(dictionary) {
+    var maxKey = _.max(Object.keys(dictionary), o => dictionary[o]);
     if(maxKey === undefined) {
       maxKey = -1;
     }
+    return maxKey;
+  }
+
+  addBlock(rowId, columnId, width, height, background, backgroundId){
+    var maxKey = this.getMaxKeyOf(this.state.blocks);
     
     let block = {
       id: Number(maxKey) + 1,
@@ -167,14 +180,78 @@ class CreateExerciseWindow extends Component {
     this.setState({blocks: blocks});
   }
 
-  onDragEnd = result => {
-    if(result.destination === null) return;
-    if(result.draggableId === "BLOCK") {
-      let numCase = Number(result.destination.droppableId);
-      let columnId = ((numCase - 1) % (this.state.gridProperties.columns)) + 1;
-      let rowId = ((numCase - (columnId)) / this.state.gridProperties.columns) + 1;
+  addNPC(rowId, columnId, width, height, background, backgroundId) {
+    var maxKey = this.getMaxKeyOf(this.state.npc);
 
+    let npc = {
+      id: Number(maxKey) + 1,
+      rowStart: rowId,
+      columnStart: columnId,
+      width: width,
+      height: height,
+      background: background,
+      backgroundId: backgroundId
+    }
+
+    let npcs = this.state.npc;
+    npcs[Number(maxKey) + 1] = npc;
+    this.setState({npc: npcs});
+  }
+
+  addPC(rowId, columnId, width, height, background, backgroundId) {
+    var maxKey = this.getMaxKeyOf(this.state.pc);
+
+    let pc = {
+      id: Number(maxKey) + 1,
+      rowStart: rowId,
+      columnStart: columnId,
+      width: width,
+      height: height,
+      background: background,
+      backgroundId: backgroundId
+    }
+
+    let pcs = this.state.pc;
+    pcs[Number(maxKey) + 1] = pc;
+    this.setState({pc: pcs});
+  }
+
+  addLabel(rowId, columnId, width, height, text) {
+    var maxKey = this.getMaxKeyOf(this.state.labels);
+
+    let label = {
+      id: Number(maxKey) + 1,
+      rowStart: rowId,
+      columnStart: columnId,
+      width: width,
+      height: height,
+      text: text
+    }
+
+    let labels = this.state.labels;
+    labels[Number(maxKey) + 1] = label;
+    this.setState({labels: labels});
+  }
+
+  onDragEnd = result => {
+    console.log(result.draggableId);
+    if(result.destination === null) return;
+
+    let numCase = Number(result.destination.droppableId);
+    let columnId = ((numCase - 1) % (this.state.gridProperties.columns)) + 1;
+    let rowId = ((numCase - (columnId)) / this.state.gridProperties.columns) + 1;
+
+    if(result.draggableId === "BLOCK") {
       this.addBlock(rowId, columnId, 1, 1, process.env.PUBLIC_URL + '/bloc.png', null);
+    }
+    else if(result.draggableId === "NPC") {
+      this.addNPC(rowId, columnId, 1, 1, process.env.PUBLIC_URL + '/fighting_stickman.png', null);
+    }
+    else if(result.draggableId === "PC") {
+      this.addPC(rowId, columnId, 1, 1, process.env.PUBLIC_URL + '/stickman.png', null);
+    }
+    else if(result.draggableId === "LABEL") {
+      this.addLabel(rowId, columnId, 1, 1, "label");
     }
   }
 
@@ -188,6 +265,9 @@ class CreateExerciseWindow extends Component {
                   <Grid 
                   parameters={this.state.gridProperties}
                   blocks={this.state.blocks}
+                  pcs={this.state.pc}
+                  npcs={this.state.npc}
+                  labels={this.state.labels}
                   changeParametersWindow={this.onChangeParameters.bind(this)}
                   changeGridPattern={this.onChangeGridPattern.bind(this)}
                   />

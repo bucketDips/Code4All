@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import Case from './Case'
 import CustomSlider from './CustomSlider'
 import Block from './Block'
+import Npc from './Npc'
+import Pc from './Pc'
+import Label from './Label'
 import styles from './style.css';
 
 class Grid extends Component {
@@ -95,7 +98,7 @@ class Grid extends Component {
     e.preventDefault();
   }
 
-  askEditBlock(parameters) {
+  askEditElement(parameters) {
     this.props.changeParametersWindow(parameters);
   }
 
@@ -112,6 +115,9 @@ class Grid extends Component {
     }} />)
 
     let blocks;
+    let npcs;
+    let pcs;
+    let labels;
 
     if(this.props.blocks) {
         blocks = Object.entries(this.props.blocks).map(block => {
@@ -123,11 +129,56 @@ class Grid extends Component {
             height={block[1].height}
             background={block[1].background}
             backgroundId={block[1].backgroundId}
-            changeParametersWindow={this.askEditBlock.bind(this)}
+            changeParametersWindow={this.askEditElement.bind(this)}
           />)
         }, this);
-
     }
+    if(this.props.npcs) {
+        npcs = Object.entries(this.props.npcs).map(npc => {
+          return (<Npc
+            id={npc[1].id}
+            rowStart={npc[1].rowStart}
+            columnStart={npc[1].columnStart}
+            width={npc[1].width}
+            height={npc[1].height}
+            background={npc[1].background}
+            backgroundId={npc[1].backgroundId}
+            changeParametersWindow={this.askEditElement.bind(this)}
+          />)
+        }, this);
+    }
+
+    if(this.props.pcs) {
+        pcs = Object.entries(this.props.pcs).map(pc => {
+          return (<Pc
+            id={pc[1].id}
+            rowStart={pc[1].rowStart}
+            columnStart={pc[1].columnStart}
+            width={pc[1].width}
+            height={pc[1].height}
+            background={pc[1].background}
+            backgroundId={pc[1].backgroundId}
+            changeParametersWindow={this.askEditElement.bind(this)}
+          />)
+        }, this);
+    }
+
+    if(this.props.labels) {
+        labels = Object.entries(this.props.labels).map(label => {
+          return (<Label
+            id={label[1].id}
+            rowStart={label[1].rowStart}
+            columnStart={label[1].columnStart}
+            width={label[1].width}
+            height={label[1].height}
+            text={label[1].text}
+            changeParametersWindow={this.askEditElement.bind(this)}
+            caseSize={this.state.gridProperties.size}
+          />)
+        }, this);
+    }
+
+    console.log(this.props.pcs);
 
     return (
         <div className={styles.grid}>
@@ -146,6 +197,9 @@ class Grid extends Component {
               }}>
                 {this.state.gridProperties.cases}
                 {blocks}
+                {npcs}
+                {pcs}
+                {labels}
                 {background}
               </div>
             </div>
