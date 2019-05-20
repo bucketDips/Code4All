@@ -43,6 +43,17 @@ class Code extends Component {
     return newStr;
   }
 
+  getNameForANewBlock(newStr) {
+    for(var i = 0; i < 10000000; i++) {
+      if(newStr.match("block" + i)) {
+        continue;
+      }
+      else {
+        return "block" + i;
+      }
+    }
+  }
+
   displayBlock(block, newStr) {
     console.log(block);
     var regexCreation = new RegExp("var\\s+.+\\s+=\\s+createBlock\\(\\s*" + block.id + "\\s*,\\s*.*\\s*\\);{0,1}", "g");
@@ -59,11 +70,20 @@ class Code extends Component {
         + block.width + ", " 
         + block.height + ", " 
         + (block.backgroundId) 
-        + ");\n");
+        + ");");
       return newStr.replace(matching[0], realBuiltStr);
     }
     else {
-
+      var nameBlock = this.getNameForANewBlock(newStr);
+      var realBuiltStr = ("var " + nameBlock + " = createBlock(" 
+        + block.id + ", " 
+        + block.rowStart + ", " 
+        + block.columnStart + ", " 
+        + block.width + ", " 
+        + block.height + ", " 
+        + (block.backgroundId) 
+        + ");");
+      return newStr + "\n" + realBuiltStr;
     }
 
     return newStr;
