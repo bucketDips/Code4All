@@ -28,7 +28,7 @@ class Code extends Component {
 
   displayGrid(props) {
     var str = this.state.editorValue;
-    var regex = /var\s+grid\s+=\s+createGrid\(\s*.*\s*,\s*.*\s*,\s*.*\s*\);{0,1}/g;
+    var regex = /var\s+grid\s+=\s+createGrid\(.*\);{0,1}/g;
     var matching = str.match(regex);
     if(matching != null) {
       var splitted = matching[0].split("(");
@@ -43,8 +43,37 @@ class Code extends Component {
     return newStr;
   }
 
-  displayBlocks(props) {
-    return this.state.editorValue;
+  displayBlock(block, newStr) {
+    console.log(block);
+    var regexCreation = new RegExp("var\\s+.+\\s+=\\s+createBlock\\(\\s*" + block.id + "\\s*,\\s*.*\\s*\\);{0,1}", "g");
+    var regexAdding = /grid.addBlock();{0,1}/g;
+
+    var matching = newStr.match(regexCreation);
+
+    if(matching != null) {
+      var nameBlock =  matching[0].split(/\s+|=/)[1];
+      var realBuiltStr = ("var " + nameBlock + " = createBlock(" 
+        + block.id + ", " 
+        + block.rowStart + ", " 
+        + block.columnStart + ", " 
+        + block.width + ", " 
+        + block.height + ", " 
+        + (block.backgroundId) 
+        + ");\n");
+      return newStr.replace(matching[0], realBuiltStr);
+    }
+    else {
+
+    }
+
+    return newStr;
+  }
+
+  displayBlocks(props, newStr) {
+    for (var key in props.blocks) {
+      newStr = this.displayBlock(props.blocks[key], newStr);
+    }
+    return newStr;
   }
 
   componentWillReceiveProps(props){
@@ -55,7 +84,7 @@ class Code extends Component {
     this.setState({fromProps: true});
     
     var newStr = this.displayGrid(props);
-    this.displayBlocks(props);
+    newStr = this.displayBlocks(props, newStr);
 
     this.setState(
       {
