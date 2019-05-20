@@ -13,6 +13,7 @@ class Block extends Component {
             background: this.props.background,
             backgroundId: this.props.backgroundId
         }
+
         this.props.changeParametersWindow(parameters);
     }
 

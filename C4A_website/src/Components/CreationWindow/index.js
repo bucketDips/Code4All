@@ -118,12 +118,15 @@ class CreateExerciseWindow extends Component {
   }
 
   onChangeBlocks(blocks) {
+
+    console.log(blocks);
     var stateBlocks = {};
 
     blocks.forEach(element => {
-      if(element.patternId === undefined) {
+      if(element.patternId === undefined || element.patternId === null || element.patternId === -1) {
+        console.log("null");
         element.patternId = null;
-        var background = null;
+        var background = process.env.PUBLIC_URL + '/bloc.png';
       }
       else {
         background = process.env.PUBLIC_URL + 'patterns/' + this.state.patterns[element.patternId].nom;

@@ -54,39 +54,47 @@ class Code extends Component {
     }
   }
 
+  getRealBuiltStringForBlock(nameBlock, block) {
+    return ("var " + nameBlock + " = createBlock(" 
+    + block.id + ", " 
+    + block.rowStart + ", " 
+    + block.columnStart + ", " 
+    + block.width + ", " 
+    + block.height + ", " 
+    + (block.backgroundId) 
+    + ");");
+  }
+
   displayBlock(block, newStr) {
-    console.log(block);
+    var nameBlock = "";
     var regexCreation = new RegExp("var\\s+.+\\s+=\\s+createBlock\\(\\s*" + block.id + "\\s*,\\s*.*\\s*\\);{0,1}", "g");
-    var regexAdding = /grid.addBlock();{0,1}/g;
+    var creationMatching = newStr.match(regexCreation);
 
-    var matching = newStr.match(regexCreation);
-
-    if(matching != null) {
-      var nameBlock =  matching[0].split(/\s+|=/)[1];
-      var realBuiltStr = ("var " + nameBlock + " = createBlock(" 
-        + block.id + ", " 
-        + block.rowStart + ", " 
-        + block.columnStart + ", " 
-        + block.width + ", " 
-        + block.height + ", " 
-        + (block.backgroundId) 
-        + ");");
-      return newStr.replace(matching[0], realBuiltStr);
+    // creation treatment
+    if(creationMatching != null) {
+      nameBlock =  creationMatching[0].split(/\s+|=/)[1];
+      var realBuiltStr = this.getRealBuiltStringForBlock(nameBlock, block);
+      newStr = newStr.replace(creationMatching[0], realBuiltStr);
     }
     else {
-      var nameBlock = this.getNameForANewBlock(newStr);
-      var realBuiltStr = ("var " + nameBlock + " = createBlock(" 
-        + block.id + ", " 
-        + block.rowStart + ", " 
-        + block.columnStart + ", " 
-        + block.width + ", " 
-        + block.height + ", " 
-        + (block.backgroundId) 
-        + ");");
-      return newStr + "\n" + realBuiltStr;
+      nameBlock = this.getNameForANewBlock(newStr);
+      realBuiltStr = this.getRealBuiltStringForBlock(nameBlock, block);
+      newStr = newStr + "\n" + realBuiltStr;
     }
 
-    return newStr;
+    var regexAdding = new RegExp("grid.addBlock\\(\\s*" + nameBlock + "\\s*\\);{0,1}", "g");
+    var addingMatching = newStr.match(regexAdding);
+
+    console.log(nameBlock);
+    // adding treatment
+    if(addingMatching != null) {
+      return newStr;
+    }
+    else {
+      console.log("adding new addblock");
+      creationMatching = newStr.match(regexCreation)[0];
+      return newStr.replace(creationMatching, creationMatching + ("\ngrid.addBlock(" + nameBlock + ");\n"));
+    }
   }
 
   displayBlocks(props, newStr) {
