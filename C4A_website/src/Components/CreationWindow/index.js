@@ -82,19 +82,46 @@ class CreateExerciseWindow extends Component {
     this.setState({gridProperties: properties});
   }
 
-  onChangeBlockParameters(parameters) {
-    let blocks = this.state.blocks;
-    Object.values(blocks).forEach(block => {
-      if(block.id === parameters.id) {
-        block.rowStart = parameters.rowStart;
-        block.columnStart = parameters.columnStart;
-        block.width = parameters.width;
-        block.height = parameters.height;
-        block.background = parameters.background;
-        block.backgroundId = parameters.backgroundId;
+  formatElements(elements, parameters) {
+    // à voir différence lorsque label
+    Object.values(elements).forEach(element => {
+      if(element.id === parameters.id) {
+        element.rowStart = parameters.rowStart;
+        element.columnStart = parameters.columnStart;
+        element.width = parameters.width;
+        element.height = parameters.height;
+        if(parameters.text) {
+          element.text = parameters.text 
+        }
+        else {
+          element.background = parameters.background;
+          element.backgroundId = parameters.backgroundId;
+        }
       }
     });
-    this.setState({blocks: blocks});
+    return elements;
+  }
+
+  onChangeElementParameters(parameters, type) {
+    let elements = null;
+    switch(type) {
+      case 'BLOCK':
+        elements = this.state.blocks;
+        this.setState({blocks: this.formatElements(elements, parameters)});
+        break;
+      case 'NPC':
+        elements = this.state.npc;
+        this.setState({npc: this.formatElements(elements, parameters)});
+        break;
+      case 'PC':
+        elements = this.state.pc;
+        this.setState({pc: this.formatElements(elements, parameters)});
+        break;
+      case 'LABEL':
+        elements = this.state.labels;
+        this.setState({labels: this.formatElements(elements, parameters)});
+        break;
+    }
   }
 
   handleDeletePattern(patternId) {
@@ -108,21 +135,45 @@ class CreateExerciseWindow extends Component {
     });
   }
 
-  onDeleteBlock(id) {
-    let blocks = this.state.blocks;
+  deleteElementFromElements(elements, id) {
     let b;
-    blocks.forEach(block => {
-      if(block.id === id) {
-        b = block;
+    for(var key in elements) {
+      if(elements[key].id === id) {
+        b = key;
       }
-    });
-    blocks.pop(b);
+    }
+    delete elements[b];
+    return elements;
+  }
+
+  onDeleteElement(id, type) {
+    let elements = null;
+    switch(type) {
+      case 'BLOCK':
+        elements = this.state.blocks;
+        this.setState({blocks: this.deleteElementFromElements(elements, id)});
+        break;
+      case 'NPC':
+        elements = this.state.npc;
+        this.setState({npc: this.deleteElementFromElements(elements, id)});
+        break;
+      case 'PC':
+        elements = this.state.pc;
+        this.setState({pc: this.deleteElementFromElements(elements, id)});
+        break;
+      case 'LABEL':
+        elements = this.state.labels;
+        this.setState({labels: this.deleteElementFromElements(elements, id)});
+        break;
+    }
+    
     this.setState({
-      blocks: blocks,
       parameters: {
         type: "NONE"
       }
     });
+
+    console.log(this.state);
   }
 
   onChangeBlocks(blocks) {
@@ -287,8 +338,8 @@ class CreateExerciseWindow extends Component {
                 patterns={this.state.patterns} 
                 parameters={this.state.parameters}
                 changeGridParameters={this.onChangeGridParameters.bind(this)} 
-                changeBlockParameters={this.onChangeBlockParameters.bind(this)} 
-                deleteBlock={this.onDeleteBlock.bind(this)}
+                changeElementParameters={this.onChangeElementParameters.bind(this)} 
+                deleteElement={this.onDeleteElement.bind(this)}
                 />
                 <Patterns 
                 patterns={this.state.patterns} 

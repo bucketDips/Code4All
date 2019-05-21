@@ -3,18 +3,17 @@ import styles from './style.css';
 
 class Label extends Component {
     askEditLabel() {
-    /*    let parameters = {
-            type: "BLOCK",
+        let parameters = {
+            type: "LABEL",
             id: this.props.id,
             columnStart: this.props.columnStart,
             rowStart: this.props.rowStart,
             width: this.props.width,
             height: this.props.height,
-            background: this.props.background,
-            backgroundId: this.props.backgroundId
+            text: this.props.text
         }
 
-        this.props.changeParametersWindow(parameters);*/
+        this.props.changeParametersWindow(parameters);
     }
 
     render() {

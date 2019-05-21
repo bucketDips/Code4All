@@ -3,8 +3,8 @@ import styles from './style.css';
 
 class Pc extends Component {
     askEditPc() {
-    /*    let parameters = {
-            type: "BLOCK",
+        let parameters = {
+            type: "PC",
             id: this.props.id,
             columnStart: this.props.columnStart,
             rowStart: this.props.rowStart,
@@ -14,7 +14,7 @@ class Pc extends Component {
             backgroundId: this.props.backgroundId
         }
 
-        this.props.changeParametersWindow(parameters);*/
+        this.props.changeParametersWindow(parameters);
     }
 
     render() {
