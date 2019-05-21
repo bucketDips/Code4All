@@ -85,7 +85,6 @@ class Code extends Component {
     var regexAdding = new RegExp("grid.addBlock\\(\\s*" + nameBlock + "\\s*\\);{0,1}", "g");
     var addingMatching = newStr.match(regexAdding);
 
-    console.log(nameBlock);
     // adding treatment
     if(addingMatching != null) {
       return newStr;
