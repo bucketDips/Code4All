@@ -26,7 +26,7 @@ const mimeType = {
 };
 
 /* GET users listing. */
-router.get('/getFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
+router.get('/getUserFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
     var fileId = request.params.fileId;
     function getFileNameFromBatabase(fileId) {
         return new Promise(function(resolve, reject) {
