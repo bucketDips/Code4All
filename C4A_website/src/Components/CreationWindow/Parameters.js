@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import ParametersGrid from './ParametersGrid';
-import ParametersBlock from './ParametersBlock';
+import ParametersElement from './ParametersElement'
+
 
 import styles from './style.css';
 
@@ -10,12 +11,12 @@ class Parameters extends Component {
     this.props.changeGridParameters(parameters);
   }
 
-  changeBlockParameters(parameters) {
-    this.props.changeBlockParameters(parameters);
+  changeElementParameters(parameters, type) {
+    this.props.changeElementParameters(parameters, type);
   }
 
-  onDeleteBlock(id) {
-    this.props.deleteBlock(id);
+  onDeleteElement(id, type) {
+    this.props.deleteElement(id, type);
   }
 
   renderSwitch(parameters) {
@@ -27,12 +28,16 @@ class Parameters extends Component {
                     changeGridParameters={this.changeGridParameters.bind(this)} 
                   />
         case 'BLOCK':
-          return <ParametersBlock
+        case 'NPC':
+        case 'PC':
+        case 'LABEL':
+          return <ParametersElement
+                    type={parameters.type}
                     patterns={this.props.patterns}
                     gridProperties={this.props.gridProperties}
                     parameters={parameters}
-                    changeBlockParameters={this.changeBlockParameters.bind(this)}
-                    deleteBlock={this.onDeleteBlock.bind(this)}
+                    changeElementParameters={this.changeElementParameters.bind(this)}
+                    deleteElement={this.onDeleteElement.bind(this)}
                   />
         case 'NONE':
           return <div></div>;
