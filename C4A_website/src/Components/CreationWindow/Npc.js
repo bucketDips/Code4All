@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styles from './style.css';
 
-class Block extends Component {
-    askEditBlock() {
+class Npc extends Component {
+    askEditNpc() {
         let parameters = {
-            type: "BLOCK",
+            type: "NPC",
             id: this.props.id,
             columnStart: this.props.columnStart,
             rowStart: this.props.rowStart,
@@ -31,12 +31,12 @@ class Block extends Component {
                 backgroundPosition: "center",
                 cursor: "pointer"
               }}
-              className={styles.block} 
-              onMouseDown={this.askEditBlock.bind(this)}
+              className={styles.npc} 
+              onMouseDown={this.askEditNpc.bind(this)}
               >
             </div>
         );
     }
 }
 
-export default Block;
+export default Npc;

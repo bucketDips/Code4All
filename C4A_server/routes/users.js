@@ -23,6 +23,22 @@ router.get('/getUser/:id', AUTH.VERIFYAUTH, function(request, res, next) {
 	getLastRecord(id).then(function(rows){ res.send(rows); });
 });
 
+router.get('/findUser/:nameOrEmail', AUTH.VERIFYAUTH, function(request, res, next) {
+	var nameOrEmail = request.params.nameOrEmail.toLowerCase();
+	function getLastRecord(nameOrEmail) {
+		return new Promise(function(resolve, reject) {
+			var sql = "select * from users where LOWER(name) LIKE '%"+nameOrEmail+"%' or LOWER(email) LIKE '%"+nameOrEmail+"%';";
+			con.query(sql, function (err, rows, fields) {
+				if (err) return reject(err);
+				resolve(rows);
+			});
+		});
+	}
+	getLastRecord(nameOrEmail).then(function(rows){ res.send(rows); });
+});
+
+
+
 
 
 //get id from name

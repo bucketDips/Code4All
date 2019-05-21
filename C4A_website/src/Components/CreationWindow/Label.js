@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import styles from './style.css';
 
-class Block extends Component {
-    askEditBlock() {
+class Label extends Component {
+    askEditLabel() {
         let parameters = {
-            type: "BLOCK",
+            type: "LABEL",
             id: this.props.id,
             columnStart: this.props.columnStart,
             rowStart: this.props.rowStart,
             width: this.props.width,
             height: this.props.height,
-            background: this.props.background,
-            backgroundId: this.props.backgroundId
+            text: this.props.text
         }
 
         this.props.changeParametersWindow(parameters);
@@ -25,18 +24,15 @@ class Block extends Component {
                 gridColumnEnd: this.props.columnStart + this.props.width,
                 gridRowEnd: this.props.rowStart + this.props.height,
                 zIndex: 10,
-                backgroundImage: `url(${this.props.background})`,
-                backgroundSize: "100% 100%",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                cursor: "pointer"
+                fontSize: this.props.caseSize * 0.4 * this.props.width
               }}
-              className={styles.block} 
-              onMouseDown={this.askEditBlock.bind(this)}
+              className={styles.label} 
+              onMouseDown={this.askEditLabel.bind(this)}
               >
+              {this.props.text}
             </div>
         );
     }
 }
 
-export default Block;
+export default Label;

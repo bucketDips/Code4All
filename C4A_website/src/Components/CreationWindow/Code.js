@@ -28,7 +28,7 @@ class Code extends Component {
 
   displayGrid(props) {
     var str = this.state.editorValue;
-    var regex = /var\s+grid\s+=\s+createGrid\(\s*.*\s*,\s*.*\s*,\s*.*\s*\);{0,1}/g;
+    var regex = /var\s+grid\s+=\s+createGrid\(.*\);{0,1}/g;
     var matching = str.match(regex);
     if(matching != null) {
       var splitted = matching[0].split("(");
@@ -43,8 +43,64 @@ class Code extends Component {
     return newStr;
   }
 
-  displayBlocks(props) {
-    return this.state.editorValue;
+  getNameForANewBlock(newStr) {
+    for(var i = 0; i < 10000000; i++) {
+      if(newStr.match("block" + i)) {
+        continue;
+      }
+      else {
+        return "block" + i;
+      }
+    }
+  }
+
+  getRealBuiltStringForBlock(nameBlock, block) {
+    return ("var " + nameBlock + " = createBlock(" 
+    + block.id + ", " 
+    + block.rowStart + ", " 
+    + block.columnStart + ", " 
+    + block.width + ", " 
+    + block.height + ", " 
+    + (block.backgroundId) 
+    + ");");
+  }
+
+  displayBlock(block, newStr) {
+    var nameBlock = "";
+    var regexCreation = new RegExp("var\\s+.+\\s+=\\s+createBlock\\(\\s*" + block.id + "\\s*,\\s*.*\\s*\\);{0,1}", "g");
+    var creationMatching = newStr.match(regexCreation);
+
+    // creation treatment
+    if(creationMatching != null) {
+      nameBlock =  creationMatching[0].split(/\s+|=/)[1];
+      var realBuiltStr = this.getRealBuiltStringForBlock(nameBlock, block);
+      newStr = newStr.replace(creationMatching[0], realBuiltStr);
+    }
+    else {
+      nameBlock = this.getNameForANewBlock(newStr);
+      realBuiltStr = this.getRealBuiltStringForBlock(nameBlock, block);
+      newStr = newStr + "\n" + realBuiltStr;
+    }
+
+    var regexAdding = new RegExp("grid.addBlock\\(\\s*" + nameBlock + "\\s*\\);{0,1}", "g");
+    var addingMatching = newStr.match(regexAdding);
+
+    // adding treatment
+    if(addingMatching != null) {
+      return newStr;
+    }
+    else {
+      console.log("adding new addblock");
+      creationMatching = newStr.match(regexCreation)[0];
+      return newStr.replace(creationMatching, creationMatching + ("\ngrid.addBlock(" + nameBlock + ");\n"));
+    }
+  }
+
+  displayBlocks(props, newStr) {
+    for (var key in props.blocks) {
+      newStr = this.displayBlock(props.blocks[key], newStr);
+    }
+    return newStr;
   }
 
   componentWillReceiveProps(props){
@@ -55,7 +111,7 @@ class Code extends Component {
     this.setState({fromProps: true});
     
     var newStr = this.displayGrid(props);
-    this.displayBlocks(props);
+    newStr = this.displayBlocks(props, newStr);
 
     this.setState(
       {
