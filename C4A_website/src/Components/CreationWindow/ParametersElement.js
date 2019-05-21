@@ -45,7 +45,7 @@ class ParametersElement extends Component {
 
   changeTextValue(e) {
     let params = this.props.parameters;
-    params.text = e;
+    params.text = (e.target.value === null ? "" : e.target.value);
     this.props.changeElementParameters(params, this.props.type);
   }
 
@@ -81,7 +81,7 @@ class ParametersElement extends Component {
   }
 
   getText() {
-    if(this.props.type != "LABEL") {
+    if(this.props.type !== "LABEL") {
       return (<div></div>);
     }
     return (<input type="text" onChange={this.changeTextValue.bind(this)} value={this.props.parameters.text}></input>);
