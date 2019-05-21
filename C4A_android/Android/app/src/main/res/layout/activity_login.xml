@@ -11,7 +11,7 @@
         android:id="@+id/root">
     <fragment
             android:layout_width="0dp"
-            android:layout_height="0dp" android:name="com.example.code4all.fragments.LoginFragment"
+            android:layout_height="0dp" android:name="com.example.code4all.controllers.login.LoginFragment"
             android:id="@+id/fragment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

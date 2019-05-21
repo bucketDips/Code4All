@@ -1,4 +1,4 @@
-package com.example.code4all.activities
+package com.example.code4all.controllers.menu
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
