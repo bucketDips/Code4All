@@ -31,9 +31,20 @@ class ParametersElement extends Component {
   }
 
   changePatternValue(e) {
+    switch(this.props.type) {
+      case 'BLOCK':
+        var img = "bloc.png";
+        break;
+      case 'NPC':
+        img = "fighting_stickman.png";
+        break;
+      case 'PC':
+        img = "stickman.png";
+        break;
+    }
     let params = this.props.parameters;
     if(e.target.value === "0") {
-      params.background = process.env.PUBLIC_URL + 'bloc.png';
+      params.background = process.env.PUBLIC_URL + img;
       params.backgroundId = null;
     }
     else {
