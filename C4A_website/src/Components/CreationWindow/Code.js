@@ -11,6 +11,7 @@ import "brace/ext/searchbox";
 
 import styles from './style.css';
 import { Grid, Block } from './CodeClasses';
+import CustomSlider from './CustomSlider';
 
 class Code extends Component {
 
@@ -22,8 +23,13 @@ class Code extends Component {
       editorValue: "",
       infoText: "",
       fromProps: false,
-      fromEdit: false
+      fromEdit: false,
+      fontSize: 14
     }
+  }
+
+  changeSizeValue(newSize) {
+    this.setState({fontSize: newSize});
   }
 
   displayGrid(props) {
@@ -210,7 +216,7 @@ class Code extends Component {
               theme="monokai"
               name="code-editor"
               onChange={this.onChange.bind(this)}
-              fontSize={14}
+              fontSize={this.state.fontSize}
               showPrintMargin={true}
               showGutter={true}
               highlightActiveLine={true}
@@ -223,6 +229,7 @@ class Code extends Component {
               }}/>
               <div id="info-text">{this.state.infoText}</div>
             </div>
+            <CustomSlider className="custom-slider-code" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={14}/>
         </div>
     );
   }
