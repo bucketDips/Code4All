@@ -25,6 +25,7 @@ const mimeType = {
     '.ttf': 'application/font-sfnt'
 };
 
+
 /* GET users listing. */
 router.get('/getUserFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
     var fileId = request.params.fileId;
@@ -49,25 +50,44 @@ router.get('/getUserFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next)
     })
 
 });
-router.post('/upload', AUTH.VERIFYAUTH, function(request, res, next) {
+router.post('/upload/:dest', AUTH.VERIFYAUTH, function(request, res, next) {
+    var dest = request.params.dest;
+    var sender = request.decoded.id
+    // var sender = 6
     var form = new formidable.IncomingForm();
+    console.log("form")
+    console.log(form)
     form.parse(request, function (err, fields, files) {
-        getLastRecord(files).then(function(rows){
+        console.log("err")
+        console.log(err)
+        console.log("fields")
+        console.log(fields)
+        console.log("files")
+        console.log(files)
+        insertFile(files).then(function(rows){
             var oldpath = files[Object.keys(files)[0]].path;
             var newpath = __dirname +"\\FichiersUtilisateur\\" + rows.insertId;
-			fs.copyFile(oldpath, newpath, (err) => {
-				if (err) throw err;
-				console.log(oldpath + ' was copied to '+newpath);
-				res.end();
-			});
+            addFileToUserFileTable(rows.insertId, dest);
+            fs.copyFile(oldpath, newpath, (err) => {
+                if (err) throw err;
+                console.log(oldpath + ' was copied to '+newpath);
+                res.end();
+            });
         });
-		
-
-
     });
-    function getLastRecord(files) {
+
+    function addFileToUserFileTable(fileId, dest) {
         return new Promise(function(resolve, reject) {
-            var sql = "insert into fichier(name) values ('"+files[Object.keys(files)[0]].name+"')"
+            var sql = "insert into user_files(fileId, userId) values ('"+fileId+"',"+dest+")"
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function insertFile(files) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into fichier(name,sender) values ('"+files[Object.keys(files)[0]].name+"',"+sender+")"
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);

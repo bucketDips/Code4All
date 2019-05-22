@@ -9,7 +9,7 @@ import java.util.*
 import kotlin.collections.ArrayList as ArrayList1
 
 
-object ServerHandler_old : IServerHandler {
+object ServerHandler_old {
 
 
 
@@ -54,11 +54,6 @@ object ServerHandler_old : IServerHandler {
         }
         return res
     }
-
-    override fun connect(mail: String, password: String, iapiCallbackJsonObject: IAPICallbackJsonObject) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-    
     /*
     override fun login(mail: String, password: String, iapiCallbackJsonObject: IAPICallbackJsonObject) {
         /*
