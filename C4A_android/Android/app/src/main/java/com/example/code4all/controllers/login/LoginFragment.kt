@@ -1,6 +1,5 @@
-package com.example.code4all.fragments
+package com.example.code4all.controllers.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,11 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.android.volley.VolleyError
 import com.example.code4all.activities.LoginActivity
-import com.example.code4all.activities.MenuActivity
+import com.example.code4all.controllers.menu.MenuActivity
 import com.example.code4all.serverhandler.IAPICallbackJsonObject
 import com.example.code4all.serverhandler.ServerHandler
-import com.example.code4all.serverhandler.ServerHandler_old
-import com.example.code4all.settings.ErrorNetwork
 import com.example.code4all.tools.Log
 import com.example.code4all.viewtools.Keyboard
 import kotlinx.android.synthetic.main.fragment_login.*

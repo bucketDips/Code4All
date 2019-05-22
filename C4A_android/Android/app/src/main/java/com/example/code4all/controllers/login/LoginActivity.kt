@@ -1,4 +1,4 @@
-package com.example.code4all.activities
+package com.example.code4all.controllers.login
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,7 +13,5 @@ class LoginActivity : AppCompatActivity() {
         ServerHandler.initInstance(applicationContext)
 
         setContentView(R.layout.activity_login)
-
-
     }
 }

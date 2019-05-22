@@ -172,18 +172,14 @@ class CreateExerciseWindow extends Component {
         type: "NONE"
       }
     });
-
-    console.log(this.state);
   }
 
   onChangeBlocks(blocks) {
 
-    console.log(blocks);
     var stateBlocks = {};
 
     blocks.forEach(element => {
       if(element.patternId === undefined || element.patternId === null || element.patternId === -1) {
-        console.log("null");
         element.patternId = null;
         var background = process.env.PUBLIC_URL + '/bloc.png';
       }
@@ -206,7 +202,11 @@ class CreateExerciseWindow extends Component {
   }
 
   getMaxKeyOf(dictionary) {
-    var maxKey = _.max(Object.keys(dictionary), o => dictionary[o]);
+    console.log(dictionary);
+    var maxKey = _.max(Object.keys(dictionary).map(function(item) {
+      return Number(item);
+    }));
+    console.log(maxKey);
     if(maxKey === undefined) {
       maxKey = -1;
     }
@@ -285,7 +285,6 @@ class CreateExerciseWindow extends Component {
   }
 
   onDragEnd = result => {
-    console.log(result.draggableId);
     if(result.destination === null) return;
 
     let numCase = Number(result.destination.droppableId);

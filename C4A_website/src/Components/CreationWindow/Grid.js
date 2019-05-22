@@ -177,9 +177,7 @@ class Grid extends Component {
           />)
         }, this);
     }
-
-    console.log(this.props.pcs);
-
+    
     return (
         <div className={styles.grid}>
             <h3 className="title">Ici la grille
