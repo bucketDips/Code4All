@@ -10,7 +10,7 @@ import "brace/ext/language_tools";
 import "brace/ext/searchbox";
 
 import styles from './style.css';
-import { Grid, Block } from './CodeClasses';
+import { Grid, Block, Npc, Pc, Label } from './CodeClasses';
 import CustomSlider from './CustomSlider';
 
 class Code extends Component {
@@ -160,20 +160,37 @@ class Code extends Component {
     return new Block(id, row, column, width, height, patternId);
   }
 
-  getDisplayBlockCode() {
+  createNpc(id, row, column, width, height, patternId) {
+    return new Npc(id, row, column, width, height, patternId);
+  }
+
+  createPc(id, row, column, width, height, patternId) {
+    return new Pc(id, row, column, width, height, patternId);
+  }
+
+  createLabel(id, row, column, width, height, text) {
+    return new Label(id, row, column, width, height, text);
+  }
+
+  getDisplayCode() {
     return `
       var blocks = grid.getBlocks();
       this.props.modifyBlocks(blocks);
+
+      console.log(grid);
     `;
   }
 
   evalCode() {
     var createGrid = (lines, columns, backgroundId) => this.createGrid(lines, columns, backgroundId);
     var createBlock = (id, row, column, width, height, patternId) => this.createBlock(id, row, column, width, height, patternId);
+    var createNpc = (id, row, column, width, height, patternId) => this.createNpc(id, row, column, width, height, patternId);
+    var createPc = (id, row, column, width, height, patternId) => this.createPc(id, row, column, width, height, patternId);
+    var createLabel = (id, row, column, width, height, text) => this.createLabel(id, row, column, width, height, text);
     // ici les vérification
 
     try {
-      eval(this.state.editorValue + "\ngrid;" + this.getDisplayBlockCode());
+      eval(this.state.editorValue + "\ngrid;" + this.getDisplayCode());
       this.setState({infoText: ""});
     }
     catch(error) {
