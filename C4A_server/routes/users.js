@@ -376,8 +376,8 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 	});
 });
 
-router.post('/changPwd/:email/:pwd/:newPwd', AUTH.VERIFYAUTH,function(request, res, next) {
-	var email = request.params.email;
+router.post('/changPwd/:pwd/:newPwd', AUTH.VERIFYAUTH,function(request, res, next) {
+	var email = request.decoded.email;
 	var pwd = md5(request.params.pwd);
 	var newPwd = md5(request.params.newPwd);
 	function getLastRecord(pseudo) {
@@ -409,8 +409,8 @@ router.post('/changPwd/:email/:pwd/:newPwd', AUTH.VERIFYAUTH,function(request, r
 	});
 });
 
-router.post('/changEmail/:email/:pwd/:newEmail', AUTH.VERIFYAUTH, function(request, res, next) {
-	var email = request.params.email;
+router.post('/changEmail/:pwd/:newEmail', AUTH.VERIFYAUTH, function(request, res, next) {
+	var email = request.decoded.email;
 	var pwd = md5(request.params.pwd);
 	var newEmail = request.params.newEmail;
 	function getLastRecord(pseudo) {
