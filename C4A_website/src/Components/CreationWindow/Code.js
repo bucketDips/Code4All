@@ -185,8 +185,10 @@ class Code extends Component {
   getDisplayCode() {
     return `
       var blocks = grid.getBlocks();
-      this.props.modifyBlocks(blocks);
-
+      var npcs = grid.getNpcs();
+      var pcs = grid.getPcs();
+      var labels = grid.getLabels();
+      this.props.synchroniseElements(blocks, npcs, pcs, labels);
     `;
   }
 
