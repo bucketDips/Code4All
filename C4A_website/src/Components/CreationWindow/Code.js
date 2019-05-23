@@ -182,14 +182,14 @@ class Code extends Component {
     return new Label(id, row, column, width, height, text);
   }
 
-  getDisplayCode() {
-    return `
+  synchronise(grid) {
+      this.setState({fromEdit: true});
       var blocks = grid.getBlocks();
       var npcs = grid.getNpcs();
       var pcs = grid.getPcs();
       var labels = grid.getLabels();
       this.props.synchroniseElements(blocks, npcs, pcs, labels);
-    `;
+      this.setState({fromEdit: false});
   }
 
   evalCode() {
@@ -198,10 +198,11 @@ class Code extends Component {
     var createNpc = (id, row, column, width, height, patternId) => this.createNpc(id, row, column, width, height, patternId);
     var createPc = (id, row, column, width, height, patternId) => this.createPc(id, row, column, width, height, patternId);
     var createLabel = (id, row, column, width, height, text) => this.createLabel(id, row, column, width, height, text);
+    var synchronise = (grid) => this.synchronise(grid);
     // ici les vérification
 
     try {
-      eval(this.state.editorValue + "\ngrid;" + this.getDisplayCode());
+      eval(this.state.editorValue + "\ngrid; synchronise(grid);");
       this.setState({infoText: ""});
     }
     catch(error) {
