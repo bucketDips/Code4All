@@ -49,46 +49,47 @@ class Code extends Component {
     return newStr;
   }
 
-  getNameForANewBlock(newStr) {
+  getNameForANewElement(newStr, type) {
     for(var i = 0; i < 10000000; i++) {
-      if(newStr.match("block" + i)) {
+      var lowered = type.toLowerCase();
+      if(newStr.match("\\s" + lowered + i)) {
         continue;
       }
       else {
-        return "block" + i;
+        return lowered + i;
       }
     }
   }
 
-  getRealBuiltStringForBlock(nameBlock, block) {
-    return ("var " + nameBlock + " = createBlock(" 
-    + block.id + ", " 
-    + block.rowStart + ", " 
-    + block.columnStart + ", " 
-    + block.width + ", " 
-    + block.height + ", " 
-    + (block.backgroundId) 
+  getRealBuiltStringForElement(nameElement, element, type) {
+    return ("var " + nameElement + " = create" + type + "(" 
+    + element.id + ", " 
+    + element.rowStart + ", " 
+    + element.columnStart + ", " 
+    + element.width + ", " 
+    + element.height + ", " 
+    + (type != "Label" ? element.backgroundId : "'" + element.text + "'") 
     + ");");
   }
 
-  displayBlock(block, newStr) {
-    var nameBlock = "";
-    var regexCreation = new RegExp("var\\s+.+\\s+=\\s+createBlock\\(\\s*" + block.id + "\\s*,\\s*.*\\s*\\);{0,1}", "g");
+  displayElement(element, newStr, type) {
+    var nameElement = "";
+    var regexCreation = new RegExp("var\\s+.+\\s+=\\s+create" + type + "\\(\\s*" + element.id + "\\s*,\\s*.*\\s*\\);{0,1}", "g");;
     var creationMatching = newStr.match(regexCreation);
 
     // creation treatment
     if(creationMatching != null) {
-      nameBlock =  creationMatching[0].split(/\s+|=/)[1];
-      var realBuiltStr = this.getRealBuiltStringForBlock(nameBlock, block);
+      nameElement =  creationMatching[0].split(/\s+|=/)[1];
+      var realBuiltStr = this.getRealBuiltStringForElement(nameElement, element, type);
       newStr = newStr.replace(creationMatching[0], realBuiltStr);
     }
     else {
-      nameBlock = this.getNameForANewBlock(newStr);
-      realBuiltStr = this.getRealBuiltStringForBlock(nameBlock, block);
+      nameElement = this.getNameForANewElement(newStr, type)
+      realBuiltStr = this.getRealBuiltStringForElement(nameElement, element, type);
       newStr = newStr + "\n" + realBuiltStr;
     }
 
-    var regexAdding = new RegExp("grid.addBlock\\(\\s*" + nameBlock + "\\s*\\);{0,1}", "g");
+    var regexAdding = new RegExp("grid.add" + type + "\\(\\s*" + nameElement + "\\s*\\);{0,1}", "g");
     var addingMatching = newStr.match(regexAdding);
 
     // adding treatment
@@ -96,15 +97,24 @@ class Code extends Component {
       return newStr;
     }
     else {
-      console.log("adding new addblock");
       creationMatching = newStr.match(regexCreation)[0];
-      return newStr.replace(creationMatching, creationMatching + ("\ngrid.addBlock(" + nameBlock + ");\n"));
+      return newStr.replace(creationMatching, creationMatching + ("\ngrid.add" + type + "(" + nameElement + ");\n"));
     }
   }
 
-  displayBlocks(props, newStr) {
+  displayElements(props, newStr) {
+
     for (var key in props.blocks) {
-      newStr = this.displayBlock(props.blocks[key], newStr);
+      newStr = this.displayElement(props.blocks[key], newStr, "Block");
+    }
+    for (var key in props.npcs) {
+      newStr = this.displayElement(props.npcs[key], newStr, "Npc");
+    }
+    for (var key in props.pcs) {
+      newStr = this.displayElement(props.pcs[key], newStr, "Pc");
+    }
+    for (var key in props.labels) {
+      newStr = this.displayElement(props.labels[key], newStr, "Label");
     }
     return newStr;
   }
@@ -117,7 +127,7 @@ class Code extends Component {
     this.setState({fromProps: true});
     
     var newStr = this.displayGrid(props);
-    newStr = this.displayBlocks(props, newStr);
+    newStr = this.displayElements(props, newStr);
 
     this.setState(
       {
@@ -177,7 +187,6 @@ class Code extends Component {
       var blocks = grid.getBlocks();
       this.props.modifyBlocks(blocks);
 
-      console.log(grid);
     `;
   }
 

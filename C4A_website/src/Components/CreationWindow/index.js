@@ -202,11 +202,9 @@ class CreateExerciseWindow extends Component {
   }
 
   getMaxKeyOf(dictionary) {
-    console.log(dictionary);
     var maxKey = _.max(Object.keys(dictionary).map(function(item) {
       return Number(item);
     }));
-    console.log(maxKey);
     if(maxKey === undefined) {
       maxKey = -1;
     }
@@ -325,6 +323,9 @@ class CreateExerciseWindow extends Component {
                 <Code
                 grid={this.state.gridProperties}
                 blocks={this.state.blocks}
+                pcs={this.state.pc}
+                npcs={this.state.npc}
+                labels={this.state.labels}
                 patterns={this.state.patterns}
                 modifyBlocks={this.onChangeBlocks.bind(this)}
                 changeGridParameters={this.onChangeGridParameters.bind(this)}
