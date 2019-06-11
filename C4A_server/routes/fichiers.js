@@ -77,8 +77,8 @@ router.get('/getUserFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next)
                 message: "Ce fichier n'existe pas, ou il ne vous appartient pas"
             })
         }
-        var pathFile = __dirname +"\\FichiersUtilisateur\\" + rows["0"].id;
-        var pathname = __dirname +"\\FichiersUtilisateur\\" + rows["0"].name;
+        var pathFile = __dirname +"/FichiersUtilisateur/" + rows["0"].id;
+        var pathname = __dirname +"/FichiersUtilisateur/" + rows["0"].name;
         res.download(pathFile,  rows["0"].name);
 
 
@@ -119,7 +119,7 @@ router.get('/getAllUserImages', AUTH.VERIFYAUTH, function(request, res, next) {
         });
 
         for (var i = 0; i < result.length; ++i){
-            var pathFile = __dirname +"\\FichiersUtilisateur\\" +result[i].fileid;
+            var pathFile = __dirname +"/FichiersUtilisateur/" +result[i].fileid;
             var newpath = "public/" + result[i].publicName;
             fs.copyFile(pathFile, newpath, (err) => {
                 if (err) throw err;
@@ -154,8 +154,8 @@ router.get('/getImageURL/:fileId', AUTH.VERIFYAUTH, function(request, res, next)
                 message: "Ce fichier n'existe pas, ou il ne vous appartient pas"
             })
         }
-        var pathFile = __dirname +"\\FichiersUtilisateur\\" + rows["0"].id;
-        var pathname = __dirname +"\\FichiersUtilisateur\\" + rows["0"].name;
+        var pathFile = __dirname +"/FichiersUtilisateur/" + rows["0"].id;
+        var pathname = __dirname +"/FichiersUtilisateur/" + rows["0"].name;
         var oldpath = pathFile;
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -191,8 +191,8 @@ router.get('/getClassRoomFile/:classId/:fileId', AUTH.VERIFYAUTH, AUTH.isProfess
                 message: "Ce fichier n'existe pas, ou il ne vous appartient pas"
             })
         }
-        var pathFile = __dirname +"\\FichiersUtilisateur\\" + rows["0"].id;
-        var pathname = __dirname +"\\FichiersUtilisateur\\" + rows["0"].name;
+        var pathFile = __dirname +"/FichiersUtilisateur/" + rows["0"].id;
+        var pathname = __dirname +"/FichiersUtilisateur/" + rows["0"].name;
         res.download(pathFile,  rows["0"].name);
 
     })
@@ -221,7 +221,7 @@ router.post('/uploadToUser/:filename/:dest', AUTH.VERIFYAUTH, function(request, 
     form.parse(request, function (err, fields, files) {
         insertFile(filename, sender).then(function(rows){
             var oldpath = files[Object.keys(files)[0]].path;
-            var newpath = __dirname +"\\FichiersUtilisateur\\" + rows.insertId;
+            var newpath = __dirname +"/FichiersUtilisateur/" + rows.insertId;
             addFileToUserFileTable(rows.insertId, dest);
             fs.copyFile(oldpath, newpath, (err) => {
                 if (err) throw err;
@@ -252,7 +252,7 @@ router.post('/uploadToClass/:filename/:classId', AUTH.VERIFYAUTH, AUTH.isProfess
 
     insertFile(filename, sender).then(function(rows){
         var oldpath = files[Object.keys(files)[0]].path;
-        var newpath = __dirname +"\\FichiersUtilisateur\\" + rows.insertId;
+        var newpath = __dirname +"/FichiersUtilisateur/" + rows.insertId;
         addFileToClassRoomFileTable(rows.insertId, dest);
         fs.copyFile(oldpath, newpath, (err) => {
             if (err) throw err;
