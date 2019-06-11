@@ -39,41 +39,7 @@ router.get('/getProfessorClassesById/', AUTH.VERIFYAUTH, function(request, res, 
     getLastRecord(id).then(function(rows){ res.send(rows); });
 });
 
-router.get('/getStudentListInClass/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStudentInThisClassRoom, function(request, res, next) {
-    var classId = request.params.classId;
-    function getLastRecord(classId) {
-        return new Promise(function(resolve, reject) {
-            var sql = "select users.id, users.name, email from classroom, users, classroom_students " +
-                "where users.id=classroom_students.idStudent " +
-                "and classroom.id=classroom_students.idclassroom " +
-                "and classroom.id="+classId+" " +
-                ";";
 
-            con.query(sql, function (err, rows, fields) {
-                if (err) return reject(err);
-                resolve(rows);
-            });
-        });
-    }
-    getLastRecord(classId).then(function(rows){ res.send(rows); });
-});
-router.get('/getProfessorListInClass/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStudentInThisClassRoom, function(request, res, next) {
-    var classId = request.params.classId;
-    function getLastRecord(classId) {
-        return new Promise(function(resolve, reject) {
-            var sql = "select users.id, users.name, email from classroom, users, classroom_professors " +
-                "where users.id=classroom_professors.idProfessor " +
-                "and classroom.id=classroom_professors.idclassroom " +
-                "and classroom.id="+classId+" " +
-                ";";
-            con.query(sql, function (err, rows, fields) {
-                if (err) return reject(err);
-                resolve(rows);
-            });
-        });
-    }
-    getLastRecord(classId).then(function(rows){ res.send(rows); });
-});
 router.post('/addStudentToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom ,function(request, res, next) {
     var id = request.params.id;
     var classId = request.params.classId;
