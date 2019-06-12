@@ -107,6 +107,19 @@ html, body {
     z-index: 9999;
 }
 
+.custom-slider-code {
+    width: 20%;
+    position: relative;
+    left: 77%;
+    bottom: 16%;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 9999;
+}
+
 :local(.parameters) {
     flex: 2;
     overflow-y: scroll;

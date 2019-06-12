@@ -2,7 +2,7 @@ exports.HOST = "127.0.0.1";
 exports.PORT = "3306";
 exports.USER = "root";
 exports.PWD = "";
-
+exports.PROD = true;
 exports.DEVHOST = "127.0.0.1";
 exports.DEVUSER = "root";
 exports.DEVPWD = "";

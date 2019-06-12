@@ -174,39 +174,69 @@ class CreateExerciseWindow extends Component {
     });
   }
 
-  onChangeBlocks(blocks) {
+  synchroniseForOneTypeOfElements(elements, type) {
+    var newElements = {};
 
-    var stateBlocks = {};
-
-    blocks.forEach(element => {
-      if(element.patternId === undefined || element.patternId === null || element.patternId === -1) {
-        element.patternId = null;
-        var background = process.env.PUBLIC_URL + '/bloc.png';
+    Object.values(elements).forEach(element => {
+      if(type !== "LABEL") {
+        if(element.patternId === undefined || element.patternId === null || element.patternId === -1) {
+          element.patternId = null;
+          var background = this.state.options.find(function(element) {
+            return element.title === type;
+          }).image;
+        }
+        else {
+          background = process.env.PUBLIC_URL + 'patterns/' + this.state.patterns[element.patternId].nom;
+        }
+  
+        newElements[element.id] = {
+          id: element.id,
+          rowStart: element.row,
+          columnStart: element.column,
+          width: element.width,
+          height: element.height,
+          backgroundId: element.patternId,
+          background: background
+        };
       }
       else {
-        background = process.env.PUBLIC_URL + 'patterns/' + this.state.patterns[element.patternId].nom;
+        newElements[element.id] = {
+          id: element.id,
+          rowStart: element.row,
+          columnStart: element.column,
+          width: element.width,
+          height: element.height,
+          text: element.text
+        };
       }
-
-      stateBlocks[element.id] = {
-        id: element.id,
-        rowStart: element.row,
-        columnStart: element.column,
-        width: element.width,
-        height: element.height,
-        backgroundId: element.patternId,
-        background: background
-      };
     });
+    switch(type) {
+      case 'BLOCK':
+        this.setState({blocks: newElements});
+        break;
+      case 'NPC':
+        this.setState({npc: newElements});
+        break;
+      case 'PC':
+        this.setState({pc: newElements});
+        break;
+      case 'LABEL':
+        this.setState({labels: newElements});
+        break;
+    }
+  }
 
-    this.setState({blocks: stateBlocks});
+  synchroniseElements(blocks, npcs, pcs, labels) {
+    this.synchroniseForOneTypeOfElements(blocks, "BLOCK");
+    this.synchroniseForOneTypeOfElements(npcs, "NPC");
+    this.synchroniseForOneTypeOfElements(pcs, "PC");
+    this.synchroniseForOneTypeOfElements(labels, "LABEL");
   }
 
   getMaxKeyOf(dictionary) {
-    console.log(dictionary);
     var maxKey = _.max(Object.keys(dictionary).map(function(item) {
       return Number(item);
     }));
-    console.log(maxKey);
     if(maxKey === undefined) {
       maxKey = -1;
     }
@@ -325,8 +355,11 @@ class CreateExerciseWindow extends Component {
                 <Code
                 grid={this.state.gridProperties}
                 blocks={this.state.blocks}
+                pcs={this.state.pc}
+                npcs={this.state.npc}
+                labels={this.state.labels}
                 patterns={this.state.patterns}
-                modifyBlocks={this.onChangeBlocks.bind(this)}
+                synchroniseElements={this.synchroniseElements.bind(this)}
                 changeGridParameters={this.onChangeGridParameters.bind(this)}
                 changeParametersWindow={this.onChangeParameters.bind(this)}
                 />
