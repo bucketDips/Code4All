@@ -6,6 +6,7 @@
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="login">Login</string>
+    <string name="token" translatable="false">token</string>
 
 
     <string name="network_error_network_error">Cannot connect to Internet...Please check your connection!</string>

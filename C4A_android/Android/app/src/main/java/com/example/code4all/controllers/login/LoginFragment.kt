@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.android.volley.VolleyError
-import com.example.code4all.activities.LoginActivity
-import com.example.code4all.controllers.menu.MenuActivity
+import com.example.code4all.controllers.main_menu.MainMenuActivity
 import com.example.code4all.serverhandler.IAPICallbackJsonObject
 import com.example.code4all.serverhandler.ServerHandler
+import com.example.code4all.settings.SharedPreferenceManager
 import com.example.code4all.tools.Log
 import com.example.code4all.viewtools.Keyboard
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -23,10 +23,13 @@ class LoginFragment : Fragment() {
 
 
     val serverHandler : ServerHandler = ServerHandler.getInstance()
+    private lateinit var sharedPreferenceManager: SharedPreferenceManager
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val fragment =  inflater.inflate(com.example.code4all.R.layout.fragment_login, container, false)
+        sharedPreferenceManager = SharedPreferenceManager(context)
 
         fragment.buttonConnect.setOnClickListener{ v ->
             try {
@@ -51,9 +54,9 @@ class LoginFragment : Fragment() {
                 val code = result.getString("code")
 
                 if (res == "true"){
-                    val intent = Intent(activity, MenuActivity::class.java)
+                    val intent = Intent(activity, MainMenuActivity::class.java)
                     val token = result.getString("token")
-                    intent.putExtra("token", token)
+                    sharedPreferenceManager.saveToken(token)
 
                     startActivity(intent)
                 } else {
