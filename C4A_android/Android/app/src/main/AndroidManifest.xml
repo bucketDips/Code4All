@@ -14,17 +14,21 @@
             android:theme="@style/MainTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controllers.classes_menu.ClassesMenuActivity" android:screenOrientation="landscape">
+
+        <activity android:name=".controllers.classes_menu.ClasseListActivity" android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".controllers.main_menu.MainMenuActivity" android:screenOrientation="landscape">
-        </activity>
-        <activity android:name=".controllers.login.LoginActivity">
+
+        <activity android:name=".controllers.login.LoginActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".controllers.main_menu.MainMenuActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+                  android:screenOrientation="landscape"/>
+
     </application>
 
 </manifest>

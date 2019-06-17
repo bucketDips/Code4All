@@ -10,4 +10,9 @@
     <string name="network_error_auth_failure">"Connexion à internet impossible... Vérifiez votre connexion internet "</string>
     <string name="network_error_parser_error">Erreur de parsing ! Réessayez plus tard</string>
     <string name="network_error_time_out">"Temps maximal de connexion dépassée... Verifiez votre connexion internet "</string>
+    <string name="classe_name">Nom de la classe : %s</string>
+    <string name="classe_size">Nombre de membres : %s</string>
+    <string name="button_label_delete">supprimer</string>
+    <string name="message_classe_list_error">La classe est vide</string>
+    <string name="welcoming_msg">Bonjour %s</string>
 </resources>

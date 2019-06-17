@@ -1,8 +1,5 @@
-package com.example.code4all.data;
+package com.example.code4all.data.user;
 
-import pub.devrel.bundler.BundlerClass;
-
-@BundlerClass
 public class User {
     private int id;
     private String name;
@@ -10,7 +7,13 @@ public class User {
     private String email;
     private int valid;
 
-    public User() {}
+    public User(int id, String name, String password, String email, int valid) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.valid = valid;
+    }
 
     public int getId() {
         return id;
