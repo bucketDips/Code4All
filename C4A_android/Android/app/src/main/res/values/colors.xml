@@ -12,6 +12,7 @@
     <color name="black">#000000</color>
     <color name="semitransparentblack">#33000000</color>
     <color name="semitransparentwhite">#E6deecef</color>
+    <color name="transparentwhite">#4DFFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="background_material_light">#f10c0c</color>
     <color name="primary_dark_material_light">#7b3434</color>

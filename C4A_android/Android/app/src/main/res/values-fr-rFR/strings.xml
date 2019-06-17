@@ -15,4 +15,7 @@
     <string name="button_label_delete">supprimer</string>
     <string name="message_classe_list_error">La classe est vide</string>
     <string name="welcoming_msg">Bonjour %s</string>
+    <string name="background_powered_by_pixabay_api">Fond d\'ecran fourni par l\'API Pixabay</string>
+    <string name="datalabel">%1$s</string>
+    <string name="message_user_connected">Connecté en tant que %1$s .</string>
 </resources>

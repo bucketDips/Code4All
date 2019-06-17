@@ -22,5 +22,8 @@
     <string name="button_label_delete">delete</string>
     <string name="message_classe_list_error">Your classe list is empty</string>
     <string name="welcoming_msg">Hello %1$s</string>
+    <string name="background_powered_by_pixabay_api">Background powered by Pixabay API</string>
+    <string name="datalabel">%1$s</string>
+    <string name="message_user_connected">Connected as %1$s .</string>
 
 </resources>
