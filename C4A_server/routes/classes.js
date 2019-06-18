@@ -132,7 +132,7 @@ router.post('/createClassroom/:name', AUTH.VERIFYAUTH, function(request, res, ne
         });
     }
     getLastRecord(name).then(function(rows){
-        addTeacherToClass(id, rows.insertId).then(function(rows){
+        addTeacherToClass(id, rows.insertId).then(function(rows1){
             res.send(rows);
         })
 
