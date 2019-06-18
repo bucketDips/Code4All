@@ -1,8 +1,18 @@
+import Axios from 'axios';
+
 class Auth {
-    login(cb) {
-        // ici call de l'api, récupération token
-        localStorage.sessionToken = "temporary";
-        cb();
+    login(email, password) {
+        console.log(email);
+        Axios.get("http://51.158.110.231:3000/users/connect/" + email + "/" + password).then(response => {
+            if(response.data.success) {
+                console.log("pipou");
+                localStorage.sessionToken = response.data.token;
+                alert(response.data.message);
+                window.location.href = "/";
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     logout(cb) {
@@ -16,6 +26,17 @@ class Auth {
 
     getSessionToken() {
         return localStorage.sessionToken;
+    }
+
+    inscription(user, password, mail) {
+        Axios.get("http://51.158.110.231:3000/users/create/" + user + "/" + password + "/" + mail).then(response => {
+            if(response.success) {
+                window.location.href = "/login";
+            }
+            else {
+                alert("Erreur lors de l'inscription : " + response.data);
+            }
+        });
     }
 }
 
