@@ -182,7 +182,7 @@ class Grid extends Component {
                 {background}
               </div>
             </div>
-            <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={30}/>
+            <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={this.state.gridProperties.size}/>
         </div>
     );
   }
