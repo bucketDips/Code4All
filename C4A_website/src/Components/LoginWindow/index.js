@@ -1,45 +1,94 @@
 import React, { Component } from 'react';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
+import {
+  Form,
+  Input,
+  Tooltip,
+  Icon,
+  Select,
+  Checkbox,
+  Button,
+} from 'antd';
 
 import auth from '../../auth';
+import styles from './style.css';
+
 
 class LoginWindow extends Component {
+  state = {
+    confirmDirty: false,
+  };
 
-  onLogin(e) {
-    auth.login(() => {
-      this.props.history.push("/");
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        auth.login(values.email, values.password);
+      }
     });
-  }
+  };
 
   render() {
-    return (
-        <div className="login-window">
-            <h3 className="title">log</h3>
-            <div className="content">
-              <InputGroup className="mb-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">Nom d'utilisateur</InputGroup.Text>
-                </InputGroup.Prepend>
-                <FormControl
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                />
-              </InputGroup>
+    const { getFieldDecorator } = this.props.form;
 
-              <InputGroup className="mb-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">Mot de passe</InputGroup.Text>
-                </InputGroup.Prepend>
-                <FormControl
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                />
-              </InputGroup>
-            </div>
-        </div>
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+    };
+    const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 16,
+          offset: 8,
+        },
+      },
+    };
+
+    return (
+      <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+        <Form.Item label="E-mail">
+          {getFieldDecorator('email', {
+            rules: [
+              {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ],
+          })(<Input />)}
+        </Form.Item>
+        <Form.Item label="Password" hasFeedback>
+          {getFieldDecorator('password', {
+            rules: [
+              {
+                required: true,
+                message: 'Please input your password!',
+              }
+            ],
+          })(<Input.Password />)}
+        </Form.Item>
+        <Form.Item {...tailFormItemLayout}>
+          <Button type="primary" htmlType="submit">
+            Login
+          </Button>
+        </Form.Item>
+      </Form>
     );
   }
 }
 
-export default LoginWindow;
+const WrappedLoginWindow = Form.create({ name: 'login' })(LoginWindow);
+
+export default WrappedLoginWindow;
