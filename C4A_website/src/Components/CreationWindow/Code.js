@@ -24,7 +24,8 @@ class Code extends Component {
       infoText: "",
       fromProps: false,
       fromEdit: false,
-      fontSize: 14
+      fontSize: 14,
+      gridObject: null
     }
   }
 
@@ -74,7 +75,7 @@ class Code extends Component {
 
   displayElement(element, newStr, type) {
     var nameElement = "";
-    var regexCreation = new RegExp("var\\s+.+\\s+=\\s+create" + type + "\\(\\s*" + element.id + "\\s*,\\s*.*\\s*\\);{0,1}", "g");;
+    var regexCreation = new RegExp("var\\s+.+\\s+=\\s+create" + type + "\\(\\s*" + element.id + "\\s*,\\s*.*\\s*\\);{0,1}", "g");
     var creationMatching = newStr.match(regexCreation);
 
     // creation treatment
@@ -103,7 +104,6 @@ class Code extends Component {
   }
 
   displayElements(props, newStr) {
-
     for (var keyBlock in props.blocks) {
       newStr = this.displayElement(props.blocks[keyBlock], newStr, "Block");
     }
@@ -125,6 +125,11 @@ class Code extends Component {
     }
 
     this.setState({fromProps: true});
+
+    if(this.props.delete) {
+      this.delete(this.props.delete.id, this.props.delete.type);
+      this.props.resetDelete();
+    }
     
     var newStr = this.displayGrid(props);
     newStr = this.displayElements(props, newStr);
@@ -183,13 +188,19 @@ class Code extends Component {
   }
 
   synchronise(grid) {
-      this.setState({fromEdit: true});
+      this.setState(
+        {
+          fromEdit: true,
+          gridObject: grid
+        });
       var blocks = grid.getBlocks();
       var npcs = grid.getNpcs();
       var pcs = grid.getPcs();
       var labels = grid.getLabels();
       this.props.synchroniseElements(blocks, npcs, pcs, labels);
       this.setState({fromEdit: false});
+
+      console.log(this.state.gridObject);
   }
 
   evalCode() {
@@ -215,6 +226,8 @@ class Code extends Component {
     catch(error) {
       this.setState({infoText: error.message});
     }
+
+    console.log(JSON.stringify(this.state.gridObject));
   }
 
   onChange(newValue, e) {
@@ -240,6 +253,22 @@ class Code extends Component {
     if(this.state.fromProps === true) {
       return;
     }
+  }
+
+  delete(id, type) {
+    console.log(id + "|" + type);
+    var val = this.state.editorValue;
+    var formattedType = type.toLowerCase();
+    formattedType = formattedType.charAt(0).toUpperCase() + formattedType.slice(1);
+
+    var regexCreation = new RegExp("var\\s+.+\\s+=\\s+create" + formattedType + "\\(\\s*" + id + "\\s*,\\s*.*\\s*\\);{0,1}", "g");
+    var creationMatching = val.match(regexCreation);
+
+    if(creationMatching != null) {
+      val = val.replace(creationMatching[0], "");
+    }
+
+    this.setState({editorValue: val});
   }
 
   render() {

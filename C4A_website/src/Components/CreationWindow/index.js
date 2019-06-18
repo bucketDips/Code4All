@@ -179,6 +179,12 @@ class CreateExerciseWindow extends Component {
       },
       delete: { id, type }
     });
+    console.log("coucouille");
+    console.log(this.state.delete);
+  }
+
+  resetDelete() {
+    this.setState({delete: null});
   }
 
   synchroniseForOneTypeOfElements(elements, type) {
@@ -357,7 +363,6 @@ class CreateExerciseWindow extends Component {
                     pcs={this.state.pc}
                     npcs={this.state.npc}
                     labels={this.state.labels}
-                    delete={this.state.delete}
                     changeParametersWindow={this.onChangeParameters.bind(this)}
                     changeGridPattern={this.onChangeGridPattern.bind(this)}
                     />
@@ -368,7 +373,9 @@ class CreateExerciseWindow extends Component {
                   pcs={this.state.pc}
                   npcs={this.state.npc}
                   labels={this.state.labels}
-                  patterns={this.state.patterns}
+                  patterns={this.state.patterns}                    
+                  delete={this.state.delete}
+                  resetDelete={this.resetDelete.bind(this)}
                   synchroniseElements={this.synchroniseElements.bind(this)}
                   changeGridParameters={this.onChangeGridParameters.bind(this)}
                   changeParametersWindow={this.onChangeParameters.bind(this)}

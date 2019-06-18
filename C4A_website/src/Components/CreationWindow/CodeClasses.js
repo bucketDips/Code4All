@@ -111,6 +111,11 @@ export class Pc {
         this.width = width;
         this.height = height;
         this.patternId = patternId;
+        this.functions = [];
+    }
+
+    addFunction(name, code, description) {
+        this.functions.push(new Func(name, String(code), description));
     }
 }
 
@@ -122,6 +127,14 @@ export class Label {
         this.width = width;
         this.height = height;
         this.text = text;
+    }
+}
+
+export class Func {
+    constructor(name, code, description) {
+        this.name = name;
+        this.code = code;
+        this.description = description;
     }
 }
   
