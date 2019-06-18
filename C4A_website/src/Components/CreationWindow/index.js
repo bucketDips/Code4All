@@ -132,13 +132,6 @@ class CreateExerciseWindow extends Component {
     
   }
 
-  onChangeGridPattern(patternId) {
-    Axios.get(process.env.PUBLIC_URL + '/patterns/files.json').then(response => {
-      response.data.forEach(element => {
-      });
-    });
-  }
-
   deleteElementFromElements(elements, id) {
     let b;
     for(var key in elements) {
@@ -179,8 +172,6 @@ class CreateExerciseWindow extends Component {
       },
       delete: { id, type }
     });
-    console.log("coucouille");
-    console.log(this.state.delete);
   }
 
   resetDelete() {
@@ -364,7 +355,6 @@ class CreateExerciseWindow extends Component {
                     npcs={this.state.npc}
                     labels={this.state.labels}
                     changeParametersWindow={this.onChangeParameters.bind(this)}
-                    changeGridPattern={this.onChangeGridPattern.bind(this)}
                     />
                   </DragDropContext>
                   <Code
