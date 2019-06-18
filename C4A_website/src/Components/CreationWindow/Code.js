@@ -68,7 +68,7 @@ class Code extends Component {
     + element.columnStart + ", " 
     + element.width + ", " 
     + element.height + ", " 
-    + (type != "Label" ? element.backgroundId : "'" + element.text + "'") 
+    + (type !== "Label" ? element.backgroundId : "'" + element.text + "'") 
     + ");");
   }
 
@@ -104,17 +104,17 @@ class Code extends Component {
 
   displayElements(props, newStr) {
 
-    for (var key in props.blocks) {
-      newStr = this.displayElement(props.blocks[key], newStr, "Block");
+    for (var keyBlock in props.blocks) {
+      newStr = this.displayElement(props.blocks[keyBlock], newStr, "Block");
     }
-    for (var key in props.npcs) {
-      newStr = this.displayElement(props.npcs[key], newStr, "Npc");
+    for (var keyNpc in props.npcs) {
+      newStr = this.displayElement(props.npcs[keyNpc], newStr, "Npc");
     }
-    for (var key in props.pcs) {
-      newStr = this.displayElement(props.pcs[key], newStr, "Pc");
+    for (var keyPc in props.pcs) {
+      newStr = this.displayElement(props.pcs[keyPc], newStr, "Pc");
     }
-    for (var key in props.labels) {
-      newStr = this.displayElement(props.labels[key], newStr, "Label");
+    for (var keyLabel in props.labels) {
+      newStr = this.displayElement(props.labels[keyLabel], newStr, "Label");
     }
     return newStr;
   }
@@ -193,15 +193,22 @@ class Code extends Component {
   }
 
   evalCode() {
+    // eslint-disable-next-line
     var createGrid = (lines, columns, backgroundId) => this.createGrid(lines, columns, backgroundId);
+    // eslint-disable-next-line
     var createBlock = (id, row, column, width, height, patternId) => this.createBlock(id, row, column, width, height, patternId);
+    // eslint-disable-next-line
     var createNpc = (id, row, column, width, height, patternId) => this.createNpc(id, row, column, width, height, patternId);
+    // eslint-disable-next-line
     var createPc = (id, row, column, width, height, patternId) => this.createPc(id, row, column, width, height, patternId);
+    // eslint-disable-next-line
     var createLabel = (id, row, column, width, height, text) => this.createLabel(id, row, column, width, height, text);
+    // eslint-disable-next-line
     var synchronise = (grid) => this.synchronise(grid);
     // ici les vérification
 
     try {
+      // eslint-disable-next-line
       eval(this.state.editorValue + "\ngrid; synchronise(grid);");
       this.setState({infoText: ""});
     }
@@ -250,11 +257,14 @@ class Code extends Component {
               showGutter={true}
               highlightActiveLine={true}
               value={this.state.editorValue}
+              editorProps={{
+                $blockScrolling: Infinity
+              }}
               setOptions={{
                 enableBasicAutocompletion: true,
                 enableLiveAutocompletion: true,
                 enableSnippets: true,
-                tabSize: 2,
+                tabSize: 2
               }}/>
               <div id="info-text">{this.state.infoText}</div>
             </div>

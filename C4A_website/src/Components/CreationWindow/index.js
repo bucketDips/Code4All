@@ -19,7 +19,8 @@ class CreateExerciseWindow extends Component {
       parameters: {},
       gridProperties: {},
       patterns: [],
-      neutralElements: []
+      neutralElements: [],
+      delete: null
     }
   }
 
@@ -121,6 +122,9 @@ class CreateExerciseWindow extends Component {
         elements = this.state.labels;
         this.setState({labels: this.formatElements(elements, parameters)});
         break;
+      default:
+        throw new Error("Element type not recognized");
+
     }
   }
 
@@ -165,12 +169,15 @@ class CreateExerciseWindow extends Component {
         elements = this.state.labels;
         this.setState({labels: this.deleteElementFromElements(elements, id)});
         break;
+      default:
+        throw new Error("Element type not recognized");
     }
     
     this.setState({
       parameters: {
         type: "NONE"
-      }
+      },
+      delete: { id, type }
     });
   }
 
@@ -223,6 +230,8 @@ class CreateExerciseWindow extends Component {
       case 'LABEL':
         this.setState({labels: newElements});
         break;
+      default:
+        throw new Error("Element type not recognized");
     }
   }
 
@@ -338,46 +347,47 @@ class CreateExerciseWindow extends Component {
   render() {
     return (
             <div className={style.app}>
-            <div className={style.top_panel}>
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                  <ToolBox 
-                  options={this.state.options} />
-                  <Grid 
-                  parameters={this.state.gridProperties}
+              <div className={style.top_panel}>
+                  <DragDropContext onDragEnd={this.onDragEnd}>
+                    <ToolBox 
+                    options={this.state.options} />
+                    <Grid 
+                    parameters={this.state.gridProperties}
+                    blocks={this.state.blocks}
+                    pcs={this.state.pc}
+                    npcs={this.state.npc}
+                    labels={this.state.labels}
+                    delete={this.state.delete}
+                    changeParametersWindow={this.onChangeParameters.bind(this)}
+                    changeGridPattern={this.onChangeGridPattern.bind(this)}
+                    />
+                  </DragDropContext>
+                  <Code
+                  grid={this.state.gridProperties}
                   blocks={this.state.blocks}
                   pcs={this.state.pc}
                   npcs={this.state.npc}
                   labels={this.state.labels}
+                  patterns={this.state.patterns}
+                  synchroniseElements={this.synchroniseElements.bind(this)}
+                  changeGridParameters={this.onChangeGridParameters.bind(this)}
                   changeParametersWindow={this.onChangeParameters.bind(this)}
-                  changeGridPattern={this.onChangeGridPattern.bind(this)}
                   />
-                </DragDropContext>
-                <Code
-                grid={this.state.gridProperties}
-                blocks={this.state.blocks}
-                pcs={this.state.pc}
-                npcs={this.state.npc}
-                labels={this.state.labels}
-                patterns={this.state.patterns}
-                synchroniseElements={this.synchroniseElements.bind(this)}
-                changeGridParameters={this.onChangeGridParameters.bind(this)}
-                changeParametersWindow={this.onChangeParameters.bind(this)}
-                />
-            </div>
-            <div className={style.bottom_panel}>
-                <Parameters 
-                gridProperties={this.state.gridProperties}
-                patterns={this.state.patterns} 
-                parameters={this.state.parameters}
-                changeGridParameters={this.onChangeGridParameters.bind(this)} 
-                changeElementParameters={this.onChangeElementParameters.bind(this)} 
-                deleteElement={this.onDeleteElement.bind(this)}
-                />
-                <Patterns 
-                patterns={this.state.patterns} 
-                deletePattern={this.handleDeletePattern.bind(this)} />
-                <Details />
-            </div>
+              </div>
+              <div className={style.bottom_panel}>
+                  <Parameters 
+                  gridProperties={this.state.gridProperties}
+                  patterns={this.state.patterns} 
+                  parameters={this.state.parameters}
+                  changeGridParameters={this.onChangeGridParameters.bind(this)} 
+                  changeElementParameters={this.onChangeElementParameters.bind(this)} 
+                  deleteElement={this.onDeleteElement.bind(this)}
+                  />
+                  <Patterns 
+                  patterns={this.state.patterns} 
+                  deletePattern={this.handleDeletePattern.bind(this)} />
+                  <Details />
+              </div>
             </div>
     );
   }
