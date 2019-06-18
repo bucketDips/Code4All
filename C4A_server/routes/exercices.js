@@ -117,7 +117,7 @@ router.post('/executeExercice', function(request, res, next) {
         ],
         // "solution":"A();B(1,2);B(3,4);A();boucle(0,4,console.log(\"jordan\"))"
         "solution":"A();B(1,2);B(3,4);A();boucle(0,4,A())"
-    }
+    };
     var exerciceSteps = [];
     for (var i = 0; i < exercice.functions.length; ++i) {
         var name = exercice.functions[i].name;
