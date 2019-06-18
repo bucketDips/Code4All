@@ -132,13 +132,6 @@ class CreateExerciseWindow extends Component {
     
   }
 
-  onChangeGridPattern(patternId) {
-    Axios.get(process.env.PUBLIC_URL + '/patterns/files.json').then(response => {
-      response.data.forEach(element => {
-      });
-    });
-  }
-
   deleteElementFromElements(elements, id) {
     let b;
     for(var key in elements) {
@@ -179,6 +172,10 @@ class CreateExerciseWindow extends Component {
       },
       delete: { id, type }
     });
+  }
+
+  resetDelete() {
+    this.setState({delete: null});
   }
 
   synchroniseForOneTypeOfElements(elements, type) {
@@ -357,9 +354,7 @@ class CreateExerciseWindow extends Component {
                     pcs={this.state.pc}
                     npcs={this.state.npc}
                     labels={this.state.labels}
-                    delete={this.state.delete}
                     changeParametersWindow={this.onChangeParameters.bind(this)}
-                    changeGridPattern={this.onChangeGridPattern.bind(this)}
                     />
                   </DragDropContext>
                   <Code
@@ -368,7 +363,9 @@ class CreateExerciseWindow extends Component {
                   pcs={this.state.pc}
                   npcs={this.state.npc}
                   labels={this.state.labels}
-                  patterns={this.state.patterns}
+                  patterns={this.state.patterns}                    
+                  delete={this.state.delete}
+                  resetDelete={this.resetDelete.bind(this)}
                   synchroniseElements={this.synchroniseElements.bind(this)}
                   changeGridParameters={this.onChangeGridParameters.bind(this)}
                   changeParametersWindow={this.onChangeParameters.bind(this)}

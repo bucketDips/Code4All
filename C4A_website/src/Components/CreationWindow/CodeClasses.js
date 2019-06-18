@@ -20,21 +20,25 @@ export class Grid {
     }
 
     addBlock(block) {
+        if(!(block instanceof Block)) throw new Error("The added element should be of type 'block'");
         this.checkIfIdAlreadyExists(this.blocks, block.id);
         this.blocks.push(block);
     };
 
     addNpc(npc) {
+        if(!(npc instanceof Npc)) throw new Error("The added element should be of type 'npc'");
         this.checkIfIdAlreadyExists(this.npcs, npc.id);
         this.npcs.push(npc);
     };
 
     addPc(pc) {
+        if(!(pc instanceof Pc)) throw new Error("The added element should be of type 'pc'");
         this.checkIfIdAlreadyExists(this.pcs, pc.id);
         this.pcs.push(pc);
     };
 
     addLabel(label) {
+        if(!(label instanceof Label)) throw new Error("The added element should be of type 'label'");
         this.checkIfIdAlreadyExists(this.labels, label.id);
         this.labels.push(label);
     };
@@ -111,6 +115,11 @@ export class Pc {
         this.width = width;
         this.height = height;
         this.patternId = patternId;
+        this.functions = [];
+    }
+
+    addFunction(name, code, description) {
+        this.functions.push(new Func(name, String(code), description));
     }
 }
 
@@ -122,6 +131,14 @@ export class Label {
         this.width = width;
         this.height = height;
         this.text = text;
+    }
+}
+
+export class Func {
+    constructor(name, code, description) {
+        this.name = name;
+        this.code = code;
+        this.description = description;
     }
 }
   

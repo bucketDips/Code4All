@@ -42,30 +42,13 @@ class Grid extends Component {
     this.setState({gridProperties: properties});
   }
 
-  componentWillMount() {
-    let properties = {
-      lines: this.props.parameters.lines,
-      columns: this.props.parameters.columns,
-      size: this.props.parameters.size,
-      cases: this.props.parameters.cases,
-      background: this.props.parameters.background,
-      backgroundId: this.props.parameters.backgroundId
-    };
-    this.setState(
-      {
-        gridProperties: properties
-      },
-      function() {
-        this.fillCases();
-      }
-    );
-  }
-
   componentWillReceiveProps() {
+    console.log(this.state.gridProperties.size);
+    var size = this.state.gridProperties.size === undefined ? this.props.parameters.size : this.state.gridProperties.size;
     let properties = {
       lines: this.props.parameters.lines,
       columns: this.props.parameters.columns,
-      size: this.state.gridProperties.size,
+      size: size,
       cases: this.props.parameters.cases,
       background: this.props.parameters.background,
       backgroundId: this.props.parameters.backgroundId
@@ -103,7 +86,6 @@ class Grid extends Component {
   }
 
   render() {
-    console.log(this.props.delete);
     let background = this.state.gridProperties.background == null ? "" : 
     (<div style={{
       gridColumnStart: 1,
@@ -202,7 +184,7 @@ class Grid extends Component {
                 {background}
               </div>
             </div>
-            <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={30}/>
+            <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={this.state.gridProperties.size}/>
         </div>
     );
   }
