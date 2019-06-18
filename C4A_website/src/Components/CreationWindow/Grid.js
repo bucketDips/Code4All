@@ -42,30 +42,11 @@ class Grid extends Component {
     this.setState({gridProperties: properties});
   }
 
-  componentWillMount() {
-    let properties = {
-      lines: this.props.parameters.lines,
-      columns: this.props.parameters.columns,
-      size: this.props.parameters.size,
-      cases: this.props.parameters.cases,
-      background: this.props.parameters.background,
-      backgroundId: this.props.parameters.backgroundId
-    };
-    this.setState(
-      {
-        gridProperties: properties
-      },
-      function() {
-        this.fillCases();
-      }
-    );
-  }
-
   componentWillReceiveProps() {
     let properties = {
       lines: this.props.parameters.lines,
       columns: this.props.parameters.columns,
-      size: this.state.gridProperties.size,
+      size: this.props.parameters.size,
       cases: this.props.parameters.cases,
       background: this.props.parameters.background,
       backgroundId: this.props.parameters.backgroundId
