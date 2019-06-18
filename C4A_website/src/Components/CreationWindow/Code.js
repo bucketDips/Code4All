@@ -120,6 +120,12 @@ class Code extends Component {
   }
 
   componentWillReceiveProps(props){
+    if(props.delete){
+      this.delete(props.delete.id, props.delete.type);
+      props.resetDelete();
+      return;
+    }
+
     if(this.state.fromEdit === true || this.state.editorValue === undefined) {
       return;
     }
@@ -256,7 +262,7 @@ class Code extends Component {
   }
 
   delete(id, type) {
-    console.log(id + "|" + type);
+    var nameElement = "";
     var val = this.state.editorValue;
     var formattedType = type.toLowerCase();
     formattedType = formattedType.charAt(0).toUpperCase() + formattedType.slice(1);
@@ -265,7 +271,15 @@ class Code extends Component {
     var creationMatching = val.match(regexCreation);
 
     if(creationMatching != null) {
+      nameElement =  creationMatching[0].split(/\s+|=/)[1];
       val = val.replace(creationMatching[0], "");
+    }
+
+    var regexAdding = new RegExp("grid.add" + formattedType + "\\(\\s*" + nameElement + "\\s*\\);{0,1}", "g");
+    var addingMatching = val.match(regexAdding);
+
+    if(addingMatching != null) {
+      val = val.replace(addingMatching[0], "");
     }
 
     this.setState({editorValue: val});
