@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    android:id="@+id/cardview"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:layout_margin="5dp"
+
+                                    android:theme="@style/AppTheme"
+
+                                    app:cardBackgroundColor="@color/semitransparentwhite"
+                                    app:cardCornerRadius="4dp"
+                                    app:cardElevation="2dp"
+                                    app:contentPadding="0dp">
+
+    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:layout_weight="0.10" android:id="@+id/constraintLayout">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:id="@+id/imageView"
+                android:padding="8dp" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                android:backgroundTint="@color/white" android:src="@drawable/school_logo"/>
+        <Button
+                android:text="@string/button_label_delete"
+                android:layout_height="wrap_content" android:id="@+id/buttonDelete" android:layout_weight="0.10"
+                style="@style/Widget.AppCompat.Button.Borderless" android:textColor="@color/red"
+                android:background="@color/white" android:textStyle="bold" android:textAlignment="center"
+                android:layout_width="wrap_content" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+                android:id="@+id/classesize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAlignment="textStart"
+                android:textSize="18sp"
+                tools:ignore="RtlCompat"
+                android:text="@string/classe_size"
+                app:layout_constraintStart_toEndOf="@+id/classename"
+                android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/buttonDelete"/>
+        <TextView
+                android:id="@+id/classename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/classe_name"
+                android:textSize="24sp"
+                tools:ignore="NestedWeights,RtlHardcoded"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                android:layout_marginStart="32dp" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

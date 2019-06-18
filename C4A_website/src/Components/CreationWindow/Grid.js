@@ -103,6 +103,7 @@ class Grid extends Component {
   }
 
   render() {
+    console.log(this.props.delete);
     let background = this.state.gridProperties.background == null ? "" : 
     (<div style={{
       gridColumnStart: 1,

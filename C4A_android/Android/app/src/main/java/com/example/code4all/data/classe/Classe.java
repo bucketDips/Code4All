@@ -1,8 +1,8 @@
-package com.example.code4all.data;
+package com.example.code4all.data.classe;
 
 import pub.devrel.bundler.BundlerClass;
 
-@BundlerClass
+
 public class Classe {
     private int id;
     private String name;
@@ -16,7 +16,15 @@ public class Classe {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

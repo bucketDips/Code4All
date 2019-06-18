@@ -41,6 +41,8 @@ class ParametersElement extends Component {
       case 'PC':
         img = "stickman.png";
         break;
+      default:
+          throw new Error("Element type not recognized");
     }
     let params = this.props.parameters;
     if(e.target.value === "0") {

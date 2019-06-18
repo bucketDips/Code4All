@@ -6,6 +6,8 @@
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="login">Login</string>
+    <string name="token" translatable="false">token</string>
+    <string name="apikeypixabay" translatable="false">12798900-ca01678f7e4820e80f3435d26</string>
 
 
     <string name="network_error_network_error">Cannot connect to Internet...Please check your connection!</string>
@@ -13,6 +15,15 @@
     <string name="network_error_auth_failure">Cannot connect to Internet...Please check your connection!</string>
     <string name="network_error_parser_error">Parsing error! Please try again after some time!!</string>
     <string name="network_error_time_out">Connection TimeOut! Please check your internet connection.</string>
-    <string name="c_d_button_to_my_classes">Button to my classes</string>
+
+    <string name="c_d_button_to_my_classes" translatable="false">Button to my classes</string>
+    <string name="classe_name">Classe name : %s </string>
+    <string name="classe_size">Number of members : %d </string>
+    <string name="button_label_delete">delete</string>
+    <string name="message_classe_list_error">Your classe list is empty</string>
+    <string name="welcoming_msg">Hello %1$s</string>
+    <string name="background_powered_by_pixabay_api">Background powered by Pixabay API</string>
+    <string name="datalabel">%1$s</string>
+    <string name="message_user_connected">Connected as %1$s .</string>
 
 </resources>

@@ -4,18 +4,22 @@ import android.content.Context;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.code4all.data.Classe;
-import com.example.code4all.data.User;
+import com.example.code4all.data.classe.Classe;
+import com.example.code4all.data.user.User;
+import com.example.code4all.serverhandler.pixabay.IAPIHandler;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServerHandler implements IServerHandler{
+public class ServerHandler implements IServerHandler, IAPIHandler {
 
-    private final String url = "http://51.158.110.231:3000";
+    private final String rootUrl = "http://51.158.110.231:3000";
     private final String authorization = "Authorization";
     private final String bearer = "Bearer ";
 
@@ -31,6 +35,8 @@ public class ServerHandler implements IServerHandler{
     private final String classes = "/classes";
     private final String create_classroom = "/createClassroom";
     private final String add_student_to_class = "/addStudentToClass";
+    private final String get_classes_from_this_student = "/getStudentClassesById";
+    private final String get_classes_from_this_professor = "/getProfessorClassesById";
 
 
 
@@ -61,25 +67,45 @@ public class ServerHandler implements IServerHandler{
 
 
     @Override
-    public void connect(@NotNull String mail, @NotNull String password, @NotNull IAPICallbackJsonObject iapiCallbackJsonObject) {
-        String finalUrl = url + user + connect + "/" + mail + "/" + password;
+    public void connect(@NotNull String mail, @NotNull String password, @NotNull IAPICallbackJsonObject callback) {
+        String finalUrl = rootUrl + user + connect + "/" + mail + "/" + password;
         //RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, finalUrl, null,
-                iapiCallbackJsonObject::onSuccessResponse,
-                iapiCallbackJsonObject::onErrorResponse
+                callback::onSuccessResponse,
+                callback::onErrorResponse
         );
 
         this.requestQueue.add(jsonObjectRequest);
     }
 
     @Override
-    public void find_user(@NotNull String nameOrEmail, @NotNull String token, @NotNull IAPICallbackJsonObject iapiCallbackJsonObject) {
-        String finalUrl = url + user + find_user + "/" + nameOrEmail;
+    public void findUser(@NotNull String nameOrEmail, @NotNull String token, @NotNull IAPICallbackJsonArray callback) {
+        String finalUrl = rootUrl + user + find_user + "/" + nameOrEmail;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, finalUrl, null,
-                iapiCallbackJsonObject::onSuccessResponse,
-                iapiCallbackJsonObject::onErrorResponse
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET, finalUrl, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap <String, String> headers = new HashMap<>();
+                headers.put(authorization, bearer + token);
+                return headers;
+            }
+        };
+
+        this.requestQueue.add(jsonArrayRequest);
+    }
+
+    @Override
+    public void createClassroom(@NotNull String classname, @NotNull String token, @NotNull IAPICallbackJsonObject callback) {
+        String finalUrl = rootUrl + classes + create_classroom + "/" + classname;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, finalUrl, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
         ){
             @Override
             public Map<String, String> getHeaders() {
@@ -93,12 +119,12 @@ public class ServerHandler implements IServerHandler{
     }
 
     @Override
-    public void create_classroom(@NotNull String classname, @NotNull String token, @NotNull IAPICallbackJsonObject iapiCallbackJsonObject) {
-        String finalUrl = url + classes + create_classroom + "/" + classname;
+    public void resetPwd(@NotNull User user, @NotNull String token, @NotNull IAPICallbackJsonObject callback) {
+        String finalUrl = rootUrl + user + reset_pwd + "/" + user.getEmail();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, finalUrl, null,
-                iapiCallbackJsonObject::onSuccessResponse,
-                iapiCallbackJsonObject::onErrorResponse
+                callback::onSuccessResponse,
+                callback::onErrorResponse
         ){
             @Override
             public Map<String, String> getHeaders() {
@@ -112,12 +138,12 @@ public class ServerHandler implements IServerHandler{
     }
 
     @Override
-    public void reset_pwd(@NotNull User user, @NotNull String token, @NotNull IAPICallbackJsonObject iapiCallbackJsonObject) {
-        String finalUrl = url + user + reset_pwd + "/" + user.getEmail();
+    public void addUserToClass(@NotNull User user, @NotNull Classe classe, @NotNull String token, @NotNull IAPICallbackJsonObject callback) {
+        String finalUrl = rootUrl + classes + add_student_to_class + "/" + user.getId() + "/" + classe.getId();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, finalUrl, null,
-                iapiCallbackJsonObject::onSuccessResponse,
-                iapiCallbackJsonObject::onErrorResponse
+                callback::onSuccessResponse,
+                callback::onErrorResponse
         ){
             @Override
             public Map<String, String> getHeaders() {
@@ -131,21 +157,60 @@ public class ServerHandler implements IServerHandler{
     }
 
     @Override
-    public void add_user_to_class(@NotNull User user, @NotNull Classe classe, @NotNull String token, @NotNull IAPICallbackJsonObject iapiCallbackJsonObject) {
-        String finalUrl = url + classes + add_student_to_class + "/" + user.getId() + "/" + classe.getId();
+    public void getAllClassromOfUserAsStudent(@NotNull String token, @NotNull IAPICallbackJsonArray callback) {
+        String url = rootUrl + classes + get_classes_from_this_student;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, finalUrl, null,
-                iapiCallbackJsonObject::onSuccessResponse,
-                iapiCallbackJsonObject::onErrorResponse
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
         ){
             @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap <String, String> headers = new HashMap<>();
                 headers.put(authorization, bearer + token);
                 return headers;
             }
         };
 
+        this.requestQueue.add(jsonArrayRequest);
+    }
+
+    @Override
+    public void getAllClassromOfUserAsProfessor(@NotNull String token, @NotNull IAPICallbackJsonArray callback) {
+        String url = rootUrl + classes + get_classes_from_this_professor;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap <String, String> headers = new HashMap<>();
+                headers.put(authorization, bearer + token);
+                return headers;
+            }
+        };
+
+        this.requestQueue.add(jsonArrayRequest);
+    }
+
+    @Override
+    public void getRandomPicture(IAPICallbackJsonObject callback) {
+        String url = IAPIHandler.apiUrl.replaceFirst("%1", IAPIHandler.apiKey);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        );
+
         this.requestQueue.add(jsonObjectRequest);
+    }
+
+    public static String getStringFromJsonObject(JSONObject jsonObject, String target) throws JSONException {
+        if(jsonObject.has(target))
+            return jsonObject.getString(target);
+        else
+            return "";
     }
 }
