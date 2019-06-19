@@ -6,7 +6,12 @@ var con = require('./connexionDatabase.js');
 var jwt = require('jsonwebtoken');
 var config = require("./config");
 var AUTH = require('./AUTHENTIFICATION')
-
+var gEval =eval;
+var sEval = require('safe-eval');
+var evalContext = {
+    evalContext: this,
+    sEval:sEval,
+};
 var tmpFuncJson = {
     name: "michel",
     code: "function() {console.log('chocapic');}",
@@ -109,27 +114,56 @@ router.post('/executeExercice', function(request, res, next) {
             }
             ,
             {
+                "function_id": 2,
+                "exercice_id": 6,
+                "code": "function C(a) {return a}",
+                "name": "C"
+            }
+            ,
+            {
                 "function_id": 3,
                 "exercice_id": 6,
-                "code": "function boucle(depart,fin, action) {for (var sfglkj = depart; sfglkj < fin; ++sfglkj){console.log(\"action = \" + action);new Function(action)()}}",
+                // "code": "function boucle(depart,fin, action) {for (var sfglkj = depart; sfglkj < fin; ++sfglkj){console.log(\"action = \" + action);new Function(action)()}}",
+                "code": "function boucle(depart,fin, action) {for (var sfglkj = depart; sfglkj < fin; ++sfglkj){new Function(action)()}}",
                 "name": "boucle"
+            }
+            ,
+            {
+                "function_id": 4,
+                "exercice_id": 6,
+                // "code": "function boucle(depart,fin, action) {for (var sfglkj = depart; sfglkj < fin; ++sfglkj){console.log(\"action = \" + action);new Function(action)()}}",
+                "code": "function condition(cnd, action) {if(cnd){new Function(action)()}}",
+                // "code": "function condition(cnd, action) {if(cnd){sEval(action,evalContext)}}",
+                // "code": "function condition(cnd, action) {if(cnd){console.log(\"action = \" + action);eval(action)}}",
+                "name": "condition"
             }
         ],
         // "solution":"A();B(1,2);B(3,4);A();boucle(0,4,console.log(\"jordan\"))"
         // "solution":"A();B(1,2);B(3,4);A();boucle(0,4,A())"
-        "solution":"boucle(0,4,A())"
+        // "solution":"boucle(0,4,'boucle(0,4,\"B(3,4)\")');boucle(0,2,'console.log(\"bite\")')"
+        // "solution":"boucle(0,4,'boucle(0,4,\"B(3,4)\")');"
+        "solution":"condition(1<2, 'console.log(\"bite\")');condition(1>2, 'console.log(\"mousse\")')"
     };
     var exerciceSteps = [];
     for (var i = 0; i < exercice.functions.length; ++i) {
         var name = exercice.functions[i].name;
         functionList[name] = createFunction(exercice.functions[i].code)
+        var tmp = gEval(exercice.functions[i].code)
+        evalContext[exercice.functions[i].name] = tmp;
+        console.log("evalContext")
+        console.log(evalContext)
 
 
     }
     exerciceSteps.push(exercice.exercice.content);
     var functionUsedList = exercice.solution.split(";")
+    // for (var i = 0; i < functionList.length; ++i){
+    //
+    // }
     for (var i = 0; i < functionUsedList.length; ++i){
-        var variables = functionUsedList[i]
+        console.log(functionUsedList[i])
+        gEval(functionUsedList[i],evalContext)
+        /*var variables = functionUsedList[i]
         variables = variables.substring(variables.indexOf('('))
         var asParameters = false;
         if (variables.length > 2) {
@@ -142,14 +176,11 @@ router.post('/executeExercice', function(request, res, next) {
         var funcName = getFuncName(functionUsedList[i]);
         if (asParameters){
 
-            // console.log("funcName")
-            // console.log(funcName)
-            // console.log("funcName")
-            // console.log("avant")
-            // console.log(variables)
             for (var j = 0; j < variables.length; ++j){
-                if (variables[j].indexOf("(") > 0 && functionList[funcName]){
-                    variables[j] = functionList[getFuncName(variables[j])];
+                var variableName = getFuncName(variables[j]);
+                if (variables[j].indexOf("(") > 0 && functionList[variableName]){
+                    var funcCode = functionList[variableName].toString()
+                    variables[j] = funcCode.substring(funcCode.indexOf('{') + 1, funcCode.length - 1);
                 }
 
             }
@@ -160,11 +191,12 @@ router.post('/executeExercice', function(request, res, next) {
 
         else {
             ret = functionList[funcName].apply(null, null);
-        }
-        exerciceSteps.push(exercice.exercice.content);
+        }*/
+        // exerciceSteps.push(exercice.exercice.content);
     }
     // console.log(functionUsedList);
-    res.send(exerciceSteps)
+    // res.send(exerciceSteps)
+    res.send("toto")
 });
 var escapeQuote = function(str){
     return str.replace("'", "''")
