@@ -14,10 +14,9 @@ class App extends Component {
       <div>
         <BrowserRouter>
           <Switch>
-            <ProtectedRoute exact path="/" component={HomeWindow} />
+            <ProtectedRoute exact path="/home" component={HomeWindow} />
             <ProtectedRoute exact path="/create" component={CreateExerciseWindow} />
-            <NotConnectedRoute exact path="/login" component={NotConnectedWindow} type="login" />
-            <NotConnectedRoute exact path="/inscription" component={NotConnectedWindow} type="inscription" />
+            <NotConnectedRoute exact path="/" component={NotConnectedWindow} />
             <Route component={ErrorWindow} />
           </Switch>
         </BrowserRouter>

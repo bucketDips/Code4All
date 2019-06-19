@@ -37,7 +37,7 @@ class LoginWindow extends Component {
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 8 },
+        sm: { span: 10 },
       },
     };
     const tailFormItemLayout = {
@@ -47,7 +47,7 @@ class LoginWindow extends Component {
           offset: 0,
         },
         sm: {
-          span: 16,
+          span: 24,
           offset: 8,
         },
       },
