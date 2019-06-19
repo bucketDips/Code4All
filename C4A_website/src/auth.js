@@ -3,7 +3,7 @@ import Axios from 'axios';
 class Auth {
     login(email, password) {
         console.log(email);
-        Axios.get("http://51.158.110.231:3000/users/connect/" + email + "/" + password).then(response => {
+        Axios.get("http://212.47.235.40:3000/users/connect/" + email + "/" + password).then(response => {
             if(response.data.success) {
                 console.log("pipou");
                 localStorage.sessionToken = response.data.token;
@@ -29,7 +29,7 @@ class Auth {
     }
 
     inscription(user, password, mail) {
-        Axios.get("http://51.158.110.231:3000/users/create/" + user + "/" + password + "/" + mail).then(response => {
+        Axios.get("http://212.47.235.40:3000/users/create/" + user + "/" + password + "/" + mail).then(response => {
             if(response.success) {
                 window.location.href = "/login";
             }

@@ -1,0 +1,14 @@
+.left-nav{
+    background-color: #007bff;
+    position: absolute;
+    left: 0;
+    width: 15vw;
+    height: 100vh;
+    padding: 5vh;
+}
+
+.ant-layout-sider {
+    flex: auto !important;
+    max-width: 100% !important;
+    width: 20vw !important;
+}
