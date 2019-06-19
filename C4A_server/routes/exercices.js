@@ -20,9 +20,6 @@ var funcString = [
     }
 ]
 var createFunction = function (txt) {
-    console.log("txt")
-    console.log(txt)
-    console.log("txt")
     return new Function("return " + txt)();
 }
 /* GET users listing. */
@@ -78,6 +75,9 @@ router.get('/getExercice/:id', function(request, res, next) {
         })
     })
 });
+var getFuncName = function(str){
+    return str.substring(0,str.indexOf('('))
+}
 router.post('/executeExercice', function(request, res, next) {
     // var exercice = JSON.parse(request.body.exercice);
     var exercice = ""
@@ -98,25 +98,26 @@ router.post('/executeExercice', function(request, res, next) {
             {
                 "function_id": 1,
                 "exercice_id": 6,
-                "code": "function oki() {\r\n  console.log( \"AA\");\r\n}",
+                "code": "function A() {\r\n  console.log( \"AA\");\r\n}",
                 "name": "A"
             },
             {
                 "function_id": 2,
                 "exercice_id": 6,
-                "code": "function oki(a,b) {\r\n  console.log(\"TOoTO\");console.log(a);console.log(b);\r\n}",
+                "code": "function B(a,b) {\r\n  console.log(\"TOoTO\");console.log(a);console.log(b);\r\n}",
                 "name": "B"
             }
             ,
             {
                 "function_id": 3,
                 "exercice_id": 6,
-                "code": "function oki(depart,fin, action) {for (var sfglkj = depart; sfglkj < fin; ++sfglkj){console.log(action);new Function(action)()}}",
+                "code": "function boucle(depart,fin, action) {for (var sfglkj = depart; sfglkj < fin; ++sfglkj){console.log(\"action = \" + action);new Function(action)()}}",
                 "name": "boucle"
             }
         ],
         // "solution":"A();B(1,2);B(3,4);A();boucle(0,4,console.log(\"jordan\"))"
-        "solution":"A();B(1,2);B(3,4);A();boucle(0,4,A())"
+        // "solution":"A();B(1,2);B(3,4);A();boucle(0,4,A())"
+        "solution":"boucle(0,4,A())"
     };
     var exerciceSteps = [];
     for (var i = 0; i < exercice.functions.length; ++i) {
@@ -138,12 +139,27 @@ router.post('/executeExercice', function(request, res, next) {
             asParameters = true;
         }
         var ret;
-        if (asParameters)
+        var funcName = getFuncName(functionUsedList[i]);
+        if (asParameters){
 
-            ret = functionList[functionUsedList[i].substring(0,functionUsedList[i].indexOf('('))].apply(null, variables);
+            // console.log("funcName")
+            // console.log(funcName)
+            // console.log("funcName")
+            // console.log("avant")
+            // console.log(variables)
+            for (var j = 0; j < variables.length; ++j){
+                if (variables[j].indexOf("(") > 0 && functionList[funcName]){
+                    variables[j] = functionList[getFuncName(variables[j])];
+                }
+
+            }
+            // console.log("apres")
+            // console.log(variables)
+            ret = functionList[funcName].apply(null, variables);
+        }
+
         else {
-            var funcName = functionUsedList[i].substring(0,functionUsedList[i].indexOf('('));
-            ret = functionList[funcName]();
+            ret = functionList[funcName].apply(null, null);
         }
         exerciceSteps.push(exercice.exercice.content);
     }
