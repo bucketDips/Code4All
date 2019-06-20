@@ -1,5 +1,6 @@
 package com.example.code4all.controllers.classes_menu;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,8 +15,11 @@ import android.view.ViewGroup;
 import com.example.code4all.R;
 import com.example.code4all.data.classe.Classe;
 import com.example.code4all.data.classe.ClasseManager;
+import com.example.code4all.data.classe.IClasseManagerListener;
 import com.example.code4all.serverhandler.ServerHandler;
 import com.example.code4all.settings.SharedPreferenceManager;
+import com.example.code4all.tools.DialogBoxBuilder;
+import com.example.code4all.tools.IBasicDialogCallBack;
 
 import java.util.ArrayList;
 
@@ -24,44 +28,128 @@ public class ClassesListFragment extends Fragment{
     private View fragment;
     private ServerHandler serverHandler;
     private SharedPreferenceManager cache;
+    private RecyclerView RecyclerViewListAsProfessor;
+    private RecyclerView RecyclerViewListAsStudent;
     private ClasseManager classeManager;
-    private Context context;
-    private RecyclerView recyclerView;
-
+    private AlertDialog alertDialog;
+    private IRecyclerViewClassesAdapterListener recyclerViewAdapterListener;
+    private Classe classeSelected;
+    private ClasseActivity parent;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragment = inflater.inflate(R.layout.fragment_classes_list, container, false);
-        ClasseListActivity parent = (ClasseListActivity) getActivity();
-        if(parent!= null){
+        parent = (ClasseActivity) getActivity();
+        Context context = getContext();
+
+
+
+        if(parent != null){
+            //binding = DataBindingUtil.setContentView(parent, R.layout.fragment_classes_list);
             cache = parent.getSharedPreferenceManager();
             serverHandler = parent.getServerHandler();
 
-            classeManager = new ClasseManager(parent.getApplicationContext(),serverHandler);
-            classeManager.setListener(this::renderRecyclerView);
+            RecyclerViewListAsProfessor = fragment.findViewById(R.id.classeslistAsProfessor);
+            RecyclerViewListAsStudent = fragment.findViewById(R.id.classeListAsStudent);
 
+            recyclerViewAdapterListener = new IRecyclerViewClassesAdapterListener() {
+                @Override
+                public void onClickDelete(Classe classe) {
+                    createAlertDialog(getString(R.string.empty_message_for_dialog_fragment, "Are you sure ?"), "Yes", "No", classe).show();
+                }
+
+                @Override
+                public void onClasseSelected(Classe classe) {
+                    if(classeSelected == null){
+                        classeSelected = classe;
+                        parent.displayClasseDetailsFragment(new ClasseDetailsFragment(), classeSelected);
+                    } else {
+                        if(!classeSelected.equals(classe)){
+                            classeSelected = classe;
+                            parent.displayClasseDetailsFragment(new ClasseDetailsFragment(), classeSelected);
+                        } else {
+                            if(!parent.isClasseDetailFragmentShown()){
+                                classeSelected = classe;
+                                parent.displayClasseDetailsFragment(new ClasseDetailsFragment(), classeSelected);
+                            }
+                        }
+                    }
+                }
+            };
+
+
+            ArrayList<Classe> classesAsProfessor = new ArrayList<>();
+            ArrayList<Classe> classesAsStudent = new ArrayList<>();
+            //classesTest.add(new Classe(2,"5-F"));
+            //classesTest.add(new Classe(3,"5-X"));
+
+            RecyclerViewClassesAdapter recyclerViewAdapterProfessor = new RecyclerViewClassesAdapter(classesAsProfessor, recyclerViewAdapterListener);
+            RecyclerViewClassesAdapter recyclerViewAdapterStudent = new RecyclerViewClassesAdapter(classesAsStudent, recyclerViewAdapterListener);
+
+            RecyclerViewListAsProfessor.setAdapter(recyclerViewAdapterProfessor);
+            RecyclerViewListAsStudent.setAdapter(recyclerViewAdapterStudent);
+
+            RecyclerViewListAsStudent.setLayoutManager(new LinearLayoutManager(context));
+            RecyclerViewListAsProfessor.setLayoutManager(new LinearLayoutManager(context));
+
+
+            classeManager = new ClasseManager(fragment.getContext(),serverHandler , classesAsProfessor, classesAsStudent);
+            classeManager.setListener(new IClasseManagerListener() {
+                @Override
+                public void onClasseListAsProfessorChanged(ArrayList<Classe> classes) {
+                    renderRecyclerViewAsProfessor(classes);
+                }
+
+                @Override
+                public void onClasseListAsStudentChanged(ArrayList<Classe> classes) {
+                    renderRecyclerViewAsStudent(classes);
+                }
+            });
+            classeManager.loadClassesFromUser();
         }
-
-        loadRecyclerView();
-
         return fragment;
     }
 
-    private void loadRecyclerView(){
-    //        serverHandler.get_all_classrom_of_user();
-        this.recyclerView = this.fragment.findViewById(R.id.classeslist);
-        classeManager.loadClassesFromUser();
 
-        //Log.d(TAG, classes.toString());
-        Log.d(TAG, classeManager.getClasses().toString());
+    private AlertDialog createAlertDialog(String dialogMessage, String labelButton1, String labelButton2, Classe classeToDelete){
+        return DialogBoxBuilder.build(getContext(), getString(R.string.empty_message_for_dialog_fragment, dialogMessage),
+                labelButton1, labelButton2, getLayoutInflater(), new IBasicDialogCallBack() {
+                    @Override
+                    public void onClickButton1(View view, AlertDialog dialogBox) {
+                        classeManager.deleteClasse(classeToDelete);
+                        if (classeToDelete.equals(classeSelected)){
+                            parent.removeClasseDetailFragment();
+                        }
+
+                        Log.d(TAG, "onClickButton1 classe "+ classeToDelete.toString() + "should be deleted");
+                        dialogBox.dismiss();
+                    }
+
+                    @Override
+                    public void onClickButton2(View view, AlertDialog dialogBox) {
+                        dialogBox.dismiss();
+                    }
+                });
     }
 
-    private void renderRecyclerView(ArrayList<Classe> classes){
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(classes, context);
-        recyclerView.setAdapter(recyclerViewAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    private void renderRecyclerViewAsProfessor(ArrayList<Classe> classes){
+        RecyclerViewClassesAdapter recyclerViewAdapter = new RecyclerViewClassesAdapter(classes,recyclerViewAdapterListener);
+        RecyclerViewListAsProfessor.setAdapter(recyclerViewAdapter);
+        //classeManager.printAllClasses();
+    }
 
+    private void renderRecyclerViewAsStudent(ArrayList<Classe> classes){
+        RecyclerViewClassesAdapter recyclerViewAdapter = new RecyclerViewClassesAdapter(classes,recyclerViewAdapterListener);
+        RecyclerViewListAsStudent.setAdapter(recyclerViewAdapter);
+
+        //classeManager.printAllClasses();
+        //RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(classes);
+        //RecyclerViewListAsStudent.getAdapter();
+    }
+
+    public ClasseManager getClasseManager() {
+        return classeManager;
     }
 }

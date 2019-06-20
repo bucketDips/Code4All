@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
     <color name="colorPrimary">#fff1c7</color>
     <color name="colorPrimaryDark">#050C39</color>
     <color name="red">#480308</color>
-    <color name="blue">#0529c9</color>
-    <color name="blue_material_design">#0827ae</color>
-    <color name="green">#08c905</color>
+    <color name="blue">#129ADA</color>
+    <color name="blue_material_design">#0827AE</color>
+    <color name="green">#08C905</color>
     <color name="yellow">#ffe100</color>
     <color name="purple">#7405C9</color>
     <color name="text">#e0f2f1</color>
@@ -17,6 +18,11 @@
     <color name="background_material_light">#f10c0c</color>
     <color name="primary_dark_material_light">#7b3434</color>
     <color name="spinner_hint_text_color">#FFFFCC</color>
+    <color name="pressed_color">#4DFFFFFF</color>
+    <color name="focused_color">#E6deecef</color>
+    <color name="selected_color">#fff1c7</color>
+    <color name="accent">#42ffffff </color>
+
 
 
     <declare-styleable name="MaterialSpinner">

@@ -7,16 +7,16 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.example.code4all.R;
 import com.example.code4all.controllers.MyAppCompatActivity;
-import com.example.code4all.controllers.classes_menu.ClasseListActivity;
+import com.example.code4all.controllers.classes_menu.ClasseActivity;
 import com.example.code4all.data.user.IUserManagerListener;
 import com.example.code4all.data.user.User;
 import com.example.code4all.data.user.UserManager;
 import com.example.code4all.databinding.ActivityMainMenuBinding;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
-import com.example.code4all.serverhandler.ServerHandler;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +56,7 @@ public class MainMenuActivity extends MyAppCompatActivity {
                 }
             });
 
-            UserManager userManager = new UserManager(getApplicationContext(), ServerHandler.getInstance());
+            UserManager userManager = new UserManager(getApplicationContext(), serverHandler);
             userManager.setListener(new IUserManagerListener() {
                 @Override
                 public void onUserSaved() {
@@ -70,6 +70,11 @@ public class MainMenuActivity extends MyAppCompatActivity {
                     renderTextViews(user);
                     //Toast.makeText(getApplicationContext(), TAG + "onUserLoaded()", Toast.LENGTH_LONG).show();
                 }
+
+                @Override
+                public void onUserLoadFail(String user, VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "User load has fail", Toast.LENGTH_LONG).show();
+                }
             });
 
             userManager.loadUserFromSharedPreference();
@@ -80,7 +85,7 @@ public class MainMenuActivity extends MyAppCompatActivity {
         }
 
         intents = new ArrayList<>();
-        intents.add(new Intent(this, ClasseListActivity.class));
+        intents.add(new Intent(this, ClasseActivity.class));
         intents.add(new Intent(this, MainMenuActivity.class));
 
         binding.button1.setOnClickListener(v -> onClickButtonMenu(binding.button1));

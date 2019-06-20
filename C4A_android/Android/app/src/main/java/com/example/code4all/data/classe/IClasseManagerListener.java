@@ -5,5 +5,6 @@ import com.example.code4all.data.classe.Classe;
 import java.util.ArrayList;
 
 public interface IClasseManagerListener {
-   void onDataChanged(ArrayList<Classe> classes);
+   void onClasseListAsProfessorChanged(ArrayList<Classe> classes);
+   void onClasseListAsStudentChanged(ArrayList<Classe> classes);
 }

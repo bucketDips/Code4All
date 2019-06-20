@@ -5,10 +5,26 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".controllers.classes_menu.ClasseListActivity">
+        tools:context=".controllers.classes_menu.ClasseActivity"
+android:background="@drawable/aquabc">
 
-    <fragment android:layout_width="match_parent" android:layout_height="match_parent"
-              android:name="com.example.code4all.controllers.classes_menu.ClassesListFragment"
-              tools:layout="@layout/fragment_classes_list" android:id="@+id/fragment_classes_list"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <fragment
+                android:name="com.example.code4all.controllers.classes_menu.ClassesListFragment"
+                tools:layout="@layout/fragment_classes_list" android:id="@+id/fragment_classes_list"
+                android:layout_weight=".39" android:layout_width="0dp" android:layout_height="match_parent"/>
+        <View
+                android:layout_width="5dp"
+                android:layout_height="match_parent" android:id="@+id/view"
+                android:background="@color/semitransparentwhite"/>
+        <FrameLayout
+                android:layout_height="match_parent"
+                android:id="@+id/fragment_detail_container" android:layout_weight=".59"
+                android:layout_width="0dp"
+                android:visibility="gone"/>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 

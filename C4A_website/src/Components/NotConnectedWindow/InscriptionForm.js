@@ -9,7 +9,7 @@ import {
   Button,
 } from 'antd';
 
-import auth from '../../auth';
+import auth from '../../Providers/auth';
 import styles from './style.css';
 
 

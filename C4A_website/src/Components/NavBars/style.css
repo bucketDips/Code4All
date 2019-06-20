@@ -1,0 +1,25 @@
+.left-nav{
+    background-color: #007bff;
+    position: absolute;
+    left: 0;
+    height: 100vh;
+    padding: 5vh;
+}
+
+.ant-layout-sider {
+    flex: auto !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+}
+
+.ant-layout.ant-layout-has-sider > .ant-layout, .ant-layout.ant-layout-has-sider > .ant-layout-content {
+    flex: 20 !important;
+}
+
+.ant-layout-sider {
+    flex: 1 !important;
+}
+
+.ant-layout-sider-trigger {
+    flex: 20 !important;
+}

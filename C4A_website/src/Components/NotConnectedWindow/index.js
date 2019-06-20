@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import WrappedLoginWindow from '../../Components/LoginWindow/';
-import WrappedRegistrationForm from '../../Components/InscriptionWindow/';
+import WrappedLoginWindow from './LoginForm';
+import WrappedRegistrationForm from './InscriptionForm';
 
 import styles from './style.css';
 
@@ -46,14 +46,13 @@ class NotConnectedWindow extends Component {
 
     return (
       <div class="flex-container">
-
           <div class="auto"></div>
+
           <div className={this.state.fade === true ? 'main-bubble fadeOut':'main-bubble fadeIn'}>
             <div class="main-bubble-content">
               <div class="main-bubble-title">
                 <img className={this.state.type === "login" ? "arrow change-insc" : "arrow change-login"} src="/fleche.png" alt="logo" onClick={this.handleClick.bind(this)} />
-                <h1>Code4All - {this.state.type === "login" ? "se connecter !" : "s'inscrire !"}</h1>
-
+                <h1>CodeInSchool - {this.state.type === "login" ? "se connecter !" : "s'inscrire !"}</h1>
               </div>
               <div class="main-bubble-body-border">
                 <div class="main-bubble-body">
@@ -64,7 +63,6 @@ class NotConnectedWindow extends Component {
           </div>
 
           <div class="auto"></div>
-      
       </div>
     );
   }
