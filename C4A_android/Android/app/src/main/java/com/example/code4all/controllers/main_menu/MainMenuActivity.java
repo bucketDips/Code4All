@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -151,7 +152,7 @@ public class MainMenuActivity extends MyAppCompatActivity {
         Snackbar.make(binding.background, message, Snackbar.LENGTH_LONG).show();
     }
 
-    void onClickButtonMenu(ImageView imageView){
+    void onClickButtonMenu(CardView imageView){
         String id = imageView.getTag().toString();
         startActivity(intents.get(Integer.parseInt(id)));
     }

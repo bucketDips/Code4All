@@ -45,6 +45,8 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     private final String get_all_professor_of_this_classe = "/getProfessorListInClass";
     private final String get_all_student_of_this_classe = "/getStudentListInClass";
 
+    private final String get_classe_details = "/getClassDetail";
+
 
 
     private static ServerHandler serverHandler;
@@ -165,7 +167,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
 
     @Override
     public void addProfessorToClass(@NotNull User user, @NotNull Classe classe, @NotNull String token, @NotNull IAPICallbackJsonObject callback) {
-        String finalUrl = rootUrl + classes + add_student_to_class + "/" + user.getId() + "/" + classe.getId();
+        String finalUrl = rootUrl + classes + add_professor_to_class + "/" + user.getId() + "/" + classe.getId();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, finalUrl, null,
                 callback::onSuccessResponse,
@@ -267,6 +269,26 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
         String url = rootUrl + classes + get_all_professor_of_this_classe + '/' + String.valueOf(classeId);
 
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        ){
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap <String, String> headers = new HashMap<>();
+                headers.put(authorization, bearer + token);
+                return headers;
+            }
+        };
+
+        this.requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void getClasseDetails(@NotNull String token, int classeId, @NotNull IAPICallbackJsonObject callback) {
+        String url = rootUrl + classes + get_classe_details + '/' + String.valueOf(classeId);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null,
                 callback::onSuccessResponse,
                 callback::onErrorResponse

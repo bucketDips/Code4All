@@ -1,6 +1,7 @@
 package com.example.code4all.controllers.classes_menu;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -22,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 public class ClasseActivity extends MyAppCompatActivity{
 
     private UserManager userManager;
+    private ConstraintLayout root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class ClasseActivity extends MyAppCompatActivity{
                 }
             }
         });
+
+        root = findViewById(R.id.container);
     }
 
     @Override
@@ -77,6 +81,13 @@ public class ClasseActivity extends MyAppCompatActivity{
                 .commit();
 
     }
+
+    void displayClasseCreationDialogFragment(){
+        ClasseCreationDialogFragment dialogFragment = new ClasseCreationDialogFragment();
+        dialogFragment.show(getSupportFragmentManager(),"CLASSE_CREATION_DIALOG_FRAGMENT");
+
+    }
+
 
     void displayClasseSettingDialogFragment(Classe classeSelected){
         ClasseSettingDialogFragment dialogFragment = new ClasseSettingDialogFragment();
@@ -107,6 +118,12 @@ public class ClasseActivity extends MyAppCompatActivity{
         return visibility != View.GONE && visibility != View.INVISIBLE;
     }
 
+    public void refreshClasseDetailFragment(){
+        ClasseDetailsFragment classeDetailsFragment = (ClasseDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail_container);
+        if (classeDetailsFragment != null) {
+            classeDetailsFragment.refreshClasseData();
+        }
+    }
 
     public ClasseManager getClasseManager(){
         ClassesListFragment classesListFragment = (ClassesListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_classes_list);
@@ -118,6 +135,6 @@ public class ClasseActivity extends MyAppCompatActivity{
     }
 
     public View getRootView(){
-        return this.getRootView();
+        return root;
     }
 }

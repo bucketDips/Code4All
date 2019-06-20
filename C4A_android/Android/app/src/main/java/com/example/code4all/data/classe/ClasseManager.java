@@ -201,6 +201,16 @@ public class ClasseManager extends DataManager implements IClasseManager{
     }
 
     @Override
+    public boolean isInThisList(User user, ArrayList<User> users) {
+        for(User userToCheck : users){
+            if(userToCheck.getName().equals(user.getName()))
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public void createClasse(String classeName) {
         String token = sharedPreferenceManager.getTokenSaved();
         serverHandler.createClassroom(classeName, token, new IAPICallbackJsonObject() {
@@ -210,6 +220,8 @@ public class ClasseManager extends DataManager implements IClasseManager{
                     int idClasseInserted = result.getInt("insertId");
                     Classe classe = new Classe(idClasseInserted, classeName);
                     classeListAsProfessor.add(classe);
+
+                    listener.onClasseListAsProfessorChanged(classeListAsProfessor);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
