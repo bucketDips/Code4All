@@ -327,7 +327,7 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 		{
 			console.log(error)
 			return res.status(403).json({
-				success: true,
+				success: false,
 				code : 'SQL_ERROR',
 				message: error
 			})
