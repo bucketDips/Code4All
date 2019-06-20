@@ -32,6 +32,7 @@ connection.connect(function(err) {
 setInterval(function () {
 	connection.query('SELECT 1',function (err, rows, fields) {
 
+		
 	});
 }, 15000);
 module.exports = connection;
