@@ -359,7 +359,7 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 					user: config.SERVERMAIL,
 					pass: config.SERVERMAILPWD,
 					to:   email,
-					subject: 'CodeForAll : Confirmer votre inscription',
+					subject: 'CodInSchool : Confirmez votre inscription',
 					text: msgText 
 				});
 				send({}, function (err, res) {
