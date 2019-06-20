@@ -327,7 +327,7 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 		{
 			console.log(error)
 			if (error.indexOf("email") >= 0)
-				res.send("duplicateEmail")
+				res.error(error)
 		}
 		else
 		{
