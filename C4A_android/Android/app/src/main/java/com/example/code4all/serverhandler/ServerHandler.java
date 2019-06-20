@@ -14,12 +14,14 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ServerHandler implements IServerHandler, IAPIHandler {
 
-    private final String rootUrl = "http://51.158.110.231:3000";
+    //private final String rootUrl = "http://51.158.110.231:3000";
+    private final String rootUrl = "http://212.47.235.40:3000";
     private final String authorization = "Authorization";
     private final String bearer = "Bearer ";
 
@@ -35,8 +37,13 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     private final String classes = "/classes";
     private final String create_classroom = "/createClassroom";
     private final String add_student_to_class = "/addStudentToClass";
+    private final String add_professor_to_class = "/addProfessorToClass";
+
     private final String get_classes_from_this_student = "/getStudentClassesById";
     private final String get_classes_from_this_professor = "/getProfessorClassesById";
+
+    private final String get_all_professor_of_this_classe = "/getProfessorListInClass";
+    private final String get_all_student_of_this_classe = "/getStudentListInClass";
 
 
 
@@ -89,7 +96,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
                 callback::onErrorResponse
         ){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap <String, String> headers = new HashMap<>();
                 headers.put(authorization, bearer + token);
                 return headers;
@@ -138,7 +145,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     }
 
     @Override
-    public void addUserToClass(@NotNull User user, @NotNull Classe classe, @NotNull String token, @NotNull IAPICallbackJsonObject callback) {
+    public void addStudentToClass(@NotNull User user, @NotNull Classe classe, @NotNull String token, @NotNull IAPICallbackJsonObject callback) {
         String finalUrl = rootUrl + classes + add_student_to_class + "/" + user.getId() + "/" + classe.getId();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, finalUrl, null,
@@ -157,7 +164,26 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     }
 
     @Override
-    public void getAllClassromOfUserAsStudent(@NotNull String token, @NotNull IAPICallbackJsonArray callback) {
+    public void addProfessorToClass(@NotNull User user, @NotNull Classe classe, @NotNull String token, @NotNull IAPICallbackJsonObject callback) {
+        String finalUrl = rootUrl + classes + add_student_to_class + "/" + user.getId() + "/" + classe.getId();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, finalUrl, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        ){
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put(authorization, bearer + token);
+                return headers;
+            }
+        };
+
+        this.requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void getAllClassesOfUserAsStudent(@NotNull String token, @NotNull IAPICallbackJsonArray callback) {
         String url = rootUrl + classes + get_classes_from_this_student;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -166,7 +192,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
                 callback::onErrorResponse
         ){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap <String, String> headers = new HashMap<>();
                 headers.put(authorization, bearer + token);
                 return headers;
@@ -177,7 +203,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     }
 
     @Override
-    public void getAllClassromOfUserAsProfessor(@NotNull String token, @NotNull IAPICallbackJsonArray callback) {
+    public void getAllClassesOfUserAsProfessor(@NotNull String token, @NotNull IAPICallbackJsonArray callback) {
         String url = rootUrl + classes + get_classes_from_this_professor;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -185,7 +211,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
                 callback::onErrorResponse
         ){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap <String, String> headers = new HashMap<>();
                 headers.put(authorization, bearer + token);
                 return headers;
@@ -197,7 +223,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
 
     @Override
     public void getRandomPicture(IAPICallbackJsonObject callback) {
-        String url = IAPIHandler.apiUrl.replaceFirst("%1", IAPIHandler.apiKey);
+        String url = IAPIHandler.PIXABAY_API_URL.replaceFirst("%1", IAPIHandler.PIXABAY_API_KEY + "&q=school");
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null,
                 callback::onSuccessResponse,
@@ -212,5 +238,47 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
             return jsonObject.getString(target);
         else
             return "";
+    }
+
+
+    @Override
+    public void getStudentListOfAClasse(@NotNull String token, int classeId, @NotNull IAPICallbackJsonArray callback) {
+        String url = rootUrl + classes + get_all_student_of_this_classe + '/' + String.valueOf(classeId);
+
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        ){
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap <String, String> headers = new HashMap<>();
+                headers.put(authorization, bearer + token);
+                return headers;
+            }
+        };
+
+        this.requestQueue.add(jsonObjectRequest);
+
+    }
+
+    @Override
+    public void getProfessorListOfAClasse(@NotNull String token, int classeId, @NotNull IAPICallbackJsonArray callback) {
+        String url = rootUrl + classes + get_all_professor_of_this_classe + '/' + String.valueOf(classeId);
+
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        ){
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap <String, String> headers = new HashMap<>();
+                headers.put(authorization, bearer + token);
+                return headers;
+            }
+        };
+
+        this.requestQueue.add(jsonObjectRequest);
     }
 }

@@ -14,17 +14,26 @@ public abstract class MyAppCompatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+            // ONLY TO TEST ONE ACTIVITY, DELETE IN PROD
+            //ServerHandler.initInstance(getApplicationContext());
+
             this.sharedPreferenceManager = new SharedPreferenceManager(getApplicationContext());
             this.serverHandler = ServerHandler.getInstance();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         setContentView(getLayoutResourceId());
-
     }
 
+    public ServerHandler getServerHandler() {
+        return serverHandler;
+    }
 
+    public SharedPreferenceManager getSharedPreferenceManager() {
+        return sharedPreferenceManager;
+    }
 
     protected abstract int getLayoutResourceId();
 

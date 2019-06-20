@@ -6,6 +6,7 @@ import com.example.code4all.data.DataManager;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
 import com.example.code4all.serverhandler.ServerHandler;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,28 +38,42 @@ public class UserManager extends DataManager implements IUserManager {
     public void loadUserInfos(String userNameOrEmail) {
         String token = this.sharedPreferenceManager.getTokenSaved();
 
-        if (token != null) {
+        if (token != null && userNameOrEmail.length() > 0) {
             serverHandler.findUser(userNameOrEmail, token, new IAPICallbackJsonArray() {
                 @Override
                 public void onSuccessResponse(@NotNull JSONArray result) {
                     try {
-                        JSONObject userInfos = result.getJSONObject(0);
-                        Gson gson = new Gson();
+                        if(userExist(result)){
+                            User user = getUserFromJson(result);
+                            saveUserInfosJsonToSharedPreferences(user);
+                            listener.onUserLoaded(user);
+                        } else {
+                            listener.onUserLoaded(null);
+                        }
 
-                        User user = gson.fromJson(String.valueOf(userInfos), User.class);
-                        saveUserInfosJsonToSharedPreferences(user);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 }
 
+                private User getUserFromJson(JSONArray result) throws JSONException {
+                    Gson gson = new Gson();
+                    JSONObject userInfos = result.getJSONObject(0);
+                    return gson.fromJson(String.valueOf(userInfos), User.class);
+                }
+
+                private boolean userExist(JSONArray result) {
+                    return result.length() > 0;
+                }
+
                 @Override
                 public void onErrorResponse(@NotNull VolleyError error) {
-
+                    listener.onUserLoadFail(userNameOrEmail, error);
                 }
             });
-        }
+        } else
+            listener.onUserLoaded(null);
     }
 
 
