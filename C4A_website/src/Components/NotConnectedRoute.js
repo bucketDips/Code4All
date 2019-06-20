@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import auth from '../auth';
+import auth from '../Providers/auth';
 
 export const NotConnectedRoute = ({component: Component, ...rest}) => {
     return (
