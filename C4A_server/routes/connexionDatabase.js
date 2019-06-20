@@ -31,7 +31,6 @@ connection.connect(function(err) {
 //keep connection alive
 setInterval(function () {
 	connection.query('SELECT 1',function (err, rows, fields) {
-
 		
 	});
 }, 15000);
