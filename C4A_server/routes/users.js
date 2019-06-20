@@ -326,8 +326,11 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 		if (error)
 		{
 			console.log(error)
-			if (error.indexOf("email") >= 0)
-				res.error(error)
+			return res.status(403).json({
+				success: true,
+				code : 'SQL_ERROR',
+				message: error
+			})
 		}
 		else
 		{
