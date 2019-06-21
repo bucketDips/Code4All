@@ -374,6 +374,140 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
 
 
 });
+function deleteExerciceFunctions(exo_id) {
+    return new Promise(function(resolve, reject) {
+        var sql = "delete from exercice_functions where exercice_id='"+exo_id+"';"
+        console.log(sql)
+        con.query(sql, function (err, rows, fields) {
+            if (err) return reject(err);
+            resolve(rows);
+        });
+
+    });
+}
+router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+    var contentOjb =JSON.parse(request.body.exercice);
+    var content = JSON.stringify(contentOjb)
+    var author_id = request.decoded.id
+    var exo_id = request.params.exerciceId
+
+
+    function modifyExercice(exo_id,contentOjb,content,author_id) {
+        return new Promise(function(resolve, reject) {
+            contentOjb.title = escapeQuote(contentOjb.title)
+            contentOjb.text = escapeQuote(contentOjb.text)
+            content = escapeQuote(content)
+            // console.log("content")
+            // console.log(content)
+            var sql = "update exercices set title='"+contentOjb.title+"',text='"+contentOjb.text+"',isPublic='"+contentOjb.public
+            sql+="',content='"+content+"',code='"+contentOjb.code+"' where id='"+exo_id+"' and author_id='"+author_id+"';"
+            console.log(sql)
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+
+        });
+    }
+
+
+    modifyExercice(exo_id,contentOjb,content,author_id).then(function(rows){
+        deleteExerciceFunctions(exo_id).then(function(rows){
+            console.log(rows)
+            insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows){
+                res.send(rows);
+            }).catch(function(err){
+                return res.status(403).json(err);
+            });
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+
+});
+router.post('/delete/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+    var author_id = request.decoded.id
+    var exo_id = request.params.exerciceId
+
+
+    function deleteExercice(exo_id,author_id) {
+        return new Promise(function(resolve, reject) {
+            // var sql = "delete exercices, user_exercices, exercice_functions, class_exercices" +
+            //     " from exercices" +
+            //     " inner join user_exercices on user_exercices.exerciceId=exercices.id" +
+            //     " inner join exercice_functions on exercice_functions.exercice_id=exercices.id" +
+            //     " inner join class_exercices on class_exercices.exercice_id=exercices.id" +
+            //     " where  " +
+            //     "exercices.id = ? and exercices.author_id = ?;"
+            var sql = "delete from exercices where id = ? and author_id = ?;"
+            con.query(sql,[exo_id,author_id], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+
+        });
+    }
+    function deleteUserExercice(exo_id) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from user_exercices where exerciceId = ?"
+            con.query(sql,[exo_id], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+
+        });
+    }
+    function deleteClassExercice(exo_id) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from class_exercices where exercice_id = ?"
+            con.query(sql,[exo_id], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+
+        });
+    }
+    function deleteExerciceFunction(exo_id) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from exercice_functions where exercice_id = ?"
+            con.query(sql,[exo_id], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+
+        });
+    }
+
+
+    deleteExercice(exo_id,author_id).then(function(rowsExercice){
+        if (rowsExercice.affectedRows=0)
+            return res.status(403).json({
+                success: false,
+                code : 'MISSING_AUTHORISATION',
+                message: 'Cet exercice ne vous appartient!'
+            })
+        deleteUserExercice(exo_id).then(function(rowsUserExercice){
+            deleteClassExercice(exo_id).then(function(rowsClassExercice){
+                deleteExerciceFunction(exo_id).then(function(rows){
+                    res.send(rows);
+                }).catch(function(err){
+                    return res.status(403).json(err);
+                });
+            }).catch(function(err){
+                return res.status(403).json(err);
+            });
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+
+});
 
 
 
