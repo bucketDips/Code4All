@@ -243,12 +243,11 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 		var jsonResponse="";
 		if (!rows["0"])
 		{
-			jsonResponse = {
-				success:false,
-				code:"falseUSER"
-			}
-			res.send(JSON.stringify(jsonResponse));
-			return;
+			return res.status(403).json({
+				success: false,
+				code : 'MISSING_AUTHORISATION',
+				message: 'Cet utilisateur n\'existe pas'
+			})
 		}
 		
 		if (rows["0"].password == pwd)
@@ -270,8 +269,8 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 						
 					}
 					// res.send(JSON.stringify(jsonResponse));
-					res.status(403).json(jsonResponse);
-					return;
+					return res.status(403).json(jsonResponse);
+
 				}
 				jsonResponse = {
 					success: true,
@@ -288,11 +287,11 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 
 		else
 		{
-			jsonResponse = {
-				success:false,
-				code:"falsePwd"
-			}
-			res.send(JSON.stringify(jsonResponse));
+			return res.status(403).json({
+				success: false,
+				code : 'MISSING_AUTHORISATION',
+				message: 'Mauvais mot de passe'
+			})
 			
 		}
 		

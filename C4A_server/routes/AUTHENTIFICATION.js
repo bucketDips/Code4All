@@ -19,7 +19,7 @@ exports.isProfessorInThisClassRoom = function(request, res, next) {
         if (rows.length > 0)
             return next();
         return res.status(403).json({
-            success: true,
+            success: false,
             code : 'MISSING_AUTHORISATION',
             message: 'Vous n\'êtes pas professeur dans cette classe'
         })
