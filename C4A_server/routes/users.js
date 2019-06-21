@@ -161,7 +161,9 @@ router.put('/update/:id/:pseudo/:email', AUTH.VERIFYAUTH,function(request, res, 
 			  });
 			});
 	}
-	getLastRecord(id, pseudo, email).then(function(rows){ res.send(rows); });
+	getLastRecord(id, pseudo, email).then(function(rows){ res.send(rows); }).catch(function(err){
+		return res.status(403).json(err);
+	});
 });
 
 
@@ -375,6 +377,8 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 			
 			});
 		}
+	}).catch(function(err){
+		return res.status(403).json(err);
 	});
 });
 
@@ -438,7 +442,9 @@ router.post('/changEmail/:pwd/:newEmail', AUTH.VERIFYAUTH, function(request, res
 		console.log("pwd = " + pwd)
 
 		if (rows.length > 0 && rows["0"].password == pwd)
-			changeEmail(email, newEmail).then(function(rows){ res.send(true); });
+			changeEmail(email, newEmail).then(function(rows){ res.send(true); }).catch(function(err){
+				return res.status(403).json(err);
+			});
 		else
 			res.send(false);
 	});

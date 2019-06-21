@@ -51,7 +51,9 @@ router.get('/getUserFileList', AUTH.VERIFYAUTH, function(request, res, next) {
     }
     getUserFileList(userId).then(function(rows){
         res.send(rows);
-    })
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
 
 })
 router.get('/getUserFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
@@ -82,7 +84,9 @@ router.get('/getUserFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next)
         res.download(pathFile,  rows["0"].name);
 
 
-    })
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
 
 });
 router.get('/getAllUserImages', AUTH.VERIFYAUTH, function(request, res, next) {
@@ -128,7 +132,9 @@ router.get('/getAllUserImages', AUTH.VERIFYAUTH, function(request, res, next) {
             });
         }
         res.send(result);
-    })
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
 
 })
 router.get('/getImageURL/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
@@ -174,7 +180,9 @@ router.get('/getImageURL/:fileId', AUTH.VERIFYAUTH, function(request, res, next)
 
 
 
-    })
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
 
 });
 router.get('/getClassRoomFile/:classId/:fileId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStudentInThisClassRoom ,function(request, res, next) {
@@ -195,7 +203,9 @@ router.get('/getClassRoomFile/:classId/:fileId', AUTH.VERIFYAUTH, AUTH.isProfess
         var pathname = __dirname +"/FichiersUtilisateur/" + rows["0"].name;
         res.download(pathFile,  rows["0"].name);
 
-    })
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
 
 
     function getFileNameFromBatabase(fileId,classRoomId) {
@@ -228,6 +238,8 @@ router.post('/uploadToUser/:filename/:dest', AUTH.VERIFYAUTH, function(request, 
                 console.log(oldpath + ' was copied to '+newpath);
                 res.end();
             });
+        }).catch(function(err){
+            return res.status(403).json(err);
         });
     });
 
@@ -259,6 +271,8 @@ router.post('/uploadToClass/:filename/:classId', AUTH.VERIFYAUTH, AUTH.isProfess
             console.log(oldpath + ' was copied to '+newpath);
             res.end();
         });
+    }).catch(function(err){
+        return res.status(403).json(err);
     });
 
 

@@ -80,7 +80,9 @@ router.post('/addExerciceToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfesso
     }
     addExerciceToClass(exerciceId,classId).then(function(rows){
         res.send(rows)
-    })
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
 });
 router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id
@@ -123,9 +125,15 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
                     }
                 })
 
-            })
-        })
-    })
+            }).catch(function(err){
+                return res.status(403).json(err);
+            });
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
 })
 router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
     var id = request.params.id;
@@ -171,8 +179,12 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                 functions: rows1
             }
             res.send(resultJson);
-        })
-    })
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
 });
 var getFuncName = function(str){
     return str.substring(0,str.indexOf('('))
@@ -323,7 +335,11 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     insertExercice(contentOjb,content,author_id).then(function(rows){
         insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows){
             res.send(rows);
+        }).catch(function(err){
+            return res.status(403).json(err);
         });
+    }).catch(function(err){
+        return res.status(403).json(err);
     });
 
 
