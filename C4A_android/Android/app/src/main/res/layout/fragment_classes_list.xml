@@ -4,7 +4,7 @@
 
             android:id="@+id/classesmenu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:context=".controllers.classes_menu.ClassesListFragment">
         <ScrollView
                 android:layout_width="0dp"
@@ -16,20 +16,43 @@
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                           android:orientation="vertical">
-                <TextView
-                        android:text="@string/classe_list_as_professor_label"
-                        style="@style/MediumTitle"
-                        android:textColor="@color/white"
+                <android.support.constraint.ConstraintLayout
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/linearLayout2">
+                    <TextView
+                            android:text="@string/classe_list_as_professor_label"
+                            style="@style/MediumTitle"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
 
-                        android:id="@+id/classeListAsProfessorTitle"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginStart="8dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginEnd="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                            android:id="@+id/classeListAsProfessorTitle"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_height="wrap_content"
+                            tools:layout_conversion_absoluteHeight="58dp"
+                            tools:layout_conversion_absoluteWidth="258dp" android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="8dp"/>
+                    <android.support.design.widget.FloatingActionButton android:layout_width="wrap_content"
+                                                                        android:layout_height="wrap_content"
+                                                                        android:background="@drawable/fab"
+                                                                        android:src="@android:drawable/ic_input_add"
+                                                                        android:foregroundGravity="center"
+
+                                                                        app:fabSize="mini"
+                                                                        app:backgroundTint="@color/blue"
+                                                                        app:borderWidth="2dp"
+                                                                        app:elevation="2dp"
+                                                                        app:pressedTranslationZ="12dp"
+
+                                                                        android:tint="@color/white"
+                                                                        android:id="@+id/buttonCreation"
+                                                                        app:layout_constraintStart_toEndOf="@+id/classeListAsProfessorTitle"
+                                                                        android:layout_marginStart="8dp"
+                                                                        app:layout_constraintTop_toTopOf="@+id/classeListAsProfessorTitle"
+                                                                        app:layout_constraintBottom_toBottomOf="@+id/classeListAsProfessorTitle"
+                    />
+                </android.support.constraint.ConstraintLayout>
                 <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

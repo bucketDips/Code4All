@@ -1,9 +1,11 @@
 package com.example.code4all.error;
 
 import android.content.Context;
+import android.widget.Toast;
 import com.android.volley.*;
 import com.example.code4all.R;
 import com.example.code4all.serverhandler.ServerHandler;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +34,16 @@ public class ErrorNetwork extends VolleyError {
 //            }
 
     }
-
+    public static void parseVolleyError(VolleyError error, Context context){
+        try {
+            String responseBody = new String(error.networkResponse.data, "utf-8");
+            JSONObject data = new JSONObject(responseBody);
+            String message = data.getString("message");
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        } catch (JSONException ignored) {
+        } catch (UnsupportedEncodingException ignored) {
+        }
+    }
     private String setMessage(VolleyError error, Context context) {
         /*
         if (error.networkResponse != null) {

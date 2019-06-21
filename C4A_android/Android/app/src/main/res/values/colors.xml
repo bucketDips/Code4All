@@ -12,8 +12,10 @@
     <color name="text">#e0f2f1</color>
     <color name="black">#000000</color>
     <color name="semitransparentblack">#33000000</color>
-    <color name="semitransparentwhite">#E6deecef</color>
+    <color name="semitransparentwhite">#80FFFFFF</color>
     <color name="transparentwhite">#4DFFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="verytransparentwhite">#33FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="background_material_light">#f10c0c</color>
     <color name="primary_dark_material_light">#7b3434</color>
@@ -21,7 +23,6 @@
     <color name="pressed_color">#4DFFFFFF</color>
     <color name="focused_color">#E6deecef</color>
     <color name="selected_color">#fff1c7</color>
-    <color name="accent">#42ffffff </color>
 
 
 

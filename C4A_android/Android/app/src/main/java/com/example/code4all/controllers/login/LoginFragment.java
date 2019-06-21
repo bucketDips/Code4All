@@ -100,6 +100,10 @@ public class LoginFragment extends Fragment{
 
             @Override
             public void onErrorResponse(@NotNull VolleyError error) {
+                ErrorNetwork.parseVolleyError(error, getContext());
+                progressBar.setVisibility(View.GONE);
+
+                /*
                 progressBar.setVisibility(View.GONE);
                 ErrorNetwork errorNetwork = null;
                 try {
@@ -111,7 +115,7 @@ public class LoginFragment extends Fragment{
                 if(errorNetwork != null){
                     Log.d(TAG,errorNetwork.diplayErrorMessage());
                     Snackbar.make(fragment, errorNetwork.diplayErrorMessage(), Snackbar.LENGTH_LONG).show();
-                }
+                }*/
             }
         });
     }

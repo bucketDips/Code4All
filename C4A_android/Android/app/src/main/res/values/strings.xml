@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Code4All.</string>
+    <string name="app_name">CodinSchool.</string>
 
     // SharedPref Vars
     <string name="remember_me" translatable="false">remember_me</string>
@@ -32,14 +32,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="classe_label">Classe %1$s Member(s): %2$d</string>
+    <string name="classe_label">Classe %1$s %2$d user(s)</string>
     <string name="user_grid_layout_label">%1$s</string>
-    <string name="professors_label">Professors</string>
-    <string name="students_label">Students</string>
+    <string name="professors_label">Professors %1$s</string>
+    <string name="students_label">Students %1$s</string>
     <string name="classe_details_fragment_title">Classe details</string>
     <string name="button_close_label">Close</string>
     <string name="button_add_dialog_fragment_classe">add</string>
     <string name="search_an_user_dialog_fragment_classe">Search an user :</string>
     <string name="name_or_email_hint_dialog_fragment_classe">Name or Email</string>
+    <string name="list_of_new_user_clic_to_remove_user">List of new user (clic to remove user)</string>
 
 </resources>

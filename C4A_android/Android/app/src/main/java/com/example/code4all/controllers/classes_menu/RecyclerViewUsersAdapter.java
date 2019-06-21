@@ -33,13 +33,25 @@ class RecyclerViewUsersAdapter extends RecyclerView.Adapter<RecyclerViewUsersAda
         this.isSelected = new ArrayList<>();
     }
 
-    public void updateData(ArrayList<User> users){
+    void updateData(ArrayList<User> users){
         this.users = users;
         notifyDataSetChanged();
+
+        //updateAllBackground(users);
     }
 
+    /*
+    private void updateAllBackground(ArrayList<User> usersSelected) {
 
+        for(int i = 0; i < getItemCount(); i++){
 
+        }
+    }*/
+
+    void clearData(){
+        this.users.clear();
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -63,7 +75,7 @@ class RecyclerViewUsersAdapter extends RecyclerView.Adapter<RecyclerViewUsersAda
         viewHolder.row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeRowBackGround(v, pos);
+                //changeRowBackGround(v, pos);
                 callback.onUserSelected(users.get(pos));
             }
         });
