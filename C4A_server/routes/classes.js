@@ -137,6 +137,14 @@ router.post('/removeStudentFromClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProf
 router.post('/removeProfessorFromClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom ,function(request, res, next) {
     var id = request.params.id;
     var classId = request.params.classId;
+    if (id == request.decoded.id){
+        return res.status(403).json({
+            success:false,
+            code:"MISSING_AUTHORISATION",
+            message: "Vous ne pouvez pas vous retirer de cette classe, seul un autre professeur peut le faire",
+
+        })
+    }
     function removeProfessorFromClass(id,classId) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from classroom_professors where idClassRoom=? and idProfessor = ?";
