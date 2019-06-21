@@ -288,7 +288,6 @@ class Code extends Component {
   render() {
     return (
         <div className={styles.code}>
-            <h3 className="title">Ici le code</h3>
             <div className="content">
               <AceEditor
               mode="javascript"

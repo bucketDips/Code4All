@@ -49,7 +49,6 @@ class Parameters extends Component {
   render() {
     return (
         <div className={styles.parameters}>
-            <h3 className="title">Ici les paramètres</h3>
             <div className="content">
               {this.renderSwitch(this.props.parameters)}
             </div>

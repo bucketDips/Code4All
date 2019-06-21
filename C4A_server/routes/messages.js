@@ -39,8 +39,12 @@ router.post('/sendMessage/:IdDest/:subject/:msg',AUTH.VERIFYAUTH, function(reque
     createMessage(IdSender).then(function(rows){
         addMessageToUser(IdDest,rows.insertId).then(function(rows){
             res.send(rows);
+        }).catch(function(err){
+            return res.status(403).json(err);
         });
 
+    }).catch(function(err){
+        return res.status(403).json(err);
     });
 });
 router.post('/sendMessageToClass/:classId/:subject/:msg', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom, function(request, res, next) {
@@ -76,8 +80,12 @@ router.post('/sendMessageToClass/:classId/:subject/:msg', AUTH.VERIFYAUTH, AUTH.
     createMessage(IdSender).then(function(rows){
         addMessageToClass(IdDest,rows.insertId).then(function(rows){
             res.send(rows);
+        }).catch(function(err){
+            return res.status(403).json(err);
         });
 
+    }).catch(function(err){
+        return res.status(403).json(err);
     });
 });
 
@@ -110,7 +118,9 @@ router.get('/:getUserMsg', AUTH.VERIFYAUTH,function(request, res, next) {
             });
         });
     }
-    createMessage(userId).then(function(rows){ res.send(rows); });
+    createMessage(userId).then(function(rows){ res.send(rows); }).catch(function(err){
+        return res.status(403).json(err);
+    });
 });
 
 

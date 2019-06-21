@@ -5,6 +5,7 @@ import styles from './style.css';
 
 class ToolBoxElement extends Component {
   render() {
+    console.log(this.props.element);
     return (
       <Draggable draggableId={this.props.element.title} index={this.props.index}>
       {(provided, snapshot) => (
@@ -15,10 +16,10 @@ class ToolBoxElement extends Component {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           >
-                  <div>{this.props.element.title}</div>
+                  <img src={this.props.element.image} width="20px" height="20px" />
           </div>
           {snapshot.isDragging && (
-            <div style={{transform: "none !important"}}>{this.props.element.title}</div>
+            <div style={{transform: "none !important"}}><img class="placeholderimage" src={this.props.element.image} width="20px" height="20px" /></div>
           )}
         </React.Fragment>
       )}

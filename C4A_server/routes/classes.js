@@ -21,7 +21,9 @@ router.get('/getStudentClassesById', AUTH.VERIFYAUTH, function(request, res, nex
             });
         });
     }
-    getLastRecord(id).then(function(rows){ res.send(rows); });
+    getLastRecord(id).then(function(rows){ res.send(rows); }).catch(function(err){
+        return res.status(403).json(err);
+    });
 });
 router.get('/getProfessorClassesById/', AUTH.VERIFYAUTH, function(request, res, next) {
     var id = request.decoded.id;
@@ -36,7 +38,9 @@ router.get('/getProfessorClassesById/', AUTH.VERIFYAUTH, function(request, res, 
             });
         });
     }
-    getLastRecord(id).then(function(rows){ res.send(rows); });
+    getLastRecord(id).then(function(rows){ res.send(rows); }).catch(function(err){
+        return res.status(403).json(err);
+    });
 });
 function getStudentListInClass(classId) {
     return new Promise(function(resolve, reject) {
@@ -54,7 +58,9 @@ function getStudentListInClass(classId) {
 }
 router.get('/getStudentListInClass/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStudentInThisClassRoom, function(request, res, next) {
     var classId = request.params.classId;
-    getStudentListInClass(classId).then(function(rows){ res.send(rows); });
+    getStudentListInClass(classId).then(function(rows){ res.send(rows); }).catch(function(err){
+        return res.status(403).json(err);
+    });
 });
 function getProfessorListInClass(classId) {
     return new Promise(function(resolve, reject) {
@@ -71,7 +77,9 @@ function getProfessorListInClass(classId) {
 }
 router.get('/getProfessorListInClass/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStudentInThisClassRoom, function(request, res, next) {
     var classId = request.params.classId;
-    getProfessorListInClass(classId).then(function(rows){ res.send(rows); });
+    getProfessorListInClass(classId).then(function(rows){ res.send(rows); }).catch(function(err){
+        return res.status(403).json(err);
+    });
 });
 router.get('/getClassDetail/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStudentInThisClassRoom, function(request, res, next) {
     var classId = request.params.classId;
@@ -95,8 +103,14 @@ router.get('/getClassDetail/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStuden
                     studentList:rowsStudent
                 }
                 res.send(resultJson);
+            }).catch(function(err){
+                return res.status(403).json(err);
             });
+        }).catch(function(err){
+            return res.status(403).json(err);
         });
+    }).catch(function(err){
+        return res.status(403).json(err);
     });
 
 });
@@ -113,7 +127,57 @@ router.post('/addStudentToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessor
         });
     }
 
-    getLastRecord(id,classId).then(function(rows){ res.send(rows); });
+    getLastRecord(id,classId).then(function(rows){ res.send(rows); }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+});
+router.post('/removeStudentFromClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom ,function(request, res, next) {
+    var id = request.params.id;
+    var classId = request.params.classId;
+    function removeStudentFromClass(id,classId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from classroom_students where idClassRoom=? and idStudent = ?";
+            con.query(sql, [classId],[id],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+    removeStudentFromClass(id,classId).then(function(rows){
+        res.send(rows);
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+});
+router.post('/removeProfessorFromClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom ,function(request, res, next) {
+    var id = request.params.id;
+    var classId = request.params.classId;
+    if (id == request.decoded.id){
+        return res.status(403).json({
+            success:false,
+            code:"MISSING_AUTHORISATION",
+            message: "Vous ne pouvez pas vous retirer de cette classe, seul un autre professeur peut le faire",
+
+        })
+    }
+    function removeProfessorFromClass(id,classId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from classroom_professors where idClassRoom=? and idProfessor = ?";
+            con.query(sql, [classId],[id],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+    removeProfessorFromClass(id,classId).then(function(rows){
+        res.send(rows);
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
 
 });
 router.post('/addProfessorToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom, function(request, res, next) {
@@ -130,7 +194,9 @@ router.post('/addProfessorToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfess
         });
     }
 
-    getLastRecord(id,classId).then(function(rows){ res.send(rows); });
+    getLastRecord(id,classId).then(function(rows){ res.send(rows); }).catch(function(err){
+        return res.status(403).json(err);
+    });
 
 });
 
@@ -160,8 +226,12 @@ router.post('/createClassroom/:name', AUTH.VERIFYAUTH, function(request, res, ne
     getLastRecord(name).then(function(rows){
         addTeacherToClass(id, rows.insertId).then(function(rows1){
             res.send(rows);
-        })
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });
 
+    }).catch(function(err){
+        return res.status(403).json(err);
     });
 });
 

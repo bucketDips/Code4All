@@ -4,7 +4,7 @@ var con = require('./connexionDatabase.js');
 
 exports.isProfessorInThisClassRoom = function(request, res, next) {
     var classId = request.params.classId;
-    var idProfessor = request.decoded.id
+    var idProfessor = request.decoded.id;
 
     function getLastRecord(classId,idProfessor){
         return new Promise(function(resolve, reject) {
@@ -19,7 +19,7 @@ exports.isProfessorInThisClassRoom = function(request, res, next) {
         if (rows.length > 0)
             return next();
         return res.status(403).json({
-            success: true,
+            success: false,
             code : 'MISSING_AUTHORISATION',
             message: 'Vous n\'êtes pas professeur dans cette classe'
         })

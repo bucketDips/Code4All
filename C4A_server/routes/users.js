@@ -161,7 +161,9 @@ router.put('/update/:id/:pseudo/:email', AUTH.VERIFYAUTH,function(request, res, 
 			  });
 			});
 	}
-	getLastRecord(id, pseudo, email).then(function(rows){ res.send(rows); });
+	getLastRecord(id, pseudo, email).then(function(rows){ res.send(rows); }).catch(function(err){
+		return res.status(403).json(err);
+	});
 });
 
 
@@ -243,12 +245,11 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 		var jsonResponse="";
 		if (!rows["0"])
 		{
-			jsonResponse = {
-				success:false,
-				code:"falseUSER"
-			}
-			res.send(JSON.stringify(jsonResponse));
-			return;
+			return res.status(403).json({
+				success: false,
+				code : 'MISSING_AUTHORISATION',
+				message: 'Cet utilisateur n\'existe pas'
+			})
 		}
 		
 		if (rows["0"].password == pwd)
@@ -270,8 +271,8 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 						
 					}
 					// res.send(JSON.stringify(jsonResponse));
-					res.status(403).json(jsonResponse);
-					return;
+					return res.status(403).json(jsonResponse);
+
 				}
 				jsonResponse = {
 					success: true,
@@ -288,11 +289,11 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 
 		else
 		{
-			jsonResponse = {
-				success:false,
-				code:"falsePwd"
-			}
-			res.send(JSON.stringify(jsonResponse));
+			return res.status(403).json({
+				success: false,
+				code : 'MISSING_AUTHORISATION',
+				message: 'Mauvais mot de passe'
+			})
 			
 		}
 		
@@ -376,6 +377,8 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 			
 			});
 		}
+	}).catch(function(err){
+		return res.status(403).json(err);
 	});
 });
 
@@ -439,7 +442,9 @@ router.post('/changEmail/:pwd/:newEmail', AUTH.VERIFYAUTH, function(request, res
 		console.log("pwd = " + pwd)
 
 		if (rows.length > 0 && rows["0"].password == pwd)
-			changeEmail(email, newEmail).then(function(rows){ res.send(true); });
+			changeEmail(email, newEmail).then(function(rows){ res.send(true); }).catch(function(err){
+				return res.status(403).json(err);
+			});
 		else
 			res.send(false);
 	});

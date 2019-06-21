@@ -3,29 +3,27 @@ import { Droppable } from 'react-beautiful-dnd';
 import ToolBoxElement from './ToolBoxElement';
 import styles from './style.css';
 
-class ToolBox extends Component {
+class CustomToolBox extends Component {
 
   render() {
     let options;
-    if(this.props.options) {
-      options = this.props.options.map((option, index) => {
+    if(this.props.elements) {
+      options = this.props.elements.map((option, index) => {
         return (<ToolBoxElement key={option.title} element={option} index={index} />)
       })
     }
 
     return (
-        <div className={styles.toolbox}>
-            <h3 className="title">Ici la toolbox</h3>
-            <div className="content">
+        <div className={this.props.className}>
+            <div className="toolbox-content">
               <Droppable droppableId={100} isDropDisabled={true} isDragDisabled={true}>
               {provided => (
-                <ul 
+                <div 
                 ref={provided.innerRef}
                 {...provided.droppableProps} 
                 id="toolbox_ul">
                     {options}
-                    {provided.placeholder}
-                </ul>
+                </div>
               )}
               </Droppable>
             </div>
@@ -34,4 +32,4 @@ class ToolBox extends Component {
   }
 }
 
-export default ToolBox;
+export default CustomToolBox;
