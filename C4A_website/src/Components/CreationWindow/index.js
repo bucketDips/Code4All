@@ -370,7 +370,7 @@ class CreateExerciseWindow extends Component {
                   />
               </div>
               <div className={style.bottom_panel}>
-                  <Parameters 
+                  {/*<Parameters 
                   gridProperties={this.state.gridProperties}
                   patterns={this.state.patterns} 
                   parameters={this.state.parameters}
@@ -381,7 +381,7 @@ class CreateExerciseWindow extends Component {
                   <Patterns 
                   patterns={this.state.patterns} 
                   deletePattern={this.handleDeletePattern.bind(this)} />
-                  <Details />
+                  <Details />*/}
               </div>
             </div>
     );

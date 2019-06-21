@@ -164,11 +164,6 @@ class Grid extends Component {
     
     return (
         <div className={styles.grid}>
-            <h3 className="title">Ici la grille
-              <form className="form-edit-grid" onSubmit={this.askEditGrid.bind(this)}>
-                <input type="image" className="grid-edit" alt="edit button" src={process.env.PUBLIC_URL + '/edit.png'} />
-              </form>
-            </h3>
             <div className="content">
               <div style={{
                 whiteSpace:"nowrap",
