@@ -12,10 +12,12 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
     <TextView
+
             android:text="@string/user_grid_layout_label"
             android:textSize="18sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/userLabel" android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/userLabel" android:layout_marginTop="8dp"
             android:layout_below="@+id/userImage"
             android:layout_alignEnd="@+id/userImage"
             android:layout_alignStart="@+id/userImage"

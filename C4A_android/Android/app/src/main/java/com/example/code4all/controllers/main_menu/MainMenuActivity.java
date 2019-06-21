@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.example.code4all.R;
 import com.example.code4all.controllers.MyAppCompatActivity;
 import com.example.code4all.controllers.classes_menu.ClasseActivity;
+import com.example.code4all.controllers.exercices_menu.ExerciceListActivity;
 import com.example.code4all.data.user.IUserManagerListener;
 import com.example.code4all.data.user.User;
 import com.example.code4all.data.user.UserManager;
@@ -87,7 +88,7 @@ public class MainMenuActivity extends MyAppCompatActivity {
 
         intents = new ArrayList<>();
         intents.add(new Intent(this, ClasseActivity.class));
-        intents.add(new Intent(this, MainMenuActivity.class));
+        intents.add(new Intent(this, ExerciceListActivity.class));
 
         binding.button1.setOnClickListener(v -> onClickButtonMenu(binding.button1));
         binding.button2.setOnClickListener(v -> onClickButtonMenu(binding.button2));
