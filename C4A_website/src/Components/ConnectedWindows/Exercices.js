@@ -16,13 +16,26 @@ class ExercicesWindow extends Component {
     }
 
     createExercice() {
-        return (<CreateExerciseWindow />)
+        return [(<CreateExerciseWindow />), "collapsed"];
+    }
+
+    presentation() {
+        return [(
+            <div>
+                <h1>Voici l'explication des exercices</h1>
+            </div>
+        ), "not-collapsed"];
     }
 
     componentWillMount() {
         var allExercices = exercices.getMines("coucou");
 
         var menus = [];
+        menus.push({
+            name: "presentation",
+            icon: "book",
+            action: this.presentation
+        });
         menus.push({
             name: "my exercices",
             icon: "ordered-list",

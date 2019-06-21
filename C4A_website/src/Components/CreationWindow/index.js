@@ -3,7 +3,6 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import Axios from 'axios';
 import _ from 'lodash';
 import style from './style.css';
-import ToolBox from './ToolBox';
 import Grid from './Grid';
 import Code from './Code';
 import Details from './Details';
@@ -346,8 +345,6 @@ class CreateExerciseWindow extends Component {
             <div className={style.app}>
               <div className={style.top_panel}>
                   <DragDropContext onDragEnd={this.onDragEnd}>
-                    <ToolBox 
-                    options={this.state.options} />
                     <Grid 
                     parameters={this.state.gridProperties}
                     blocks={this.state.blocks}
@@ -355,6 +352,7 @@ class CreateExerciseWindow extends Component {
                     npcs={this.state.npc}
                     labels={this.state.labels}
                     changeParametersWindow={this.onChangeParameters.bind(this)}
+                    toolboxOptions={this.state.options}
                     />
                   </DragDropContext>
                   <Code

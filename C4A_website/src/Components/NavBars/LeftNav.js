@@ -14,11 +14,18 @@ class LeftNav extends Component {
   };
 
   onClick(action) {
-    var content = action();
-    this.setState({
-      collapsed: true,
-      content: content
-    });
+    var actioned = action();
+    if(actioned[1] === "collapsed") {
+      this.setState({
+        collapsed: true,
+        content: actioned[0]
+      });
+    }
+    else if(actioned[1] === "not-collapsed") {
+      this.setState({
+        content: actioned[0]
+      });
+    }
   }
 
   reinitMenus() {
@@ -70,8 +77,7 @@ class LeftNav extends Component {
         <Sider style={{ background: '#fff' }} collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
           <Menu
             mode="inline"
-            /*defaultSelectedKeys={['0']}
-            defaultOpenKeys={['0']}*/
+            defaultSelectedKeys={['menu0']}
             style={{ height: '100%' }}
           >
             {menus}
