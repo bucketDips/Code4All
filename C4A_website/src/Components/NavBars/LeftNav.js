@@ -43,7 +43,7 @@ class LeftNav extends Component {
         var submenus = [];
         for(var submenu in this.props.menus[menu].submenus) {
           submenus.push(
-            <Menu.Item key={"menu" + menu + "sub" + submenu}>{this.props.menus[menu].submenus[submenu].name}</Menu.Item>
+            <Menu.Item key={"menu" + menu + "sub" + submenu} onClick={this.onClick.bind(this, this.props.menus[menu].submenus[submenu].action)}>{this.props.menus[menu].submenus[submenu].name}</Menu.Item>
           );
         }
         menus.push(

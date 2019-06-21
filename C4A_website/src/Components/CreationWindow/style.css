@@ -2,6 +2,14 @@
     border: 1px solid white;
 }
 
+textarea {
+    resize: none;
+}
+
+#save-button {
+    margin-top: 5%;
+}
+
 :local(.code) {
     flex: 1.5;
     position: relative;
@@ -16,6 +24,7 @@
 #info-text {
     background-color: #3d3d3d;
     color: lightcoral;
+    flex: 0.1
 }
 
 html, body {
@@ -84,7 +93,7 @@ html, body {
     padding-right: 15px;
     background-color: white;
     border-radius: 10px;
-    z-index: 9999;
+    z-index: 5000;
 }
 
 .custom-slider {
@@ -97,7 +106,7 @@ html, body {
     padding-right: 15px;
     background-color: white;
     border-radius: 10px;
-    z-index: 9999;
+    z-index: 5000;
 }
 
 .custom-slider-code {
@@ -110,7 +119,7 @@ html, body {
     padding-right: 15px;
     background-color: white;
     border-radius: 10px;
-    z-index: 9999;
+    z-index: 5000;
 }
 
 :local(.parameters) {
@@ -183,7 +192,7 @@ html, body {
     bottom: 40px;
     background-color: white;
     border-radius: 10px;
-    z-index: 9999;
+    z-index: 5000;
 }
 
 :local(.toolboxelement) {
@@ -203,4 +212,12 @@ html, body {
 
 :local(.toolboxelement):hover {
     cursor: pointer;
+}
+
+.ant-modal-wrap  {
+    z-index: 7000 !important;
+}
+
+.ant-modal-mask {
+    z-index: 6000 !important;
 }
