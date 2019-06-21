@@ -31,12 +31,15 @@ var createFunction = function (txt) {
 function insertExerciceFunctions(functions, exercice_id) {
     return new Promise(function(resolve, reject) {
         var reccords = [];
+        var str = "";
         for (var i = 0; i < functions.length; ++i){
-            reccords.push([exercice_id, escapeQuote(functions[i].code),escapeQuote(functions[i].name) + "()"],escapeQuote(functions[i].description))
+            console.log("tamere")
+            str += "('"+exercice_id+"','"+escapeQuote(functions[i].code)+"','"+escapeQuote(functions[i].name)+"','"+escapeQuote(functions[i].description)+"'),"
+
         }
-        console.log(reccords)
-        var sql = "INSERT INTO exercice_functions (exercice_id, code, name, description) VALUES ?"
-        con.query(sql, [reccords],function (err, rows, fields) {
+        str = str.substring(0,str.length - 1)
+        var sql = "INSERT INTO exercice_functions (exercice_id, code, name, description) VALUES " + str
+        con.query(sql,function (err, rows, fields) {
             if (err) return reject(err);
             resolve(rows);
         });
@@ -304,10 +307,36 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
     // res.send(exerciceSteps)
     res.send("toto")
 });
-var escapeQuote = function(str){
+var escapeQuote1 = function(str){
+
     var find = "'";
     var re = new RegExp(find, 'g');
-    return str.replace(re, "''")
+    return str.replace(re, "\'")
+    // return str
+}
+function escapeQuote (str) {
+    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+        switch (char) {
+            case "\0":
+                return "\\0";
+            case "\x08":
+                return "\\b";
+            case "\x09":
+                return "\\t";
+            case "\x1a":
+                return "\\z";
+            case "\n":
+                return "\\n";
+            case "\r":
+                return "\\r";
+            case "\"":
+            case "'":
+            case "\\":
+            case "%":
+                return "\\"+char; // prepends a backslash to backslash, percent,
+                                  // and double/single quotes
+        }
+    });
 }
 router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     var contentOjb =JSON.parse(request.body.exercice);
@@ -320,7 +349,8 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             contentOjb.title = escapeQuote(contentOjb.title)
             contentOjb.text = escapeQuote(contentOjb.text)
             content = escapeQuote(content)
-            console.log(content)
+            // console.log("content")
+            // console.log(content)
             var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
             sql += "values('"+contentOjb.title+"','"+contentOjb.text+"','"+contentOjb.public+"','"+content+"','"+author_id+"','"+contentOjb.code+"')"+";";
             console.log(sql)
