@@ -20,7 +20,6 @@ class Patterns extends Component {
     
     return (
         <div className={styles.patterns}>
-            <h3 className="title">Ici les patterns</h3>
             <div className="content">
               <div className="patterns-content">
                 {patterns}
