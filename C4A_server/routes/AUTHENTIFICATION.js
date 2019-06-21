@@ -4,7 +4,7 @@ var con = require('./connexionDatabase.js');
 
 exports.isProfessorInThisClassRoom = function(request, res, next) {
     var classId = request.params.classId;
-    var idProfessor = request.decoded.id
+    var idProfessor = request.decoded.id;
 
     function getLastRecord(classId,idProfessor){
         return new Promise(function(resolve, reject) {

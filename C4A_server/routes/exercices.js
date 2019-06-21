@@ -63,6 +63,25 @@ router.get('/test', function(request, res, next) {
 
     res.send("toto");
 });
+router.post('/addExerciceToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom ,function(request, res, next) {
+    var exerciceId = request.params.id;
+    var classId = request.params.classId;
+
+    function addExerciceToClass(exerciceId,classId) {
+        return new Promise(function(resolve, reject) {
+            // var sql = "insert into class_exercices(class_id, exercice_id) values ?;"
+            var sql = "insert into class_exercices(class_id, exercice_id) values ('"+classId+"','"+exerciceId+"');"
+            // con.query(sql,[classId,exerciceId],function (err, rows, fields) {
+            con.query(sql,function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    addExerciceToClass(exerciceId,classId).then(function(rows){
+        res.send(rows)
+    })
+});
 router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id
     function getUserPersonnalExercices(userId) {
@@ -83,13 +102,28 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
             });
         });
     }
+    function getUserClassExercices(userId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select * from exercices, class_exercices, classroom_students where class_exercices.exercice_id = exercices.id " +
+                "and classroom_students.idClassRoom = class_exercices.class_id and classroom_students.idstudent = ?;"
+            con.query(sql, [userId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
     getUserPersonnalExercices(userId).then(function(rowsPersonnal){
         getUserForkedExercices(userId).then(function(rowsForked){
-            res.json({
-                perso:rowsPersonnal,
-                forked:rowsForked
-            })
+            getUserClassExercices(userId).then(function(rowsClass){
+                res.json({
+                    perso:rowsPersonnal,
+                    forked:{
+                        fromStore : rowsForked,
+                        fromClasses: rowsClass
+                    }
+                })
 
+            })
         })
     })
 })
