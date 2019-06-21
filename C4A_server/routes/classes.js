@@ -116,6 +116,42 @@ router.post('/addStudentToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessor
     getLastRecord(id,classId).then(function(rows){ res.send(rows); });
 
 });
+router.post('/removeStudentFromClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom ,function(request, res, next) {
+    var id = request.params.id;
+    var classId = request.params.classId;
+    function removeStudentFromClass(id,classId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from classroom_students where idClassRoom=? and idStudent = ?";
+            con.query(sql, [classId],[id],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+    removeStudentFromClass(id,classId).then(function(rows){
+        res.send(rows);
+    });
+
+});
+router.post('/removeProfessorFromClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom ,function(request, res, next) {
+    var id = request.params.id;
+    var classId = request.params.classId;
+    function removeProfessorFromClass(id,classId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from classroom_professors where idClassRoom=? and idProfessor = ?";
+            con.query(sql, [classId],[id],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+    removeProfessorFromClass(id,classId).then(function(rows){
+        res.send(rows);
+    });
+
+});
 router.post('/addProfessorToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom, function(request, res, next) {
     var id = request.params.id;
     var classId = request.params.classId;
