@@ -163,14 +163,13 @@ html, body {
 #toolbox_ul {
     margin: 0;
     padding: 0;
-    background-color: yellow;
 }
 
 .custom-toolbox {
     position: absolute;
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-bottom: 15px;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-bottom: 12px;
     left: 30px;
     bottom: 40px;
     background-color: white;
@@ -178,45 +177,21 @@ html, body {
     z-index: 9999;
 }
 
-.toolbox-content {
-    background-color: green;
-}
-
 :local(.toolboxelement) {
     margin: 0 auto;
     float: left;
     clear: left;
-    margin-top: 15px;
-    background-color: red;
+    margin-top: 6px;
 }
 
 .placeholderimage {
-    margin-top: 15px;
+    margin-top: 10.5px;
 }
 
 :local(.label) {
     cursor: pointer;
 }
 
-.tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    position: absolute;
-    z-index: 9999;
-}
-
 :local(.toolboxelement):hover {
     cursor: pointer;
-    background-color: lightgray;
-}
-
-:local(.toolboxelement):hover .tooltiptext {
-    visibility: visible;
-    left: 10%; 
-    margin-top: 2.5%;
 }

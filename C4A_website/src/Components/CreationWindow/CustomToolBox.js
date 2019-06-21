@@ -22,7 +22,6 @@ class CustomToolBox extends Component {
                 ref={provided.innerRef}
                 {...provided.droppableProps} 
                 id="toolbox_ul">
-                    {provided.placeholder}
                     {options}
                 </div>
               )}
