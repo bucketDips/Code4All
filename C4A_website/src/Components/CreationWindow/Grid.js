@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Case from './Case'
 import CustomSlider from './CustomSlider'
+import CustomToolBox from './CustomToolBox'
 import Block from './Block'
 import Npc from './Npc'
 import Pc from './Pc'
@@ -184,6 +185,7 @@ class Grid extends Component {
                 {background}
               </div>
             </div>
+            <CustomToolBox className="custom-toolbox" elements={this.props.toolboxOptions} />
             <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={this.state.gridProperties.size}/>
         </div>
     );

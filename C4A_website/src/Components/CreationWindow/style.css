@@ -160,31 +160,38 @@ html, body {
     float: right;
 }
 
-:local(.toolbox) {
-    flex: 0.7;
-}
-
 #toolbox_ul {
     margin: 0;
     padding: 0;
+    background-color: yellow;
+}
+
+.custom-toolbox {
+    position: absolute;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 15px;
+    left: 30px;
+    bottom: 40px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 9999;
+}
+
+.toolbox-content {
+    background-color: green;
 }
 
 :local(.toolboxelement) {
     margin: 0 auto;
-    list-style-type: none;
+    float: left;
+    clear: left;
+    margin-top: 15px;
+    background-color: red;
 }
 
-:local(.toolboxelement) .image {
-    height: 4vh;
-    flex: 0.5;
-}
-
-:local(.toolboxelement) .name {
-    height: 4vh;
-    line-height: 4vh;
-    flex: 2.2;
-    font-family: "Gill Sans", sans-serif;
-    font-weight: 600;
+.placeholderimage {
+    margin-top: 15px;
 }
 
 :local(.label) {
