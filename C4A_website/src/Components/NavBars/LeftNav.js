@@ -15,7 +15,6 @@ class LeftNav extends Component {
 
   onClick(action, optional) {
     this.setState({
-      collapsed: false,
       content: (<div></div>)
     }, () => {
       var actioned = action(optional);

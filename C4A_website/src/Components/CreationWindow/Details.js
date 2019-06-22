@@ -69,12 +69,20 @@ class Details extends Component {
   };
 
   render() {
+    if(this.props.details) {
+      var details = this.props.details;
+      var buttonValue = "modifier";
+    }
+    else {
+      var buttonValue = "sauvegarder";
+    }
+
     return (
         <div className={styles.details}>
             <div className="content">
-            <TextArea autosize={false} rows={4} onChange={this.changeDetails.bind(this)} />
+            <TextArea autosize={false} rows={4} onChange={this.changeDetails.bind(this)} value={details} />
             <Button id="save-button" type="primary" icon="download" size={"large"} onClick={this.showModal}>
-              sauvegarder
+              {buttonValue}
             </Button>
             <ExerciceCreationForm
               wrappedComponentRef={this.saveFormRef}

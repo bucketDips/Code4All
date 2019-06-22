@@ -221,3 +221,7 @@ html, body {
 .ant-modal-mask {
     z-index: 6000 !important;
 }
+
+.ant-menu-submenu-popup {
+    z-index: 6000 !important;
+}

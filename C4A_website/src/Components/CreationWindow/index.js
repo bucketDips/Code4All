@@ -9,6 +9,8 @@ import Details from './Details';
 import Parameters from './Parameters';
 import Patterns from './Patterns';
 
+import exercices from '../../Providers/exercices';
+
 class CreateExerciseWindow extends Component {
 
   constructor() {
@@ -19,6 +21,7 @@ class CreateExerciseWindow extends Component {
       gridProperties: {},
       patterns: [],
       neutralElements: [],
+      gridObject: null,
       delete: null
     }
   }
@@ -65,12 +68,18 @@ class CreateExerciseWindow extends Component {
       blocks: {},
       npc: {},
       pc: {},
-      labels: {}
+      labels: {},
+      functions: [],
+      editorValue: "",
+      gridObject: null
     });
   }
 
-  saveExercise(name, detail) {
-    console.log(name + " " + detail);
+  shouldComponentUpdate(nextProps, nextState){
+    if(nextState.editorValue !== this.state.editorValue || nextState.gridObject !== this.state.gridObject) {
+      return false;
+    }
+    return true;
   }
 
   onChangeParameters(parameters) {
@@ -104,6 +113,14 @@ class CreateExerciseWindow extends Component {
       }
     });
     return elements;
+  }
+
+  onChangeEditorValue(newValue) {
+    this.setState({editorValue: newValue});
+  }
+
+  onChangeGridObject(newValue) {
+    this.setState({gridObject: newValue});
   }
 
   onChangeElementParameters(parameters, type) {
@@ -181,6 +198,10 @@ class CreateExerciseWindow extends Component {
     this.setState({delete: null});
   }
 
+  synchroniseFunctions(functions) {
+    this.setState({functions: functions});
+  }
+
   synchroniseForOneTypeOfElements(elements, type) {
     var newElements = {};
 
@@ -235,11 +256,12 @@ class CreateExerciseWindow extends Component {
     }
   }
 
-  synchroniseElements(blocks, npcs, pcs, labels) {
+  synchroniseElements(blocks, npcs, pcs, labels, functions) {
     this.synchroniseForOneTypeOfElements(blocks, "BLOCK");
     this.synchroniseForOneTypeOfElements(npcs, "NPC");
     this.synchroniseForOneTypeOfElements(pcs, "PC");
     this.synchroniseForOneTypeOfElements(labels, "LABEL");
+    this.synchroniseFunctions(functions);
   }
 
   getMaxKeyOf(dictionary) {
@@ -344,6 +366,27 @@ class CreateExerciseWindow extends Component {
     }
   }
 
+  saveExercice(title, description) {
+    var buildedExercice = {
+      title: title,
+      text: description,
+      public: 0,
+      code: this.state.editorValue,
+      lines: this.state.gridProperties.lines,
+      columns: this.state.gridProperties.columns,
+      patternId: this.state.gridProperties.backgroundId,
+      blocks: Object.values(this.state.gridObject.blocks),
+      npcs: Object.values(this.state.gridObject.npcs),
+      pcs: Object.values(this.state.gridObject.pcs),
+      labels: Object.values(this.state.gridObject.labels),
+      functions: this.state.functions
+    }
+    
+    console.log(JSON.stringify(buildedExercice));
+
+    exercices.createExercice(buildedExercice);
+  }
+
   render() {
     return (
             <div className={style.app}>
@@ -372,6 +415,8 @@ class CreateExerciseWindow extends Component {
                   synchroniseElements={this.synchroniseElements.bind(this)}
                   changeGridParameters={this.onChangeGridParameters.bind(this)}
                   changeParametersWindow={this.onChangeParameters.bind(this)}
+                  changeEditorValue={this.onChangeEditorValue.bind(this)}
+                  changeGridObject={this.onChangeGridObject.bind(this)}
                   />
               </div>
               <div className={style.bottom_panel}>
@@ -387,7 +432,8 @@ class CreateExerciseWindow extends Component {
                   patterns={this.state.patterns} 
                   deletePattern={this.handleDeletePattern.bind(this)} />
                   <Details 
-                  saveExercise={this.saveExercise.bind(this)}
+                  saveExercise={this.saveExercice.bind(this)}
+                  details={this.props.details}
                   />
               </div>
             </div>
