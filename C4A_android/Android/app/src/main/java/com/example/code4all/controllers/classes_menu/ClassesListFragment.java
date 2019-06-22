@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +19,12 @@ import com.example.code4all.R;
 import com.example.code4all.data.classe.Classe;
 import com.example.code4all.data.classe.ClasseManager;
 import com.example.code4all.data.classe.IClasseManagerListener;
+import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.ServerHandler;
 import com.example.code4all.settings.SharedPreferenceManager;
 import com.example.code4all.tools.DialogBoxBuilder;
 import com.example.code4all.tools.IBasicDialogCallBack;
+import com.example.code4all.viewtools.SnackbarBuilder;
 
 import java.util.ArrayList;
 
@@ -114,6 +117,11 @@ public class ClassesListFragment extends Fragment{
                 @Override
                 public void onClasseListAsStudentChanged(ArrayList<Classe> classes) {
                     renderRecyclerViewAsStudent(classes);
+                }
+
+                @Override
+                public void onFailClasseCreation(ErrorNetwork errorNetwork) {
+                    SnackbarBuilder.make(parent.getRootView(), errorNetwork.diplayErrorMessage(), Snackbar.LENGTH_LONG, R.color.white).show();
                 }
             });
             classeManager.loadClassesFromUser();

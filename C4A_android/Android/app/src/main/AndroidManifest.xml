@@ -14,23 +14,37 @@
             android:theme="@style/MainTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".controllers.classes_menu.ClasseActivity" android:screenOrientation="landscape">
-
+        <activity
+                android:name=".controllers.exercices_menu.ExerciceListActivity"
+                android:label="@string/title_exercice_list"
+                android:theme="@style/MainTheme">
         </activity>
-
-        <activity android:name=".controllers.login.LoginActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+        <activity
+                android:name=".controllers.exercices_menu.ExerciceDetailActivity"
+                android:label="@string/title_exercice_detail"
+                android:parentActivityName=".controllers.exercices_menu.ExerciceListActivity"
+                android:theme="@style/MainTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.example.code4all.controllers.exercices_menu.ExerciceListActivity"/>
+        </activity>
+        <activity
+                android:name=".controllers.classes_menu.ClasseActivity"
+                android:screenOrientation="landscape">
+        </activity>
+        <activity
+                android:name=".controllers.login.LoginActivity"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
-        <activity android:name=".controllers.main_menu.MainMenuActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-                  android:screenOrientation="landscape"/>
-
+        <activity
+                android:name=".controllers.main_menu.MainMenuActivity"
+                android:screenOrientation="landscape"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
     </application>
 
 </manifest>

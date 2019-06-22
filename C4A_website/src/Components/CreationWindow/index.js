@@ -69,6 +69,10 @@ class CreateExerciseWindow extends Component {
     });
   }
 
+  saveExercise(name, detail) {
+    console.log(name + " " + detail);
+  }
+
   onChangeParameters(parameters) {
     this.setState({parameters: parameters});
   }
@@ -356,6 +360,7 @@ class CreateExerciseWindow extends Component {
                     />
                   </DragDropContext>
                   <Code
+                  code={this.props.code}
                   grid={this.state.gridProperties}
                   blocks={this.state.blocks}
                   pcs={this.state.pc}
@@ -381,7 +386,9 @@ class CreateExerciseWindow extends Component {
                   <Patterns 
                   patterns={this.state.patterns} 
                   deletePattern={this.handleDeletePattern.bind(this)} />
-                  <Details />
+                  <Details 
+                  saveExercise={this.saveExercise.bind(this)}
+                  />
               </div>
             </div>
     );

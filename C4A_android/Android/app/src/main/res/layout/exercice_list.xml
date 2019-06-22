@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:baselineAligned="false"
+              android:divider="?android:attr/dividerHorizontal"
+              android:orientation="horizontal"
+              android:showDividers="middle"
+              tools:context=".controllers.exercices_menu.ExerciceListActivity"
+              android:layout_height="match_parent" android:layout_width="match_parent">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/recyclerView1Area">
+
+            <TextView
+                    android:text="@string/my_exercices_list_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/personnal_exercices_label"
+                    android:gravity="center_vertical" app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="8dp" android:layout_marginStart="8dp" android:layout_marginBottom="8dp"/>
+            <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" app:srcCompat="@android:drawable/arrow_down_float"
+                    android:id="@+id/imageButtonDropDown"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"/>
+        </android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_exercice_list"
+                android:name="com.example.code4all.controllers.exercices_menu.ExerciceListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="LinearLayoutManager"
+                android:visibility="gone"
+                tools:context=".controllers.exercices_menu.ExerciceListActivity"
+                tools:listitem="@layout/layout_exercice_list_item">
+
+        </android.support.v7.widget.RecyclerView>
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/recyclerView2Area">
+
+            <TextView
+                    android:text="@string/from_store_list_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/from_store_exercices_label"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" app:srcCompat="@android:drawable/arrow_down_float"
+                    android:id="@+id/imageButtonDropDown2"
+                    android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+        </android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/from_store_exercice_list"
+                android:name="com.example.code4all.controllers.exercices_menu.ExerciceListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".controllers.exercices_menu.ExerciceListActivity"
+                tools:listitem="@layout/layout_exercice_list_item">
+
+        </android.support.v7.widget.RecyclerView>
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/recyclerView3Area">
+
+            <TextView
+                    android:text="@string/from_classe_list_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/from_classes_exercices_label"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"/>
+            <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" app:srcCompat="@android:drawable/arrow_down_float"
+                    android:id="@+id/imageButtonDropDown3"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"/>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/from_classes_exercice_list"
+                android:name="com.example.code4all.controllers.exercices_menu.ExerciceListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".controllers.exercices_menu.ExerciceListActivity"
+                tools:listitem="@layout/layout_exercice_list_item">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+</LinearLayout>

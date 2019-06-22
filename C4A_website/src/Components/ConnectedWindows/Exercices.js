@@ -11,8 +11,12 @@ class ExercicesWindow extends Component {
         super();
         this.state = {
             menus: [],
-            content: "coucou"
+            content: null
         }
+    }
+
+    modifyExercice(code) {
+        return [(<CreateExerciseWindow code={code.code} />), "collapsed"];
     }
 
     createExercice() {
@@ -27,8 +31,27 @@ class ExercicesWindow extends Component {
         ), "not-collapsed"];
     }
 
-    componentWillMount() {
-        var allExercices = exercices.getMines("coucou");
+    async componentWillMount() {
+        var allExercices = await exercices.getMines("coucou");
+        var myExercices = [];
+        var forkedExercices = []
+        for(var exercice in allExercices.data.perso) {
+            myExercices.push({
+                id: allExercices.data.perso[exercice].id,
+                name: allExercices.data.perso[exercice].title,
+                code: allExercices.data.perso[exercice].code,
+                action: this.modifyExercice
+            });
+        }
+
+        for(var exercice in allExercices.data.forked.fromStore) {
+            forkedExercices.push({
+                id: allExercices.data.forked.fromStore[exercice].id,
+                authorId: allExercices.data.forked.fromStore[exercice].author_id,
+                name: allExercices.data.forked.fromStore[exercice].title,
+                action: this.modifyExercice
+            });
+        }
 
         var menus = [];
         menus.push({
@@ -39,12 +62,12 @@ class ExercicesWindow extends Component {
         menus.push({
             name: "my exercices",
             icon: "ordered-list",
-            submenus: allExercices.myExercices
+            submenus: myExercices
         });
         menus.push({
             name: "forked exercices",
             icon: "cloud",
-            submenus: allExercices.forkedExercices
+            submenus: forkedExercices
         });
         menus.push({
             name: "create exercice",
@@ -52,7 +75,10 @@ class ExercicesWindow extends Component {
             action: this.createExercice
         });
 
-        this.setState({ menus: menus });
+        this.setState({ 
+            menus: menus,
+            content: this.presentation()[0]
+         });
     }
 
     render() {

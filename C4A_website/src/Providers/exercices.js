@@ -1,29 +1,16 @@
 import Axios from 'axios';
 
 class Exercices {
-    getMines(token) {
-        return {
-            "myExercices": [
-                {
-                    id: 0,
-                    name: "exo1"
-                },
-                {
-                    id: 1,
-                    name: "exo2"
-                }
-            ],
-            "forkedExercices": [
-                {
-                    id: 2,
-                    name: "exoAA"
-                },
-                {
-                    id: 3,
-                    name: "exoBB"
-                }
-            ]
+    async getMines() {
+        var headers = {
+            'Authorization': 'Bearer ' +  localStorage.sessionToken
         }
+
+        return Axios.get("http://212.47.235.40:3000/exercices/getUserExercices", {headers: headers}).then(response => {
+            return response;
+        }).catch(error => {
+            console.log(JSON.stringify(error));
+        });
     }
 }
 

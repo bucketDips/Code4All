@@ -88,7 +88,7 @@
             <TextView
                     android:text="@string/classe_details_fragment_title"
                     android:layout_width="0dp"
-                    android:textStyle="bold"
+                    style="@style/MediumTitle"
                     android:layout_height="wrap_content" android:id="@+id/fragmentTitle"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

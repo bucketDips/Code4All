@@ -119,6 +119,12 @@ class Code extends Component {
     return newStr;
   }
 
+  componentWillMount() {
+    if(this.props.code) {
+      this.onChange(this.props.code, null);
+    }
+  }
+
   componentWillReceiveProps(props){
     if(props.delete){
       this.delete(props.delete.id, props.delete.type);
@@ -205,8 +211,6 @@ class Code extends Component {
       var labels = grid.getLabels();
       this.props.synchroniseElements(blocks, npcs, pcs, labels);
       this.setState({fromEdit: false});
-
-      console.log(this.state.gridObject);
   }
 
   evalCode() {
@@ -232,8 +236,6 @@ class Code extends Component {
     catch(error) {
       this.setState({infoText: error.message});
     }
-
-    console.log(JSON.stringify(this.state.gridObject));
   }
 
   onChange(newValue, e) {

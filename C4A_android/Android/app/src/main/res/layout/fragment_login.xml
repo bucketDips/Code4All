@@ -63,7 +63,7 @@
                         android:textColor="@color/black"
 
                         android:id="@+id/username" android:autofillHints="" tools:targetApi="o"
-                        android:hint="@string/username" android:text="1william.morgado@gmail.com"/>
+                        android:hint="@string/username" android:text="@string/user_test"/>
                 <View android:layout_width="match_parent" android:layout_height="10dp"/>
                 <EditText
                         android:background="@drawable/edit_rounds"
@@ -78,7 +78,7 @@
                         android:textSize="25sp"
                         android:id="@+id/password" android:autofillHints="" tools:targetApi="o"
                         android:textColor="@color/black"
-                        android:hint="@string/password" android:text="toto"/>
+                        android:hint="@string/password" android:text="@string/password_test"/>
             </LinearLayout>
             <Button
                     android:text="@string/login"

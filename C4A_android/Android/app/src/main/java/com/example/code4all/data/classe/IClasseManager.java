@@ -13,6 +13,7 @@ public interface IClasseManager {
     void getProfessorsOfThisClasse(Classe idClasse, IClasseCallback callback);
     void getStudentsOfThisClasse(Classe idClasse, IClasseCallback callback);
     Classe findClasse(int idClasse);
+    Classe loadClasse(int idClasse);
     boolean isInThisList(User user, ArrayList<User> users);
     void createClasse(String classeName);
     void addClasseToList(Classe classe, ArrayList<Classe> classeList);

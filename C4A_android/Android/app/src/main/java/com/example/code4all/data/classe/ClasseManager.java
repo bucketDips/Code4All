@@ -5,10 +5,12 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.example.code4all.data.DataManager;
 import com.example.code4all.data.user.User;
+import com.example.code4all.error.Error;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
 import com.example.code4all.serverhandler.ServerHandler;
+import com.example.code4all.viewtools.SnackbarBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -201,6 +203,11 @@ public class ClasseManager extends DataManager implements IClasseManager{
     }
 
     @Override
+    public Classe loadClasse(int idClasse) {
+        return null;
+    }
+
+    @Override
     public boolean isInThisList(User user, ArrayList<User> users) {
         for(User userToCheck : users){
             if(userToCheck.getName().equals(user.getName()))
@@ -230,7 +237,12 @@ public class ClasseManager extends DataManager implements IClasseManager{
 
             @Override
             public void onErrorResponse(@NotNull VolleyError error) {
-
+                try {
+                    ErrorNetwork errorNetwork = new ErrorNetwork(error, context);
+                    listener.onFailClasseCreation(errorNetwork);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

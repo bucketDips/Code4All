@@ -31,6 +31,8 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     private final String connect = "/connect";
     private final String find_user = "/findUser";
     private final String reset_pwd = "/resetPwd";
+    private final String get_user ="/getUser";
+
 
 
     // CLASSES ENPOINTS
@@ -48,13 +50,13 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     private final String get_classe_details = "/getClassDetail";
 
 
+    // EXERCICE ENDPOINTS
+    private final String exercices = "/exercices";
+    private final String get_user_exercices = "/getUserExercices";
+
 
     private static ServerHandler serverHandler;
     private final RequestQueue requestQueue;
-
-    //private final RequestQueue requestQueue;
-    //private final Context context;
-    private HashMap<String, Object> listParams;
 
     private ServerHandler(Context context) {
         this.requestQueue = Volley.newRequestQueue(context);
@@ -289,6 +291,46 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
         String url = rootUrl + classes + get_classe_details + '/' + String.valueOf(classeId);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET, url, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        ){
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap <String, String> headers = new HashMap<>();
+                headers.put(authorization, bearer + token);
+                return headers;
+            }
+        };
+
+        this.requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void getExercices(@NotNull String token, @NotNull IAPICallbackJsonObject callback) {
+        String url = rootUrl + exercices + get_user_exercices;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET, url, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        ){
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap <String, String> headers = new HashMap<>();
+                headers.put(authorization, bearer + token);
+                return headers;
+            }
+        };
+
+        this.requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void getUser(int idUser, @NotNull String token, @NotNull IAPICallbackJsonArray callback) {
+        String url = rootUrl + user + get_user + '/' + idUser;
+
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET, url, null,
                 callback::onSuccessResponse,
                 callback::onErrorResponse

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class GridUsersAdapter extends BaseAdapter {
 
     private ArrayList<User> users;
-    private Integer[] avatars = {
+    public static Integer[] avatars = {
         R.drawable.boy,
         R.drawable.boy1,
         R.drawable.girl,
@@ -69,6 +69,11 @@ public class GridUsersAdapter extends BaseAdapter {
 
 
         return convertView;
+    }
+
+    public static Integer getRandomPicture(){
+        double randomNumber = Math.random() * ( avatars.length);
+        return avatars[(int) randomNumber];
     }
 
 }
