@@ -360,6 +360,7 @@ class CreateExerciseWindow extends Component {
                     />
                   </DragDropContext>
                   <Code
+                  code={this.props.code}
                   grid={this.state.gridProperties}
                   blocks={this.state.blocks}
                   pcs={this.state.pc}

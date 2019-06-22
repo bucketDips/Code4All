@@ -16,9 +16,7 @@ class ExercicesWindow extends Component {
     }
 
     modifyExercice(code) {
-        console.log(code);
-        return null;
-        return [(<CreateExerciseWindow code={code} />), "collapsed"];
+        return [(<CreateExerciseWindow code={code.code} />), "collapsed"];
     }
 
     createExercice() {
@@ -41,7 +39,8 @@ class ExercicesWindow extends Component {
             myExercices.push({
                 id: allExercices.data.perso[exercice].id,
                 name: allExercices.data.perso[exercice].title,
-                action: function(){ return this.modifyExercice.bind(this, allExercices.data.perso[exercice].id); }
+                code: allExercices.data.perso[exercice].code,
+                action: this.modifyExercice
             });
         }
 

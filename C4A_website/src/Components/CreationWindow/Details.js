@@ -73,7 +73,7 @@ class Details extends Component {
         <div className={styles.details}>
             <div className="content">
             <TextArea autosize={false} rows={4} onChange={this.changeDetails.bind(this)} />
-            <Button id="save-button" type="primary" icon="download" size={500} onClick={this.showModal}>
+            <Button id="save-button" type="primary" icon="download" size={"large"} onClick={this.showModal}>
               sauvegarder
             </Button>
             <ExerciceCreationForm
