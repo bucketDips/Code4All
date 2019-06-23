@@ -1,5 +1,7 @@
 import Axios from 'axios';
 import qs from 'qs';
+import consts from '../Providers/consts'
+
 
 class Exercices {
     async getMines() {
@@ -7,7 +9,7 @@ class Exercices {
             'Authorization': 'Bearer ' +  localStorage.sessionToken
         }
 
-        return Axios.get("http://212.47.235.40:3000/exercices/getUserExercices", {headers: headers}).then(response => {
+        return Axios.get(consts.url() + "exercices/getUserExercices", {headers: headers}).then(response => {
             return response;
         }).catch(error => {
             alert(JSON.stringify(error));
@@ -17,7 +19,7 @@ class Exercices {
     createExercice(exercice) {
         let data = {'exercice': JSON.stringify(exercice)};
     
-        Axios.post('http://212.47.235.40:3000/exercices/add', qs.stringify(data),
+        Axios.post(consts.url() + 'exercices/add', qs.stringify(data),
         {
             headers: {
                 'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -34,7 +36,7 @@ class Exercices {
     modifyExercice(exercice, id) {
         let data = {'exercice': JSON.stringify(exercice)};
     
-        Axios.post('http://212.47.235.40:3000/exercices/modify/' + id, qs.stringify(data),
+        Axios.post(consts.url() + 'exercices/modify/' + id, qs.stringify(data),
         {
             headers: {
                 'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -49,7 +51,7 @@ class Exercices {
     }
 
     deleteExercice(id) {
-        Axios.post('http://212.47.235.40:3000/exercices/delete/' + id, {}, {
+        Axios.post(consts.url() + 'exercices/delete/' + id, {}, {
             headers: {
                 'Authorization': 'Bearer ' +  localStorage.sessionToken
             }

@@ -10,8 +10,25 @@ import Pattern from './Pattern';
 
 class Patterns extends Component {
   
+  constructor() {
+    super();
+    this.state = {
+      patterns: []
+    }
+  }
+
+  componentWillMount() {
+    this.fillPatterns();
+  }
+
   handleDeletePattern(patternId) {
     this.props.deletePattern(patternId);
+  }
+
+  async fillPatterns() {
+    var allExercices = await files.getMines();
+
+    this.setState({patterns: allExercices.data});
   }
 
   render() {
@@ -21,7 +38,7 @@ class Patterns extends Component {
       showUploadList: false,
       customRequest: (options) => {
         files.uploadFileToUser(options);
-        
+        files.getMines();
       },
       onChange(info) {
         if (info.file.status !== 'uploading') {
@@ -35,15 +52,20 @@ class Patterns extends Component {
       },
     };
 
+    var patterns = this.state.patterns.map(pattern => (
+      <Pattern id={pattern.fileid} name={pattern.publicName} />
+    ));
+
     return (
         <div className={styles.patterns}>
             <div className="content">
               <div className="patterns-content">
-              <Upload {...props}>
-                <Button>
-                  <Icon type="upload" /> Click to Upload
-                </Button>
-              </Upload>
+                {patterns}
+                <Upload {...props}>
+                  <Button>
+                    <Icon type="upload" /> Click to Upload
+                  </Button>
+                </Upload>              
               </div>
             </div>
         </div>

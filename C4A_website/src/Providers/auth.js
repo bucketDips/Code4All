@@ -1,8 +1,9 @@
 import Axios from 'axios';
+import consts from '../Providers/consts'
 
 class Auth {
     login(email, password) {
-        Axios.get("http://212.47.235.40:3000/users/connect/" + email + "/" + password).then(response => {
+        Axios.get(consts.url() + "users/connect/" + email + "/" + password).then(response => {
             if(response.data.success) {
                 localStorage.sessionToken = response.data.token;
                 window.location.href = "/";
@@ -26,7 +27,7 @@ class Auth {
     }
 
     inscription(user, password, mail) {
-        Axios.get("http://212.47.235.40:3000/users/create/" + user + "/" + password + "/" + mail).then(response => {
+        Axios.get(consts.url() + "users/create/" + user + "/" + password + "/" + mail).then(response => {
             if(response.success) {
                 window.location.href = "/login";
             }
