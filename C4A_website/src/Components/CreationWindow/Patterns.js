@@ -38,7 +38,6 @@ class Patterns extends Component {
       showUploadList: false,
       customRequest: (options) => {
         files.uploadFileToUser(options);
-        files.getMines();
       },
       onChange(info) {
         if (info.file.status !== 'uploading') {
@@ -46,11 +45,14 @@ class Patterns extends Component {
         }
         if (info.file.status === 'done') {
           message.success(`${info.file.name} file uploaded successfully`);
+          this.fillPatterns();
         } else if (info.file.status === 'error') {
           message.error(`${info.file.name} file upload failed.`);
         }
       },
     };
+
+    console.log(this.state.patterns);
 
     var patterns = this.state.patterns.map(pattern => (
       <Pattern id={pattern.fileid} name={pattern.publicName} />
@@ -59,14 +61,16 @@ class Patterns extends Component {
     return (
         <div className={styles.patterns}>
             <div className="content">
-              <div className="patterns-content">
+              <div className="patterns-display">
                 {patterns}
+              </div>
+              <div className="add-button-pattern">
                 <Upload {...props}>
                   <Button>
                     <Icon type="upload" /> Click to Upload
                   </Button>
-                </Upload>              
-              </div>
+                </Upload>  
+              </div>            
             </div>
         </div>
     );

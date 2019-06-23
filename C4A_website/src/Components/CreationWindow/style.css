@@ -41,7 +41,7 @@ html, body {
 }
 
 :local(.top_panel) {
-    flex: 3;
+    flex: 1.8;
     display: flex;
 }
 
@@ -76,7 +76,7 @@ html, body {
 }
 
 :local(.grid) .content {
-    overflow: scroll;   
+    overflow: auto;   
     background-color: darkslategrey;
 }
 
@@ -124,7 +124,7 @@ html, body {
 
 :local(.parameters) {
     flex: 2;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 :local(.parameters) .content {
@@ -151,7 +151,23 @@ html, body {
 
 :local(.patterns) {
     flex: 2;
-    overflow-y: scroll;
+    height: 100%;
+}
+
+
+:local(.patterns) .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.patterns-display {
+    flex: 4;
+    overflow-y: auto;
+}
+
+.add-button-pattern {
+    flex: 1;
 }
 
 #code-editor {
@@ -161,9 +177,8 @@ html, body {
 
 .pattern-image {
     overflow: hidden;
-    width: 80%;
+    width: 30px;
     height: 30px;
-    object-fit: none;
     background-color: honeydew;
     border: 1px solid black;
 }
@@ -172,6 +187,11 @@ html, body {
     width: 1.4vw;
     padding-right: 1vw;
     padding-top: 5%;
+}
+
+.pattern-content {
+    width: 10%;
+    float: left;
 }
 
 .form-delete-grid{
