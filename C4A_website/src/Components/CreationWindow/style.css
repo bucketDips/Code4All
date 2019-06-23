@@ -183,6 +183,13 @@ html, body {
     height: 50px;
     background-color: honeydew;
     border: 1px solid black;
+    object-fit: contain;
+    opacity: 1;
+    transition: .5s ease;
+}
+
+.pattern-img-container:hover .pattern-image {
+    opacity: 0.3;
 }
 
 .pattern-delete{
