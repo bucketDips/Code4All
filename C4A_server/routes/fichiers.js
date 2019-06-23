@@ -124,7 +124,7 @@ router.get('/getAllUserImages', AUTH.VERIFYAUTH, function(request, res, next) {
 
         for (var i = 0; i < result.length; ++i){
             var pathFile = __dirname +"/FichiersUtilisateur/" +result[i].fileid;
-            var newpath = "public/" + result[i].publicName;
+            var newpath = "../public/" + result[i].publicName;
             fs.copyFile(pathFile, newpath, (err) => {
                 if (err) throw err;
                 console.log(pathFile + ' was copied to '+newpath);
@@ -169,7 +169,7 @@ router.get('/getImageURL/:fileId', AUTH.VERIFYAUTH, function(request, res, next)
         for (var i = 0; i < 30; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         text +=  "_" + rows["0"].name;
-        var newpath = "public/" + text;
+        var newpath = "../public/" + text;
 
 
         fs.copyFile(oldpath, newpath, (err) => {
