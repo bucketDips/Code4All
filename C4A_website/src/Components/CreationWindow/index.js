@@ -9,6 +9,12 @@ import Details from './Details';
 import Parameters from './Parameters';
 import Patterns from './Patterns';
 
+import exercices from '../../Providers/exercices';
+
+import files from '../../Providers/files';
+
+import consts from '../../Providers/consts';
+
 class CreateExerciseWindow extends Component {
 
   constructor() {
@@ -19,14 +25,26 @@ class CreateExerciseWindow extends Component {
       gridProperties: {},
       patterns: [],
       neutralElements: [],
+      gridObject: null,
       delete: null
     }
   }
 
-  componentWillMount() {
-    Axios.get(process.env.PUBLIC_URL + '/patterns/files.json').then(response => {
-      this.setState({patterns: response.data})
+  async setPatterns() {
+    var patterns = await files.getMines();
+    var newPatterns = {};
+    patterns.data.map(element => {
+      newPatterns[element.fileid] = {
+        id: element.fileid,
+        nom: element.publicName
+      }
     });
+
+    this.setState({patterns: newPatterns});
+  }
+
+  componentWillMount() {
+    this.setPatterns();
 
     this.setState({
       options: [
@@ -65,8 +83,18 @@ class CreateExerciseWindow extends Component {
       blocks: {},
       npc: {},
       pc: {},
-      labels: {}
+      labels: {},
+      functions: [],
+      editorValue: "",
+      gridObject: null
     });
+  }
+
+  shouldComponentUpdate(nextProps, nextState){
+    if(nextState.editorValue !== this.state.editorValue || nextState.gridObject !== this.state.gridObject) {
+      return false;
+    }
+    return true;
   }
 
   onChangeParameters(parameters) {
@@ -100,6 +128,14 @@ class CreateExerciseWindow extends Component {
       }
     });
     return elements;
+  }
+
+  onChangeEditorValue(newValue) {
+    this.setState({editorValue: newValue});
+  }
+
+  onChangeGridObject(newValue) {
+    this.setState({gridObject: newValue});
   }
 
   onChangeElementParameters(parameters, type) {
@@ -177,6 +213,10 @@ class CreateExerciseWindow extends Component {
     this.setState({delete: null});
   }
 
+  synchroniseFunctions(functions) {
+    this.setState({functions: functions});
+  }
+
   synchroniseForOneTypeOfElements(elements, type) {
     var newElements = {};
 
@@ -189,7 +229,7 @@ class CreateExerciseWindow extends Component {
           }).image;
         }
         else {
-          background = process.env.PUBLIC_URL + 'patterns/' + this.state.patterns[element.patternId].nom;
+          background = consts.url() + this.state.patterns[element.patternId].nom;
         }
   
         newElements[element.id] = {
@@ -231,11 +271,12 @@ class CreateExerciseWindow extends Component {
     }
   }
 
-  synchroniseElements(blocks, npcs, pcs, labels) {
+  synchroniseElements(blocks, npcs, pcs, labels, functions) {
     this.synchroniseForOneTypeOfElements(blocks, "BLOCK");
     this.synchroniseForOneTypeOfElements(npcs, "NPC");
     this.synchroniseForOneTypeOfElements(pcs, "PC");
     this.synchroniseForOneTypeOfElements(labels, "LABEL");
+    this.synchroniseFunctions(functions);
   }
 
   getMaxKeyOf(dictionary) {
@@ -340,6 +381,44 @@ class CreateExerciseWindow extends Component {
     }
   }
 
+  saveExercice(title, description) {
+    var buildedExercice = {
+      title: title,
+      text: description,
+      public: 0,
+      code: this.state.editorValue,
+      lines: this.state.gridProperties.lines,
+      columns: this.state.gridProperties.columns,
+      patternId: this.state.gridProperties.backgroundId,
+      blocks: Object.values(this.state.gridObject.blocks),
+      npcs: Object.values(this.state.gridObject.npcs),
+      pcs: Object.values(this.state.gridObject.pcs),
+      labels: Object.values(this.state.gridObject.labels),
+      functions: this.state.functions
+    }
+    
+    exercices.createExercice(buildedExercice);
+  }
+
+  modifyExercise(title, description, id) {
+    var buildedExercice = {
+      title: title,
+      text: description,
+      public: 0,
+      code: this.state.editorValue,
+      lines: this.state.gridProperties.lines,
+      columns: this.state.gridProperties.columns,
+      patternId: this.state.gridProperties.backgroundId,
+      blocks: Object.values(this.state.gridObject.blocks),
+      npcs: Object.values(this.state.gridObject.npcs),
+      pcs: Object.values(this.state.gridObject.pcs),
+      labels: Object.values(this.state.gridObject.labels),
+      functions: this.state.functions
+    }
+  
+    exercices.modifyExercice(buildedExercice, id);
+  }
+
   render() {
     return (
             <div className={style.app}>
@@ -356,6 +435,7 @@ class CreateExerciseWindow extends Component {
                     />
                   </DragDropContext>
                   <Code
+                  code={this.props.code}
                   grid={this.state.gridProperties}
                   blocks={this.state.blocks}
                   pcs={this.state.pc}
@@ -367,6 +447,8 @@ class CreateExerciseWindow extends Component {
                   synchroniseElements={this.synchroniseElements.bind(this)}
                   changeGridParameters={this.onChangeGridParameters.bind(this)}
                   changeParametersWindow={this.onChangeParameters.bind(this)}
+                  changeEditorValue={this.onChangeEditorValue.bind(this)}
+                  changeGridObject={this.onChangeGridObject.bind(this)}
                   />
               </div>
               <div className={style.bottom_panel}>
@@ -380,8 +462,16 @@ class CreateExerciseWindow extends Component {
                   />
                   <Patterns 
                   patterns={this.state.patterns} 
-                  deletePattern={this.handleDeletePattern.bind(this)} />
-                  <Details />
+                  deletePattern={this.handleDeletePattern.bind(this)} 
+                  reloadPatterns={this.setPatterns.bind(this)}
+                  />
+                  <Details 
+                  saveExercise={this.saveExercice.bind(this)}
+                  modifyExercise={this.modifyExercise.bind(this)}
+                  id={this.props.id}
+                  name={this.props.name}
+                  details={this.props.details}
+                  />
               </div>
             </div>
     );

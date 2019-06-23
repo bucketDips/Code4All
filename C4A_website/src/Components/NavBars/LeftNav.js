@@ -13,19 +13,23 @@ class LeftNav extends Component {
     collapsed: false,
   };
 
-  onClick(action) {
-    var actioned = action();
-    if(actioned[1] === "collapsed") {
-      this.setState({
-        collapsed: true,
-        content: actioned[0]
-      });
-    }
-    else if(actioned[1] === "not-collapsed") {
-      this.setState({
-        content: actioned[0]
-      });
-    }
+  onClick(action, optional) {
+    this.setState({
+      content: (<div></div>)
+    }, () => {
+      var actioned = action(optional);
+      if(actioned[1] === "collapsed") {
+        this.setState({
+          collapsed: true,
+          content: actioned[0]
+        });
+      }
+      else if(actioned[1] === "not-collapsed") {
+        this.setState({
+          content: actioned[0]
+        });
+      }
+    });
   }
 
   reinitMenus() {
@@ -43,7 +47,7 @@ class LeftNav extends Component {
         var submenus = [];
         for(var submenu in this.props.menus[menu].submenus) {
           submenus.push(
-            <Menu.Item key={"menu" + menu + "sub" + submenu}>{this.props.menus[menu].submenus[submenu].name}</Menu.Item>
+            <Menu.Item key={"menu" + menu + "sub" + submenu} onClick={this.onClick.bind(this, this.props.menus[menu].submenus[submenu].action, this.props.menus[menu].submenus[submenu])}>{this.props.menus[menu].submenus[submenu].name}</Menu.Item>
           );
         }
         menus.push(

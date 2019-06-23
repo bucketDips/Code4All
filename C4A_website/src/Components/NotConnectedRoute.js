@@ -11,7 +11,6 @@ export const NotConnectedRoute = ({component: Component, ...rest}) => {
                     return <Component {...props} />
                 }
                 else {
-                    return <Component {...props} />
                     return <Redirect to={
                         {
                             pathname: "/home",

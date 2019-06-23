@@ -23,3 +23,7 @@
 .ant-layout-sider-trigger {
     flex: 20 !important;
 }
+
+.ant-layout-sider-children {
+    overflow-y: scroll;
+}

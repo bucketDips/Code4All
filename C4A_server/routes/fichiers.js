@@ -95,7 +95,7 @@ router.get('/getAllUserImages', AUTH.VERIFYAUTH, function(request, res, next) {
     var extension = [".png",".jpeg",".jpg",".gif"]
     function getUserFileList(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select name, fileid from fichier, user_files where fileId=id and userId="+userId+";";
+            var sql = "select name, fileid from fichier, user_files where fileId=id and sender='"+userId+"' or userId="+userId+";";
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -124,7 +124,7 @@ router.get('/getAllUserImages', AUTH.VERIFYAUTH, function(request, res, next) {
 
         for (var i = 0; i < result.length; ++i){
             var pathFile = __dirname +"/FichiersUtilisateur/" +result[i].fileid;
-            var newpath = "public/" + result[i].publicName;
+            var newpath = __dirname.substring(0, __dirname.indexOf("/routes")) + "/public/" + result[i].publicName;
             fs.copyFile(pathFile, newpath, (err) => {
                 if (err) throw err;
                 console.log(pathFile + ' was copied to '+newpath);
@@ -169,7 +169,7 @@ router.get('/getImageURL/:fileId', AUTH.VERIFYAUTH, function(request, res, next)
         for (var i = 0; i < 30; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         text +=  "_" + rows["0"].name;
-        var newpath = "public/" + text;
+        var newpath = __dirname.substring(0, __dirname.indexOf("/routes")) + "/public/" + text;
 
 
         fs.copyFile(oldpath, newpath, (err) => {
@@ -236,7 +236,8 @@ router.post('/uploadToUser/:filename/:dest', AUTH.VERIFYAUTH, function(request, 
             fs.copyFile(oldpath, newpath, (err) => {
                 if (err) throw err;
                 console.log(oldpath + ' was copied to '+newpath);
-                res.end();
+                // res.end();
+                res.send(rows);
             });
         }).catch(function(err){
             return res.status(403).json(err);
@@ -269,7 +270,8 @@ router.post('/uploadToClass/:filename/:classId', AUTH.VERIFYAUTH, AUTH.isProfess
         fs.copyFile(oldpath, newpath, (err) => {
             if (err) throw err;
             console.log(oldpath + ' was copied to '+newpath);
-            res.end();
+            // res.end();
+            res.send(rows);
         });
     }).catch(function(err){
         return res.status(403).json(err);

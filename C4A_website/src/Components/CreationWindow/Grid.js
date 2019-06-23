@@ -44,7 +44,6 @@ class Grid extends Component {
   }
 
   componentWillReceiveProps() {
-    console.log(this.state.gridProperties.size);
     var size = this.state.gridProperties.size === undefined ? this.props.parameters.size : this.state.gridProperties.size;
     let properties = {
       lines: this.props.parameters.lines,

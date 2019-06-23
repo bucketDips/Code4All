@@ -39,6 +39,7 @@ function insertExerciceFunctions(functions, exercice_id) {
         }
         str = str.substring(0,str.length - 1)
         var sql = "INSERT INTO exercice_functions (exercice_id, code, name, description) VALUES " + str
+        console.log(sql)
         con.query(sql,function (err, rows, fields) {
             if (err) return reject(err);
             resolve(rows);
@@ -177,6 +178,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
             })
         }
         getFunctions(id).then(function(rows1){
+            rows[0].content = JSON.parse(rows[0].content);
             var resultJson = {
                 exercice: rows[0],
                 functions: rows1
@@ -363,11 +365,17 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     }
 
     insertExercice(contentOjb,content,author_id).then(function(rows){
-        insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows){
+        if (contentOjb.functions.length == 0){
             res.send(rows);
-        }).catch(function(err){
-            return res.status(403).json(err);
-        });
+        }
+        else {
+            insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows){
+                res.send(rows);
+            }).catch(function(err){
+                return res.status(403).json(err);
+            });
+        }
+
     }).catch(function(err){
         return res.status(403).json(err);
     });
@@ -414,11 +422,18 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
     modifyExercice(exo_id,contentOjb,content,author_id).then(function(rows){
         deleteExerciceFunctions(exo_id).then(function(rows){
             console.log(rows)
-            insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows){
+            if (contentOjb.functions.length == 0){
                 res.send(rows);
-            }).catch(function(err){
-                return res.status(403).json(err);
-            });
+            }
+            else{
+                insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows){
+                    res.send(rows);
+                }).catch(function(err){
+                    return res.status(403).json(err);
+                });
+
+            }
+
         }).catch(function(err){
             return res.status(403).json(err);
         });
