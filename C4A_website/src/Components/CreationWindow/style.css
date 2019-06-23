@@ -168,6 +168,8 @@ html, body {
 
 .add-button-pattern {
     flex: 1;
+    padding-top: 5%;
+    padding-bottom: 5%;
 }
 
 #code-editor {
