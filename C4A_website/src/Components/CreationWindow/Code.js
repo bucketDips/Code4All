@@ -13,6 +13,8 @@ import styles from './style.css';
 import { Grid, Block, Npc, Pc, Label, Func } from './CodeClasses';
 import CustomSlider from './CustomSlider';
 
+import consts from '../../Providers/consts';
+
 class Code extends Component {
 
   constructor() {
@@ -167,7 +169,7 @@ class Code extends Component {
 
   getBackground(patternId) {
     try {
-      return process.env.PUBLIC_URL + 'patterns/' + this.props.patterns[patternId - 1].nom;
+      return consts.url() + this.props.patterns[patternId - 1].nom;
     }
     catch(error) {
       return null;

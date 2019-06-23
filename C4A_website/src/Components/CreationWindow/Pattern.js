@@ -10,7 +10,6 @@ class Pattern extends Component {
     }
 
     render() {
-        console.log(this.props.url);
         return (
             <div className={styles.pattern}>
                 <div className="pattern-content">
