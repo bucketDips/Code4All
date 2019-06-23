@@ -236,7 +236,8 @@ router.post('/uploadToUser/:filename/:dest', AUTH.VERIFYAUTH, function(request, 
             fs.copyFile(oldpath, newpath, (err) => {
                 if (err) throw err;
                 console.log(oldpath + ' was copied to '+newpath);
-                res.end();
+                // res.end();
+                res.send(rows);
             });
         }).catch(function(err){
             return res.status(403).json(err);
@@ -269,7 +270,8 @@ router.post('/uploadToClass/:filename/:classId', AUTH.VERIFYAUTH, AUTH.isProfess
         fs.copyFile(oldpath, newpath, (err) => {
             if (err) throw err;
             console.log(oldpath + ' was copied to '+newpath);
-            res.end();
+            // res.end();
+            res.send(rows);
         });
     }).catch(function(err){
         return res.status(403).json(err);
