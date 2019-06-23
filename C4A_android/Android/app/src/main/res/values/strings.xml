@@ -49,12 +49,13 @@
 
     <string name="user_test">robin.solde@gmail.com</string>
     <string name="password_test">robinsolde</string>
-    <string name="exercice_fragment_exercice_creator_label">Creator : </string>
-    <string name="exercice_fragment_exercice_description">Description : </string>
-    <string name="exercice_fragment_exercice_name">Name : </string>
-    <string name="exercice_fragment_visibility_status_label">Visibility status : </string>
+    <string name="exercice_fragment_exercice_creator_label">Creator :</string>
+    <string name="exercice_fragment_exercice_description">Description :</string>
+    <string name="exercice_fragment_exercice_name">Name :</string>
+    <string name="exercice_fragment_visibility_status_label">Visibility status :</string>
     <string name="my_exercices_list_label">My exercices</string>
     <string name="from_store_list_label">From store</string>
     <string name="from_classe_list_label">From my classes</string>
+    <string name="exercice_grid_label">Exercice grid</string>
 
 </resources>

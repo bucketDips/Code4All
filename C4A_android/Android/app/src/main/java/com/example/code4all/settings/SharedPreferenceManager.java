@@ -1,15 +1,12 @@
 package com.example.code4all.settings;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.example.code4all.R;
-import com.example.code4all.data.user.IUserManager;
-import com.example.code4all.data.user.User;
+import com.example.code4all.data_pojo.user.IUserManager;
+import com.example.code4all.data_pojo.user.User;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.json.JSONObject;
 
 
 /**

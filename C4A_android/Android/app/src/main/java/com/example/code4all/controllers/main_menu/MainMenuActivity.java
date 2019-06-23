@@ -7,16 +7,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.example.code4all.R;
-import com.example.code4all.controllers.MyAppCompatActivity;
+import com.example.code4all.customviews.MyAppCompatActivity;
 import com.example.code4all.controllers.classes_menu.ClasseActivity;
 import com.example.code4all.controllers.exercices_menu.ExerciceListActivity;
-import com.example.code4all.data.user.IUserManagerListener;
-import com.example.code4all.data.user.User;
-import com.example.code4all.data.user.UserManager;
+import com.example.code4all.data_pojo.user.IUserManagerListener;
+import com.example.code4all.data_pojo.user.User;
+import com.example.code4all.data_pojo.user.UserManager;
 import com.example.code4all.databinding.ActivityMainMenuBinding;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
 import com.squareup.picasso.Callback;
@@ -42,7 +41,6 @@ public class MainMenuActivity extends MyAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_menu);
 
         try {

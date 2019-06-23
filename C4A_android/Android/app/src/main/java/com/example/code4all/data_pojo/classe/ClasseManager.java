@@ -1,16 +1,14 @@
-package com.example.code4all.data.classe;
+package com.example.code4all.data_pojo.classe;
 
 import android.content.Context;
 import android.util.Log;
 import com.android.volley.VolleyError;
-import com.example.code4all.data.DataManager;
-import com.example.code4all.data.user.User;
-import com.example.code4all.error.Error;
+import com.example.code4all.data_pojo.DataManager;
+import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
 import com.example.code4all.serverhandler.ServerHandler;
-import com.example.code4all.viewtools.SnackbarBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class ClasseManager extends DataManager implements IClasseManager{

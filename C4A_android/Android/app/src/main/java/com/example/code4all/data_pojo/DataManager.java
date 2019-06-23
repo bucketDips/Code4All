@@ -1,4 +1,4 @@
-package com.example.code4all.data;
+package com.example.code4all.data_pojo;
 
 import android.content.Context;
 import com.example.code4all.serverhandler.ServerHandler;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.example.code4all.R;
-import com.example.code4all.data.classe.Classe;
+import com.example.code4all.data_pojo.classe.Classe;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.util.ArrayList;

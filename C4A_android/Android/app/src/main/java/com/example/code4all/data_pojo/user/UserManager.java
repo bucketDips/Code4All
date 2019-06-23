@@ -1,12 +1,11 @@
-package com.example.code4all.data.user;
+package com.example.code4all.data_pojo.user;
 
 import android.content.Context;
 import com.android.volley.VolleyError;
-import com.example.code4all.data.DataManager;
+import com.example.code4all.data_pojo.DataManager;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
 import com.example.code4all.serverhandler.ServerHandler;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;

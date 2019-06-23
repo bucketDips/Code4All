@@ -1,8 +1,9 @@
-package com.example.code4all.data.exercice;
+package com.example.code4all.data_pojo.exercice;
 
 import android.content.Context;
 import com.android.volley.VolleyError;
-import com.example.code4all.data.DataManager;
+import com.example.code4all.data_pojo.DataManager;
+import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
 import com.example.code4all.serverhandler.ServerHandler;
 import com.google.gson.Gson;
@@ -13,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ExerciceManager extends DataManager implements IExerciceManager{
 
@@ -40,7 +40,7 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
 
     @Override
     public void getExerciceOfTheUserConnected() {
-        serverHandler.getExercices(sharedPreferenceManager.getTokenSaved(), new IAPICallbackJsonObject() {
+        serverHandler.getAllExercicesOfTheUserSession(sharedPreferenceManager.getTokenSaved(), new IAPICallbackJsonObject() {
             @Override
             public void onSuccessResponse(@NotNull JSONObject result) {
                 // int array for exercices type split
@@ -93,7 +93,52 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
 
             @Override
             public void onErrorResponse(@NotNull VolleyError error) {
-                listener.onExercicesLoadedFail();
+                try {
+                    ErrorNetwork errorNetwork = new ErrorNetwork(error, context);
+                    listener.onExercicesLoadedFail(errorNetwork);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getExerciceById(int idExercice) {
+        serverHandler.getExerciceById(idExercice, sharedPreferenceManager.getTokenSaved(), new IAPICallbackJsonObject() {
+            @Override
+            public void onSuccessResponse(@NotNull JSONObject result) {
+                if(result.has("exercice")){
+
+                    Gson gson = new GsonBuilder().create();
+
+                    try {
+                        JSONObject exerciceJson = result.getJSONObject("exercice");
+                        Exercice exercice = gson.fromJson(String.valueOf(exerciceJson), Exercice.class);
+
+                        if(exercice.getContent() != null){
+                            ArrayList<Exercice> exercices = new ArrayList<>();
+                            exercices.add(exercice);
+                            listener.onExercicesLoaded(exercices, null, null);
+                        }
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onErrorResponse(@NotNull VolleyError error) {
+                try {
+                    ErrorNetwork errorNetwork = new ErrorNetwork(error, context);
+                    listener.onExercicesLoadedFail(errorNetwork);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -120,6 +165,6 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
 
     public interface IOnExerciceLoadedListener {
         void onExercicesLoaded(ArrayList<Exercice> myExercices, ArrayList<Exercice> fromStoreExercices, ArrayList<Exercice> fromClassesExercices);
-        void onExercicesLoadedFail();
+        void onExercicesLoadedFail(ErrorNetwork errorNetwork);
     }
 }

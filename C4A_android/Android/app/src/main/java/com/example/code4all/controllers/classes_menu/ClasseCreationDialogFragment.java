@@ -13,13 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import com.example.code4all.R;
+import com.example.code4all.customviews.MyDialogFragment;
+import com.example.code4all.customviews.MyEditText;
 import com.example.code4all.tools.DialogBoxBuilder;
 import com.example.code4all.viewtools.SnackbarBuilder;
 
-public class ClasseCreationDialogFragment extends DialogFragment {
+public class ClasseCreationDialogFragment extends MyDialogFragment {
 
     private Button buttonCreate;
-    private EditText editTextClasseName;
+    private MyEditText editTextClasseName;
     private ClasseActivity parent;
 
     @Override

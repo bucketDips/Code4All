@@ -3,6 +3,8 @@ package com.example.code4all.controllers.exercices_menu;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,11 +17,13 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.example.code4all.R;
 
-import com.example.code4all.controllers.MyAppCompatActivity;
-import com.example.code4all.data.exercice.Exercice;
-import com.example.code4all.data.exercice.ExerciceManager;
-import com.example.code4all.data.user.User;
+import com.example.code4all.customviews.MyAppCompatActivity;
+import com.example.code4all.data_pojo.exercice.Exercice;
+import com.example.code4all.data_pojo.exercice.ExerciceManager;
+import com.example.code4all.data_pojo.user.User;
+import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
+import com.example.code4all.viewtools.SnackbarBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +69,7 @@ public class ExerciceListActivity extends MyAppCompatActivity {
             // activity should be in two-pane mode.
             twoPaneMod = true;
         }
-
+        CoordinatorLayout rootView = findViewById(R.id.root);
         ArrayList<RecyclerView> recyclerViews = new ArrayList<>();
 
         View root = findViewById(R.id.exercice_lists);
@@ -97,7 +101,7 @@ public class ExerciceListActivity extends MyAppCompatActivity {
         }
 
         //assert recyclerView1 != null;
-        setupRecyclerView(recyclerViews.get(0), recyclerViews.get(1), recyclerViews.get(2));
+        setupRecyclerView(recyclerViews.get(0), recyclerViews.get(1), recyclerViews.get(2), rootView);
     }
 
     public ExerciceManager getExerciceManager() {
@@ -109,7 +113,7 @@ public class ExerciceListActivity extends MyAppCompatActivity {
         return R.layout.activity_exercice_list;
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView1, RecyclerView recyclerView2, RecyclerView recyclerView3) {
+    private void setupRecyclerView(RecyclerView recyclerView1, RecyclerView recyclerView2, RecyclerView recyclerView3, CoordinatorLayout rootView) {
 
         recyclerView1.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView2.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -133,7 +137,9 @@ public class ExerciceListActivity extends MyAppCompatActivity {
                 }
 
                 @Override
-                public void onExercicesLoadedFail() {
+                public void onExercicesLoadedFail(ErrorNetwork errorNetwork) {
+
+                    SnackbarBuilder.make(rootView, errorNetwork.diplayErrorMessage(), Snackbar.LENGTH_LONG, R.color.white).show();
                     Log.d(TAG, "onExercicesLoadedFail()");
                     recyclerView1.setAdapter(new SimpleItemRecyclerViewAdapter(new ArrayList<>(), twoPaneMod));
                     recyclerView2.setAdapter(new SimpleItemRecyclerViewAdapter(new ArrayList<>(), twoPaneMod));
@@ -153,7 +159,7 @@ public class ExerciceListActivity extends MyAppCompatActivity {
         private final View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //exerciceManager.getExercice(Integer.parseInt(view.getTag().toString()));
+                //exerciceManager.getExerciceById(Integer.parseInt(view.getTag().toString()));
 
                 int position = getItemPositionClick(view);
 

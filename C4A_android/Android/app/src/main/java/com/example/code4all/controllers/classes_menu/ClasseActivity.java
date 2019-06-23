@@ -9,16 +9,14 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.example.code4all.R;
-import com.example.code4all.controllers.MyAppCompatActivity;
-import com.example.code4all.data.classe.Classe;
-import com.example.code4all.data.classe.ClasseManager;
-import com.example.code4all.data.user.IUserManagerListener;
-import com.example.code4all.data.user.User;
-import com.example.code4all.data.user.UserManager;
+import com.example.code4all.customviews.MyAppCompatActivity;
+import com.example.code4all.data_pojo.classe.Classe;
+import com.example.code4all.data_pojo.classe.ClasseManager;
+import com.example.code4all.data_pojo.user.IUserManagerListener;
+import com.example.code4all.data_pojo.user.User;
+import com.example.code4all.data_pojo.user.UserManager;
 import com.example.code4all.error.ErrorNetwork;
 import org.json.JSONException;
-
-import java.io.UnsupportedEncodingException;
 
 public class ClasseActivity extends MyAppCompatActivity{
 

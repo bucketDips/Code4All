@@ -8,12 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import com.example.code4all.R;
-import com.example.code4all.data.classe.Classe;
-import com.example.code4all.data.user.User;
-import de.hdodenhof.circleimageview.CircleImageView;
+import com.example.code4all.data_pojo.user.User;
 
 import java.util.ArrayList;
 

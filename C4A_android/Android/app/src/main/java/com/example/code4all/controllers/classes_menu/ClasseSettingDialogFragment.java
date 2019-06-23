@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,11 +18,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.*;
 import com.android.volley.VolleyError;
 import com.example.code4all.R;
-import com.example.code4all.data.classe.Classe;
-import com.example.code4all.data.user.User;
+import com.example.code4all.customviews.MyDialogFragment;
+import com.example.code4all.customviews.MyEditText;
+import com.example.code4all.data_pojo.classe.Classe;
+import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
@@ -40,10 +42,10 @@ import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
 
-public class ClasseSettingDialogFragment extends DialogFragment {
+public class ClasseSettingDialogFragment extends MyDialogFragment {
 
     private CardView root;
-    private EditText editTextEmail;
+    private MyEditText editTextEmail;
     private Button buttonAdd;
     private ProgressBar progressBar;
     private RecyclerView userList;
@@ -121,7 +123,7 @@ public class ClasseSettingDialogFragment extends DialogFragment {
                     }
                 });
             }
-            root.setClipToOutline(true);
+            //root.setClipToOutline(true);
         }
         return dialogFragment;
     }
@@ -274,7 +276,10 @@ public class ClasseSettingDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
+        return dialog;
     }
 
     @Override

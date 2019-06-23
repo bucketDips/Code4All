@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.code4all.R;
-import com.example.code4all.data.user.User;
+import com.example.code4all.data_pojo.user.User;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class GridUsersAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
 
-    public GridUsersAdapter(ArrayList<User> userList, Context context) {
+    GridUsersAdapter(ArrayList<User> userList, Context context) {
         super();
         this.users = userList;
         this.inflater = LayoutInflater.from(context);
@@ -43,7 +43,7 @@ public class GridUsersAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return users.get(position);
     }
 
     @Override
