@@ -95,7 +95,7 @@ router.get('/getAllUserImages', AUTH.VERIFYAUTH, function(request, res, next) {
     var extension = [".png",".jpeg",".jpg",".gif"]
     function getUserFileList(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select name, fileid from fichier, user_files where fileId=id and userId="+userId+";";
+            var sql = "select name, fileid from fichier, user_files where fileId=id and sender='"+userId+"' or userId="+userId+";";
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
