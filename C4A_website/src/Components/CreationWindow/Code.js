@@ -169,7 +169,7 @@ class Code extends Component {
 
   getBackground(patternId) {
     try {
-      return consts.url() + this.props.patterns[patternId - 1].nom;
+      return consts.url() + this.props.patterns[patternId].nom;
     }
     catch(error) {
       return null;
