@@ -14,7 +14,9 @@ class Pattern extends Component {
             <div className={styles.pattern}>
                 <div className="pattern-content">
                     <span>{this.props.id}</span>
-                    <img alt="pattern" className="pattern-image" src={consts.url() + this.props.name}></img>
+                    <div class="pattern-img-container">
+                        <img alt="pattern" className="pattern-image" src={consts.url() + this.props.name}></img>
+                    </div>
                 </div>
             </div>
         );
