@@ -221,3 +221,15 @@ html, body {
 .ant-modal-mask {
     z-index: 6000 !important;
 }
+
+.ant-menu-submenu-popup {
+    z-index: 6000 !important;
+}
+
+#delete-button {
+    margin-left: 2%;
+}
+
+#launch-button {
+    margin-left: 2%;
+}

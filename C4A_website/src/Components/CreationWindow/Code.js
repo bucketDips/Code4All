@@ -10,7 +10,7 @@ import "brace/ext/language_tools";
 import "brace/ext/searchbox";
 
 import styles from './style.css';
-import { Grid, Block, Npc, Pc, Label } from './CodeClasses';
+import { Grid, Block, Npc, Pc, Label, Func } from './CodeClasses';
 import CustomSlider from './CustomSlider';
 
 class Code extends Component {
@@ -46,7 +46,6 @@ class Code extends Component {
       newStr = "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");\n" 
         + this.state.editorValue;
     }
-
     return newStr;
   }
 
@@ -121,7 +120,11 @@ class Code extends Component {
 
   componentWillMount() {
     if(this.props.code) {
-      this.onChange(this.props.code, null);
+      this.props.changeEditorValue(this.props.code);
+      this.setState({editorValue: this.props.code}, () => {
+        this.evalCode(true);
+        this.onChange(this.props.code, null);
+      });
     }
   }
 
@@ -146,12 +149,20 @@ class Code extends Component {
     var newStr = this.displayGrid(props);
     newStr = this.displayElements(props, newStr);
 
+    if(newStr !== this.state.editorValue) {
+      this.props.changeEditorValue(newStr);
+    }
+
     this.setState(
       {
         fromProps: false,
         editorValue: newStr
+      }, () => {
+        this.evalCode(true);
       }
     );
+
+    
   }
 
   getBackground(patternId) {
@@ -199,21 +210,29 @@ class Code extends Component {
     return new Label(id, row, column, width, height, text);
   }
 
+  createFunction(name, code, description) {
+    return new Func(name, String(code), description);
+  }
+
+  
+
   synchronise(grid) {
       this.setState(
         {
           fromEdit: true,
           gridObject: grid
         });
+      this.props.changeGridObject(grid);
       var blocks = grid.getBlocks();
       var npcs = grid.getNpcs();
       var pcs = grid.getPcs();
       var labels = grid.getLabels();
-      this.props.synchroniseElements(blocks, npcs, pcs, labels);
+      var functions = grid.getFunctions();
+      this.props.synchroniseElements(blocks, npcs, pcs, labels, functions);
       this.setState({fromEdit: false});
   }
 
-  evalCode() {
+  evalCode(fromProps) {
     // eslint-disable-next-line
     var createGrid = (lines, columns, backgroundId) => this.createGrid(lines, columns, backgroundId);
     // eslint-disable-next-line
@@ -225,10 +244,16 @@ class Code extends Component {
     // eslint-disable-next-line
     var createLabel = (id, row, column, width, height, text) => this.createLabel(id, row, column, width, height, text);
     // eslint-disable-next-line
+    var createFunction = (name, code, description) => this.createFunction(name, code, description);
+    // eslint-disable-next-line
     var synchronise = (grid) => this.synchronise(grid);
     // ici les vérification
 
     try {
+      if(fromProps) {
+        eval(this.state.editorValue + "\ngrid; this.props.changeGridObject(grid);");
+        return;
+      }
       // eslint-disable-next-line
       eval(this.state.editorValue + "\ngrid; synchronise(grid);");
       this.setState({infoText: ""});
@@ -242,7 +267,13 @@ class Code extends Component {
     if(this.state.fromProps === true) {
       return;
     }
+
+    if(newValue !== this.state.editorValue) {
+      this.props.changeEditorValue(newValue);
+    }
+
     this.setState({editorValue: newValue});
+
     clearTimeout(this.state.timeout);
     this.setState({timeout: setTimeout(() => {
       this.setState(
@@ -250,13 +281,16 @@ class Code extends Component {
           fromEdit: true,
         }
       );
+
+      this.evalCode(false);
+
   
       this.props.changeParametersWindow({
         type: "NONE"
       });
-      
-      this.evalCode();
+    
       this.setState({ fromEdit: false });
+
     }, 1000)})
     if(this.state.fromProps === true) {
       return;
@@ -282,6 +316,10 @@ class Code extends Component {
 
     if(addingMatching != null) {
       val = val.replace(addingMatching[0], "");
+    }
+
+    if(val !== this.state.editorValue) {
+      this.props.changeEditorValue(val);
     }
 
     this.setState({editorValue: val});

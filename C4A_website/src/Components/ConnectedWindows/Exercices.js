@@ -16,7 +16,8 @@ class ExercicesWindow extends Component {
     }
 
     modifyExercice(code) {
-        return [(<CreateExerciseWindow code={code.code} />), "collapsed"];
+        console.log(code);
+        return [(<CreateExerciseWindow code={code.code} id={code.id} details={code.description} name={code.name} />), "collapsed"];
     }
 
     createExercice() {
@@ -40,6 +41,7 @@ class ExercicesWindow extends Component {
                 id: allExercices.data.perso[exercice].id,
                 name: allExercices.data.perso[exercice].title,
                 code: allExercices.data.perso[exercice].code,
+                description: allExercices.data.perso[exercice].text,
                 action: this.modifyExercice
             });
         }

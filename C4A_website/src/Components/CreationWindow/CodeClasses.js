@@ -7,6 +7,7 @@ export class Grid {
       this.npcs = [];
       this.pcs = [];
       this.labels = [];
+      this.functions = [];
     }
   
     changePattern(patternId){};
@@ -42,6 +43,12 @@ export class Grid {
         this.checkIfIdAlreadyExists(this.labels, label.id);
         this.labels.push(label);
     };
+
+    addFunction(func) {
+        if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
+        //this.functions.push(new Func(name, String(code), description));
+        this.functions.push(func);
+    }
 
     removeElement(elements, id) {
         elements.array.forEach(element => {
@@ -83,6 +90,10 @@ export class Grid {
     getLabels() {
         return this.labels;
     }
+
+    getFunctions() {
+        return this.functions;
+    }
   }
   
 export class Block {
@@ -115,11 +126,6 @@ export class Pc {
         this.width = width;
         this.height = height;
         this.patternId = patternId;
-        this.functions = [];
-    }
-
-    addFunction(name, code, description) {
-        this.functions.push(new Func(name, String(code), description));
     }
 }
 
