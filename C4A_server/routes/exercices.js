@@ -178,6 +178,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
             })
         }
         getFunctions(id).then(function(rows1){
+            rows[0].content = JSON.parse(rows[0].content);
             var resultJson = {
                 exercice: rows[0],
                 functions: rows1
