@@ -29,6 +29,7 @@ class Patterns extends Component {
     var allExercices = await files.getMines();
 
     this.setState({patterns: allExercices.data});
+    this.props.reloadPatterns();
   }
 
   onChange(info) {
