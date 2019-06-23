@@ -382,9 +382,26 @@ class CreateExerciseWindow extends Component {
       functions: this.state.functions
     }
     
-    console.log(JSON.stringify(buildedExercice));
-
     exercices.createExercice(buildedExercice);
+  }
+
+  modifyExercise(title, description, id) {
+    var buildedExercice = {
+      title: title,
+      text: description,
+      public: 0,
+      code: this.state.editorValue,
+      lines: this.state.gridProperties.lines,
+      columns: this.state.gridProperties.columns,
+      patternId: this.state.gridProperties.backgroundId,
+      blocks: Object.values(this.state.gridObject.blocks),
+      npcs: Object.values(this.state.gridObject.npcs),
+      pcs: Object.values(this.state.gridObject.pcs),
+      labels: Object.values(this.state.gridObject.labels),
+      functions: this.state.functions
+    }
+  
+    exercices.modifyExercice(buildedExercice, id);
   }
 
   render() {
@@ -433,6 +450,9 @@ class CreateExerciseWindow extends Component {
                   deletePattern={this.handleDeletePattern.bind(this)} />
                   <Details 
                   saveExercise={this.saveExercice.bind(this)}
+                  modifyExercise={this.modifyExercise.bind(this)}
+                  id={this.props.id}
+                  name={this.props.name}
                   details={this.props.details}
                   />
               </div>

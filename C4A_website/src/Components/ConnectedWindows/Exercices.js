@@ -17,7 +17,7 @@ class ExercicesWindow extends Component {
 
     modifyExercice(code) {
         console.log(code);
-        return [(<CreateExerciseWindow code={code.code} id={code.id} details={code.description} />), "collapsed"];
+        return [(<CreateExerciseWindow code={code.code} id={code.id} details={code.description} name={code.name} />), "collapsed"];
     }
 
     createExercice() {
