@@ -436,10 +436,12 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             //content = SqlString.escape(content)
             console.log("content")
             console.log(content)
-            var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
-            sql += "values('"+contentOjb.title+"','"+contentOjb.text+"','"+contentOjb.public+"','"+mysql.escape(content)+"','"+author_id+"','"+contentOjb.code+"')"+";";
+            var sql = "insert into exercices(title,text,isPublic,author_id,code,blocks,columns,labels,lineS,npcs,patternId,pcs) values ?"
+            var values = [];
+            values.push(contentOjb.title,contentOjb.text,contentOjb.public,author_id,contentOjb.code,contentOjb.blocks, contentOjb.columns)
+            values.push(contentOjb.labels, contentOjb.lines, contentOjb.npcs, contentOjb.patternId, contentOjb.pcs)
             console.log(sql)
-            con.query(sql, function (err, rows, fields) {
+            con.query(sql, values, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
