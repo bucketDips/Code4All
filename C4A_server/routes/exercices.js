@@ -217,6 +217,9 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
         getFunctions(id).then(function(rows1){
             rows[0].content = JSON.parse(rows[0].content);
             getExerciceFiles(id).then(function(fileExo){
+                console.log("fileExo")
+                console.log(fileExo)
+                console.log(fileExo.length)
                 for (var i = 0; i < fileExo.length; ++i){
                     var pathFile = __dirname +"/FichiersUtilisateur/" +fileExo[i].file_id;
                     var text = "";
