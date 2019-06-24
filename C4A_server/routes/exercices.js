@@ -403,15 +403,15 @@ function escapeQuote (str) {
             //     return "\\t";
             // case "\x1a":
             //     return "\\z";
-            case "\n":
-                return "";
-            case "\r":
-                return "";
+            // case "\n":
+            //     return "";
+            // case "\r":
+            //     return "";
             // case "\"":
-            // case "'":
+            case "'":
             // case "\\":
             // case "%":
-            //     return "\\"+char; // prepends a backslash to backslash, percent,
+                return "\\"+char; // prepends a backslash to backslash, percent,
                                   // and double/single quotes
         }
     });
@@ -436,7 +436,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             console.log("content")
             console.log(content)
             var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
-            sql += "values('"+contentOjb.title+"','"+contentOjb.text+"','"+contentOjb.public+"','"+SqlString.escape(content)+"','"+author_id+"','"+contentOjb.code+"')"+";";
+            sql += "values('"+contentOjb.title+"','"+contentOjb.text+"','"+contentOjb.public+"','"+escapeQuote(content)+"','"+author_id+"','"+contentOjb.code+"')"+";";
             console.log(sql)
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
