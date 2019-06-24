@@ -441,7 +441,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             values.push(contentOjb.title,contentOjb.text,contentOjb.public,author_id,contentOjb.code,contentOjb.blocks, contentOjb.columns)
             values.push(contentOjb.labels, contentOjb.lines, contentOjb.npcs, contentOjb.patternId, contentOjb.pcs)
             console.log(sql)
-            con.query(sql, values, function (err, rows, fields) {
+            con.query(sql, [values], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
