@@ -88,6 +88,32 @@ router.post('/addExerciceToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfesso
         return res.status(403).json(err);
     });
 });
+router.get('/getAllStoreExercicesNotOwned', AUTH.VERIFYAUTH,function(request, res, next) {
+    var userId = request.decoded.id
+    function getAllStoreExercicesNotOwned(userId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select exercices.id, exercices.title, exercices.text " +
+                "from exercices, user_exercices " +
+                "where exercices.isPublic=1 " +
+                "and exercices.id = user_exercices.exerciceId " +
+                "and user_exercices.userid != ? " +
+                "and author_id != ?;"
+            con.query(sql, [userId,userId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+
+    getAllStoreExercicesNotOwned(userId).then(function(rows){
+        res.send(rows)
+
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+})
 router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id
     function getUserPersonnalExercices(userId) {
