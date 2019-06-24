@@ -16,6 +16,18 @@ class Exercices {
         });
     }
 
+    getMyExercice(id, cb) {
+        var headers = {
+            'Authorization': 'Bearer ' +  localStorage.sessionToken
+        }
+
+        return Axios.get(consts.url() + "exercices/getExercice/" + id, {headers: headers}).then(response => {
+            return cb(response);
+        }).catch(error => {
+            alert(JSON.stringify(error));
+        });
+    }
+
     createExercice(exercice) {
         let data = {'exercice': JSON.stringify(exercice)};
     

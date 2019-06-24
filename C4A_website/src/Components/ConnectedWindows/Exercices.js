@@ -16,12 +16,13 @@ class ExercicesWindow extends Component {
     }
 
     modifyExercice(code) {
-        console.log(code);
-        return [(<CreateExerciseWindow code={code.code} id={code.id} details={code.description} name={code.name} />), "collapsed"];
+        return exercices.getMyExercice(code.id, (exos) => {
+            return [(<CreateExerciseWindow code={exos.data.exercice.code} id={exos.data.exercice.id} details={exos.data.exercice.text} name={exos.data.exercice.title} />), "collapsed"];
+        });
     }
 
     createExercice() {
-        return [(<CreateExerciseWindow />), "collapsed"];
+        return new Promise((resolve, reject) => { resolve([(<CreateExerciseWindow />), "collapsed"]); });
     }
 
     presentation() {
