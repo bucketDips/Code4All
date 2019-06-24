@@ -34,7 +34,6 @@ function insertExerciceFunctions(functions, exercice_id) {
         var reccords = [];
         var str = "";
         for (var i = 0; i < functions.length; ++i){
-            console.log("tamere")
             str += "('"+exercice_id+"','"+escapeQuote(functions[i].code)+"','"+escapeQuote(functions[i].name)+"','"+escapeQuote(functions[i].description)+"'),"
 
         }
@@ -220,7 +219,18 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
             getExerciceFiles(id).then(function(fileExo){
                 for (var i = 0; i < fileExo.length; ++i){
                     var pathFile = __dirname +"/FichiersUtilisateur/" +fileExo[i].file_id;
-                    var newpath = __dirname.substring(0, __dirname.indexOf("/routes")) + "/public/" + fileExo[i].name;
+                    var text = "";
+                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                    for (var i = 0; i < 30; i++)
+                        text += possible.charAt(Math.floor(Math.random() * possible.length));
+                    text +=  "_" + fileExo[i].name;
+
+                    var publicName = text;
+                    var url = config.HOST + ":" + config.PORTSERVEUR + "/" + publicName;
+                    var newpath = __dirname.substring(0, __dirname.indexOf("/routes")) + "/public/" + publicName;
+                    console.log("newpath")
+                    console.log(newpath)
                     fileExo[i].publicPath = newpath;
                     console.log("nique")
                     fs.copyFile(pathFile, newpath, (err) => {
