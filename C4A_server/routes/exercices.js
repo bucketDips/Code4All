@@ -436,7 +436,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             console.log("content")
             console.log(content)
             var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
-            sql += "values('"+contentOjb.title+"','"+contentOjb.text+"','"+contentOjb.public+"','"+content+"','"+author_id+"','"+contentOjb.code+"')"+";";
+            sql += "values('"+contentOjb.title+"','"+contentOjb.text+"','"+contentOjb.public+"','"+contentOjb+"','"+author_id+"','"+contentOjb.code+"')"+";";
             console.log(sql)
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
