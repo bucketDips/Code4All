@@ -444,8 +444,8 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             res.send(rows);
         }
         else {
-            insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows){
-                res.send(rows);
+            insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows1){
+                res.json(rows);
             }).catch(function(err){
                 return res.status(403).json(err);
             });
@@ -501,7 +501,7 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
                 res.send(rows);
             }
             else{
-                insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows){
+                insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows1){
                     res.send(rows);
                 }).catch(function(err){
                     return res.status(403).json(err);
