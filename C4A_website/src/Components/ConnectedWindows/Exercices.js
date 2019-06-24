@@ -26,11 +26,11 @@ class ExercicesWindow extends Component {
     }
 
     presentation() {
-        return [(
+        return new Promise((resolve, reject) => { resolve([(
             <div>
                 <h1>Voici l'explication des exercices</h1>
             </div>
-        ), "not-collapsed"];
+        ), "not-collapsed"]); });
     }
 
     async componentWillMount() {
@@ -78,10 +78,12 @@ class ExercicesWindow extends Component {
             action: this.createExercice
         });
 
-        this.setState({ 
-            menus: menus,
-            content: this.presentation()[0]
-         });
+        this.presentation().then(result => {
+            this.setState({ 
+                menus: menus,
+                content: result[0]
+             });
+        });
     }
 
     render() {

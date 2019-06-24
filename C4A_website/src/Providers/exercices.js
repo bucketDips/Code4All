@@ -13,6 +13,7 @@ class Exercices {
         return Axios.get(consts.url() + "exercices/getUserExercices", {headers: headers}).then(response => {
             return response;
         }).catch(error => {
+            return null;
             alert(JSON.stringify(error));
         });
     }
@@ -68,6 +69,7 @@ class Exercices {
             window.location.href = "/exercices";
           })
           .catch(function (error) {
+            console.log(error);
             alert(JSON.stringify(error.response));
           });
     }
