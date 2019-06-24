@@ -264,7 +264,7 @@ router.post('/uploadToExercice/:fileId/:exerciceId', AUTH.VERIFYAUTH, function(r
 
     function addFileToExerciceFileTable(fileId, exerciceId) {
         return new Promise(function(resolve, reject) {
-            var sql = "insert into classRoom_Files(fileId, class_id) values ('"+fileId+"',"+exerciceId+")"
+            var sql = "insert into exercices_Files(file_id, exercice_id) values ('"+fileId+"',"+exerciceId+")"
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
