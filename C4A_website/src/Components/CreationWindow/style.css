@@ -267,3 +267,23 @@ html, body {
 #launch-button {
     margin-left: 2%;
 }
+
+.launch_modal .ant-modal {
+    background-color: red;
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    padding: 0 !important;
+}
+
+.launch_modal .ant-modal-content {
+    height: 100% !important;
+}
+
+.launch_modal .ant-modal-header {
+    height: 7% !important;
+}
+
+.launch_modal .ant-modal-body {
+    height: 93% !important;
+}
