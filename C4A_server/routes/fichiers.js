@@ -256,6 +256,41 @@ router.post('/uploadToUser/:filename/:dest', AUTH.VERIFYAUTH, function(request, 
 
 
 });
+router.post('/uploadToExercice/:filename/:exerciceId', AUTH.VERIFYAUTH, function(request, res, next) {
+    var filename = request.params.filename;
+    var exerciceId = request.params.exerciceId;
+    var sender = request.decoded.id
+    console.log("request")
+    console.log(request)
+    var form = new formidable.IncomingForm();
+    form.parse(request, function (err, fields, files) {
+        insertFile(filename, sender).then(function(rows){
+            var oldpath = files[Object.keys(files)[0]].path;
+            var newpath = __dirname +"/FichiersUtilisateur/" + rows.insertId;
+            addFileToExerciceFileTable(rows.insertId, dest);
+            fs.copyFile(oldpath, newpath, (err) => {
+                if (err) throw err;
+                console.log(oldpath + ' was copied to '+newpath);
+                // res.end();
+                res.send(rows);
+            });
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });
+    });
+
+    function addFileToExerciceFileTable(fileId, exerciceId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into classRoom_Files(fileId, class_id) values ('"+fileId+"',"+exerciceId+")"
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+
+});
 router.post('/uploadToClass/:filename/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom, function(request, res, next) {
     var dest = request.params.classId;
     var filename = request.params.filename;

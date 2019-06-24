@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 var config = require("./config");
 var AUTH = require('./AUTHENTIFICATION')
 var gEval =eval;
+var fs = require('fs');
 var sEval = require('safe-eval');
 var evalContext = {
     evalContext: this,
@@ -188,6 +189,17 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
             });
         });
     }
+
+    function getExerciceFiles(id) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select * from fichier, exercices_Files where fichier.id = exercices_Files.file_id and exercices_Files.exercice_id ='"+id+"';";
+            console.log(sql)
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
     getExercice(id).then(function(rows){
         if (rows.length == 0){
             return res.status(404).json({
@@ -196,20 +208,42 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                 message: 'Cet exercice n\'existe pas !'
             })
         }
-        if (rows[0].author_id != userId && rows[0].public == 0){
-            return res.status(403).json({
-                success: false,
-                code : 'MISSING_AUTHORISATION',
-                message: 'Cet exercice ne vous appartient pas et n\'est pas public!'
-            })
-        }
+        // if (rows[0].author_id != userId && rows[0].public == 0){
+        //     return res.status(403).json({
+        //         success: false,
+        //         code : 'MISSING_AUTHORISATION',
+        //         message: 'Cet exercice ne vous appartient pas et n\'est pas public!'
+        //     })
+        // }
         getFunctions(id).then(function(rows1){
             rows[0].content = JSON.parse(rows[0].content);
-            var resultJson = {
-                exercice: rows[0],
-                functions: rows1
-            }
-            res.send(resultJson);
+            getExerciceFiles(id).then(function(fileExo){
+                for (var i = 0; i < fileExo.length; ++i){
+                    var pathFile = __dirname +"/FichiersUtilisateur/" +fileExo[i].file_id;
+                    var newpath = __dirname.substring(0, __dirname.indexOf("/routes")) + "/public/" + fileExo[i].name;
+                    fileExo[i].publicPath = newpath;
+                    console.log("nique")
+                    fs.copyFile(pathFile, newpath, (err) => {
+                        console.log("err")
+                        console.log(err)
+                        if (err) throw err;
+                        console.log(pathFile + ' was copied to '+newpath);
+
+                    }).catch(function(err){
+                        return res.status(403).json(err);
+                    });
+                }
+                var resultJson = {
+                    exercice: rows[0],
+                    functions: rows1,
+                    fichiers : fileExo
+                }
+                res.send(resultJson);
+            }).catch(function(err){
+                return res.status(403).json(err);
+            });
+
+
         }).catch(function(err){
             return res.status(403).json(err);
         });
