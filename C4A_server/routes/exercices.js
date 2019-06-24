@@ -429,9 +429,9 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             console.log(SqlString.escape('toto'))
 
             // contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.title = SqlString.escape(contentOjb.title)
+            contentOjb.title = escapeQuote(contentOjb.title)
             // contentOjb.text = escapeQuote(contentOjb.text)
-            contentOjb.text = SqlString.escape(contentOjb.text)
+            contentOjb.text = escapeQuote(contentOjb.text)
             // content = escapeQuote(content)
             //content = SqlString.escape(content)
             console.log("content")
