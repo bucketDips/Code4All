@@ -238,6 +238,8 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     console.log(url)
                     fileExo[i].url = url;
                     console.log("nique")
+                    fs.copyFileSync(pathFile.txt, newpath);
+                    console.log(pathFile + ' was copied to '+newpath);
                     /*fs.copyFile(pathFile, newpath, (err) => {
                         if (err) throw err;
                         console.log(pathFile + ' was copied to '+newpath);
