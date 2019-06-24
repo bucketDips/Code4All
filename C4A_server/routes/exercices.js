@@ -239,13 +239,12 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     fileExo[i].url = url;
                     console.log("nique")
                     console.log(pathFile + ' will be  copied to '+newpath);
-                    fs.copyFileSync(pathFile.txt, newpath);
-                    console.log(pathFile + ' was copied to '+newpath);
-                    /*fs.copyFile(pathFile, newpath, (err) => {
+
+                    fs.copyFile(pathFile, newpath, (err) => {
                         if (err) throw err;
                         console.log(pathFile + ' was copied to '+newpath);
 
-                    })*/
+                    })
                 }
                 var resultJson = {
                     exercice: rows[0],
