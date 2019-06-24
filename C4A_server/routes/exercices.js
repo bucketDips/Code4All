@@ -426,7 +426,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     function insertExercice(contentOjb,content,author_id) {
         return new Promise(function(resolve, reject) {
             console.log("debut conversion")
-            console.log(SqlString.escape('toto'))
+            console.log(SqlString.escape("console.log('toto')"))
 
             // contentOjb.title = escapeQuote(contentOjb.title)
             contentOjb.title = escapeQuote(contentOjb.title)
