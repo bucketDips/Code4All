@@ -395,23 +395,23 @@ var escapeQuote1 = function(str){
 function escapeQuote (str) {
     return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
         switch (char) {
-            case "\0":
-                return "\\0";
-            case "\x08":
-                return "\\b";
-            case "\x09":
-                return "\\t";
-            case "\x1a":
-                return "\\z";
+            // case "\0":
+            //     return "\\0";
+            // case "\x08":
+            //     return "\\b";
+            // case "\x09":
+            //     return "\\t";
+            // case "\x1a":
+            //     return "\\z";
             case "\n":
-                return "\\n";
+                return "";
             case "\r":
-                return "\\r";
-            case "\"":
-            case "'":
-            case "\\":
-            case "%":
-                return "\\"+char; // prepends a backslash to backslash, percent,
+                return "";
+            // case "\"":
+            // case "'":
+            // case "\\":
+            // case "%":
+            //     return "\\"+char; // prepends a backslash to backslash, percent,
                                   // and double/single quotes
         }
     });
@@ -428,11 +428,11 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             console.log(SqlString.escape('toto'))
 
             // contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.title = SqlString.escape(contentOjb.title)
+            contentOjb.title = SqlString.escape(escapeQuote(contentOjb.title))
             // contentOjb.text = escapeQuote(contentOjb.text)
-            contentOjb.text = SqlString.escape(contentOjb.text)
+            contentOjb.text = SqlString.escape(escapeQuote(contentOjb.text))
             // content = escapeQuote(content)
-            content = SqlString.escape(content)
+            content = SqlString.escape(escapeQuote(content))
             console.log("content")
             console.log(content)
             var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
