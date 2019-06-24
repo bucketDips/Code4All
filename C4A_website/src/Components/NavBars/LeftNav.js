@@ -14,11 +14,17 @@ class LeftNav extends Component {
   };
 
   onClick(action, optional) {
+    var tempContent = this.state.content;
     this.setState({
       content: (<div></div>)
     }, () => {
       action(optional).then((actioned) => {
-        console.log(actioned);
+        if(actioned == null) {
+          this.setState({
+            content: tempContent
+          });
+          return;
+        }
         if(actioned[1] === "collapsed") {
           this.setState({
             collapsed: true,
