@@ -481,9 +481,14 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
 
     function modifyExercice(exo_id,contentOjb,content,author_id) {
         return new Promise(function(resolve, reject) {
-            contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.text = escapeQuote(contentOjb.text)
-            content = escapeQuote(content)
+            // contentOjb.title = escapeQuote(contentOjb.title)
+            contentOjb.title = SqlString(contentOjb.title)
+            // contentOjb.text = escapeQuote(contentOjb.text)
+            contentOjb.text = SqlString(contentOjb.text)
+            // content = escapeQuote(content)
+            content = SqlString(content)
+            // console.log("content")
+            // console.log(content)
             // console.log("content")
             // console.log(content)
             var sql = "update exercices set title='"+contentOjb.title+"',text='"+contentOjb.text+"',isPublic='"+contentOjb.public
