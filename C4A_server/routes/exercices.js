@@ -438,7 +438,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             console.log(content)
             var sql = "insert into exercices(title,text,isPublic,author_id,code,blocks,columns,labels,lineS,npcs,patternId,pcs) values (?)"
             var values = [];
-            values.push(contentOjb.title,contentOjb.text,contentOjb.public,author_id,SqlString.escape(contentOjb.code),contentOjb.blocks, contentOjb.columns)
+            values.push(contentOjb.title,contentOjb.text,contentOjb.public,author_id,escapeQuote(contentOjb.code),contentOjb.blocks, contentOjb.columns)
             values.push(contentOjb.labels, contentOjb.lines, contentOjb.npcs, contentOjb.patternId, contentOjb.pcs)
             console.log(sql)
             con.query(sql, [values], function (err, rows, fields) {
