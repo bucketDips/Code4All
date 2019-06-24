@@ -260,8 +260,6 @@ router.post('/uploadToExercice/:filename/:exerciceId', AUTH.VERIFYAUTH, function
     var filename = request.params.filename;
     var exerciceId = request.params.exerciceId;
     var sender = request.decoded.id
-    console.log("request")
-    console.log(request)
     var form = new formidable.IncomingForm();
     form.parse(request, function (err, fields, files) {
         insertFile(filename, sender).then(function(rows){
