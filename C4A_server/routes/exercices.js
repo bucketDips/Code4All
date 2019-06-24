@@ -222,7 +222,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     var text = "";
                     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-                    for (var i = 0; i < 30; i++)
+                    for (var j = 0; j < 30; j++)
                         text += possible.charAt(Math.floor(Math.random() * possible.length));
                     text +=  "_" + fileExo[i].name;
 
