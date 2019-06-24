@@ -9,6 +9,7 @@ var AUTH = require('./AUTHENTIFICATION')
 var gEval =eval;
 var fs = require('fs');
 var sEval = require('safe-eval');
+var SqlString = require('sqlstring');
 var evalContext = {
     evalContext: this,
     sEval:sEval,
@@ -423,9 +424,12 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
 
     function insertExercice(contentOjb,content,author_id) {
         return new Promise(function(resolve, reject) {
-            contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.text = escapeQuote(contentOjb.text)
-            content = escapeQuote(content)
+            // contentOjb.title = escapeQuote(contentOjb.title)
+            contentOjb.title = SqlString(contentOjb.title)
+            // contentOjb.text = escapeQuote(contentOjb.text)
+            contentOjb.text = SqlString(contentOjb.text)
+            // content = escapeQuote(content)
+            content = SqlString(content)
             // console.log("content")
             // console.log(content)
             var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
