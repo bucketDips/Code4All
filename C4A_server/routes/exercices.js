@@ -432,7 +432,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             // contentOjb.text = escapeQuote(contentOjb.text)
             contentOjb.text = SqlString.escape(contentOjb.text)
             // content = escapeQuote(content)
-            content = SqlString.escape(content)
+            //content = SqlString.escape(content)
             console.log("content")
             console.log(content)
             var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
