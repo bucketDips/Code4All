@@ -119,7 +119,7 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id
     function getUserPersonnalExercices(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select id, title, text from exercices where author_id = ?;"
+            var sql = "select id, title, description from exercices where author_id = ?;"
             con.query(sql, [userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -128,7 +128,7 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     }
     function getUserForkedExercices(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select exercices.id, exercices.title, exercices.text from exercices, user_exercices where user_exercices.userid = ? and exercices.id = user_exercices.exerciceId;"
+            var sql = "select exercices.id, exercices.title, exercices.description from exercices, user_exercices where user_exercices.userid = ? and exercices.id = user_exercices.exerciceId;"
             con.query(sql, [userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -137,7 +137,7 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     }
     function getUserClassExercices(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select exercices.id, exercices.title, exercices.text from exercices, class_exercices, classroom_students where class_exercices.exercice_id = exercices.id " +
+            var sql = "select exercices.id, exercices.title, exercices.description from exercices, class_exercices, classroom_students where class_exercices.exercice_id = exercices.id " +
                 "and classroom_students.idClassRoom = class_exercices.class_id and classroom_students.idstudent = ?;"
             con.query(sql, [userId], function (err, rows, fields) {
                 if (err) return reject(err);
@@ -216,7 +216,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
         //     })
         // }
         getFunctions(id).then(function(rows1){
-            rows[0].content = JSON.parse(rows[0].content);
+            // rows[0].content = JSON.parse(rows[0].content);
             getExerciceFiles(id).then(function(fileExo){
                 console.log("fileExo")
                 console.log(fileExo)
@@ -247,23 +247,40 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
 
                     })
                 }
+                function stand(str){
+                    console.log("TOTOTOTOTOOTOOTOTT")
+                    str = str.substring(1,str.length - 1)
+                    var find = "\\\\"
+                    var re = new RegExp(find, 'g');
+                    str = str.replace(re, "")
+                    str = rmendOfLine(str)
+                    return str
+                }
+
+                rows[0].blocks = JSON.parse(stand(rows[0].blocks))
+                rows[0].npcs = JSON.parse(stand(rows[0].npcs))
+                rows[0].pcs = JSON.parse(stand(rows[0].pcs))
+                rows[0].labels = JSON.parse(stand(rows[0].labels))
+                console.log( rows[0].labels)
                 var resultJson = {
                     exercice: rows[0],
                     functions: rows1,
                     fichiers : fileExo
                 }
-                console.log("resultJson")
-                console.log(resultJson)
+
                 res.send(resultJson);
             }).catch(function(err){
+                console.log("err1")
                 return res.status(403).json(err);
             });
 
 
         }).catch(function(err){
+            console.log("err2")
             return res.status(403).json(err);
         });
     }).catch(function(err){
+        console.log("err3")
         return res.status(403).json(err);
     });
 });
@@ -397,54 +414,25 @@ var escapeQuote1 = function(str){
     str = str.replace(re, "\\")
     return str.replace(re, "''")
 }
-function escapeQuote (str) {
-    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+function rmendOfLine (str) {
+    return str.replace(/[\n\r]/g, function (char) {
         switch (char) {
-            case "\0":
-                return "\\0";
-            case "\x08":
-                return "\\b";
-            case "\x09":
-                return "\\t";
-            case "\x1a":
-                return "\\z";
             case "\n":
-                return "\\n";
+                return "";
             case "\r":
-                return "\\r";
-            case "'":
-                return "\""
-            //case "\"":
-            //case "\\":
-            case "%":
-                return "\\"+char; // prepends a backslash to backslash, percent,
-                                  // and double/single quotes
+                return "";
+
         }
     });
 }
 router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     var contentOjb =JSON.parse(request.body.exercice);
-    console.log("contentOjb")
-    console.log(contentOjb)
-    // var content = JSON.stringify(contentOjb)
-    // console.log("content")
-    // console.log(content)
     var author_id = request.decoded.id
 
 
     function insertExercice(contentOjb,author_id) {
         return new Promise(function(resolve, reject) {
-            // console.log("debut conversion")
-            // console.log(SqlString.escape("console.log('toto')"))
 
-            // contentOjb.title = escapeQuote(contentOjb.title)
-            // contentOjb.title = SqlString.escape(contentOjb.title)
-            // contentOjb.text = escapeQuote(contentOjb.text)
-            // contentOjb.text = SqlString.escape(contentOjb.text)
-            // content = escapeQuote(content)
-            // content = SqlString.escape(content)
-            // console.log("SqlString.escape(JSON.stringify(contentOjb.blocks))")
-            // console.log(SqlString.escape(JSON.stringify(contentOjb.blocks)))
             var sql = "insert into exercices(title,description,isPublic,author_id,code,blocks,columns,labels,rows,npcs,patternId,pcs) values (?)"
             var values = [];
             values.push(SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,author_id,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
@@ -489,27 +477,20 @@ function deleteExerciceFunctions(exo_id) {
 }
 router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
     var contentOjb =JSON.parse(request.body.exercice);
-    var content = JSON.stringify(contentOjb)
     var author_id = request.decoded.id
     var exo_id = request.params.exerciceId
 
 
-    function modifyExercice(exo_id,contentOjb,content,author_id) {
+    function modifyExercice(exo_id,contentOjb,author_id) {
         return new Promise(function(resolve, reject) {
-            // contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.title = SqlString.escape(contentOjb.title)
-            // contentOjb.text = escapeQuote(contentOjb.text)
-            contentOjb.text = SqlString.escape(contentOjb.text)
-            // content = escapeQuote(content)
-            content = SqlString.escape(content)
-            // console.log("content")
-            // console.log(content)
-            // console.log("content")
-            // console.log(content)
-            var sql = "update exercices set title='"+contentOjb.title+"',text='"+contentOjb.text+"',isPublic='"+contentOjb.public
-            sql+="',content='"+content+"',code='"+contentOjb.code+"' where id='"+exo_id+"' and author_id='"+author_id+"';"
+            var values = [];
+            values.push(SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
+            values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)))
+            var sql = "update exercices set title = ?, description = ?, isPublic = ?, code = ?, blocks = ?, columns = ?, " +
+                "labels = ?, lines = ?, npcs = ?, patternId = ?, pcs = ? "
+            sql+="where id='"+exo_id+"' and author_id='"+author_id+"';"
             console.log(sql)
-            con.query(sql, function (err, rows, fields) {
+            con.query(sql, values, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
@@ -518,7 +499,7 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
     }
 
 
-    modifyExercice(exo_id,contentOjb,content,author_id).then(function(rows){
+    modifyExercice(exo_id,contentOjb,author_id).then(function(rows){
         deleteExerciceFunctions(exo_id).then(function(rows){
             console.log(rows)
             if (contentOjb.functions.length == 0){
