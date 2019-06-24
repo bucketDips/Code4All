@@ -424,14 +424,15 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
 
     function insertExercice(contentOjb,content,author_id) {
         return new Promise(function(resolve, reject) {
+            console.log("debut conversion")
             // contentOjb.title = escapeQuote(contentOjb.title)
             contentOjb.title = SqlString(contentOjb.title)
             // contentOjb.text = escapeQuote(contentOjb.text)
             contentOjb.text = SqlString(contentOjb.text)
             // content = escapeQuote(content)
             content = SqlString(content)
-            // console.log("content")
-            // console.log(content)
+            console.log("content")
+            console.log(content)
             var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
             sql += "values('"+contentOjb.title+"','"+contentOjb.text+"','"+contentOjb.public+"','"+content+"','"+author_id+"','"+contentOjb.code+"')"+";";
             console.log(sql)
