@@ -21,6 +21,20 @@ class Files {
         })
     }
 
+    uploadFileToUser(idFile, idExo) {
+      Axios.post(consts.url() + 'fichiers/uploadToExercice/' + idFile + "/" + idExo, {},
+      {
+          headers: {
+              'Authorization': 'Bearer ' +  localStorage.sessionToken
+          }
+      })
+      .then(function (response) {
+      })
+      .catch(function (error) {
+        alert(JSON.stringify(error.response));
+      });
+  }
+
     async getMines() {
       var headers = {
           'Authorization': 'Bearer ' +  localStorage.sessionToken

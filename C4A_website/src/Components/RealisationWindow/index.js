@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Grid from './Grid';
+import Code from './Code';
 
 import consts from '../../Providers/consts';
 import style from './style.css';
@@ -33,10 +34,11 @@ class RealisationExerciseWindow extends Component {
                 <Grid 
                     parameters={this.state.gridProperties}
                 />
-                <div className={style.description}>coucou</div>
+                <div className={style.description}></div>
             </div>
             <div className={style.right_panel}>
-            
+                <Code />
+                <div className={style.tests}></div>
             </div>
         </div>
     );
