@@ -10,7 +10,7 @@ var classesRouter = require('./routes/classes');
 var messagesRouter = require('./routes/messages');
 var fichiersRouter = require('./routes/fichiers');
 var exercicesRouter = require('./routes/exercices');
-
+var bodyParser = require('body-parser');
 
 var app = express();
 
@@ -28,8 +28,8 @@ app.options('*', cors())
 //   next();
 // });
 app.use(logger('dev'));
-app.use(express.json({limit: '100mb'}));
-app.use(express.urlencoded({limit: '100mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
