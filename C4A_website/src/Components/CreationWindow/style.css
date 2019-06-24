@@ -41,7 +41,7 @@ html, body {
 }
 
 :local(.top_panel) {
-    flex: 3;
+    flex: 1.8;
     display: flex;
 }
 
@@ -76,7 +76,7 @@ html, body {
 }
 
 :local(.grid) .content {
-    overflow: scroll;   
+    overflow: auto;   
     background-color: darkslategrey;
 }
 
@@ -124,7 +124,7 @@ html, body {
 
 :local(.parameters) {
     flex: 2;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 :local(.parameters) .content {
@@ -151,7 +151,26 @@ html, body {
 
 :local(.patterns) {
     flex: 2;
-    overflow-y: scroll;
+    height: 100%;
+}
+
+
+:local(.patterns) .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.patterns-display {
+    flex: 4;
+    overflow-y: auto;
+    padding-top: 3%;
+}
+
+.add-button-pattern {
+    flex: 1;
+    padding-top: 5%;
+    padding-bottom: 5%;
 }
 
 #code-editor {
@@ -161,17 +180,46 @@ html, body {
 
 .pattern-image {
     overflow: hidden;
-    width: 80%;
-    height: 30px;
-    object-fit: none;
+    width: 100%;
+    height: 50px;
     background-color: honeydew;
     border: 1px solid black;
+    object-fit: contain;
+    opacity: 1;
+    transition: .5s ease;
+    cursor: pointer;
 }
+
+.pattern-img-container:hover .pattern-image {
+    opacity: 0.3;
+}
+
+.pattern-img-container:hover .middle {
+    opacity: 1;
+}
+
+.middle {
+    cursor: pointer;
+    transition: .5s ease;
+    opacity: 0;
+    position: relative;
+    bottom: 25px;
+    left: 30px;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+  }
 
 .pattern-delete{
     width: 1.4vw;
     padding-right: 1vw;
     padding-top: 5%;
+}
+
+.pattern-content {
+    width: 10%;
+    float: left;
+    margin-left: 5%;
 }
 
 .form-delete-grid{

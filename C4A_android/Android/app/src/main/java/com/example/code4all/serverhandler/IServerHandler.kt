@@ -1,8 +1,7 @@
 package com.example.code4all.serverhandler
 
-import com.example.code4all.data.classe.Classe
-import com.example.code4all.data.user.User
-import java.util.ArrayList
+import com.example.code4all.data_pojo.classe.Classe
+import com.example.code4all.data_pojo.user.User
 
 interface IServerHandler {
     fun connect(mail: String, password: String, iapiCallbackJsonObject: IAPICallbackJsonObject)
@@ -19,6 +18,8 @@ interface IServerHandler {
     fun addStudentToClass(user : User, classe : Classe, token: String, iapiCallbackJsonObject: IAPICallbackJsonObject)
     fun addProfessorToClass(user : User, classe : Classe, token: String, iapiCallbackJsonObject: IAPICallbackJsonObject)
     fun resetPwd(user: User, token: String, iapiCallbackJsonObject: IAPICallbackJsonObject)
-    fun getExercices(tokenSaved: String, callback: IAPICallbackJsonObject)
+
+    fun getAllExercicesOfTheUserSession(tokenSaved: String, callback: IAPICallbackJsonObject)
+    fun getExerciceById(idExercice: Int, tokenSaved: String, callback: IAPICallbackJsonObject)
 
 }

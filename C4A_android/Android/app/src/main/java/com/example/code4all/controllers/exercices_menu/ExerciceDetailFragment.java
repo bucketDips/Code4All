@@ -3,11 +3,9 @@ package com.example.code4all.controllers.exercices_menu;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.UserManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +15,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.code4all.R;
 import com.example.code4all.controllers.classes_menu.GridUsersAdapter;
+import com.example.code4all.controllers.exercice_engine.ExerciceEngineActivity;
 import com.example.code4all.controllers.main_menu.MainMenuActivity;
-import com.example.code4all.data.exercice.Exercice;
-import com.example.code4all.data.exercice.ExerciceManager;
-import com.example.code4all.data.user.IUserManager;
-import com.example.code4all.data.user.User;
+import com.example.code4all.data_pojo.exercice.Exercice;
+import com.example.code4all.data_pojo.user.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -41,6 +38,7 @@ public class ExerciceDetailFragment extends Fragment {
     private ConstraintLayout userView;
     private ConstraintLayout creatorSection;
     private User creator;
+    private Gson gson;
 
     public ExerciceDetailFragment() {
     }
@@ -52,30 +50,14 @@ public class ExerciceDetailFragment extends Fragment {
 
         if (getArguments() != null && getArguments().containsKey(EXERCICE_JSON)) {
             String jsonExercice = getArguments().getString(EXERCICE_JSON);
-            Gson gson = new GsonBuilder().create();
+            gson = new GsonBuilder().create();
 
             if(getArguments().containsKey(EXERCICE_CREATOR_JSON)){
-
-                /*
-                        String userJson = cache.getString(IUserManager.userData, "");
-                        if(!userJson.equals("")){
-                            User user = gson.fromJson(userJson, User.class);
-                            return user;
-                        }
-                        else
-                            return null;
-
-
-                 */
-                //String userJson = cache.getString(IUserManager.userData, "");
-
                 String userJson = getArguments().getString(EXERCICE_CREATOR_JSON);
                 creator = gson.fromJson(userJson, User.class);
             }
 
             exercice = gson.fromJson(jsonExercice, Exercice.class);
-
-            //int position = getArguments().getInt(ARG_ITEM_POSITION);
 
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) parent.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
@@ -112,7 +94,7 @@ public class ExerciceDetailFragment extends Fragment {
             creatorSection.setVisibility(View.GONE);
         }
 
-        if(exercice.isPublic()== 0)
+        if(exercice.getIsPublic()== 0)
             imageViewVisibility.setImageResource(R.drawable.invisible);
         else
             imageViewVisibility.setImageResource(R.drawable.visibl);
@@ -131,8 +113,11 @@ public class ExerciceDetailFragment extends Fragment {
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getActivity(), MainMenuActivity.class);
-                parent.startActivity(new Intent(getActivity(), MainMenuActivity.class));
+                Intent intent = new Intent(getActivity(), ExerciceEngineActivity.class);
+                String exerciceJson = gson.toJson(exercice);
+                intent.putExtra(EXERCICE_JSON, exerciceJson);
+
+                parent.startActivity(intent);
             }
         });
     }

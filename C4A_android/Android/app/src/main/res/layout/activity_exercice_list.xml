@@ -5,7 +5,8 @@
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  android:fitsSystemWindows="true"
-                                                 tools:context=".controllers.exercices_menu.ExerciceListActivity">
+                                                 tools:context=".controllers.exercices_menu.ExerciceListActivity"
+                                                 android:id="@+id/root">
 
     <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"

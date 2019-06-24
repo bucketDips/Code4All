@@ -13,25 +13,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.example.code4all.R;
 import com.example.code4all.controllers.main_menu.MainMenuActivity;
-import com.example.code4all.data.user.User;
+import com.example.code4all.customviews.MyEditText;
+import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
 import com.example.code4all.serverhandler.ServerHandler;
 import com.example.code4all.settings.SharedPreferenceManager;
 import com.example.code4all.viewtools.Keyboard;
+import com.example.code4all.viewtools.SnackbarBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 
 public class LoginFragment extends Fragment{
     private static final String TAG = "LoginFragment";
@@ -55,7 +54,10 @@ public class LoginFragment extends Fragment{
         this.context = getContext();
 
         try {
-            serverHandler = ServerHandler.getInstance();
+            LoginActivity loginActivity = (LoginActivity) getActivity();
+            if (loginActivity != null) {
+                serverHandler = loginActivity.getServerHandler();
+            }
 
             this.cache = new SharedPreferenceManager(context);
         } catch (Exception e) {
@@ -68,8 +70,8 @@ public class LoginFragment extends Fragment{
     private void onClickLogin(View v) {
         Keyboard.INSTANCE.hide(this.context, v);
         Log.d(TAG, "onClickLogin");
-        TextView username = fragment.findViewById(R.id.username);
-        TextView password = fragment.findViewById(R.id.password);
+        MyEditText username = fragment.findViewById(R.id.username);
+        MyEditText password = fragment.findViewById(R.id.password);
         progressBar = fragment.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -100,7 +102,12 @@ public class LoginFragment extends Fragment{
 
             @Override
             public void onErrorResponse(@NotNull VolleyError error) {
-                ErrorNetwork.parseVolleyError(error, getContext());
+                try {
+                    ErrorNetwork errorNetwork = new ErrorNetwork(error, getContext());
+                    SnackbarBuilder.make(fragment, errorNetwork.diplayErrorMessage(), Snackbar.LENGTH_LONG, R.color.white).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 progressBar.setVisibility(View.GONE);
 
                 /*
@@ -129,7 +136,6 @@ public class LoginFragment extends Fragment{
                     JSONObject userJson = result.getJSONObject(0);
                     User user = gson.fromJson(String.valueOf(userJson), User.class);
                     cache.saveUserInfos(user);
-                    
                     startActivity(intent);
 
                 } catch (JSONException e) {

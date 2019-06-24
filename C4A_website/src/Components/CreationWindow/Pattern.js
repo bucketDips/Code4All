@@ -10,15 +10,15 @@ class Pattern extends Component {
     }
 
     render() {
-        console.log(this.props.url);
         return (
             <div className={styles.pattern}>
                 <div className="pattern-content">
-                    <span>{this.props.id}</span>
-                    <img alt="pattern" className="pattern-image" src={consts.url() + this.props.name}></img>
-                    <form className="form-delete-grid" onSubmit={this.handleDelete.bind(this)}>
-                        <input type="image" className="pattern-delete" alt="delete button" src={process.env.PUBLIC_URL + '/delete.png'} />
-                    </form>
+                    <div class="pattern-img-container">
+                        <img alt="pattern" className="pattern-image" src={consts.url() + this.props.name}></img>
+                        <div class="middle">
+                            <b>{this.props.id}</b>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

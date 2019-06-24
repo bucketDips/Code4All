@@ -1,4 +1,4 @@
-package com.example.code4all.data.user;
+package com.example.code4all.data_pojo.user;
 
 public class User {
     private int id;

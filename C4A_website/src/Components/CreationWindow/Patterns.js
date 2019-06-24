@@ -29,29 +29,22 @@ class Patterns extends Component {
     var allExercices = await files.getMines();
 
     this.setState({patterns: allExercices.data});
+    this.props.reloadPatterns();
+  }
+
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+      this.fillPatterns();
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
   }
 
   render() {
-    const props = {
-      name: 'file',
-      accept: '.jpg,.png,.jpeg,.gif',
-      showUploadList: false,
-      customRequest: (options) => {
-        files.uploadFileToUser(options);
-        files.getMines();
-      },
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
-
     var patterns = this.state.patterns.map(pattern => (
       <Pattern id={pattern.fileid} name={pattern.publicName} />
     ));
@@ -59,14 +52,20 @@ class Patterns extends Component {
     return (
         <div className={styles.patterns}>
             <div className="content">
-              <div className="patterns-content">
+              <div className="patterns-display">
                 {patterns}
-                <Upload {...props}>
+              </div>
+              <div className="add-button-pattern">
+                <Upload name='file' accept='.jpg,.png,.jpeg,.gif' showUploadList={false}
+                  customRequest={(options) => {
+                    files.uploadFileToUser(options);
+                  }}
+                  onChange={this.onChange.bind(this)}>
                   <Button>
                     <Icon type="upload" /> Click to Upload
                   </Button>
-                </Upload>              
-              </div>
+                </Upload>  
+              </div>            
             </div>
         </div>
     );

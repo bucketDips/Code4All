@@ -1,18 +1,20 @@
 package com.example.code4all.controllers.login;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import com.example.code4all.R;
-import com.example.code4all.serverhandler.ServerHandler;
+import com.example.code4all.customviews.MyAppCompatActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends MyAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ServerHandler.initInstance(getApplicationContext());
-        setContentView(R.layout.activity_login);
+        //ServerHandler.initInstance(getApplicationContext());
+
+    }
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_login;
     }
 }

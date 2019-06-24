@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import styles from './style.css';
 import CustomSlider from './CustomSlider'
 
+import consts from '../../Providers/consts';
+
 
 class ParametersGrid extends Component {
 
@@ -25,20 +27,22 @@ class ParametersGrid extends Component {
       params.backgroundId = null;
     }
     else {
-      params.background = process.env.PUBLIC_URL + 'patterns/' + this.props.patterns[e.target.value - 1].nom;
+      params.background = consts.url() + this.props.patterns[e.target.value].nom;
       params.backgroundId = Number(e.target.value);
     }
     this.props.changeGridParameters(params);
   }
 
   render() {
-    let patterns;
+    let patterns = [];
     if(this.props.patterns) {
-      patterns = this.props.patterns.map(pattern => {
+      Object.values(this.props.patterns).forEach(pattern => {
         if(pattern.id === this.props.parameters.backgroundId) {
-          return (<option selected value={pattern.id}>{pattern.id}</option>)
+          patterns.push(<option selected value={pattern.id}>{pattern.id}</option>)
         }
-        return (<option value={pattern.id}>{pattern.id}</option>)
+        else {
+          patterns.push(<option value={pattern.id}>{pattern.id}</option>)
+        }
       });
     }
 

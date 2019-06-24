@@ -1,10 +1,7 @@
-package com.example.code4all.data.classe;
+package com.example.code4all.data_pojo.classe;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import pub.devrel.bundler.BundlerClass;
-
-import java.io.Serializable;
 
 
 public class Classe implements Parcelable {

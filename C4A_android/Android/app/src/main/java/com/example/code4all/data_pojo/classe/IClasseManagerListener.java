@@ -1,7 +1,5 @@
-package com.example.code4all.data.classe;
+package com.example.code4all.data_pojo.classe;
 
-import com.android.volley.VolleyError;
-import com.example.code4all.data.classe.Classe;
 import com.example.code4all.error.ErrorNetwork;
 
 import java.util.ArrayList;

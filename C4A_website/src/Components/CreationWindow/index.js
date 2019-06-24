@@ -11,6 +11,10 @@ import Patterns from './Patterns';
 
 import exercices from '../../Providers/exercices';
 
+import files from '../../Providers/files';
+
+import consts from '../../Providers/consts';
+
 class CreateExerciseWindow extends Component {
 
   constructor() {
@@ -26,10 +30,21 @@ class CreateExerciseWindow extends Component {
     }
   }
 
-  componentWillMount() {
-    Axios.get(process.env.PUBLIC_URL + '/patterns/files.json').then(response => {
-      this.setState({patterns: response.data})
+  async setPatterns() {
+    var patterns = await files.getMines();
+    var newPatterns = {};
+    patterns.data.map(element => {
+      newPatterns[element.fileid] = {
+        id: element.fileid,
+        nom: element.publicName
+      }
     });
+
+    this.setState({patterns: newPatterns});
+  }
+
+  componentWillMount() {
+    this.setPatterns();
 
     this.setState({
       options: [
@@ -214,7 +229,7 @@ class CreateExerciseWindow extends Component {
           }).image;
         }
         else {
-          background = process.env.PUBLIC_URL + 'patterns/' + this.state.patterns[element.patternId].nom;
+          background = consts.url() + this.state.patterns[element.patternId].nom;
         }
   
         newElements[element.id] = {
@@ -447,7 +462,9 @@ class CreateExerciseWindow extends Component {
                   />
                   <Patterns 
                   patterns={this.state.patterns} 
-                  deletePattern={this.handleDeletePattern.bind(this)} />
+                  deletePattern={this.handleDeletePattern.bind(this)} 
+                  reloadPatterns={this.setPatterns.bind(this)}
+                  />
                   <Details 
                   saveExercise={this.saveExercice.bind(this)}
                   modifyExercise={this.modifyExercise.bind(this)}

@@ -1,20 +1,18 @@
 package com.example.code4all.serverhandler;
 
 import android.content.Context;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.code4all.data.classe.Classe;
-import com.example.code4all.data.user.User;
+import com.example.code4all.data_pojo.classe.Classe;
+import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.serverhandler.pixabay.IAPIHandler;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +51,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     // EXERCICE ENDPOINTS
     private final String exercices = "/exercices";
     private final String get_user_exercices = "/getUserExercices";
+    private final String get_exercice = "/getExercice";
 
 
     private static ServerHandler serverHandler;
@@ -307,7 +306,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     }
 
     @Override
-    public void getExercices(@NotNull String token, @NotNull IAPICallbackJsonObject callback) {
+    public void getAllExercicesOfTheUserSession(@NotNull String token, @NotNull IAPICallbackJsonObject callback) {
         String url = rootUrl + exercices + get_user_exercices;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -331,6 +330,26 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
         String url = rootUrl + user + get_user + '/' + idUser;
 
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                callback::onSuccessResponse,
+                callback::onErrorResponse
+        ){
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap <String, String> headers = new HashMap<>();
+                headers.put(authorization, bearer + token);
+                return headers;
+            }
+        };
+
+        this.requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void getExerciceById(int idExercice, @NotNull String token, @NotNull IAPICallbackJsonObject callback) {
+        String url = rootUrl + exercices + get_exercice + '/' + idExercice;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null,
                 callback::onSuccessResponse,
                 callback::onErrorResponse

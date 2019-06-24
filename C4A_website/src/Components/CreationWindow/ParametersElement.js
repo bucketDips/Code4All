@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import styles from './style.css';
 import CustomSlider from './CustomSlider'
 
+import consts from '../../Providers/consts';
+
 
 class ParametersElement extends Component {
 
@@ -50,7 +52,7 @@ class ParametersElement extends Component {
       params.backgroundId = null;
     }
     else {
-      params.background = process.env.PUBLIC_URL + 'patterns/' + this.props.patterns[e.target.value - 1].nom;
+      params.background = consts.url() + this.props.patterns[e.target.value].nom;
       params.backgroundId = Number(e.target.value);
     }
     this.props.changeElementParameters(params, this.props.type);
@@ -71,14 +73,14 @@ class ParametersElement extends Component {
     if(this.props.type === "LABEL") {
       return (<div></div>);
     }
-    let patterns;
+    let patterns = [];
     if(this.props.patterns) {
-      patterns = this.props.patterns.map(pattern => {
+      Object.values(this.props.patterns).forEach(pattern => {
         if(pattern.id === this.props.parameters.backgroundId) {
-            return (<option selected value={pattern.id}>{pattern.id}</option>)
+          patterns.push(<option selected value={pattern.id}>{pattern.id}</option>)
         }
         else {
-            return (<option value={pattern.id}>{pattern.id}</option>)
+          patterns.push(<option value={pattern.id}>{pattern.id}</option>)
         }
       });
     }

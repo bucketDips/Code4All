@@ -1,6 +1,4 @@
-package com.example.code4all.data.user;
-
-import org.json.JSONObject;
+package com.example.code4all.data_pojo.user;
 
 public interface IUserManager {
     String userData = "userdata";
