@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import RealisationExerciseWindow from '../../Components/RealisationWindow/';
+
 import styles from './style.css';
 import { Input, Button, Modal, Form } from 'antd';
 import exercices from "../../Providers/exercices";
@@ -35,10 +37,31 @@ const ExerciceCreationForm = Form.create({ name: 'form_in_modal' })(
   },
 );
 
+const ExerciceLaunchModal = Form.create({ name: 'launch_modal' })(
+  // eslint-disable-next-line
+  class extends React.Component {
+    render() {
+      const { visible, onCancel } = this.props;
+      return (
+        <Modal
+          wrapClassName="launch_modal"
+          visible={visible}
+          footer={null}
+          onCancel={onCancel}
+          title="Lancement exercice"
+        >
+          <RealisationExerciseWindow />
+        </Modal>
+      );
+    }
+  },
+);
+
 class Details extends Component {
 
   state = {
-    visible: false,
+    saveModalVisible: false,
+    launchModalVisible: false,
     details: ""
   };
 
@@ -56,11 +79,19 @@ class Details extends Component {
   };
 
   showModal = () => {
-    this.setState({ visible: true });
+    this.setState({ saveModalVisible: true });
   };
 
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.setState({ saveModalVisible: false });
+  };
+  
+  showModalLaunch = () => {
+    this.setState({ launchModalVisible: true });
+  };
+
+  handleCancelLaunch = () => {
+    this.setState({ launchModalVisible: false });
   };
 
   handleCreate = () => {
@@ -110,16 +141,21 @@ class Details extends Component {
               supprimer
             </Button>}
 
-            <Button id="launch-button" type="dasher" icon="caret-right" size={"large"}>
+            <Button id="launch-button" type="dasher" icon="caret-right" size={"large"} onClick={this.showModalLaunch}>
               lancer
             </Button>
 
             <ExerciceCreationForm
               wrappedComponentRef={this.saveFormRef}
-              visible={this.state.visible}
+              visible={this.state.saveModalVisible}
               onCancel={this.handleCancel}
               onCreate={this.handleCreate}
               name={this.props.name}
+            />
+
+            <ExerciceLaunchModal
+              visible={this.state.launchModalVisible}
+              onCancel={this.handleCancelLaunch}
             />
             </div>
         </div>
