@@ -92,7 +92,7 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id
     function getUserPersonnalExercices(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select * from exercices where author_id = ?;"
+            var sql = "select id, title, text from exercices where author_id = ?;"
             con.query(sql, [userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -101,7 +101,7 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     }
     function getUserForkedExercices(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select * from exercices, user_exercices where user_exercices.userid = ? and exercices.id = user_exercices.exerciceId;"
+            var sql = "select exercices.id, exercices.title, exercices.text from exercices, user_exercices where user_exercices.userid = ? and exercices.id = user_exercices.exerciceId;"
             con.query(sql, [userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -110,7 +110,7 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     }
     function getUserClassExercices(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select * from exercices, class_exercices, classroom_students where class_exercices.exercice_id = exercices.id " +
+            var sql = "select exercices.id, exercices.title, exercices.text from exercices, class_exercices, classroom_students where class_exercices.exercice_id = exercices.id " +
                 "and classroom_students.idClassRoom = class_exercices.class_id and classroom_students.idstudent = ?;"
             con.query(sql, [userId], function (err, rows, fields) {
                 if (err) return reject(err);
