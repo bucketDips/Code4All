@@ -428,11 +428,11 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             console.log(SqlString.escape('toto'))
 
             // contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.title = SqlString.escape(escapeQuote(contentOjb.title))
+            contentOjb.title = SqlString.escape(contentOjb.title)
             // contentOjb.text = escapeQuote(contentOjb.text)
-            contentOjb.text = SqlString.escape(escapeQuote(contentOjb.text))
+            contentOjb.text = SqlString.escape(contentOjb.text)
             // content = escapeQuote(content)
-            content = SqlString.escape(escapeQuote(content))
+            content = SqlString.escape(content)
             console.log("content")
             console.log(content)
             var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
