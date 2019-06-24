@@ -236,7 +236,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     console.log(newpath)
                     console.log("url")
                     console.log(url)
-                    fileExo[i].publicPath = newpath;
+                    fileExo[i].url = url;
                     console.log("nique")
                     /*fs.copyFile(pathFile, newpath, (err) => {
                         if (err) throw err;
