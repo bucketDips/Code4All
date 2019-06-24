@@ -425,14 +425,14 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     function insertExercice(contentOjb,content,author_id) {
         return new Promise(function(resolve, reject) {
             console.log("debut conversion")
-            console.log(SqlString('toto'))
+            console.log(SqlString.escape('toto'))
 
             // contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.title = SqlString(contentOjb.title)
+            contentOjb.title = SqlString.escape(contentOjb.title)
             // contentOjb.text = escapeQuote(contentOjb.text)
-            contentOjb.text = SqlString(contentOjb.text)
+            contentOjb.text = SqlString.escape(contentOjb.text)
             // content = escapeQuote(content)
-            content = SqlString(content)
+            content = SqlString.escape(content)
             console.log("content")
             console.log(content)
             var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
@@ -485,11 +485,11 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
     function modifyExercice(exo_id,contentOjb,content,author_id) {
         return new Promise(function(resolve, reject) {
             // contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.title = SqlString(contentOjb.title)
+            contentOjb.title = SqlString.escape(contentOjb.title)
             // contentOjb.text = escapeQuote(contentOjb.text)
-            contentOjb.text = SqlString(contentOjb.text)
+            contentOjb.text = SqlString.escape(contentOjb.text)
             // content = escapeQuote(content)
-            content = SqlString(content)
+            content = SqlString.escape(content)
             // console.log("content")
             // console.log(content)
             // console.log("content")
