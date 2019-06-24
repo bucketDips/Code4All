@@ -238,15 +238,11 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     console.log(url)
                     fileExo[i].publicPath = newpath;
                     console.log("nique")
-                    fs.copyFile(pathFile, newpath, (err) => {
-                        console.log("err")
-                        console.log(err)
+                    /*fs.copyFile(pathFile, newpath, (err) => {
                         if (err) throw err;
                         console.log(pathFile + ' was copied to '+newpath);
 
-                    }).catch(function(err){
-                        return res.status(403).json(err);
-                    });
+                    })*/
                 }
                 var resultJson = {
                     exercice: rows[0],
