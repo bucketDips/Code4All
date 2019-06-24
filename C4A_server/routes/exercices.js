@@ -389,8 +389,13 @@ var escapeQuote1 = function(str){
 
     var find = "'";
     var re = new RegExp(find, 'g');
-    return str.replace(re, "\'")
-    // return str
+    str = str.replace(re, "''")
+    find = '"';
+    re = new RegExp(find, 'g');
+    find = "\\\\";
+    re = new RegExp(find, 'g');
+    str = str.replace(re, "\\")
+    return str.replace(re, "''")
 }
 function escapeQuote (str) {
     return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
@@ -419,27 +424,31 @@ function escapeQuote (str) {
 }
 router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     var contentOjb =JSON.parse(request.body.exercice);
-    var content = JSON.stringify(contentOjb)
+    console.log("contentOjb")
+    console.log(contentOjb)
+    // var content = JSON.stringify(contentOjb)
+    // console.log("content")
+    // console.log(content)
     var author_id = request.decoded.id
 
 
-    function insertExercice(contentOjb,content,author_id) {
+    function insertExercice(contentOjb,author_id) {
         return new Promise(function(resolve, reject) {
-            console.log("debut conversion")
-            console.log(SqlString.escape("console.log('toto')"))
+            // console.log("debut conversion")
+            // console.log(SqlString.escape("console.log('toto')"))
 
             // contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.title = escapeQuote(contentOjb.title)
+            // contentOjb.title = SqlString.escape(contentOjb.title)
             // contentOjb.text = escapeQuote(contentOjb.text)
-            contentOjb.text = escapeQuote(contentOjb.text)
+            // contentOjb.text = SqlString.escape(contentOjb.text)
             // content = escapeQuote(content)
-            //content = SqlString.escape(content)
-            console.log("content")
-            console.log(content)
-            var sql = "insert into exercices(title,text,isPublic,author_id,code,blocks,columns,labels,lineS,npcs,patternId,pcs) values (?)"
+            // content = SqlString.escape(content)
+            // console.log("SqlString.escape(JSON.stringify(contentOjb.blocks))")
+            // console.log(SqlString.escape(JSON.stringify(contentOjb.blocks)))
+            var sql = "insert into exercices(title,description,isPublic,author_id,code,blocks,columns,labels,rows,npcs,patternId,pcs) values (?)"
             var values = [];
-            values.push(contentOjb.title,contentOjb.text,contentOjb.public,author_id,escapeQuote(contentOjb.code),JSON.stringify(contentOjb.blocks), contentOjb.columns)
-            values.push(JSON.stringify(contentOjb.labels), contentOjb.lines, JSON.stringify(contentOjb.npcs), contentOjb.patternId, JSON.stringify(contentOjb.pcs))
+            values.push(SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,author_id,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
+            values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)))
             console.log(sql)
             con.query(sql, [values], function (err, rows, fields) {
                 if (err) return reject(err);
@@ -449,7 +458,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
         });
     }
 
-    insertExercice(contentOjb,content,author_id).then(function(rows){
+    insertExercice(contentOjb,author_id).then(function(rows){
         if (contentOjb.functions.length == 0){
             res.send(rows);
         }
