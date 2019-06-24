@@ -409,8 +409,8 @@ function escapeQuote (str) {
                 return "\\r";
             case "'":
                 return "''"
-            case "\"":
-            case "\\":
+            //case "\"":
+            //case "\\":
             case "%":
                 return "\\"+char; // prepends a backslash to backslash, percent,
                                   // and double/single quotes
