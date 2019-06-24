@@ -271,7 +271,7 @@ router.post('/uploadToExercice/:fileId/:exerciceId', AUTH.VERIFYAUTH, function(r
             });
         });
     }
-    addFileToExerciceFileTable(fileId, dest).then(function(rows){
+    addFileToExerciceFileTable(fileId, exerciceId).then(function(rows){
         res.send(rows)
     }).catch(function(err){
         return res.status(403).json(err);
