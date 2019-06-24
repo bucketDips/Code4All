@@ -17,18 +17,20 @@ class LeftNav extends Component {
     this.setState({
       content: (<div></div>)
     }, () => {
-      var actioned = action(optional);
-      if(actioned[1] === "collapsed") {
-        this.setState({
-          collapsed: true,
-          content: actioned[0]
-        });
-      }
-      else if(actioned[1] === "not-collapsed") {
-        this.setState({
-          content: actioned[0]
-        });
-      }
+      action(optional).then((actioned) => {
+        console.log(actioned);
+        if(actioned[1] === "collapsed") {
+          this.setState({
+            collapsed: true,
+            content: actioned[0]
+          });
+        }
+        else if(actioned[1] === "not-collapsed") {
+          this.setState({
+            content: actioned[0]
+          });
+        }
+      });
     });
   }
 
