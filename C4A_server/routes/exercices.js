@@ -250,6 +250,8 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     functions: rows1,
                     fichiers : fileExo
                 }
+                console.log("resultJson")
+                console.log(resultJson)
                 res.send(resultJson);
             }).catch(function(err){
                 return res.status(403).json(err);
