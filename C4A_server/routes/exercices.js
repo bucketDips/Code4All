@@ -281,10 +281,13 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                 rows[0].code = stand(rows[0].code)
                 var find = ";rnrn"
                 var re = new RegExp(find, 'g');
-                rows[0].code =  rows[0].code.replace(re, ";\n\n")
+                rows[0].code =  rows[0].code.replace(re, ";\r\n\r\n")
                 find = "rn"
                 re = new RegExp(find, 'g');
-                rows[0].code =  rows[0].code.replace(re, "\n")
+                rows[0].code =  rows[0].code.replace(re, "\r\n")
+                find = ";nn"
+                re = new RegExp(find, 'g');
+                rows[0].code =  rows[0].code.replace(re, ";\n\n")
                 find = ";n"
                 re = new RegExp(find, 'g');
                 rows[0].code =  rows[0].code.replace(re, ";\n")
