@@ -271,8 +271,11 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                 rows[0].title = rows[0].title.substring(1,rows[0].title.length - 1)
                 rows[0].description = rows[0].description.substring(1,rows[0].description.length - 1)
                 rows[0].code = stand(rows[0].code)
-                var find = ";rn"
+                var find = ";rnrn"
                 var re = new RegExp(find, 'g');
+                rows[0].code =  rows[0].code.replace(re, ";\n")
+                find = ";rn"
+                re = new RegExp(find, 'g');
                 rows[0].code =  rows[0].code.replace(re, ";\n")
                 rows[0].blocks = JSON.parse(stand(rows[0].blocks))
                 rows[0].npcs = JSON.parse(stand(rows[0].npcs))
