@@ -49,7 +49,9 @@ class Exercices {
     }
 
     createExercice(exercice) {
+        console.log(exercice);
         var patterns = this.extractPatterns(exercice);
+        console.log(patterns);
 
         let data = {'exercice': JSON.stringify(exercice)};
 
@@ -62,8 +64,9 @@ class Exercices {
             }
         })
           .then(function (response) {
-            patterns.list.map((pattern) => {
-                files.uploadFileToUser(response.insertId, pattern);
+              console.log(response);
+            patterns.map((pattern) => {
+                files.uploadFileToUser(response.data.insertId, pattern);
             });
             window.location.href = "/exercices";
           })

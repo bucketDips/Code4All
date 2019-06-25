@@ -135,7 +135,7 @@ class Details extends Component {
             <Button id="save-button" type="primary" icon="download" size={"large"} onClick={this.showModal}>
               {this.state.buttonValue}
             </Button>
-            {this.props.details && 
+            {this.props.id && 
             
             <Button id="delete-button" type="danger" icon="delete" size={"large"} onClick={this.showConfirm.bind(this, this.props.id)}>
               supprimer

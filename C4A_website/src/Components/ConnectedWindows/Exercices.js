@@ -17,7 +17,7 @@ class ExercicesWindow extends Component {
 
     modifyExercice(code) {
         return exercices.getMyExercice(code.id, (exos) => {
-            return [(<CreateExerciseWindow code={exos.data.exercice.code} id={exos.data.exercice.id} details={exos.data.exercice.text} name={exos.data.exercice.title} />), "collapsed"];
+            return [(<CreateExerciseWindow code={exos.data.exercice.code} id={exos.data.exercice.id} details={exos.data.exercice.description} name={exos.data.exercice.title} />), "collapsed"];
         });
     }
 
@@ -42,7 +42,7 @@ class ExercicesWindow extends Component {
                 id: allExercices.data.perso[exercice].id,
                 name: allExercices.data.perso[exercice].title,
                 code: allExercices.data.perso[exercice].code,
-                description: allExercices.data.perso[exercice].text,
+                description: allExercices.data.perso[exercice].description,
                 action: this.modifyExercice
             });
         }

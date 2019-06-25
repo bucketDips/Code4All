@@ -44,6 +44,7 @@ class CreateExerciseWindow extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props);
     this.setPatterns();
 
     this.setState({
