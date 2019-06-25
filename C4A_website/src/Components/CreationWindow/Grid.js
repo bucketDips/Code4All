@@ -30,7 +30,7 @@ class Grid extends Component {
           line: line,
           column: column,
         }
-        cells.push(<Case size={size} index={String(index)} />);
+        cells.push(<Case size={size} index={String(index)} key={(column) + (line * this.state.gridProperties.lines)} />);
         index += 1;
       }
       cases.push(cells);
