@@ -1,0 +1,8 @@
+:local(.class) {
+    background-color: gray;
+    height: 100%;
+}
+
+:local(.classroom_infos) {
+    padding-left: 2%;
+}
