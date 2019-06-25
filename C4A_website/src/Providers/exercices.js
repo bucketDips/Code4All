@@ -1,7 +1,11 @@
 import Axios from 'axios';
 import qs from 'qs';
+import { Input } from 'antd';
 import consts from '../Providers/consts'
 import files from '../Providers/files';
+
+const Search = Input.Search;
+
 
 
 class Exercices {
@@ -30,11 +34,11 @@ class Exercices {
     }
 
     extractPatternsFromArray(array, patterns) {
-        array.map((element) => {
+        var newElements = array.map((element) => {
             if(element.patternId !== null && element.patternId !== undefined && !patterns.includes(element.patternId)) {
                 patterns.push(element.patternId);
             }
-            return null;
+            return element;
         });
     }
 
@@ -56,8 +60,6 @@ class Exercices {
 
         let data = {'exercice': JSON.stringify(exercice)};
 
-        console.log(data);
-    
         Axios.post(consts.url() + 'exercices/add', qs.stringify(data),
         {
             headers: {
@@ -65,9 +67,9 @@ class Exercices {
             }
         })
           .then(function (response) {
-            patterns.map((pattern) => {
+            var pat = patterns.map((pattern) => {
                 files.uploadFileToExo(response.data.insertId, pattern);
-                return null;
+                return pattern;
             });
             window.location.href = "/exercices";
           })
