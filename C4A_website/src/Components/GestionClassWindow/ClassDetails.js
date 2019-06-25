@@ -7,7 +7,6 @@ import DisplayProfessorsInfos from './DisplayProfessorsInfos';
 
 class ClassDetails extends Component {
     render() {
-        console.log(this.props);
         return (
             <div className={style.class_details}>
                 <h1>Détails de la classe</h1>

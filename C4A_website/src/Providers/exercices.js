@@ -27,7 +27,6 @@ class Exercices {
         }
 
         return Axios.get(consts.url() + "exercices/getExercice/" + id, {headers: headers}).then(response => {
-            console.log(response);
             return cb(response);
         }).catch(error => {
             alert(JSON.stringify(error));
@@ -70,7 +69,6 @@ class Exercices {
             window.location.href = "/exercices";
           })
           .catch(function (error) {
-            console.log(error);
             alert(JSON.stringify(error.response));
           });
     }

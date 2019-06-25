@@ -27,7 +27,6 @@ class AddPersonWindowWrapper extends Component {
       })).then(function(values) {
         return values;
       });
-      console.log("refill");
       this.props.refill();
       this.setState({ visible: false });
     };

@@ -17,7 +17,6 @@ class Files {
         Axios.post(consts.url() + "fichiers/uploadToUser/" + options.file.name + "/-1", data, config).then((res) => {
           options.onSuccess(res.data, options.file)
         }).catch((err) => {
-          console.log(err)
         })
     }
 
