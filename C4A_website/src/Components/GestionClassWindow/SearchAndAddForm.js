@@ -77,11 +77,11 @@ class SearchAndAddForm extends Component {
             if(this.alreadyIsIn(person.id)) {
                 return null;
             }
-            return <Person name={person.name} id={person.id} onClick={this.add.bind(this, person)} />
+            return <Person name={person.name} id={person.id} email={person.email} onClick={this.add.bind(this, person)} />
         });
 
         var addedPersons = this.state.addedPersons.map(person => {
-            return <Person name={person.name} id={person.id} onClick={this.remove.bind(this, person)} />
+            return <Person name={person.name} id={person.id} email={person.email} onClick={this.remove.bind(this, person)} />
         });
 
         return (
