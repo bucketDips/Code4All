@@ -276,10 +276,10 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                 rows[0].pcs = JSON.parse(stand(rows[0].pcs))
                 rows[0].labels = JSON.parse(stand(rows[0].labels))
                 console.log( rows[0].labels)
+                rows[0].functions = rows1;
+                rows[0].fichiers = fileExo;
                 var resultJson = {
-                    exercice: rows[0],
-                    functions: rows1,
-                    fichiers : fileExo
+                    exercice: rows[0]
                 }
 
                 res.send(resultJson);
