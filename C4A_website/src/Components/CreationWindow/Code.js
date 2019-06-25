@@ -122,6 +122,10 @@ class Code extends Component {
 
   componentWillMount() {
     if(this.props.code) {
+      console.log(JSON.stringify(this.props.code.replace("\\n", "n")));
+      var newCode = this.props.code.replace(/[\n]/g, "\\\\n");
+      console.log(newCode);
+      console.log(JSON.stringify(newCode));
       this.props.changeEditorValue(this.props.code);
       this.setState({editorValue: this.props.code}, () => {
         this.evalCode(true);

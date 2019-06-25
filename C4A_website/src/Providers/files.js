@@ -22,7 +22,7 @@ class Files {
     }
 
     uploadFileToUser(idFile, idExo) {
-      Axios.post(consts.url() + 'fichiers/uploadToExercice/' + idFile + "/" + idExo, {},
+      Axios.post(consts.url() + 'fichiers/uploadToExercice/' + idExo + "/" + idFile, {},
       {
           headers: {
               'Authorization': 'Bearer ' +  localStorage.sessionToken

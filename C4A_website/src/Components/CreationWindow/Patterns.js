@@ -46,7 +46,7 @@ class Patterns extends Component {
 
   render() {
     var patterns = this.state.patterns.map(pattern => (
-      <Pattern id={pattern.fileid} name={pattern.publicName} />
+      <Pattern id={pattern.fileid} key={pattern.fileid} name={pattern.publicName} />
     ));
 
     return (

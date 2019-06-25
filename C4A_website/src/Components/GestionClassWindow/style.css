@@ -1,8 +1,70 @@
+@font-face {
+    font-family: 'lfl';
+    font-style: normal;
+    src: url('/lfl.ttf') format("opentype");
+}
+
 :local(.class) {
     background-color: gray;
     height: 100%;
 }
 
-:local(.classroom_infos) {
+:local(.class_details) {
     padding-left: 2%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+:local(.classroom_infos) {
+    flex: 0.3;
+}
+
+:local(.grid_persons) {
+    padding-top: 1%;
+    padding-left: 2%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 60px;
+    grid-auto-rows: minmax(120px, 120px);
+}
+
+:local(.professors_infos) {
+    flex: 1.7;
+}
+
+:local(.students_infos) {
+    flex: 3;
+}
+
+:local(.posts) {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+:local(.avatar) {
+    width: 40%;
+    height: auto;
+    background-color: aliceblue;
+    border-radius: 90px;
+    padding: 5px;
+    position: absolute;
+    left: 30%;
+    top: 10%;
+}
+
+:local(.person) {
+    position: relative;
+}
+
+:local(.name) {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 60%;
+    font-family: lfl;
+    font-size: 1.8vw !important;
+    transform: rotate(3deg);
+    font-weight: bold;
 }
