@@ -7,7 +7,7 @@ import Person from './Person';
 class DisplayProfessorsInfos extends Component {
     render() {
         var profs = this.props.infos.map(prof => {
-            return <Person name={prof.name} id={prof.id} />
+            return <Person name={prof.name} id={prof.id} email={prof.email} />
         })
         return (
             <div className={style.professors_infos}>

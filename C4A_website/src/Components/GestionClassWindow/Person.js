@@ -9,6 +9,7 @@ class Person extends Component {
                 <img alt="posts" className={style.posts} src={process.env.PUBLIC_URL + 'post.png'} />
                 <img alt="avatar" className={style.avatar} src={avatar} />
                 <div className={style.name}>{this.props.name}</div>
+                <div className={style.email}>{this.props.email}</div>
             </div>
         );
     }

@@ -6,7 +6,7 @@ import Person from './Person';
 class DisplayStudentsInfos extends Component {
     render() {
         var students = this.props.infos.map(student => {
-            return <Person name={student.name} id={student.id} />
+            return <Person name={student.name} id={student.id} email={student.email} />
         })
         return (
             <div className={style.students_infos}>
