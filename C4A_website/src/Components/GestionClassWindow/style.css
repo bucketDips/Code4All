@@ -53,28 +53,40 @@
 }
 
 :local(.avatar) {
-    width: 40%;
+    width: 32%;
     height: auto;
     background-color: aliceblue;
     border-radius: 90px;
     padding: 5px;
     position: absolute;
-    left: 30%;
-    top: 10%;
+    left: 35%;
+    top: 8%;
 }
 
 :local(.person) {
     position: relative;
+    overflow: hidden;
 }
 
 :local(.name) {
     width: 100%;
     text-align: center;
     position: absolute;
-    top: 60%;
+    top: 45%;
     font-family: lfl;
-    font-size: 1.8vw !important;
-    transform: rotate(3deg);
+    font-size: 1.6vw !important;
+    transform: rotate(2.6deg);
+    font-weight: bold;
+}
+
+:local(.email) {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 70%;
+    font-family: lfl;
+    font-size: 0.8vw !important;
+    transform: rotate(2.6deg);
     font-weight: bold;
 }
 
@@ -91,6 +103,7 @@
 :local(.wrapper) {
     display:inline-block;
     width: 2%;
+    margin-left: 1%;
 }
 
 :local(.search_person) {

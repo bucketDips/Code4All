@@ -27,6 +27,7 @@ class Exercices {
         }
 
         return Axios.get(consts.url() + "exercices/getExercice/" + id, {headers: headers}).then(response => {
+            console.log(response);
             return cb(response);
         }).catch(error => {
             alert(JSON.stringify(error));
@@ -54,9 +55,7 @@ class Exercices {
     }
 
     createExercice(exercice) {
-        console.log(exercice);
         var patterns = this.extractPatterns(exercice);
-        console.log(patterns);
 
         let data = {'exercice': JSON.stringify(exercice)};
 
@@ -81,6 +80,8 @@ class Exercices {
 
     modifyExercice(exercice, id) {
         let data = {'exercice': JSON.stringify(exercice)};
+
+        // EXTRACT NOT SAVED PATTERN
     
         Axios.post(consts.url() + 'exercices/modify/' + id, qs.stringify(data),
         {

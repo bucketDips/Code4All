@@ -103,7 +103,7 @@ class Details extends Component {
 
       var title = values.title;
 
-      if(!this.props.details) {
+      if(!this.props.id) {
         this.props.saveExercise(title, this.state.details);
       }
       else {

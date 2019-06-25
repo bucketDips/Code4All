@@ -19,7 +19,6 @@ class SearchAndAddForm extends Component {
     }
 
     componentWillMount() {
-        console.log(this.props.persons);
         this.setState({persons: JSON.parse(JSON.stringify(this.props.persons))});
     }
 
@@ -50,6 +49,7 @@ class SearchAndAddForm extends Component {
             toAdd: toAdd,
             addedPersons: addedPersons
         });
+        this.props.setToAdd(toAdd);
     }
 
     remove(person) {
@@ -69,6 +69,7 @@ class SearchAndAddForm extends Component {
             toAdd: filteredToAdd,
             addedPersons: filteredAddedPersons
         });
+        this.props.setToAdd(filteredToAdd);
     }
 
     render() {
@@ -76,11 +77,11 @@ class SearchAndAddForm extends Component {
             if(this.alreadyIsIn(person.id)) {
                 return null;
             }
-            return <Person name={person.name} id={person.id} onClick={this.add.bind(this, person)} />
+            return <Person name={person.name} id={person.id} email={person.email} onClick={this.add.bind(this, person)} />
         });
 
         var addedPersons = this.state.addedPersons.map(person => {
-            return <Person name={person.name} id={person.id} onClick={this.remove.bind(this, person)} />
+            return <Person name={person.name} id={person.id} email={person.email} onClick={this.remove.bind(this, person)} />
         });
 
         return (

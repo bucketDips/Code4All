@@ -10,8 +10,17 @@ const TextArea = Input.TextArea;
 const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class extends React.Component {
+    state={
+      toAdd: []
+    }
+
+    setToAdd(toAdd) {
+      this.setState({toAdd: toAdd});
+    }
+
     render() {
-      const { visible, onCancel, onCreate, form } = this.props;
+      console.log(this.state);
+      const { visible, onCancel, onSave, form } = this.props;
       const { getFieldDecorator } = form;
       return (
         <Modal
@@ -21,9 +30,9 @@ const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
           title="Ajouter des élèves ou professeurs"
           okText= "Sauvegarder"
           onCancel={onCancel}
-          onOk={onCreate}
+          onOk={onSave.bind(this, this.state.toAdd)}
         >
-          <SearchAndAddForm persons={this.props.persons} />
+          <SearchAndAddForm persons={this.props.persons} setToAdd={this.setToAdd.bind(this)} />
         </Modal>
       );
     }

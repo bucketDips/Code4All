@@ -222,6 +222,7 @@ class Code extends Component {
   
 
   synchronise(grid) {
+    console.log(grid);
       this.setState(
         {
           fromEdit: true,

@@ -47,6 +47,36 @@ class Classes {
             alert(JSON.stringify(error));
         });
     }
+
+    async addStudentToClass(idPerson, idClass) {
+        return await Axios.post(consts.url() + 'classes/addStudentToClass/' + idPerson + '/' + idClass, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            alert(JSON.stringify(error.response));
+        });
+    }
+
+    async addProfessorToClass(idPerson, idClass) {
+        return await Axios.post(consts.url() + 'classes/addProfessorToClass/' + idPerson + '/' + idClass, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            alert(JSON.stringify(error.response));
+        });
+    }
 }
 
 export default new Classes();
