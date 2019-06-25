@@ -34,11 +34,11 @@ class Exercices {
     }
 
     extractPatternsFromArray(array, patterns) {
-        array.map((element) => {
+        var newElements = array.map((element) => {
             if(element.patternId !== null && element.patternId !== undefined && !patterns.includes(element.patternId)) {
                 patterns.push(element.patternId);
             }
-            return null;
+            return element;
         });
     }
 

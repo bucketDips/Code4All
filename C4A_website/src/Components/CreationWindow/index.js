@@ -32,12 +32,12 @@ class CreateExerciseWindow extends Component {
   async setPatterns() {
     var patterns = await files.getMines();
     var newPatterns = {};
-    patterns.data.map(element => {
+    var tempPat = patterns.data.map(element => {
       newPatterns[element.fileid] = {
         id: element.fileid,
         nom: element.publicName
       }
-      return null;
+      return element;
     });
 
     this.setState({patterns: newPatterns});

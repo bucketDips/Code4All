@@ -96,14 +96,14 @@ class ClassesWindow extends Component {
         var student = JSON.parse(JSON.stringify(allClasses.student));
         var professor = JSON.parse(JSON.stringify(allClasses.professor));
 
-        student.map((c) => {
+        var std = student.map((c) => {
             c.action = this.clickOnClass.bind(this, c.id, false);
-            return null;
+            return c;
         });
 
-        professor.map((c) => {
+        var profs = professor.map((c) => {
             c.action = this.clickOnClass.bind(this, c.id, true);
-            return null;
+            return c;
         });
 
         var menus = [];
