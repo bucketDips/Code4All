@@ -218,9 +218,6 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
         getFunctions(id).then(function(rows1){
             // rows[0].content = JSON.parse(rows[0].content);
             getExerciceFiles(id).then(function(fileExo){
-                console.log("fileExo")
-                console.log(fileExo)
-                console.log(fileExo.length)
                 for (var i = 0; i < fileExo.length; ++i){
                     var pathFile = __dirname +"/FichiersUtilisateur/" +fileExo[i].file_id;
                     var text = "";
@@ -238,7 +235,6 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     console.log("url")
                     console.log(url)
                     fileExo[i].url = url;
-                    console.log("nique")
                     console.log(pathFile + ' will be  copied to '+newpath);
 
                     fs.copyFile(pathFile, newpath, (err) => {
@@ -246,6 +242,9 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                         console.log(pathFile + ' was copied to '+newpath);
 
                     })
+                }
+                function remQuote(str) {
+                    return str.substring(1,str.length - 1)
                 }
                 function stand(str){
                     console.log("TOTOTOTOTOOTOOTOTT")
@@ -257,6 +256,9 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     return str
                 }
 
+                rows[0].title = rows[0].title.substring(1,rows[0].title.length - 1)
+                rows[0].description = rows[0].description.substring(1,rows[0].description.length - 1)
+                rows[0].code = rows[0].code.substring(1,rows[0].code.length - 1)
                 rows[0].blocks = JSON.parse(stand(rows[0].blocks))
                 rows[0].npcs = JSON.parse(stand(rows[0].npcs))
                 rows[0].pcs = JSON.parse(stand(rows[0].pcs))
@@ -448,6 +450,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
 
     insertExercice(contentOjb,author_id).then(function(rows){
         if (contentOjb.functions.length == 0){
+            console.log("YA PAS DE FONCTION SAMERE")
             res.send(rows);
         }
         else {
