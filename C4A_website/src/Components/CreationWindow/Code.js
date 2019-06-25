@@ -123,12 +123,12 @@ class Code extends Component {
 
   componentWillMount() {
     if(this.props.code) {
-      var newCode = this.props.code.replace(/[\n]/g, "\\\\n");
+      var newCode = this.props.code;
 
       this.props.changeEditorValue(this.props.code);
-      this.setState({editorValue: this.props.code}, () => {
+      this.setState({editorValue: newCode}, () => {
         this.evalCode(true);
-        this.onChange(this.props.code, null);
+        this.onChange(newCode, null);
       });
     }
   }
