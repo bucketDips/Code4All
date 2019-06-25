@@ -137,7 +137,7 @@ class Code extends Component {
     if(this.state.infoText) {
       return;
     }
-    
+
     if(props.delete){
       this.delete(props.delete.id, props.delete.type);
       props.resetDelete();
@@ -223,12 +223,7 @@ class Code extends Component {
     return new Func(name, String(code), description);
   }
 
-  
-
   synchronise(grid) {
-      if(this.state.infoText) {
-        return;
-      }
       this.setState(
       {
         fromEdit: true,
