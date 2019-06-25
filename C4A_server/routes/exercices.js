@@ -274,7 +274,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                 var find = ";rnrn"
                 var re = new RegExp(find, 'g');
                 rows[0].code =  rows[0].code.replace(re, ";\n")
-                find = ";rn"
+                find = "rn"
                 re = new RegExp(find, 'g');
                 rows[0].code =  rows[0].code.replace(re, ";\n")
                 rows[0].blocks = JSON.parse(stand(rows[0].blocks))
