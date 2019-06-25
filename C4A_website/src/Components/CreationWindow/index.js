@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import Axios from 'axios';
 import _ from 'lodash';
 import style from './style.css';
 import Grid from './Grid';
@@ -38,13 +37,13 @@ class CreateExerciseWindow extends Component {
         id: element.fileid,
         nom: element.publicName
       }
+      return null;
     });
 
     this.setState({patterns: newPatterns});
   }
 
   componentWillMount() {
-    console.log(this.props);
     this.setPatterns();
 
     this.setState({

@@ -13,6 +13,7 @@ import styles from './style.css';
 import { Grid, Block, Npc, Pc, Label, Func } from './CodeClasses';
 import CustomSlider from './CustomSlider';
 
+// eslint-disable-next-line
 import consts from '../../Providers/consts';
 
 class Code extends Component {
@@ -122,10 +123,8 @@ class Code extends Component {
 
   componentWillMount() {
     if(this.props.code) {
-      console.log(JSON.stringify(this.props.code.replace("\\n", "n")));
       var newCode = this.props.code.replace(/[\n]/g, "\\\\n");
-      console.log(newCode);
-      console.log(JSON.stringify(newCode));
+
       this.props.changeEditorValue(this.props.code);
       this.setState({editorValue: this.props.code}, () => {
         this.evalCode(true);
@@ -257,6 +256,7 @@ class Code extends Component {
 
     try {
       if(fromProps) {
+        // eslint-disable-next-line
         eval(this.state.editorValue + "\ngrid; this.props.changeGridObject(grid);");
         return;
       }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import WrappedLoginWindow from './LoginForm';
 import WrappedRegistrationForm from './InscriptionForm';
 
+// eslint-disable-next-line
 import styles from './style.css';
 
 
@@ -41,7 +42,7 @@ class NotConnectedWindow extends Component {
       var form = (<WrappedLoginWindow />);
     }
     else if(this.state.type === 'inscription'){
-      var form = (<WrappedRegistrationForm />);
+      form = (<WrappedRegistrationForm />);
     }
 
     return (

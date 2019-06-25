@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
 import ConnectedWindowsStructure from '../ConnectedWindowsStructure/';
-import CreateExerciseWindow from '../CreationWindow/';
 import GestionClassWindow from '../GestionClassWindow';
 
-import { Input, Button, Modal, Form } from 'antd';
+import { Input, Modal, Form } from 'antd';
 
 import classes from '../../Providers/classes';
 
@@ -98,11 +97,13 @@ class ClassesWindow extends Component {
         var professor = JSON.parse(JSON.stringify(allClasses.professor));
 
         student.map((c) => {
-            c.action = this.clickOnClass.bind(this, c.id, false)
+            c.action = this.clickOnClass.bind(this, c.id, false);
+            return null;
         });
 
         professor.map((c) => {
-            c.action = this.clickOnClass.bind(this, c.id, true)
+            c.action = this.clickOnClass.bind(this, c.id, true);
+            return null;
         });
 
         var menus = [];

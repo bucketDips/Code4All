@@ -21,7 +21,7 @@ class Files {
         })
     }
 
-    uploadFileToUser(idFile, idExo) {
+    uploadFileToExo(idFile, idExo) {
       Axios.post(consts.url() + 'fichiers/uploadToExercice/' + idExo + "/" + idFile, {},
       {
           headers: {

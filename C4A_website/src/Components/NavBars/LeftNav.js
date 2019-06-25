@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Layout } from 'antd';
 
-import styles from './style.css';
-import { cpus } from 'os';
-
 const SubMenu = Menu.SubMenu;
 const Sider = Layout.Sider;
 

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import LeftNav from '../NavBars/LeftNav';
 import TopNav from '../NavBars/TopNav';
+// eslint-disable-next-line
 import styles from './style.css';
-import { Layout } from 'antd';
 
 class ConnectedWindow extends Component {
 

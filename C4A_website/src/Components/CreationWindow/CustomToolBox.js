@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import ToolBoxElement from './ToolBoxElement';
-import styles from './style.css';
 
 class CustomToolBox extends Component {
 

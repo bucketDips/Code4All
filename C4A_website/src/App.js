@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import HomeWindow from './Components/ConnectedWindows/Home';
 import ExercicesWindow from './Components/ConnectedWindows/Exercices';
 import ClassesWindow from './Components/ConnectedWindows/Classes';

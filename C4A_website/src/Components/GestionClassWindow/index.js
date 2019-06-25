@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import consts from '../../Providers/consts';
 import style from './style.css';
 import classes from '../../Providers/classes';
 import ClassDetails from './ClassDetails';
@@ -30,7 +29,7 @@ class GestionClassWindow extends Component {
 
   render() {
     return (
-        <div className={style.class} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + 'blackboard.jpg' + ")", backgroundSize: "cover"}}>
+        <div className={style.class} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "blackboard.jpg)", backgroundSize: "cover"}}>
             <ClassDetails classRoom={this.state.classRoom} students={this.state.studentList} profs={this.state.profList} />
         </div>
     );

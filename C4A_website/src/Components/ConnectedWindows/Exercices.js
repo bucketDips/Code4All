@@ -47,7 +47,7 @@ class ExercicesWindow extends Component {
             });
         }
 
-        for(var exercice in allExercices.data.forked.fromStore) {
+        for(exercice in allExercices.data.forked.fromStore) {
             forkedExercices.push({
                 id: allExercices.data.forked.fromStore[exercice].id,
                 authorId: allExercices.data.forked.fromStore[exercice].author_id,
