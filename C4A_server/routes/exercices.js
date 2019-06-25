@@ -148,6 +148,18 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     getUserPersonnalExercices(userId).then(function(rowsPersonnal){
         getUserForkedExercices(userId).then(function(rowsForked){
             getUserClassExercices(userId).then(function(rowsClass){
+                for (var i = 0; i < rowsPersonnal.length; ++i){
+                    rowsPersonnal[i].title = rowsPersonnal[i].title.substring(1,rowsPersonnal[i].title.length - 1)
+                    rowsPersonnal[i].description = rowsPersonnal[i].description.substring(1,rowsPersonnal[i].description.length - 1)
+                }
+                for (var i = 0; i < rowsForked.length; ++i){
+                    rowsForked[i].title = rowsForked[i].title.substring(1,rowsForked[i].title.length - 1)
+                    rowsForked[i].description = rowsForked[i].description.substring(1,rowsForked[i].description.length - 1)
+                }
+                for (var i = 0; i < rowsClass.length; ++i){
+                    rowsClass[i].title = rowsClass[i].title.substring(1,rowsClass[i].title.length - 1)
+                    rowsClass[i].description = rowsClass[i].description.substring(1,rowsClass[i].description.length - 1)
+                }
                 res.json({
                     perso:rowsPersonnal,
                     forked:{
