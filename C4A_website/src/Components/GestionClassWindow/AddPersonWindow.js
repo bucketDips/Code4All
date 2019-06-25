@@ -15,6 +15,7 @@ const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
       const { getFieldDecorator } = form;
       return (
         <Modal
+          destroyOnClose={true}
           visible={visible}
           wrapClassName="add_persons_modal"
           title="Ajouter des élèves ou professeurs"
@@ -22,7 +23,7 @@ const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
           onCancel={onCancel}
           onOk={onCreate}
         >
-          <SearchAndAddForm />
+          <SearchAndAddForm persons={this.props.persons} />
         </Modal>
       );
     }

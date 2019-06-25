@@ -41,6 +41,7 @@ class AddPersonWindowWrapper extends Component {
               visible={this.state.visible}
               onCancel={this.handleCancel}
               onCreate={this.handleCreate}
+              persons={this.props.persons}
             />
           </div>
         );

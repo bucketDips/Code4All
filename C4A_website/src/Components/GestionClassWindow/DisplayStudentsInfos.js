@@ -10,7 +10,7 @@ class DisplayStudentsInfos extends Component {
         })
         return (
             <div className={style.students_infos}>
-                <h2><b>Elèves</b> : {this.props.count} participants { this.props.teacher && <AddPersonWindowWrapper /> } </h2>
+                <h2><b>Elèves</b> : {this.props.count} participants { this.props.teacher && <AddPersonWindowWrapper persons={this.props.infos} /> } </h2>
                 <div className={style.grid_persons}>
                     {students}
                 </div>

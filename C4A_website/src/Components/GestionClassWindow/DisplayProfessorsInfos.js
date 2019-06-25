@@ -11,7 +11,7 @@ class DisplayProfessorsInfos extends Component {
         })
         return (
             <div className={style.professors_infos}>
-                <h2><b>Professeurs</b> : {this.props.count} participants  { this.props.teacher && <AddPersonWindowWrapper /> }</h2>
+                <h2><b>Professeurs</b> : {this.props.count} participants  { this.props.teacher && <AddPersonWindowWrapper persons={this.props.infos} /> }</h2>
                 <div className={style.grid_persons}>
                     {profs}
                 </div>

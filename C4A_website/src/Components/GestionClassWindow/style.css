@@ -29,6 +29,15 @@
     grid-auto-rows: minmax(120px, 120px);
 }
 
+:local(.min_grid_persons) {
+    padding-top: 1%;
+    padding-left: 2%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 40px;
+    grid-auto-rows: minmax(120px, 120px);
+}
+
 :local(.professors_infos) {
     flex: 1.7;
 }
@@ -86,23 +95,37 @@
 
 :local(.search_person) {
     flex: 1;
-    padding-bottom: 2%;
+    padding-bottom: 0.5%;
     padding-left: 20%;
     padding-right: 20%;
 }
 
 :local(.found_persons) {
     flex: 5;
+    display: flex;
+    flex-direction: column;
 }
 
 :local(.added_persons) {
-    flex: 5
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+}
+
+:local(.container_persons) {
+    width: 100%;
+    overflow-y: auto;
+    flex: 5;
+}
+
+h3 {
+    flex: 1;
 }
 
 .add_persons_modal .ant-modal {
     width: 60% !important;
-    height: 76% !important;
-    top: 12% !important;
+    height: 90% !important;
+    top: 5% !important;
     padding: 0 !important;
 }
 
@@ -116,6 +139,7 @@
 
 .add_persons_modal .ant-modal-body {
     height: 78% !important;
+    padding: 10px !important;
 }
 
 .add_persons_modal .ant-modal-footer {
