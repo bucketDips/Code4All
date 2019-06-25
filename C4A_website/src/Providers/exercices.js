@@ -31,15 +31,16 @@ class Exercices {
 
     extractPatternsFromArray(array, patterns) {
         array.map((element) => {
-            if(element.patternId != null && element.patternId != undefined && !patterns.includes(element.patternId)) {
+            if(element.patternId !== null && element.patternId !== undefined && !patterns.includes(element.patternId)) {
                 patterns.push(element.patternId);
             }
+            return null;
         });
     }
 
     extractPatterns(exercice) {
         var patterns = [];
-        if(exercice.patternId != null && exercice.patternId != undefined) {
+        if(exercice.patternId !== null && exercice.patternId !== undefined) {
             patterns.push(exercice.patternId);
         }
         this.extractPatternsFromArray(exercice.blocks, patterns);
@@ -64,9 +65,9 @@ class Exercices {
             }
         })
           .then(function (response) {
-              console.log(response);
             patterns.map((pattern) => {
-                files.uploadFileToUser(response.data.insertId, pattern);
+                files.uploadFileToExo(response.data.insertId, pattern);
+                return null;
             });
             window.location.href = "/exercices";
           })

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Upload, message, Button, Icon } from 'antd';
-import Axios from 'axios';
 import files from "../../Providers/files";
 
 

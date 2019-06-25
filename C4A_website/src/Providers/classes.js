@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import qs from 'qs';
 import consts from '../Providers/consts'
 
 class Classes {

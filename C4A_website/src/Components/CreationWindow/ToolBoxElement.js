@@ -15,10 +15,10 @@ class ToolBoxElement extends Component {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           >
-                  <img src={this.props.element.image} width="20px" height="20px" />
+                  <img src={this.props.element.image} width="20px" height="20px" alt="choice" />
           </div>
           {snapshot.isDragging && (
-            <div style={{transform: "none !important"}}><img class="placeholderimage" src={this.props.element.image} width="20px" height="20px" /></div>
+            <div style={{transform: "none !important"}}><img alt="placeholder" class="placeholderimage" src={this.props.element.image} width="20px" height="20px" /></div>
           )}
         </React.Fragment>
       )}

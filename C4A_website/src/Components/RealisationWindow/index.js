@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import Code from './Code';
 
-import consts from '../../Providers/consts';
 import style from './style.css';
 
 class RealisationExerciseWindow extends Component {
