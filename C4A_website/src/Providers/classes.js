@@ -29,13 +29,25 @@ class Classes {
                 'Authorization': 'Bearer ' +  localStorage.sessionToken
             }
         })
-            .then(function (response) {
+        .then(function (response) {
             window.location.href = "/classes";
-            })
-            .catch(function (error) {
-            alert(JSON.stringify(error.response));
-            });
+        })
+        .catch(function (error) {
+        alert(JSON.stringify(error.response));
+        });
+    }
+
+    async getClassInfo(id) {
+        var headers = {
+            'Authorization': 'Bearer ' +  localStorage.sessionToken
         }
+
+        return Axios.get(consts.url() + "classes/getClassDetail/" + id, {headers: headers}).then(response => {
+            return response.data;
+        }).catch(error => {
+            alert(JSON.stringify(error));
+        });
+    }
 }
 
 export default new Classes();

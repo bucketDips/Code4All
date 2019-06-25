@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import ConnectedWindowsStructure from '../ConnectedWindowsStructure/';
 import CreateExerciseWindow from '../CreationWindow/';
+import GestionClassWindow from '../GestionClassWindow';
 
 import { Input, Button, Modal, Form } from 'antd';
 
@@ -79,12 +80,10 @@ class ClassesWindow extends Component {
         ), "not-collapsed"]); });
     }
 
-    clickOnClass() {
+    clickOnClass(id, teacher) {
         return new Promise((resolve, reject) => { resolve([(
-            <div>
-                <h1>Voici l'explication des classes</h1>
-            </div>
-        ), "not-collapsed"]); });
+            <GestionClassWindow id={id} teacher={teacher} />
+        ), "collapsed"]); });
     }
 
     createClass() {
@@ -99,11 +98,11 @@ class ClassesWindow extends Component {
         var professor = JSON.parse(JSON.stringify(allClasses.professor));
 
         student.map((c) => {
-            c.action = this.clickOnClass
+            c.action = this.clickOnClass.bind(this, c.id, false)
         });
 
         professor.map((c) => {
-            c.action = this.clickOnClass
+            c.action = this.clickOnClass.bind(this, c.id, true)
         });
 
         var menus = [];

@@ -52,6 +52,20 @@ html, body {
     margin-bottom: 0 !important;
  }
 
+ h2 {
+    font-size: 2vw !important;
+    font-family: lfl;
+    color: white;
+    margin-bottom: 0 !important;
+ }
+
+ h3 {
+    font-size: 1.3vw !important;
+    font-family: lfl;
+    color: white;
+    margin-bottom: 0 !important;
+ }
+
  .main-bubble-body {
     padding-top: 5vh;
     padding-bottom: 3vh;
