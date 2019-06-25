@@ -29,7 +29,16 @@ var funcString = [
 var createFunction = function (txt) {
     return new Function("return " + txt)();
 }
+function deleteExercice(exo_id,author_id) {
+    return new Promise(function(resolve, reject) {
+        var sql = "delete from exercices where id = ? and author_id = ?;"
+        con.query(sql,[exo_id,author_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            resolve(rows);
+        });
 
+    });
+}
 function insertExerciceFunctions(functions, exercice_id) {
     return new Promise(function(resolve, reject) {
         var reccords = [];
@@ -470,7 +479,6 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
 
     insertExercice(contentOjb,author_id).then(function(rows){
         if (contentOjb.functions.length == 0){
-            console.log("YA PAS DE FONCTION SAMERE")
             res.send(rows);
         }
         else {
@@ -502,18 +510,23 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
     var contentOjb =JSON.parse(request.body.exercice);
     var author_id = request.decoded.id
     var exo_id = request.params.exerciceId
+    // console.log(contentOjb)
 
 
     function modifyExercice(exo_id,contentOjb,author_id) {
         return new Promise(function(resolve, reject) {
+            // var values = [];
+            // values.push(SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
+            // values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)))
+            // var sql = "update exercices set title = ?, description = ?, isPublic = ?, code = ?, blocks = ?, columns = ?, " +
+            //     "labels = ?, lines = ?, npcs = ?, patternId = ?, pcs = ? "
+            // sql+="where id='"+exo_id+"' and author_id='"+author_id+"';"
+            var sql = "insert into exercices(id,title,description,isPublic,author_id,code,blocks,columns,labels,rows,npcs,patternId,pcs) values (?)"
             var values = [];
-            values.push(SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
+            values.push(exo_id,SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,author_id,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
             values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)))
-            var sql = "update exercices set title = ?, description = ?, isPublic = ?, code = ?, blocks = ?, columns = ?, " +
-                "labels = ?, lines = ?, npcs = ?, patternId = ?, pcs = ? "
-            sql+="where id='"+exo_id+"' and author_id='"+author_id+"';"
-            console.log(sql)
-            con.query(sql, values, function (err, rows, fields) {
+            // console.log(sql)
+            con.query(sql, [values], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
@@ -521,22 +534,25 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
         });
     }
 
-
-    modifyExercice(exo_id,contentOjb,author_id).then(function(rows){
-        deleteExerciceFunctions(exo_id).then(function(rows){
-            console.log(rows)
-            if (contentOjb.functions.length == 0){
-                res.send(rows);
-            }
-            else{
-                insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows1){
+    deleteExercice(exo_id,author_id).then(function(r){
+        modifyExercice(exo_id,contentOjb,author_id).then(function(rows){
+            deleteExerciceFunctions(exo_id).then(function(rowsf){
+                // console.log(rows)
+                if (contentOjb.functions.length == 0){
                     res.send(rows);
-                }).catch(function(err){
-                    return res.status(403).json(err);
-                });
+                }
+                else{
+                    insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows1){
+                        res.send(rows);
+                    }).catch(function(err){
+                        return res.status(403).json(err);
+                    });
 
-            }
+                }
 
+            }).catch(function(err){
+                return res.status(403).json(err);
+            });
         }).catch(function(err){
             return res.status(403).json(err);
         });
@@ -545,29 +561,15 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
     });
 
 
+
+
 });
 router.post('/delete/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
     var author_id = request.decoded.id
     var exo_id = request.params.exerciceId
 
 
-    function deleteExercice(exo_id,author_id) {
-        return new Promise(function(resolve, reject) {
-            // var sql = "delete exercices, user_exercices, exercice_functions, class_exercices" +
-            //     " from exercices" +
-            //     " inner join user_exercices on user_exercices.exerciceId=exercices.id" +
-            //     " inner join exercice_functions on exercice_functions.exercice_id=exercices.id" +
-            //     " inner join class_exercices on class_exercices.exercice_id=exercices.id" +
-            //     " where  " +
-            //     "exercices.id = ? and exercices.author_id = ?;"
-            var sql = "delete from exercices where id = ? and author_id = ?;"
-            con.query(sql,[exo_id,author_id], function (err, rows, fields) {
-                if (err) return reject(err);
-                resolve(rows);
-            });
 
-        });
-    }
     function deleteUserExercice(exo_id) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from user_exercices where exerciceId = ?"
