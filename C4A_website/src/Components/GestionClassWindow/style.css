@@ -91,6 +91,7 @@
 :local(.wrapper) {
     display:inline-block;
     width: 2%;
+    margin-left: 1%;
 }
 
 :local(.search_person) {

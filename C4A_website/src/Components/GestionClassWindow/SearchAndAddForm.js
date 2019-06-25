@@ -19,7 +19,6 @@ class SearchAndAddForm extends Component {
     }
 
     componentWillMount() {
-        console.log(this.props.persons);
         this.setState({persons: JSON.parse(JSON.stringify(this.props.persons))});
     }
 
@@ -50,6 +49,7 @@ class SearchAndAddForm extends Component {
             toAdd: toAdd,
             addedPersons: addedPersons
         });
+        this.props.setToAdd(toAdd);
     }
 
     remove(person) {
@@ -69,6 +69,7 @@ class SearchAndAddForm extends Component {
             toAdd: filteredToAdd,
             addedPersons: filteredAddedPersons
         });
+        this.props.setToAdd(filteredToAdd);
     }
 
     render() {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AddPersonWindow from './AddPersonWindow';
 import styles from './style.css';
+import classes from '../../Providers/classes';
 
 class AddPersonWindowWrapper extends Component {
     state = {
@@ -12,20 +13,22 @@ class AddPersonWindowWrapper extends Component {
     };
 
     handleCancel = () => {
-      this.setState({ visible: false });
+        this.setState({ visible: false });
     };
 
-    handleCreate = () => {
-      const { form } = this.formRef.props;
-      form.validateFields((err, values) => {
-        if (err) {
-          return;
+    async handleSave(props){
+      var ids = await props.map(async id => {
+        if(this.props.teacher) {
+          var res = await classes.addProfessorToClass(id, this.props.idClass);
+          return res;
         }
-  
-        var title = values.title;
-  
-        console.log(title);
+        else {
+          var res = await classes.addStudentToClass(id, this.props.idClass);
+          return res;
+        }
       });
+      this.props.refill();
+      this.setState({ visible: false });
     };
 
     saveFormRef = formRef => {
@@ -40,7 +43,7 @@ class AddPersonWindowWrapper extends Component {
               wrappedComponentRef={this.saveFormRef}
               visible={this.state.visible}
               onCancel={this.handleCancel}
-              onCreate={this.handleCreate}
+              onSave={this.handleSave.bind(this)}
               persons={this.props.persons}
             />
           </div>

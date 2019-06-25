@@ -31,7 +31,7 @@ class GestionClassWindow extends Component {
       console.log(this.props);
     return (
         <div className={style.class} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "blackboard.jpg)", backgroundSize: "cover"}}>
-            <ClassDetails classRoom={this.state.classRoom} students={this.state.studentList} profs={this.state.profList} teacher={this.props.teacher} />
+            <ClassDetails refill={this.refill.bind(this)} classRoom={this.state.classRoom} students={this.state.studentList} profs={this.state.profList} teacher={this.props.teacher} />
         </div>
     );
   }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Layout } from 'antd';
 
+import styles from '../NavBars/style.css';
+
 const SubMenu = Menu.SubMenu;
 const Sider = Layout.Sider;
 
