@@ -56,6 +56,7 @@ class Classes {
             }
         })
         .then(function (response) {
+            console.log("oki");
             return response;
         })
         .catch(function (error) {

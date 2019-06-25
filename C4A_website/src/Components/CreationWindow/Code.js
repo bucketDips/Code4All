@@ -134,6 +134,10 @@ class Code extends Component {
   }
 
   componentWillReceiveProps(props){
+    if(this.state.infoText) {
+      return;
+    }
+    
     if(props.delete){
       this.delete(props.delete.id, props.delete.type);
       props.resetDelete();
@@ -222,12 +226,14 @@ class Code extends Component {
   
 
   synchronise(grid) {
-    console.log(grid);
+      if(this.state.infoText) {
+        return;
+      }
       this.setState(
-        {
-          fromEdit: true,
-          gridObject: grid
-        });
+      {
+        fromEdit: true,
+        gridObject: grid
+      });
       this.props.changeGridObject(grid);
       var blocks = grid.getBlocks();
       var npcs = grid.getNpcs();

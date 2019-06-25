@@ -54,7 +54,7 @@ class Exercices {
         return patterns;
     }
 
-    createExercice(exercice) {
+    async createExercice(exercice) {
         var patterns = this.extractPatterns(exercice);
 
         let data = {'exercice': JSON.stringify(exercice)};
@@ -65,11 +65,8 @@ class Exercices {
                 'Authorization': 'Bearer ' +  localStorage.sessionToken
             }
         })
-          .then(function (response) {
-            var pat = patterns.map((pattern) => {
-                files.uploadFileToExo(response.data.insertId, pattern);
-                return pattern;
-            });
+          .then(async function (response) {
+            await Promise.all(patterns.map(item => files.uploadFileToExo(response.data.insertId, item)));
             window.location.href = "/exercices";
           })
           .catch(function (error) {
@@ -78,7 +75,9 @@ class Exercices {
           });
     }
 
-    modifyExercice(exercice, id) {
+    async modifyExercice(exercice, id) {
+        var patterns = this.extractPatterns(exercice);
+
         let data = {'exercice': JSON.stringify(exercice)};
 
         // EXTRACT NOT SAVED PATTERN
@@ -89,7 +88,8 @@ class Exercices {
                 'Authorization': 'Bearer ' +  localStorage.sessionToken
             }
         })
-          .then(function (response) {
+          .then(async function (response) {
+            await Promise.all(patterns.map(item => files.uploadFileToExo(response.data.insertId, item)));
             window.location.href = "/exercices";
           })
           .catch(function (error) {

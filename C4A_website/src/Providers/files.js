@@ -21,16 +21,18 @@ class Files {
         })
     }
 
-    uploadFileToExo(idFile, idExo) {
-      Axios.post(consts.url() + 'fichiers/uploadToExercice/' + idExo + "/" + idFile, {},
+    async uploadFileToExo(idFile, idExo) {
+      return await Axios.post(consts.url() + 'fichiers/uploadToExercice/' + idExo + "/" + idFile, {},
       {
           headers: {
               'Authorization': 'Bearer ' +  localStorage.sessionToken
           }
       })
       .then(function (response) {
+        return response;
       })
       .catch(function (error) {
+        if(error.response.data.code === "ER_DUP_ENTRY") return;
         alert(JSON.stringify(error.response));
       });
   }
