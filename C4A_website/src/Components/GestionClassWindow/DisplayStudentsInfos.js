@@ -2,10 +2,33 @@ import React, { Component } from 'react';
 import AddPersonWindowWrapper from './AddPersonWindowWrapper';
 import style from './style.css';
 import Person from './Person';
+import { Modal } from 'antd';
+import classes from '../../Providers/classes';
+
+const confirm = Modal.confirm;
 
 class DisplayStudentsInfos extends Component {
+
+    refill() {
+        this.props.refill();
+    }
+
+    showConfirm(idPerson, idClass, cb) {
+        confirm({
+            title: 'Etes-vous sûr de vouloir supprimer cette personne de la classe ?',
+            onOk() {
+                classes.deleteStudentFromClass(idPerson, idClass, cb);
+            },
+            onCancel() {
+            },
+        });
+    }
+
     render() {
         var students = this.props.infos.map(student => {
+            if(this.props.teacher) {
+                return <Person name={student.name} id={student.id} email={student.email} delete={this.showConfirm.bind(this, student.id, this.props.idClass, this.refill.bind(this))} />
+            }
             return <Person name={student.name} id={student.id} email={student.email} />
         })
         return (

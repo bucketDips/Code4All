@@ -77,6 +77,44 @@ class Classes {
             alert(JSON.stringify(error.response));
         });
     }
+
+    deleteProfessorFromClass(idPerson, idClass, cb) {
+        Axios.post(consts.url() + 'classes/removeProfessorFromClass/' + idPerson + '/' + idClass, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            cb();
+        })
+        .catch(function (error) {
+            if(error.response.data.message)
+                alert(error.response.data.message);
+            else
+                alert("une erreur est survenue");
+        });
+    }
+
+    deleteStudentFromClass(idPerson, idClass, cb) {
+        Axios.post(consts.url() + 'classes/removeStudentFromClass/' + idPerson + '/' + idClass, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            cb();
+        })
+        .catch(function (error) {
+            if(error.response.data.message)
+                alert(error.response.data.message);
+            else
+                alert("une erreur est survenue");
+        });
+    }
+
+    
 }
 
 export default new Classes();

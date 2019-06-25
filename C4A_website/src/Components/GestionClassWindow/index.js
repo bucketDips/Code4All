@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import style from './style.css';
 import classes from '../../Providers/classes';
 import ClassDetails from './ClassDetails';
+import { Modal } from 'antd';
+
+const confirm = Modal.confirm;
 
 class GestionClassWindow extends Component {
 

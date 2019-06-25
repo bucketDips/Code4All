@@ -10,6 +10,10 @@ class Person extends Component {
                 <img alt="avatar" className={style.avatar} src={avatar} />
                 <div className={style.name}>{this.props.name}</div>
                 <div className={style.email}>{this.props.email}</div>
+                {
+                    this.props.delete &&
+                    <img alt="delete" onClick={this.props.delete} className={style.delete_button} src={process.env.PUBLIC_URL + 'cross.png'} />
+                }
             </div>
         );
     }
