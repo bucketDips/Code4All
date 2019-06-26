@@ -54,9 +54,6 @@ class Exercices {
     }
 
     async createExercice(exercice) {
-
-        console.log(exercice);
-        return;
         var patterns = this.extractPatterns(exercice);
 
         let data = {'exercice': JSON.stringify(exercice)};

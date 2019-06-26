@@ -266,9 +266,11 @@ class Code extends Component {
       // eslint-disable-next-line
       eval(this.state.editorValue + "\ngrid; synchronise(grid);");
       this.setState({infoText: ""});
+      this.props.changeInfoText("");
     }
     catch(error) {
       this.setState({infoText: error.message});
+      this.props.changeInfoText(error.message);
     }
   }
 

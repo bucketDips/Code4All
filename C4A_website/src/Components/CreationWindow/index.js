@@ -25,8 +25,13 @@ class CreateExerciseWindow extends Component {
       patterns: [],
       neutralElements: [],
       gridObject: null,
-      delete: null
+      delete: null,
+      infoText: null
     }
+  }
+
+  changeInfoText(infoText) {
+    this.setState({infoText: (infoText === null || infoText === "") ? null : infoText});
   }
 
   async setPatterns() {
@@ -454,6 +459,7 @@ class CreateExerciseWindow extends Component {
                   changeParametersWindow={this.onChangeParameters.bind(this)}
                   changeEditorValue={this.onChangeEditorValue.bind(this)}
                   changeGridObject={this.onChangeGridObject.bind(this)}
+                  changeInfoText={this.changeInfoText.bind(this)}
                   />
               </div>
               <div className={style.bottom_panel}>
@@ -477,6 +483,7 @@ class CreateExerciseWindow extends Component {
                   name={this.props.name}
                   details={this.props.details}
                   store={this.props.store}
+                  info={this.state.infoText}
                   />
               </div>
             </div>
