@@ -8,9 +8,8 @@ exports.Grid = class Grid {
         this.pcs = [];
         this.labels = [];
         this.functions = [];
+        this.tests = [];
     }
-
-    changePattern(patternId){};
 
     checkIfIdAlreadyExists(elements, id) {
         elements.forEach(element => {
@@ -48,6 +47,12 @@ exports.Grid = class Grid {
         // if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
         //this.functions.push(new Func(name, String(code), description));
         this.functions.push(func);
+    }
+
+    addTest(func) {
+        // if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
+        //this.functions.push(new Func(name, String(code), description));
+        this.tests.push(func);
     }
 
     removeElement(elements, id) {
@@ -94,7 +99,37 @@ exports.Grid = class Grid {
     getFunctions() {
         return this.functions;
     }
+
+    getTests() {
+        return this.tests;
+    }
+
+    getElementById(id, elements) {
+        for(var i = 0; i < elements.length; i++) {
+            if(elements[i].id === id) {
+                return elements[i];
+            }
+        }
+        throw new Error("Il n'y a pas d'élément avec cet id");
+    }
+
+    getBlock(id) {
+        return this.getElementById(id, this.blocks);
+    }
+
+    getNpc(id) {
+        return this.getElementById(id, this.npcs);
+    }
+
+    getPc(id) {
+        return this.getElementById(id, this.pcs);
+    }
+
+    getLabel(id) {
+        return this.getElementById(id, this.labels);
+    }
 }
+
 exports.Block = class Block {
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
@@ -103,6 +138,26 @@ exports.Block = class Block {
         this.width = width;
         this.height = height;
         this.patternId = patternId;
+    }
+
+    changeRow(n) {
+        this.row = n;
+    }
+
+    changeColumn(n) {
+        this.column = n;
+    }
+
+    changeWidth(n) {
+        this.width = n;
+    }
+
+    changeHeight(n) {
+        this.height = n;
+    }
+
+    changePattern(n) {
+        this.patternId = n;
     }
 }
 
@@ -115,7 +170,28 @@ exports.Npc = class Npc {
         this.height = height;
         this.patternId = patternId;
     }
+
+    changeRow(n) {
+        this.row = n;
+    }
+
+    changeColumn(n) {
+        this.column = n;
+    }
+
+    changeWidth(n) {
+        this.width = n;
+    }
+
+    changeHeight(n) {
+        this.height = n;
+    }
+
+    changePattern(n) {
+        this.patternId = n;
+    }
 }
+
 exports.Pc = class Pc {
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
@@ -125,7 +201,28 @@ exports.Pc = class Pc {
         this.height = height;
         this.patternId = patternId;
     }
+
+    changeRow(n) {
+        this.row = n;
+    }
+
+    changeColumn(n) {
+        this.column = n;
+    }
+
+    changeWidth(n) {
+        this.width = n;
+    }
+
+    changeHeight(n) {
+        this.height = n;
+    }
+
+    changePattern(n) {
+        this.patternId = n;
+    }
 }
+
 exports.Label = class Label {
     constructor(id, row, column, width, height, text) {
         this.id = id;
@@ -135,7 +232,28 @@ exports.Label = class Label {
         this.height = height;
         this.text = text;
     }
+
+    changeRow(n) {
+        this.row = n;
+    }
+
+    changeColumn(n) {
+        this.column = n;
+    }
+
+    changeWidth(n) {
+        this.width = n;
+    }
+
+    changeHeight(n) {
+        this.height = n;
+    }
+
+    changeText(n) {
+        this.text = n;
+    }
 }
+
 exports.Func = class Func {
     constructor(name, code, description) {
         this.name = name;
@@ -143,4 +261,3 @@ exports.Func = class Func {
         this.description = description;
     }
 }
-

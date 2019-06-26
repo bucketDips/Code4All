@@ -652,14 +652,15 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
                 }
             ]
         },
-        "solution": "avanceMarioDroite();"
+        "solution": "avanceMarioDroite();avanceMarioDroite();avanceMarioDroite();"
     }
     var exercice = exerciceData.exercice;
     var grid = instanciateGrid(exercice);
     var exerciceSteps = [];
     // exerciceSteps.push(grid)
     var addState = function(){
-        exerciceSteps.push(grid)
+        console.log("addState")
+        exerciceSteps.push(JSON.parse(JSON.stringify(grid)))
     }
     addState();
     var functionUsedList = exerciceData.solution.split(";")
@@ -676,14 +677,18 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
         var tmp={};
         var funcName = functionUsedList[i].substring(0,functionUsedList[i].length - 2);
         var func = getFuncFromGrid(grid, funcName);
+        if (!func){
+            continue;
+        }
         // console.log("func")
         // console.log(func)
         func.code = func.code.replace(func.name + "()", func.name+"(grid)")
-        console.log("func.code")
-        console.log(func.code)
+        // console.log("func.code")
+        // console.log(func.code)
         tmp[func.name] = createFunction(func.code);
         // console.log(grid)
         tmp[func.name](grid);
+        addState();
     }
     return res.send(exerciceSteps);
 
