@@ -22,6 +22,7 @@ const ExerciceCreationForm = Form.create({ name: 'form_in_modal' })(
           okText= {this.props.name === undefined ? "Sauvegarder" : "Modifier"}
           onCancel={onCancel}
           onOk={onCreate}
+          destroyOnClose={true}
         >
           <Form layout="vertical">
             <Form.Item label="Title">
@@ -59,6 +60,7 @@ const ExerciceLaunchModal = Form.create({ name: 'launch_modal' })(
           footer={null}
           onCancel={onCancel}
           title="Lancement exercice"
+          destroyOnClose={true}
         >
           <RealisationExerciseWindow />
         </Modal>
@@ -72,7 +74,8 @@ class Details extends Component {
   state = {
     saveModalVisible: false,
     launchModalVisible: false,
-    details: ""
+    details: "",
+    launchBundle: null
   };
 
   componentWillMount() {
@@ -95,9 +98,101 @@ class Details extends Component {
   handleCancel = () => {
     this.setState({ saveModalVisible: false });
   };
+
+  isIn(patterns, id) {
+    for(var i = 0; i < patterns.length; i++) {
+      if (patterns[i].id === id) {
+          return true;
+      }
+    }
+    return false;
+  }
+
+  extractPatternsFromArray(array, patterns) {
+    var newElements = Object.values(array).map((element) => {
+        if(element.backgroundId !== null && element.backgroundId !== undefined && !this.isIn(patterns, element.backgroundId)) {
+          patterns.push({
+            id: element.backgroundId,
+            file_id: element.backgroundId,
+            url: element.background
+          });
+        }
+        return element;
+    });
+  }
+
+  extractPatterns(exercice) {
+      var patterns = [];
+      if(exercice.gridProperties.backgroundId !== undefined && exercice.gridProperties.backgroundId !== null) {
+          patterns.push({
+            id: exercice.gridProperties.backgroundId,
+            file_id: exercice.gridProperties.backgroundId,
+            url: exercice.gridProperties.background
+          });
+      }
+      this.extractPatternsFromArray(exercice.blocks, patterns);
+      this.extractPatternsFromArray(exercice.npc, patterns);
+      this.extractPatternsFromArray(exercice.pc, patterns)
+      return patterns;
+  }
   
   showModalLaunch = () => {
-    this.setState({ launchModalVisible: true });
+    var state = this.props.getParentState();
+    var fichiers = this.extractPatterns(state);
+
+    var launchBundle = {
+      title: "temporaire",
+      description: "description temporaire",
+      code: state.editorValue,
+      blocks: Object.values(state.blocks).map(block => {
+        return {
+          id: block.id,
+          row: block.rowStart,
+          column: block.columnStart,
+          width: block.width,
+          height: block.height,
+          patternId: block.backgroundId
+        }
+      }),
+      columns: state.gridProperties.columns,
+      labels: Object.values(state.labels).map(label => {
+        return {
+          id: label.id,
+          row: label.rowStart,
+          column: label.columnStart,
+          width: label.width,
+          height: label.height,
+          text: label.text
+        }
+      }),
+      rows: state.gridProperties.lines,
+      npcs: Object.values(state.npc).map(n => {
+        return {
+          id: n.id,
+          row: n.rowStart,
+          column: n.columnStart,
+          width: n.width,
+          height: n.height,
+          patternId: n.backgroundId
+        }
+      }),
+      patternId: state.gridProperties.backgroundId,
+      pcs: Object.values(state.pc).map(n => {
+        return {
+          id: n.id,
+          row: n.rowStart,
+          column: n.columnStart,
+          width: n.width,
+          height: n.height,
+          patternId: n.backgroundId
+        }
+      }),
+      functions: Object.values(state.functions),
+      tests: Object.values(state.tests),
+      fichiers: fichiers
+    }
+    console.log(launchBundle);
+    this.setState({ launchModalVisible: true, launchBundle: launchBundle });
   };
 
   handleCancelLaunch = () => {
@@ -186,6 +281,7 @@ class Details extends Component {
             <ExerciceLaunchModal
               visible={this.state.launchModalVisible}
               onCancel={this.handleCancelLaunch}
+              launchBundle={this.state.launchBundle}
             />
             </div>
         </div>

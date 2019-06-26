@@ -429,6 +429,10 @@ class CreateExerciseWindow extends Component {
     exercices.modifyExercice(buildedExercice, id);
   }
 
+  getFullState() {
+    return this.state;
+  }
+
   render() {
     return (
             <div className={style.app}>
@@ -484,6 +488,7 @@ class CreateExerciseWindow extends Component {
                   details={this.props.details}
                   store={this.props.store}
                   info={this.state.infoText}
+                  getParentState={this.getFullState.bind(this)}
                   />
               </div>
             </div>
