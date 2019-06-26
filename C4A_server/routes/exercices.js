@@ -237,6 +237,15 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
             });
         });
     }
+    function getTests(id) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select * from exercice_tests where exercice_id ='"+id+"';";
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
 
     function getExerciceFiles(id) {
         return new Promise(function(resolve, reject) {
@@ -263,81 +272,89 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
         //         message: 'Cet exercice ne vous appartient pas et n\'est pas public!'
         //     })
         // }
-        getFunctions(id).then(function(rows1){
-            // rows[0].content = JSON.parse(rows[0].content);
-            getExerciceFiles(id).then(function(fileExo){
-                for (var i = 0; i < fileExo.length; ++i){
-                    var pathFile = __dirname +"/FichiersUtilisateur/" +fileExo[i].file_id;
-                    var text = "";
-                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        getTests(id).then(function(rowsTests) {
+            getFunctions(id).then(function (rows1) {
+                // rows[0].content = JSON.parse(rows[0].content);
+                getExerciceFiles(id).then(function (fileExo) {
+                    for (var i = 0; i < fileExo.length; ++i) {
+                        var pathFile = __dirname + "/FichiersUtilisateur/" + fileExo[i].file_id;
+                        var text = "";
+                        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-                    for (var j = 0; j < 30; j++)
-                        text += possible.charAt(Math.floor(Math.random() * possible.length));
-                    text +=  "_" + fileExo[i].name;
+                        for (var j = 0; j < 30; j++)
+                            text += possible.charAt(Math.floor(Math.random() * possible.length));
+                        text += "_" + fileExo[i].name;
 
-                    var publicName = text;
-                    var url = config.HOST + ":" + config.PORTSERVEUR + "/" + publicName;
-                    var newpath = __dirname.substring(0, __dirname.indexOf("/routes")) + "/public/" + publicName;
-                    console.log("newpath")
-                    console.log(newpath)
-                    console.log("url")
-                    console.log(url)
-                    fileExo[i].url = url;
-                    console.log(pathFile + ' will be  copied to '+newpath);
+                        var publicName = text;
+                        var url = config.HOST + ":" + config.PORTSERVEUR + "/" + publicName;
+                        var newpath = __dirname.substring(0, __dirname.indexOf("/routes")) + "/public/" + publicName;
+                        console.log("newpath")
+                        console.log(newpath)
+                        console.log("url")
+                        console.log(url)
+                        fileExo[i].url = url;
+                        console.log(pathFile + ' will be  copied to ' + newpath);
 
-                    fs.copyFile(pathFile, newpath, (err) => {
-                        if (err) throw err;
-                        console.log(pathFile + ' was copied to '+newpath);
+                        fs.copyFile(pathFile, newpath, (err) => {
+                            if (err) throw err;
+                            console.log(pathFile + ' was copied to ' + newpath);
 
-                    })
-                }
-                function remQuote(str) {
-                    return str.substring(1,str.length - 1)
-                }
-                function stand(str){
-                    str = str.substring(1,str.length - 1)
-                    var find = "\\\\"
+                        })
+                    }
+
+                    function remQuote(str) {
+                        return str.substring(1, str.length - 1)
+                    }
+
+                    function stand(str) {
+                        str = str.substring(1, str.length - 1)
+                        var find = "\\\\"
+                        var re = new RegExp(find, 'g');
+                        str = str.replace(re, "")
+                        str = rmendOfLine(str)
+                        return str
+                    }
+
+                    rows[0].title = rows[0].title.substring(1, rows[0].title.length - 1)
+                    rows[0].description = rows[0].description.substring(1, rows[0].description.length - 1)
+                    rows[0].code = stand(rows[0].code)
+                    var find = ";rnrn"
                     var re = new RegExp(find, 'g');
-                    str = str.replace(re, "")
-                    str = rmendOfLine(str)
-                    return str
-                }
+                    rows[0].code = rows[0].code.replace(re, ";\r\n\r\n")
+                    find = "rn"
+                    re = new RegExp(find, 'g');
+                    rows[0].code = rows[0].code.replace(re, "\r\n")
+                    find = ";nn"
+                    re = new RegExp(find, 'g');
+                    rows[0].code = rows[0].code.replace(re, ";\n\n")
+                    find = ";n"
+                    re = new RegExp(find, 'g');
+                    rows[0].code = rows[0].code.replace(re, ";\n")
+                    rows[0].blocks = JSON.parse(stand(rows[0].blocks))
+                    rows[0].npcs = JSON.parse(stand(rows[0].npcs))
+                    rows[0].pcs = JSON.parse(stand(rows[0].pcs))
+                    rows[0].labels = JSON.parse(stand(rows[0].labels))
+                    console.log(rows[0].labels)
+                    rows[0].functions = rows1;
+                    rows[0].fichiers = fileExo;
+                    rows[0].tests = rowsTests;
+                    var resultJson = {
+                        exercice: rows[0]
+                    }
 
-                rows[0].title = rows[0].title.substring(1,rows[0].title.length - 1)
-                rows[0].description = rows[0].description.substring(1,rows[0].description.length - 1)
-                rows[0].code = stand(rows[0].code)
-                var find = ";rnrn"
-                var re = new RegExp(find, 'g');
-                rows[0].code =  rows[0].code.replace(re, ";\r\n\r\n")
-                find = "rn"
-                re = new RegExp(find, 'g');
-                rows[0].code =  rows[0].code.replace(re, "\r\n")
-                find = ";nn"
-                re = new RegExp(find, 'g');
-                rows[0].code =  rows[0].code.replace(re, ";\n\n")
-                find = ";n"
-                re = new RegExp(find, 'g');
-                rows[0].code =  rows[0].code.replace(re, ";\n")
-                rows[0].blocks = JSON.parse(stand(rows[0].blocks))
-                rows[0].npcs = JSON.parse(stand(rows[0].npcs))
-                rows[0].pcs = JSON.parse(stand(rows[0].pcs))
-                rows[0].labels = JSON.parse(stand(rows[0].labels))
-                console.log( rows[0].labels)
-                rows[0].functions = rows1;
-                rows[0].fichiers = fileExo;
-                var resultJson = {
-                    exercice: rows[0]
-                }
+                    res.send(resultJson);
+                }).catch(function (err) {
+                    console.log("err1")
+                    return res.status(403).json(err);
+                });
 
-                res.send(resultJson);
-            }).catch(function(err){
-                console.log("err1")
+
+            }).catch(function (err) {
+                console.log("errfunc")
                 return res.status(403).json(err);
             });
-
-
-        }).catch(function(err){
-            console.log("err2")
+        }).catch(function (err) {
+            console.log("errtest")
             return res.status(403).json(err);
         });
     }).catch(function(err){
