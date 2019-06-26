@@ -102,7 +102,7 @@ router.get('/getAllStoreExercicesNotOwned', AUTH.VERIFYAUTH,function(request, re
     var userId = request.decoded.id
     function getAllStoreExercicesNotOwned(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select exercices.id, exercices.title, exercices.text " +
+            var sql = "select exercices.id, exercices.title, exercices.description " +
                 "from exercices, user_exercices " +
                 "where exercices.isPublic=1 " +
                 "and exercices.id = user_exercices.exerciceId " +
