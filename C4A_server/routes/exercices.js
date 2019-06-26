@@ -5,7 +5,7 @@ var md5 = require('md5');
 var con = require('./connexionDatabase.js');
 var jwt = require('jsonwebtoken');
 var config = require("./config");
-var grid = require("./grid.js")
+var gridClass = require("./grid.js")
 var AUTH = require('./AUTHENTIFICATION')
 var gEval =eval;
 var fs = require('fs');
@@ -98,8 +98,7 @@ router.get('/test', function(request, res, next) {
     // console.log("res")
     // console.log(ret)
     // console.log("res")
-    var grille = new grid.
-    Grid(5,5,1)
+    var grille = new gridClass.Grid(5,5,1)
     console.log("grille")
     console.log(grille)
     res.send("toto");
@@ -321,9 +320,9 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     var find = ";rnrn"
                     var re = new RegExp(find, 'g');
                     rows[0].code = rows[0].code.replace(re, ";\r\n\r\n")
-                    find = "rn"
-                    re = new RegExp(find, 'g');
-                    rows[0].code = rows[0].code.replace(re, "\r\n")
+                    // find = "rn"
+                    // re = new RegExp(find, 'g');
+                    // rows[0].code = rows[0].code.replace(re, "\r\n")
                     find = ";nn"
                     re = new RegExp(find, 'g');
                     rows[0].code = rows[0].code.replace(re, ";\n\n")
@@ -365,68 +364,326 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
 var getFuncName = function(str){
     return str.substring(0,str.indexOf('('))
 }
+var instanciateGrid = function(exercice){
+    var grid = new gridClass.Grid(exercice.rows, exercice.columns, exercice.patternId)
+    var current;
+    var i = 0;
+    for (i = 0; i < exercice.blocks.length; ++i){
+        current =  exercice.blocks[i];
+        grid.addBlock(new gridClass.Block(current.id,current.row,current.column,current.width, current.height,current.patternId))
+    }
+    for (i = 0; i < exercice.npcs.length; ++i){
+        current =  exercice.npcs[i];
+        grid.addNpc(new gridClass.Npc(current.id,current.row,current.column,current.width, current.height,current.patternId))
+    }
+    for (i = 0; i < exercice.pcs.length; ++i){
+        current =  exercice.pcs[i];
+        grid.addPc(new gridClass.Pc(current.id,current.row,current.column,current.width, current.height,current.patternId))
+    }
+    for (i = 0; i < exercice.labels.length; ++i){
+        current =  exercice.labels[i];
+        grid.addLabel(new gridClass.Label(current.id,current.row,current.column,current.width, current.height,current.text))
+    }
+    for (i = 0; i < exercice.functions.length; ++i){
+        current =  exercice.functions[i];
+        grid.addFunction(new gridClass.Func(current.name,current.code,current.description))
+    }
+    return grid;
+}
 router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
-    // var exercice = JSON.parse(request.body.exercice);
-    var exercice = ""
-    var functionList = {};
-    // tmp
-    exercice = {
-        "exercice":
-            {
-                "id": 6,
-                "title": "test",
-                "text": "toto",
-                "isPublic": 1,
-                "content": "{\"lines\":6,\"columns\":20,\"patternId\":8,\"blocks\":[{\"id\":0,\"row\":6,\"column\":1,\"width\":10,\"height\":1,\"patternId\":8},{\"id\":1,\"row\":6,\"column\":11,\"width\":10,\"height\":1,\"patternId\":8},{\"id\":2,\"row\":3,\"column\":8,\"width\":1,\"height\":1,\"patternId\":4},{\"id\":3,\"row\":3,\"column\":9,\"width\":1,\"height\":1,\"patternId\":3},{\"id\":4,\"row\":3,\"column\":10,\"width\":1,\"height\":1,\"patternId\":4},{\"id\":5,\"row\":3,\"column\":11,\"width\":1,\"height\":1,\"patternId\":3}],\"npcs\":[{\"id\":0,\"row\":5,\"column\":15,\"width\":1,\"height\":1,\"patternId\":6}],\"pcs\":[{\"id\":0,\"row\":5,\"column\":5,\"width\":1,\"height\":1,\"patternId\":2,\"functions\":[{\"name\":\"i\",\"code\":\"function oki() {\r\n  return \"A\";\r\n}\",\"description\":\"o\"}]}],\"labels\":[]}",
-                "author_id": 1
-            }
-        ,
-        "functions": [
-            {
-                "function_id": 1,
-                "exercice_id": 6,
-                "code": "function A() {\r\n  console.log( \"AA\");\r\n}",
-                "name": "A"
-            },
-            {
-                "function_id": 2,
-                "exercice_id": 6,
-                "code": "function B(a,b) {\r\n  console.log(\"TOoTO\");console.log(a);console.log(b);\r\n}",
-                "name": "B"
-            }
-            ,
-            {
-                "function_id": 2,
-                "exercice_id": 6,
-                "code": "function C(a) {return a}",
-                "name": "C"
-            }
-            ,
-            {
-                "function_id": 3,
-                "exercice_id": 6,
-                // "code": "function boucle(depart,fin, action) {for (var sfglkj = depart; sfglkj < fin; ++sfglkj){console.log(\"action = \" + action);new Function(action)()}}",
-                "code": "function boucle(depart,fin, action) {for (var sfglkj = depart; sfglkj < fin; ++sfglkj){new Function(action)()}}",
-                "name": "boucle"
-            }
-            ,
-            {
-                "function_id": 4,
-                "exercice_id": 6,
-                // "code": "function boucle(depart,fin, action) {for (var sfglkj = depart; sfglkj < fin; ++sfglkj){console.log(\"action = \" + action);new Function(action)()}}",
-                "code": "function condition(cnd, action) {if(cnd){new Function(action)()}}",
-                // "code": "function condition(cnd, action) {if(cnd){sEval(action,evalContext)}}",
-                // "code": "function condition(cnd, action) {if(cnd){console.log(\"action = \" + action);eval(action)}}",
-                "name": "condition"
-            }
-        ],
-        // "solution":"A();B(1,2);B(3,4);A();boucle(0,4,console.log(\"jordan\"))"
-        // "solution":"A();B(1,2);B(3,4);A();boucle(0,4,A())"
-        // "solution":"boucle(0,4,'boucle(0,4,\"B(3,4)\")');boucle(0,2,'console.log(\"bite\")')"
-        // "solution":"boucle(0,4,'boucle(0,4,\"B(3,4)\")');"
-        "solution":"condition(1<2, 'console.log(\"bite\")');condition(1>2, 'console.log(\"mousse\")')"
-    };
+    // var exerciceData = JSON.parse(request.body.exercice);
+    var exerciceData = {
+        "exercice": {
+            "id": 65,
+            "title": "testpourrobin",
+            "description": "",
+            "isPublic": 0,
+            "author_id": 4,
+            "code": "// Initialization of the grid\r\nvar grid = createGrid(6, 20, 44);\r\n\r\n// Initialization of blocs\r\nvar block0 = createBlock(0, 6, 1, 10, 1, 41);\r\ngrid.addBlock(block0);\r\nvar block1 = createBlock(1, 6, 11, 10, 1, 41);\r\ngrid.addBlock(block1);\r\nvar block2 = createBlock(2, 3, 8, 1, 1, 39);\r\ngrid.addBlock(block2);\r\nvar block3 = createBlock(3, 3, 9, 1, 1, 43);\r\ngrid.addBlock(block3);\r\nvar block4 = createBlock(4, 3, 10, 1, 1, 39);\r\ngrid.addBlock(block4);\r\nvar block5 = createBlock(5, 3, 11, 1, 1, 43);\r\ngrid.addBlock(block5);\r\nvar block6 = createBlock(8, 2, 19, 1, 4, 50);\r\ngrid.addBlock(block6);\r\n\r\n// Initialization of mario\r\nvar pc0 = createPc(0, 5, 5, 1, 1, 42);\r\ngrid.addPc(pc0);\r\n\r\n// Initialization of enemy\r\nvar npc0 = createNpc(6, 5, 15, 1, 1, 40);\r\ngrid.addNpc(npc0);\r\n\r\n// Initialization of labels\r\nvar label0 = createLabel(0, 1, 18, 1, 1, 'score :');\r\ngrid.addLabel(label0);\r\nvar label1 = createLabel(1, 1, 19, 1, 1, '0');\r\ngrid.addLabel(label1);\r\n\r\n// Initialization of functions\r\nfunction avanceMarioDroite() {\r\n  var mario = this.grid.getPc(0);\r\n  mario.column = mario.column + 1;\r\n  // grid update\r\n  if(mario.row === 4) {\r\n    if(mario.column === this.grid.getNpc(6).column) {\r\n      this.grid.removeNpc(6);\r\n      var label = this.grid.getLabel(1);\r\n      label.text = (Number(label.text) + 1).toString();\r\n      // grid update\r\n    }\r\n    mario.row = 5;\r\n    // grid update\r\n  }\r\n  else {\r\n    if(mario.column === this.grid.getNpc(6).column) {\r\n      loose(); // appeller cette méthode robin ?\r\n    }\r\n  }\r\n  if(mario.column === this.grid.getBlock(8).column){\r\n    success(); // appeller cette méthode robin ?\r\n    // grid update\r\n  }\r\n}\r\n\r\nfunction marioSaute() {\r\n  var mario = this.grid.getPc(0);\r\n  \r\n  if(mario.row !== 5) {\r\n    loose(\"Mario ne peut pas faire de double saut !\");  // appeller cette méthode robin ?\r\n    // grid update\r\n  }\r\n  else {\r\n    mario.row = 4;\r\n    // grid update\r\n  }\r\n  \r\n  if(mario.column === this.grid.getBlock(3).column \r\n    || mario.column === this.grid.getBlock(5).column) {\r\n    var label = this.grid.getLabel(1);\r\n    label.text = (Number(label.text) + 1).toString();\r\n    // grid update\r\n  }\r\n}\r\n\r\nfunction marioRetombe() {\r\n  var mario = this.grid.getPc(0);\r\n  \r\n  if(mario.row !== 4) {\r\n    loose(\"Mario est déjà sur le sol !\");  // appeller cette méthode robin ?\r\n    // grid update\r\n  }\r\n  else {\r\n    mario.row = 5;\r\n    // grid update\r\n  }\r\n}\r\n\r\nfunction ennemiDevant() {\r\n  retu\r\n this.grid.getPc(0).column === this.grid.getNpc(6).column - 1;\r\n}\r\n\r\nfunction coffreAuDessus() {\r\n  var mario = this.grid.getPc(0);\r\n  retu\r\n mario.column === this.grid.getBlock(3).column ||\r\n    mario.column === this.grid.getBlock(5).column;\r\n}\r\n\r\nvar avance = createFunction(\"avanceMarioDroite\", \r\n  avanceMarioDroite, \r\n  \"permet d'avance mario de une case vers la droite\");\r\nvar saute = createFunction(\"marioSaute\",\r\n  marioSaute,\r\n  \"permet de faire sauter mario\");\r\nvar retombe = createFunction(\"marioRetombe\",\r\n  marioRetombe,\r\n  \"permet de faire retomber mario sur le sol\");\r\nvar ennemi = createFunction(\"ennemiDevant\",\r\n  ennemiDevant,\r\n  \"permet de savoir si un ennemi est devant\");\r\nvar coffre = createFunction(\"coffreAuDessus\",\r\n  coffreAuDessus,\r\n  \"permet de savoir si un coffre est au dessu\");\r\n  \r\ngrid.addFunction(avance);\r\ngrid.addFunction(saute);\r\ngrid.addFunction(retombe);\r\ngrid.addFunction(ennemi);\r\ngrid.addFunction(coffre);\r\n\r\n// Initialization of tests\r\nfunction marioSurDrapeau() {\r\n  if(this.grid.getPc(0).column === this.grid.getBlock(8).column) {\r\n    retu\r\n [true, \"mario est bien sur le drapeau\"];\r\n  }\r\n  else {\r\n    retu\r\n [false, \"mario n'est pas sur le drapeau\"];\r\n  }\r\n}\r\n\r\nfunction aTroisPoints() {\r\n  if(Number(this.grid.getLabel(1).text) === 3) {\r\n    retu\r\n [true, \"mario a bien 3 points\"];\r\n  }\r\n  else {\r\n    retu\r\n [false, \"mario n'a pas eu les 3 points\"];\r\n  }\r\n}\r\n\r\nfunction aTueLennemi() {\r\n  try {\r\n    this.grid.getNpc(6);\r\n    retu\r\n [false, \"l'ennemi n'est pas mort\"];\r\n  }\r\n  catch(error) {\r\n    retu\r\n [true, \"l'ennemi est bien mort\"];\r\n  }\r\n}\r\n\r\nvar drapeau = createFunction(\"marioSurDrapeau\", \r\n  marioSurDrapeau, \r\n  \"vérifie que mario a bien atteint le drapeau\");\r\nvar points = createFunction(\"aTroisPoints\", \r\n  aTroisPoints, \r\n  \"vérifie que mario a bien eu les 3 points\");\r\nvar ennemi = createFunction(\"aTueLennemi\", \r\n  aTueLennemi, \r\n  \"vérifie que mario a bien eu tué l'ennemi\");\r\n  \r\ngrid.addTest(drapeau);\r\ngrid.addTest(points);\r\ngrid.addTest(ennemi);",
+            "blocks": [
+                {
+                    "id": 0,
+                    "row": 6,
+                    "column": 1,
+                    "width": 10,
+                    "height": 1,
+                    "patternId": 41
+                },
+                {
+                    "id": 1,
+                    "row": 6,
+                    "column": 11,
+                    "width": 10,
+                    "height": 1,
+                    "patternId": 41
+                },
+                {
+                    "id": 2,
+                    "row": 3,
+                    "column": 8,
+                    "width": 1,
+                    "height": 1,
+                    "patternId": 39
+                },
+                {
+                    "id": 3,
+                    "row": 3,
+                    "column": 9,
+                    "width": 1,
+                    "height": 1,
+                    "patternId": 43
+                },
+                {
+                    "id": 4,
+                    "row": 3,
+                    "column": 10,
+                    "width": 1,
+                    "height": 1,
+                    "patternId": 39
+                },
+                {
+                    "id": 5,
+                    "row": 3,
+                    "column": 11,
+                    "width": 1,
+                    "height": 1,
+                    "patternId": 43
+                },
+                {
+                    "id": 7,
+                    "row": 3,
+                    "column": 12,
+                    "width": 1,
+                    "height": 1,
+                    "patternId": 39
+                },
+                {
+                    "id": 8,
+                    "row": 2,
+                    "column": 19,
+                    "width": 1,
+                    "height": 4,
+                    "patternId": 50
+                }
+            ],
+            "columns": 20,
+            "labels": [
+                {
+                    "id": 0,
+                    "row": 1,
+                    "column": 18,
+                    "width": 1,
+                    "height": 1,
+                    "text": "score :"
+                },
+                {
+                    "id": 1,
+                    "row": 1,
+                    "column": 19,
+                    "width": 1,
+                    "height": 1,
+                    "text": "0"
+                }
+            ],
+            "rows": 6,
+            "npcs": [
+                {
+                    "id": 6,
+                    "row": 5,
+                    "column": 15,
+                    "width": 1,
+                    "height": 1,
+                    "patternId": 40
+                }
+            ],
+            "patternId": 44,
+            "pcs": [
+                {
+                    "id": 0,
+                    "row": 5,
+                    "column": 5,
+                    "width": 1,
+                    "height": 1,
+                    "patternId": 42
+                }
+            ],
+            "functions": [
+                {
+                    "id": 48,
+                    "exercice_id": 65,
+                    "code": "function avanceMarioDroite() {\n" +
+                        "  var mario = grid.getPc(0);\n" +
+                        "  mario.column = mario.column + 1;\n" +
+                        "  // grid update\n" +
+                        "  if(mario.row === 4) {\n" +
+                        "    if(mario.column === grid.getNpc(6).column) {\n" +
+                        "      grid.removeNpc(6);\n" +
+                        "      var label = grid.getLabel(1);\n" +
+                        "      label.text = (Number(label.text) + 1).toString();\n" +
+                        "      addState()\n" +
+                        "    }\n" +
+                        "    mario.row = 5;\n" +
+                        "    addState();\n" +
+                        "  }\n" +
+                        "  else {\n" +
+                        "    if(mario.column === grid.getNpc(6).column) {\n" +
+                        "      console.log('perdu'); // appeller cette méthode robin ?\n" +
+                        "    }\n" +
+                        "  }\n" +
+                        "  if(mario.column === grid.getBlock(8).column){\n" +
+                        "    console.log('gagné'); // appeller cette méthode robin ?\n" +
+                        "    addState();\n" +
+                        "  }\n" +
+                        "}",
+                    "name": "avanceMarioDroite",
+                    "description": "permet d'avance mario de une case vers la droite"
+                },
+                {
+                    "id": 52,
+                    "exercice_id": 65,
+                    "code": "function coffreAuDessus() {\r\n  var mario = this.grid.getPc(0);\r\n  retu\r\n mario.column === this.grid.getBlock(3).column ||\r\n    mario.column === this.grid.getBlock(5).column;\r\n}",
+                    "name": "coffreAuDessus",
+                    "description": "permet de savoir si un coffre est au dessu"
+                },
+                {
+                    "id": 51,
+                    "exercice_id": 65,
+                    "code": "function ennemiDevant() {\r\n  retu\r\n this.grid.getPc(0).column === this.grid.getNpc(6).column - 1;\r\n}",
+                    "name": "ennemiDevant",
+                    "description": "permet de savoir si un ennemi est devant"
+                },
+                {
+                    "id": 50,
+                    "exercice_id": 65,
+                    "code": "function marioRetombe() {\r\n  var mario = this.grid.getPc(0);\r\n  \r\n  if(mario.row !== 4) {\r\n    loose(\"Mario est déjà sur le sol !\");  // appeller cette méthode robin ?\r\n    // grid update\r\n  }\r\n  else {\r\n    mario.row = 5;\r\n    // grid update\r\n  }\r\n}",
+                    "name": "marioRetombe",
+                    "description": "permet de faire retomber mario sur le sol"
+                },
+                {
+                    "id": 49,
+                    "exercice_id": 65,
+                    "code": "function marioSaute() {\r\n  var mario = this.getPc(0);\r\n  \r\n  if(mario.row !== 5) {\r\n    loose(\"Mario ne peut pas faire de double saut !\");  // appeller cette méthode robin ?\r\n    // grid update\r\n  }\r\n  else {\r\n    mario.row = 4;\r\n    // grid update\r\n  }\r\n  \r\n  if(mario.column === this.grid.getBlock(3).column \r\n    || mario.column === this.grid.getBlock(5).column) {\r\n    var label = this.grid.getLabel(1);\r\n    label.text = (Number(label.text) + 1).toString();\r\n    // grid update\r\n  }\r\n}",
+                    "name": "marioSaute",
+                    "description": "permet de faire sauter mario"
+                }
+            ],
+            "fichiers": [
+                {
+                    "id": 39,
+                    "name": "brick.png",
+                    "sender": 4,
+                    "exercice_id": 65,
+                    "file_id": 39,
+                    "url": "212.47.235.40:3000/fya5AUFw5fruRY86aQ4fs6y55VZolH_brick.png"
+                },
+                {
+                    "id": 40,
+                    "name": "goomba.gif",
+                    "sender": 4,
+                    "exercice_id": 65,
+                    "file_id": 40,
+                    "url": "212.47.235.40:3000/PWHDvViqdliZxJtIRPyGaotWiJ46w8_goomba.gif"
+                },
+                {
+                    "id": 41,
+                    "name": "ground.png",
+                    "sender": 4,
+                    "exercice_id": 65,
+                    "file_id": 41,
+                    "url": "212.47.235.40:3000/jr1tUmUUUSL88bE1lfDWpZcrS9UyQj_ground.png"
+                },
+                {
+                    "id": 42,
+                    "name": "mario.png",
+                    "sender": 4,
+                    "exercice_id": 65,
+                    "file_id": 42,
+                    "url": "212.47.235.40:3000/x2lFKpRJxBgZzVtzedqq3q7DALj7DT_mario.png"
+                },
+                {
+                    "id": 43,
+                    "name": "surprise.jpg",
+                    "sender": 4,
+                    "exercice_id": 65,
+                    "file_id": 43,
+                    "url": "212.47.235.40:3000/vStBIPGF9oPLLoJdg2TVdH9bhIElJW_surprise.jpg"
+                },
+                {
+                    "id": 44,
+                    "name": "sky.png",
+                    "sender": 4,
+                    "exercice_id": 65,
+                    "file_id": 44,
+                    "url": "212.47.235.40:3000/bpDxnu3Yj8nSqFiAl8Ev07FYs0Z1bQ_sky.png"
+                },
+                {
+                    "id": 50,
+                    "name": "drapeau.png",
+                    "sender": 4,
+                    "exercice_id": 65,
+                    "file_id": 50,
+                    "url": "212.47.235.40:3000/1xEyo3P17PALdOe9UlATwAszDz7Bdd_drapeau.png"
+                }
+            ],
+            "tests": [
+                {
+                    "id": 10,
+                    "exercice_id": 65,
+                    "code": "function marioSurDrapeau() {\r\n  if(this.grid.getPc(0).column === this.grid.getBlock(8).column) {\r\n    retu\r\n [true, \"mario est bien sur le drapeau\"];\r\n  }\r\n  else {\r\n    retu\r\n [false, \"mario n'est pas sur le drapeau\"];\r\n  }\r\n}",
+                    "name": "marioSurDrapeau",
+                    "description": "vérifie que mario a bien atteint le drapeau"
+                },
+                {
+                    "id": 11,
+                    "exercice_id": 65,
+                    "code": "function aTroisPoints() {\r\n  if(Number(this.grid.getLabel(1).text) === 3) {\r\n    retu\r\n [true, \"mario a bien 3 points\"];\r\n  }\r\n  else {\r\n    retu\r\n [false, \"mario n'a pas eu les 3 points\"];\r\n  }\r\n}",
+                    "name": "aTroisPoints",
+                    "description": "vérifie que mario a bien eu les 3 points"
+                },
+                {
+                    "id": 12,
+                    "exercice_id": 65,
+                    "code": "function aTueLennemi() {\r\n  try {\r\n    this.grid.getNpc(6);\r\n    retu\r\n [false, \"l'ennemi n'est pas mort\"];\r\n  }\r\n  catch(error) {\r\n    retu\r\n [true, \"l'ennemi est bien mort\"];\r\n  }\r\n}",
+                    "name": "aTueLennemi",
+                    "description": "vérifie que mario a bien eu tué l'ennemi"
+                }
+            ]
+        },
+        "solution": "avanceMarioDroite();"
+    }
+    var exercice = exerciceData.exercice;
+    var grid = instanciateGrid(exercice);
     var exerciceSteps = [];
+    // exerciceSteps.push(grid)
+    var addState = function(){
+        exerciceSteps.push(grid)
+    }
+    addState();
+    var functionUsedList = exerciceData.solution.split(";")
+
+    var getFuncFromGrid = function(grid, name){
+        for (var i = 0; i < grid.functions.length; ++i){
+            if (grid.functions[i].name == name){
+                return grid.functions[i];
+            }
+
+        }
+    }
+    for (var i = 0; i < functionUsedList.length; ++i){
+        var tmp={};
+        var funcName = functionUsedList[i].substring(0,functionUsedList[i].length - 2);
+        var func = getFuncFromGrid(grid, funcName);
+        // console.log("func")
+        // console.log(func)
+        func.code = func.code.replace(func.name + "()", func.name+"(grid)")
+        console.log("func.code")
+        console.log(func.code)
+        tmp[func.name] = createFunction(func.code);
+        // console.log(grid)
+        tmp[func.name](grid);
+    }
+    return res.send(exerciceSteps);
+
     for (var i = 0; i < exercice.functions.length; ++i) {
         var name = exercice.functions[i].name;
         functionList[name] = createFunction(exercice.functions[i].code)

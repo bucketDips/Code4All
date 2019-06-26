@@ -21,31 +21,31 @@ exports.Grid = class Grid {
     }
 
     addBlock(block) {
-        if(!(block instanceof Block)) throw new Error("The added element should be of type 'block'");
+        // if(!(block instanceof Block)) throw new Error("The added element should be of type 'block'");
         this.checkIfIdAlreadyExists(this.blocks, block.id);
         this.blocks.push(block);
     };
 
     addNpc(npc) {
-        if(!(npc instanceof Npc)) throw new Error("The added element should be of type 'npc'");
+        // if(!(npc instanceof Npc)) throw new Error("The added element should be of type 'npc'");
         this.checkIfIdAlreadyExists(this.npcs, npc.id);
         this.npcs.push(npc);
     };
 
     addPc(pc) {
-        if(!(pc instanceof Pc)) throw new Error("The added element should be of type 'pc'");
+        // if(!(pc instanceof Pc)) throw new Error("The added element should be of type 'pc'");
         this.checkIfIdAlreadyExists(this.pcs, pc.id);
         this.pcs.push(pc);
     };
 
     addLabel(label) {
-        if(!(label instanceof Label)) throw new Error("The added element should be of type 'label'");
+        // if(!(label instanceof Label)) throw new Error("The added element should be of type 'label'");
         this.checkIfIdAlreadyExists(this.labels, label.id);
         this.labels.push(label);
     };
 
     addFunction(func) {
-        if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
+        // if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
         //this.functions.push(new Func(name, String(code), description));
         this.functions.push(func);
     }
@@ -95,7 +95,7 @@ exports.Grid = class Grid {
         return this.functions;
     }
 }
-var Block = class Block {
+exports.Block = class Block {
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
         this.row = row;
@@ -105,8 +105,8 @@ var Block = class Block {
         this.patternId = patternId;
     }
 }
-module.exports.Block;
-var Npc = class Npc {
+
+exports.Npc = class Npc {
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
         this.row = row;
@@ -116,8 +116,7 @@ var Npc = class Npc {
         this.patternId = patternId;
     }
 }
-module.exports.Npc;
-var Pc = class Pc {
+exports.Pc = class Pc {
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
         this.row = row;
@@ -127,8 +126,7 @@ var Pc = class Pc {
         this.patternId = patternId;
     }
 }
-module.exports.Pc;
-var Label = class Label {
+exports.Label = class Label {
     constructor(id, row, column, width, height, text) {
         this.id = id;
         this.row = row;
@@ -138,12 +136,11 @@ var Label = class Label {
         this.text = text;
     }
 }
-module.exports.Label;
-var Func = class Func {
+exports.Func = class Func {
     constructor(name, code, description) {
         this.name = name;
         this.code = code;
         this.description = description;
     }
 }
-module.exports.Func;
+
