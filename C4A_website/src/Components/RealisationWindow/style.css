@@ -1,0 +1,84 @@
+:local(.app) {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    background-color: aliceblue;
+}
+
+:local(.left_panel) {
+    background-color: red;
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+}
+
+:local(.right_panel) {
+    background-color: yellow;  
+    flex: 1.5; 
+    display: flex;
+    flex-direction: column;
+}
+
+:local(.grid) {
+    flex: 3;
+    overflow: hidden;   
+    position: relative;
+    height: 100%;
+}
+
+:local(.description) {
+    flex: 1.3;
+}
+
+:local(.grid_content) {
+    overflow: auto;   
+    background-color: darkslategrey;
+    height: 100%;
+}
+
+:local(.code) {
+    flex: 3;
+    position: relative;
+}
+
+:local(.tests) {
+    flex: 1.3;
+}
+
+:local(.code_content) {
+    height: 100%;
+    display: flex;
+}
+
+#code-editor {
+    height: 100% !important;
+}
+
+.custom-slider-code {
+    width: 25%;
+    position: absolute;
+    left: 70%;
+    bottom: 10%;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 5000;
+}
+
+.custom-slider-grid {
+    width: 15%;
+    position: absolute;
+    left: 80%;
+    bottom: 10%;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 5000;
+}
+

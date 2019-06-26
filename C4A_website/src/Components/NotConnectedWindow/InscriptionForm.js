@@ -4,12 +4,12 @@ import {
   Input,
   Tooltip,
   Icon,
-  Select,
   Checkbox,
   Button,
 } from 'antd';
 
 import auth from '../../Providers/auth';
+// eslint-disable-next-line
 import styles from './style.css';
 
 
@@ -136,7 +136,7 @@ class RegistrationForm extends Component {
             valuePropName: 'checked',
           })(
             <Checkbox>
-              I have read the <a href="">agreement</a>
+              I have read the agreement
             </Checkbox>,
           )}
         </Form.Item>

@@ -14,12 +14,27 @@ class Files {
             }
           }
 
-        Axios.post(consts.url() + "fichiers/uploadToUser/" + options.file.name + "/0", data, config).then((res) => {
+        Axios.post(consts.url() + "fichiers/uploadToUser/" + options.file.name + "/-1", data, config).then((res) => {
           options.onSuccess(res.data, options.file)
         }).catch((err) => {
-          console.log(err)
         })
     }
+
+    async uploadFileToExo(idFile, idExo) {
+      return await Axios.post(consts.url() + 'fichiers/uploadToExercice/' + idExo + "/" + idFile, {},
+      {
+          headers: {
+              'Authorization': 'Bearer ' +  localStorage.sessionToken
+          }
+      })
+      .then(function (response) {
+        return response;
+      })
+      .catch(function (error) {
+        if(error.response.data.code === "ER_DUP_ENTRY") return;
+        alert(JSON.stringify(error.response));
+      });
+  }
 
     async getMines() {
       var headers = {

@@ -2,16 +2,10 @@ import React, { Component } from 'react';
 import {
   Form,
   Input,
-  Tooltip,
-  Icon,
-  Select,
-  Checkbox,
   Button,
 } from 'antd';
 
 import auth from '../../Providers/auth';
-import styles from './style.css';
-
 
 class LoginWindow extends Component {
   state = {

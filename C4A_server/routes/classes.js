@@ -138,7 +138,7 @@ router.post('/removeStudentFromClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProf
     function removeStudentFromClass(id,classId) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from classroom_students where idClassRoom=? and idStudent = ?";
-            con.query(sql, [classId],[id],function (err, rows, fields) {
+            con.query(sql, [classId, id],function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
@@ -166,7 +166,7 @@ router.post('/removeProfessorFromClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isPr
     function removeProfessorFromClass(id,classId) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from classroom_professors where idClassRoom=? and idProfessor = ?";
-            con.query(sql, [classId],[id],function (err, rows, fields) {
+            con.query(sql, [classId, id],function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });

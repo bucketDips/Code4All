@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import Axios from 'axios';
 import _ from 'lodash';
 import style from './style.css';
 import Grid from './Grid';
@@ -33,11 +32,12 @@ class CreateExerciseWindow extends Component {
   async setPatterns() {
     var patterns = await files.getMines();
     var newPatterns = {};
-    patterns.data.map(element => {
+    var tempPat = patterns.data.map(element => {
       newPatterns[element.fileid] = {
         id: element.fileid,
         nom: element.publicName
       }
+      return element;
     });
 
     this.setState({patterns: newPatterns});
@@ -381,12 +381,13 @@ class CreateExerciseWindow extends Component {
     }
   }
 
-  saveExercice(title, description) {
+  saveExercice(title, description, store) {
     var buildedExercice = {
       title: title,
       text: description,
-      public: 0,
+      public: store,
       code: this.state.editorValue,
+      gridObject: this.state.gridObject,
       lines: this.state.gridProperties.lines,
       columns: this.state.gridProperties.columns,
       patternId: this.state.gridProperties.backgroundId,
@@ -400,12 +401,13 @@ class CreateExerciseWindow extends Component {
     exercices.createExercice(buildedExercice);
   }
 
-  modifyExercise(title, description, id) {
+  modifyExercise(title, description, id, store) {
     var buildedExercice = {
       title: title,
       text: description,
-      public: 0,
+      public: store,
       code: this.state.editorValue,
+      gridObject: this.state.gridObject,
       lines: this.state.gridProperties.lines,
       columns: this.state.gridProperties.columns,
       patternId: this.state.gridProperties.backgroundId,
@@ -471,6 +473,7 @@ class CreateExerciseWindow extends Component {
                   id={this.props.id}
                   name={this.props.name}
                   details={this.props.details}
+                  store={this.props.store}
                   />
               </div>
             </div>

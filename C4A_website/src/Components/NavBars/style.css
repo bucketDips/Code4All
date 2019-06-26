@@ -25,5 +25,5 @@
 }
 
 .ant-layout-sider-children {
-    overflow-y: scroll;
+    overflow-y: auto !important;
 }

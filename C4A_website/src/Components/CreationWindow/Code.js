@@ -13,6 +13,7 @@ import styles from './style.css';
 import { Grid, Block, Npc, Pc, Label, Func } from './CodeClasses';
 import CustomSlider from './CustomSlider';
 
+// eslint-disable-next-line
 import consts from '../../Providers/consts';
 
 class Code extends Component {
@@ -122,15 +123,21 @@ class Code extends Component {
 
   componentWillMount() {
     if(this.props.code) {
+      var newCode = this.props.code;
+
       this.props.changeEditorValue(this.props.code);
-      this.setState({editorValue: this.props.code}, () => {
+      this.setState({editorValue: newCode}, () => {
         this.evalCode(true);
-        this.onChange(this.props.code, null);
+        this.onChange(newCode, null);
       });
     }
   }
 
   componentWillReceiveProps(props){
+    if(this.state.infoText) {
+      return;
+    }
+
     if(props.delete){
       this.delete(props.delete.id, props.delete.type);
       props.resetDelete();
@@ -216,14 +223,12 @@ class Code extends Component {
     return new Func(name, String(code), description);
   }
 
-  
-
   synchronise(grid) {
       this.setState(
-        {
-          fromEdit: true,
-          gridObject: grid
-        });
+      {
+        fromEdit: true,
+        gridObject: grid
+      });
       this.props.changeGridObject(grid);
       var blocks = grid.getBlocks();
       var npcs = grid.getNpcs();
@@ -253,6 +258,7 @@ class Code extends Component {
 
     try {
       if(fromProps) {
+        // eslint-disable-next-line
         eval(this.state.editorValue + "\ngrid; this.props.changeGridObject(grid);");
         return;
       }

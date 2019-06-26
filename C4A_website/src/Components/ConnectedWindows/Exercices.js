@@ -16,20 +16,21 @@ class ExercicesWindow extends Component {
     }
 
     modifyExercice(code) {
-        console.log(code);
-        return [(<CreateExerciseWindow code={code.code} id={code.id} details={code.description} name={code.name} />), "collapsed"];
+        return exercices.getMyExercice(code.id, (exos) => {
+            return [(<CreateExerciseWindow code={exos.data.exercice.code} id={exos.data.exercice.id} details={exos.data.exercice.description} name={exos.data.exercice.title} store={exos.data.exercice.isPublic} />), "collapsed"];
+        });
     }
 
     createExercice() {
-        return [(<CreateExerciseWindow />), "collapsed"];
+        return new Promise((resolve, reject) => { resolve([(<CreateExerciseWindow />), "collapsed"]); });
     }
 
     presentation() {
-        return [(
+        return new Promise((resolve, reject) => { resolve([(
             <div>
                 <h1>Voici l'explication des exercices</h1>
             </div>
-        ), "not-collapsed"];
+        ), "not-collapsed"]); });
     }
 
     async componentWillMount() {
@@ -41,12 +42,12 @@ class ExercicesWindow extends Component {
                 id: allExercices.data.perso[exercice].id,
                 name: allExercices.data.perso[exercice].title,
                 code: allExercices.data.perso[exercice].code,
-                description: allExercices.data.perso[exercice].text,
+                description: allExercices.data.perso[exercice].description,
                 action: this.modifyExercice
             });
         }
 
-        for(var exercice in allExercices.data.forked.fromStore) {
+        for(exercice in allExercices.data.forked.fromStore) {
             forkedExercices.push({
                 id: allExercices.data.forked.fromStore[exercice].id,
                 authorId: allExercices.data.forked.fromStore[exercice].author_id,
@@ -77,10 +78,12 @@ class ExercicesWindow extends Component {
             action: this.createExercice
         });
 
-        this.setState({ 
-            menus: menus,
-            content: this.presentation()[0]
-         });
+        this.presentation().then(result => {
+            this.setState({ 
+                menus: menus,
+                content: result[0]
+             });
+        });
     }
 
     render() {

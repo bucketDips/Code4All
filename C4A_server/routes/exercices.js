@@ -7,7 +7,9 @@ var jwt = require('jsonwebtoken');
 var config = require("./config");
 var AUTH = require('./AUTHENTIFICATION')
 var gEval =eval;
+var fs = require('fs');
 var sEval = require('safe-eval');
+var SqlString = require('sqlstring');
 var evalContext = {
     evalContext: this,
     sEval:sEval,
@@ -27,13 +29,21 @@ var funcString = [
 var createFunction = function (txt) {
     return new Function("return " + txt)();
 }
+function deleteExercice(exo_id,author_id) {
+    return new Promise(function(resolve, reject) {
+        var sql = "delete from exercices where id = ? and author_id = ?;"
+        con.query(sql,[exo_id,author_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            resolve(rows);
+        });
 
+    });
+}
 function insertExerciceFunctions(functions, exercice_id) {
     return new Promise(function(resolve, reject) {
         var reccords = [];
         var str = "";
         for (var i = 0; i < functions.length; ++i){
-            console.log("tamere")
             str += "('"+exercice_id+"','"+escapeQuote(functions[i].code)+"','"+escapeQuote(functions[i].name)+"','"+escapeQuote(functions[i].description)+"'),"
 
         }
@@ -88,11 +98,37 @@ router.post('/addExerciceToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfesso
         return res.status(403).json(err);
     });
 });
+router.get('/getAllStoreExercicesNotOwned', AUTH.VERIFYAUTH,function(request, res, next) {
+    var userId = request.decoded.id
+    function getAllStoreExercicesNotOwned(userId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select exercices.id, exercices.title, exercices.text " +
+                "from exercices, user_exercices " +
+                "where exercices.isPublic=1 " +
+                "and exercices.id = user_exercices.exerciceId " +
+                "and user_exercices.userid != ? " +
+                "and author_id != ?;"
+            con.query(sql, [userId,userId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+
+    getAllStoreExercicesNotOwned(userId).then(function(rows){
+        res.send(rows)
+
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+})
 router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id
     function getUserPersonnalExercices(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select * from exercices where author_id = ?;"
+            var sql = "select id, title, description from exercices where author_id = ?;"
             con.query(sql, [userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -101,7 +137,7 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     }
     function getUserForkedExercices(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select * from exercices, user_exercices where user_exercices.userid = ? and exercices.id = user_exercices.exerciceId;"
+            var sql = "select exercices.id, exercices.title, exercices.description from exercices, user_exercices where user_exercices.userid = ? and exercices.id = user_exercices.exerciceId;"
             con.query(sql, [userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -110,7 +146,7 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     }
     function getUserClassExercices(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select * from exercices, class_exercices, classroom_students where class_exercices.exercice_id = exercices.id " +
+            var sql = "select exercices.id, exercices.title, exercices.description from exercices, class_exercices, classroom_students where class_exercices.exercice_id = exercices.id " +
                 "and classroom_students.idClassRoom = class_exercices.class_id and classroom_students.idstudent = ?;"
             con.query(sql, [userId], function (err, rows, fields) {
                 if (err) return reject(err);
@@ -121,6 +157,18 @@ router.get('/getUserExercices', AUTH.VERIFYAUTH,function(request, res, next) {
     getUserPersonnalExercices(userId).then(function(rowsPersonnal){
         getUserForkedExercices(userId).then(function(rowsForked){
             getUserClassExercices(userId).then(function(rowsClass){
+                for (var i = 0; i < rowsPersonnal.length; ++i){
+                    rowsPersonnal[i].title = rowsPersonnal[i].title.substring(1,rowsPersonnal[i].title.length - 1)
+                    rowsPersonnal[i].description = rowsPersonnal[i].description.substring(1,rowsPersonnal[i].description.length - 1)
+                }
+                for (var i = 0; i < rowsForked.length; ++i){
+                    rowsForked[i].title = rowsForked[i].title.substring(1,rowsForked[i].title.length - 1)
+                    rowsForked[i].description = rowsForked[i].description.substring(1,rowsForked[i].description.length - 1)
+                }
+                for (var i = 0; i < rowsClass.length; ++i){
+                    rowsClass[i].title = rowsClass[i].title.substring(1,rowsClass[i].title.length - 1)
+                    rowsClass[i].description = rowsClass[i].description.substring(1,rowsClass[i].description.length - 1)
+                }
                 res.json({
                     perso:rowsPersonnal,
                     forked:{
@@ -162,6 +210,17 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
             });
         });
     }
+
+    function getExerciceFiles(id) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select * from fichier, exercices_Files where fichier.id = exercices_Files.file_id and exercices_Files.exercice_id ='"+id+"';";
+            console.log(sql)
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
     getExercice(id).then(function(rows){
         if (rows.length == 0){
             return res.status(404).json({
@@ -170,24 +229,92 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                 message: 'Cet exercice n\'existe pas !'
             })
         }
-        if (rows[0].author_id != userId && rows[0].public == 0){
-            return res.status(403).json({
-                success: false,
-                code : 'MISSING_AUTHORISATION',
-                message: 'Cet exercice ne vous appartient pas et n\'est pas public!'
-            })
-        }
+        // if (rows[0].author_id != userId && rows[0].public == 0){
+        //     return res.status(403).json({
+        //         success: false,
+        //         code : 'MISSING_AUTHORISATION',
+        //         message: 'Cet exercice ne vous appartient pas et n\'est pas public!'
+        //     })
+        // }
         getFunctions(id).then(function(rows1){
-            rows[0].content = JSON.parse(rows[0].content);
-            var resultJson = {
-                exercice: rows[0],
-                functions: rows1
-            }
-            res.send(resultJson);
+            // rows[0].content = JSON.parse(rows[0].content);
+            getExerciceFiles(id).then(function(fileExo){
+                for (var i = 0; i < fileExo.length; ++i){
+                    var pathFile = __dirname +"/FichiersUtilisateur/" +fileExo[i].file_id;
+                    var text = "";
+                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                    for (var j = 0; j < 30; j++)
+                        text += possible.charAt(Math.floor(Math.random() * possible.length));
+                    text +=  "_" + fileExo[i].name;
+
+                    var publicName = text;
+                    var url = config.HOST + ":" + config.PORTSERVEUR + "/" + publicName;
+                    var newpath = __dirname.substring(0, __dirname.indexOf("/routes")) + "/public/" + publicName;
+                    console.log("newpath")
+                    console.log(newpath)
+                    console.log("url")
+                    console.log(url)
+                    fileExo[i].url = url;
+                    console.log(pathFile + ' will be  copied to '+newpath);
+
+                    fs.copyFile(pathFile, newpath, (err) => {
+                        if (err) throw err;
+                        console.log(pathFile + ' was copied to '+newpath);
+
+                    })
+                }
+                function remQuote(str) {
+                    return str.substring(1,str.length - 1)
+                }
+                function stand(str){
+                    str = str.substring(1,str.length - 1)
+                    var find = "\\\\"
+                    var re = new RegExp(find, 'g');
+                    str = str.replace(re, "")
+                    str = rmendOfLine(str)
+                    return str
+                }
+
+                rows[0].title = rows[0].title.substring(1,rows[0].title.length - 1)
+                rows[0].description = rows[0].description.substring(1,rows[0].description.length - 1)
+                rows[0].code = stand(rows[0].code)
+                var find = ";rnrn"
+                var re = new RegExp(find, 'g');
+                rows[0].code =  rows[0].code.replace(re, ";\r\n\r\n")
+                find = "rn"
+                re = new RegExp(find, 'g');
+                rows[0].code =  rows[0].code.replace(re, "\r\n")
+                find = ";nn"
+                re = new RegExp(find, 'g');
+                rows[0].code =  rows[0].code.replace(re, ";\n\n")
+                find = ";n"
+                re = new RegExp(find, 'g');
+                rows[0].code =  rows[0].code.replace(re, ";\n")
+                rows[0].blocks = JSON.parse(stand(rows[0].blocks))
+                rows[0].npcs = JSON.parse(stand(rows[0].npcs))
+                rows[0].pcs = JSON.parse(stand(rows[0].pcs))
+                rows[0].labels = JSON.parse(stand(rows[0].labels))
+                console.log( rows[0].labels)
+                rows[0].functions = rows1;
+                rows[0].fichiers = fileExo;
+                var resultJson = {
+                    exercice: rows[0]
+                }
+
+                res.send(resultJson);
+            }).catch(function(err){
+                console.log("err1")
+                return res.status(403).json(err);
+            });
+
+
         }).catch(function(err){
+            console.log("err2")
             return res.status(403).json(err);
         });
     }).catch(function(err){
+        console.log("err3")
         return res.status(403).json(err);
     });
 });
@@ -313,50 +440,39 @@ var escapeQuote1 = function(str){
 
     var find = "'";
     var re = new RegExp(find, 'g');
-    return str.replace(re, "\'")
-    // return str
+    str = str.replace(re, "''")
+    find = '"';
+    re = new RegExp(find, 'g');
+    find = "\\\\";
+    re = new RegExp(find, 'g');
+    str = str.replace(re, "\\")
+    return str.replace(re, "''")
 }
-function escapeQuote (str) {
-    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+function rmendOfLine (str) {
+    return str.replace(/[\n\r]/g, function (char) {
         switch (char) {
-            case "\0":
-                return "\\0";
-            case "\x08":
-                return "\\b";
-            case "\x09":
-                return "\\t";
-            case "\x1a":
-                return "\\z";
             case "\n":
-                return "\\n";
+                return "";
             case "\r":
-                return "\\r";
-            case "\"":
-            case "'":
-            case "\\":
-            case "%":
-                return "\\"+char; // prepends a backslash to backslash, percent,
-                                  // and double/single quotes
+                return "";
+
         }
     });
 }
 router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     var contentOjb =JSON.parse(request.body.exercice);
-    var content = JSON.stringify(contentOjb)
     var author_id = request.decoded.id
 
 
-    function insertExercice(contentOjb,content,author_id) {
+    function insertExercice(contentOjb,author_id) {
         return new Promise(function(resolve, reject) {
-            contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.text = escapeQuote(contentOjb.text)
-            content = escapeQuote(content)
-            // console.log("content")
-            // console.log(content)
-            var sql = "insert into exercices(title,text,isPublic,content, author_id,code)"
-            sql += "values('"+contentOjb.title+"','"+contentOjb.text+"','"+contentOjb.public+"','"+content+"','"+author_id+"','"+contentOjb.code+"')"+";";
+
+            var sql = "insert into exercices(title,description,isPublic,author_id,code,blocks,columns,labels,rows,npcs,patternId,pcs) values (?)"
+            var values = [];
+            values.push(SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,author_id,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
+            values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)))
             console.log(sql)
-            con.query(sql, function (err, rows, fields) {
+            con.query(sql, [values], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
@@ -364,13 +480,13 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
         });
     }
 
-    insertExercice(contentOjb,content,author_id).then(function(rows){
+    insertExercice(contentOjb,author_id).then(function(rows){
         if (contentOjb.functions.length == 0){
             res.send(rows);
         }
         else {
-            insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows){
-                res.send(rows);
+            insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows1){
+                res.json(rows);
             }).catch(function(err){
                 return res.status(403).json(err);
             });
@@ -395,22 +511,25 @@ function deleteExerciceFunctions(exo_id) {
 }
 router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
     var contentOjb =JSON.parse(request.body.exercice);
-    var content = JSON.stringify(contentOjb)
     var author_id = request.decoded.id
     var exo_id = request.params.exerciceId
+    // console.log(contentOjb)
 
 
-    function modifyExercice(exo_id,contentOjb,content,author_id) {
+    function modifyExercice(exo_id,contentOjb,author_id) {
         return new Promise(function(resolve, reject) {
-            contentOjb.title = escapeQuote(contentOjb.title)
-            contentOjb.text = escapeQuote(contentOjb.text)
-            content = escapeQuote(content)
-            // console.log("content")
-            // console.log(content)
-            var sql = "update exercices set title='"+contentOjb.title+"',text='"+contentOjb.text+"',isPublic='"+contentOjb.public
-            sql+="',content='"+content+"',code='"+contentOjb.code+"' where id='"+exo_id+"' and author_id='"+author_id+"';"
-            console.log(sql)
-            con.query(sql, function (err, rows, fields) {
+            // var values = [];
+            // values.push(SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
+            // values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)))
+            // var sql = "update exercices set title = ?, description = ?, isPublic = ?, code = ?, blocks = ?, columns = ?, " +
+            //     "labels = ?, lines = ?, npcs = ?, patternId = ?, pcs = ? "
+            // sql+="where id='"+exo_id+"' and author_id='"+author_id+"';"
+            var sql = "insert into exercices(id,title,description,isPublic,author_id,code,blocks,columns,labels,rows,npcs,patternId,pcs) values (?)"
+            var values = [];
+            values.push(exo_id,SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,author_id,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
+            values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)))
+            // console.log(sql)
+            con.query(sql, [values], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
@@ -418,22 +537,25 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
         });
     }
 
-
-    modifyExercice(exo_id,contentOjb,content,author_id).then(function(rows){
-        deleteExerciceFunctions(exo_id).then(function(rows){
-            console.log(rows)
-            if (contentOjb.functions.length == 0){
-                res.send(rows);
-            }
-            else{
-                insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows){
+    deleteExercice(exo_id,author_id).then(function(r){
+        modifyExercice(exo_id,contentOjb,author_id).then(function(rows){
+            deleteExerciceFunctions(exo_id).then(function(rowsf){
+                // console.log(rows)
+                if (contentOjb.functions.length == 0){
                     res.send(rows);
-                }).catch(function(err){
-                    return res.status(403).json(err);
-                });
+                }
+                else{
+                    insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows1){
+                        res.send(rows);
+                    }).catch(function(err){
+                        return res.status(403).json(err);
+                    });
 
-            }
+                }
 
+            }).catch(function(err){
+                return res.status(403).json(err);
+            });
         }).catch(function(err){
             return res.status(403).json(err);
         });
@@ -442,29 +564,15 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
     });
 
 
+
+
 });
 router.post('/delete/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
     var author_id = request.decoded.id
     var exo_id = request.params.exerciceId
 
 
-    function deleteExercice(exo_id,author_id) {
-        return new Promise(function(resolve, reject) {
-            // var sql = "delete exercices, user_exercices, exercice_functions, class_exercices" +
-            //     " from exercices" +
-            //     " inner join user_exercices on user_exercices.exerciceId=exercices.id" +
-            //     " inner join exercice_functions on exercice_functions.exercice_id=exercices.id" +
-            //     " inner join class_exercices on class_exercices.exercice_id=exercices.id" +
-            //     " where  " +
-            //     "exercices.id = ? and exercices.author_id = ?;"
-            var sql = "delete from exercices where id = ? and author_id = ?;"
-            con.query(sql,[exo_id,author_id], function (err, rows, fields) {
-                if (err) return reject(err);
-                resolve(rows);
-            });
 
-        });
-    }
     function deleteUserExercice(exo_id) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from user_exercices where exerciceId = ?"

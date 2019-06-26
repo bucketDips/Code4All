@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 
+import CustomSlider from './CustomSlider';
 import Case from './Case'
-import CustomSlider from './CustomSlider'
-import CustomToolBox from './CustomToolBox'
-import Block from './Block'
+/*import Block from './Block'
 import Npc from './Npc'
 import Pc from './Pc'
-import Label from './Label'
+import Label from './Label'*/
 import styles from './style.css';
 
 class Grid extends Component {
@@ -30,7 +29,7 @@ class Grid extends Component {
           line: line,
           column: column,
         }
-        cells.push(<Case size={size} index={String(index)} key={(column) + (line * this.state.gridProperties.lines)} />);
+        cells.push(<Case size={size} index={String(index)} />);
         index += 1;
       }
       cases.push(cells);
@@ -43,13 +42,12 @@ class Grid extends Component {
     this.setState({gridProperties: properties});
   }
 
-  componentWillReceiveProps() {
-    var size = this.state.gridProperties.size === undefined ? this.props.parameters.size : this.state.gridProperties.size;
+  componentWillMount() {
     let properties = {
       lines: this.props.parameters.lines,
       columns: this.props.parameters.columns,
-      size: size,
       cases: this.props.parameters.cases,
+      size: this.props.parameters.size,
       background: this.props.parameters.background,
       backgroundId: this.props.parameters.backgroundId
     };
@@ -69,24 +67,8 @@ class Grid extends Component {
     this.setState({gridProperties: properties});
   }
 
-  askEditGrid(e) {
-    let parameters = {
-      type: "GRID",
-      lines: this.state.gridProperties.lines,
-      columns: this.state.gridProperties.columns,
-      background: this.state.gridProperties.background,
-      backgroundId: this.state.gridProperties.backgroundId
-    }
-    this.props.changeParametersWindow(parameters);
-    e.preventDefault();
-  }
-
-  askEditElement(parameters) {
-    this.props.changeParametersWindow(parameters);
-  }
-
   render() {
-    let background = this.state.gridProperties.background == null ? "" : 
+    /*let background = this.state.gridProperties.background == null ? "" : 
     (<div style={{
       gridColumnStart: 1,
       gridRowStart: 1,
@@ -159,11 +141,11 @@ class Grid extends Component {
             caseSize={this.state.gridProperties.size}
           />)
         }, this);
-    }
+    }*/
     
     return (
         <div className={styles.grid}>
-            <div className="content">
+            <div className={styles.grid_content}>
               <div style={{
                 whiteSpace:"nowrap",
                 display:"grid",
@@ -172,18 +154,14 @@ class Grid extends Component {
                 gridAutoColumns: this.state.gridProperties.size + "px",
               }}>
                 {this.state.gridProperties.cases}
-                {blocks}
+                {/*{blocks}
                 {npcs}
                 {pcs}
                 {labels}
-                {background}
+                {background}*/}
               </div>
             </div>
-            <form className="form-edit-grid" onSubmit={this.askEditGrid.bind(this)}>
-                <input type="image" className="grid-edit" alt="edit button" src={process.env.PUBLIC_URL + '/edit.png'} />
-            </form>
-            <CustomToolBox className="custom-toolbox" elements={this.props.toolboxOptions} />
-            <CustomSlider className="custom-slider" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={this.state.gridProperties.size}/>
+            <CustomSlider className="custom-slider-grid" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={this.state.gridProperties.size}/>
         </div>
     );
   }

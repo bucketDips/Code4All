@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Layout } from 'antd';
 
-import styles from './style.css';
-import { cpus } from 'os';
+import styles from '../NavBars/style.css';
 
 const SubMenu = Menu.SubMenu;
 const Sider = Layout.Sider;
@@ -14,21 +13,29 @@ class LeftNav extends Component {
   };
 
   onClick(action, optional) {
+    var tempContent = this.state.content;
     this.setState({
       content: (<div></div>)
     }, () => {
-      var actioned = action(optional);
-      if(actioned[1] === "collapsed") {
-        this.setState({
-          collapsed: true,
-          content: actioned[0]
-        });
-      }
-      else if(actioned[1] === "not-collapsed") {
-        this.setState({
-          content: actioned[0]
-        });
-      }
+      action(optional).then((actioned) => {
+        if(actioned == null) {
+          this.setState({
+            content: tempContent
+          });
+          return;
+        }
+        if(actioned[1] === "collapsed") {
+          this.setState({
+            collapsed: true,
+            content: actioned[0]
+          });
+        }
+        else if(actioned[1] === "not-collapsed") {
+          this.setState({
+            content: actioned[0]
+          });
+        }
+      });
     });
   }
 

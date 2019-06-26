@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
+import RealisationExerciseWindow from '../../Components/RealisationWindow/';
+
 import styles from './style.css';
-import { Input, Button, Modal, Form } from 'antd';
+import { Input, Button, Radio, Modal, Form } from 'antd';
 import exercices from "../../Providers/exercices";
 
 const confirm = Modal.confirm;
@@ -28,7 +30,37 @@ const ExerciceCreationForm = Form.create({ name: 'form_in_modal' })(
                 initialValue: this.props.name
               })(<Input />)}
             </Form.Item>
+            <Form.Item className="collection-create-form_last-form-item">
+              {getFieldDecorator('modifier', {
+                initialValue: (this.props.store === undefined || this.props.store === 0) ? 'private' : 'public',
+              })(
+                <Radio.Group>
+                  <Radio value="public">Public</Radio>
+                  <Radio value="private">Private</Radio>
+                </Radio.Group>,
+              )}
+            </Form.Item>
           </Form>
+        </Modal>
+      );
+    }
+  },
+);
+
+const ExerciceLaunchModal = Form.create({ name: 'launch_modal' })(
+  // eslint-disable-next-line
+  class extends React.Component {
+    render() {
+      const { visible, onCancel } = this.props;
+      return (
+        <Modal
+          wrapClassName="launch_modal"
+          visible={visible}
+          footer={null}
+          onCancel={onCancel}
+          title="Lancement exercice"
+        >
+          <RealisationExerciseWindow />
         </Modal>
       );
     }
@@ -38,7 +70,8 @@ const ExerciceCreationForm = Form.create({ name: 'form_in_modal' })(
 class Details extends Component {
 
   state = {
-    visible: false,
+    saveModalVisible: false,
+    launchModalVisible: false,
     details: ""
   };
 
@@ -56,11 +89,19 @@ class Details extends Component {
   };
 
   showModal = () => {
-    this.setState({ visible: true });
+    this.setState({ saveModalVisible: true });
   };
 
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.setState({ saveModalVisible: false });
+  };
+  
+  showModalLaunch = () => {
+    this.setState({ launchModalVisible: true });
+  };
+
+  handleCancelLaunch = () => {
+    this.setState({ launchModalVisible: false });
   };
 
   handleCreate = () => {
@@ -71,12 +112,13 @@ class Details extends Component {
       }
 
       var title = values.title;
+      var store = values.modifier === "public" ? 1 : 0;
 
-      if(!this.props.details) {
-        this.props.saveExercise(title, this.state.details);
+      if(!this.props.id) {
+        this.props.saveExercise(title, this.state.details, store);
       }
       else {
-        this.props.modifyExercise(title, this.state.details, this.props.id);
+        this.props.modifyExercise(title, this.state.details, this.props.id, store);
       }
     });
   };
@@ -104,22 +146,28 @@ class Details extends Component {
             <Button id="save-button" type="primary" icon="download" size={"large"} onClick={this.showModal}>
               {this.state.buttonValue}
             </Button>
-            {this.props.details && 
+            {this.props.id && 
             
             <Button id="delete-button" type="danger" icon="delete" size={"large"} onClick={this.showConfirm.bind(this, this.props.id)}>
               supprimer
             </Button>}
 
-            <Button id="launch-button" type="dasher" icon="caret-right" size={"large"}>
+            <Button id="launch-button" type="dasher" icon="caret-right" size={"large"} onClick={this.showModalLaunch}>
               lancer
             </Button>
 
             <ExerciceCreationForm
               wrappedComponentRef={this.saveFormRef}
-              visible={this.state.visible}
+              visible={this.state.saveModalVisible}
               onCancel={this.handleCancel}
               onCreate={this.handleCreate}
               name={this.props.name}
+              store={this.props.store}
+            />
+
+            <ExerciceLaunchModal
+              visible={this.state.launchModalVisible}
+              onCancel={this.handleCancelLaunch}
             />
             </div>
         </div>

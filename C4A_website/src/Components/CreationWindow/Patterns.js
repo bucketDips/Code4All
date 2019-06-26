@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Upload, message, Button, Icon } from 'antd';
-import Axios from 'axios';
 import files from "../../Providers/files";
 
 
@@ -34,7 +33,6 @@ class Patterns extends Component {
 
   onChange(info) {
     if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
     }
     if (info.file.status === 'done') {
       message.success(`${info.file.name} file uploaded successfully`);
@@ -46,7 +44,7 @@ class Patterns extends Component {
 
   render() {
     var patterns = this.state.patterns.map(pattern => (
-      <Pattern id={pattern.fileid} name={pattern.publicName} />
+      <Pattern id={pattern.fileid} key={pattern.fileid} name={pattern.publicName} />
     ));
 
     return (

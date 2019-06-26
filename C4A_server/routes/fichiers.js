@@ -256,6 +256,29 @@ router.post('/uploadToUser/:filename/:dest', AUTH.VERIFYAUTH, function(request, 
 
 
 });
+router.post('/uploadToExercice/:fileId/:exerciceId', AUTH.VERIFYAUTH, function(request, res, next) {
+    var fileId = request.params.fileId;
+    var exerciceId = request.params.exerciceId;
+
+
+
+    function addFileToExerciceFileTable(fileId, exerciceId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into exercices_Files(file_id, exercice_id) values ('"+fileId+"',"+exerciceId+")"
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    addFileToExerciceFileTable(fileId, exerciceId).then(function(rows){
+        res.send(rows)
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+
+});
 router.post('/uploadToClass/:filename/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom, function(request, res, next) {
     var dest = request.params.classId;
     var filename = request.params.filename;
