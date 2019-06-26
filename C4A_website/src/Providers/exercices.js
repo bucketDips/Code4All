@@ -27,7 +27,6 @@ class Exercices {
         }
 
         return Axios.get(consts.url() + "exercices/getExercice/" + id, {headers: headers}).then(response => {
-            console.log(response);
             return cb(response);
         }).catch(error => {
             alert(JSON.stringify(error));
@@ -54,7 +53,7 @@ class Exercices {
         return patterns;
     }
 
-    createExercice(exercice) {
+    async createExercice(exercice) {
         var patterns = this.extractPatterns(exercice);
 
         let data = {'exercice': JSON.stringify(exercice)};
@@ -65,20 +64,18 @@ class Exercices {
                 'Authorization': 'Bearer ' +  localStorage.sessionToken
             }
         })
-          .then(function (response) {
-            var pat = patterns.map((pattern) => {
-                files.uploadFileToExo(response.data.insertId, pattern);
-                return pattern;
-            });
+          .then(async function (response) {
+            await Promise.all(patterns.map(item => files.uploadFileToExo(response.data.insertId, item)));
             window.location.href = "/exercices";
           })
           .catch(function (error) {
-            console.log(error);
             alert(JSON.stringify(error.response));
           });
     }
 
-    modifyExercice(exercice, id) {
+    async modifyExercice(exercice, id) {
+        var patterns = this.extractPatterns(exercice);
+
         let data = {'exercice': JSON.stringify(exercice)};
 
         // EXTRACT NOT SAVED PATTERN
@@ -89,7 +86,8 @@ class Exercices {
                 'Authorization': 'Bearer ' +  localStorage.sessionToken
             }
         })
-          .then(function (response) {
+          .then(async function (response) {
+            await Promise.all(patterns.map(item => files.uploadFileToExo(response.data.insertId, item)));
             window.location.href = "/exercices";
           })
           .catch(function (error) {
@@ -108,6 +106,25 @@ class Exercices {
           })
         .catch(function (error) {
             alert(JSON.stringify(error.response));
+        });
+    }
+
+    async getFromStore() {
+        return await new Promise(function(resolve, reject) {
+            setTimeout(function() {
+              resolve([
+                {
+                    id: 2,
+                    name: "coucou",
+                    description: "coucoud"
+                },
+                {
+                    id: 3,
+                    name: "jesus",
+                    description: "jesus2"
+                }
+            ]);
+            }, 300);
         });
     }
 }

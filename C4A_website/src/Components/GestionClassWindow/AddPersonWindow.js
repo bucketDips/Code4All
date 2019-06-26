@@ -19,7 +19,6 @@ const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
     }
 
     render() {
-      console.log(this.state);
       const { visible, onCancel, onSave, form } = this.props;
       const { getFieldDecorator } = form;
       return (

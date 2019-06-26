@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import RealisationExerciseWindow from '../../Components/RealisationWindow/';
 
 import styles from './style.css';
-import { Input, Button, Modal, Form } from 'antd';
+import { Input, Button, Radio, Modal, Form } from 'antd';
 import exercices from "../../Providers/exercices";
 
 const confirm = Modal.confirm;
@@ -29,6 +29,16 @@ const ExerciceCreationForm = Form.create({ name: 'form_in_modal' })(
                 rules: [{ required: true, message: 'Le nom de votre exercice' }],
                 initialValue: this.props.name
               })(<Input />)}
+            </Form.Item>
+            <Form.Item className="collection-create-form_last-form-item">
+              {getFieldDecorator('modifier', {
+                initialValue: (this.props.store === undefined || this.props.store === 0) ? 'private' : 'public',
+              })(
+                <Radio.Group>
+                  <Radio value="public">Public</Radio>
+                  <Radio value="private">Private</Radio>
+                </Radio.Group>,
+              )}
             </Form.Item>
           </Form>
         </Modal>
@@ -102,12 +112,13 @@ class Details extends Component {
       }
 
       var title = values.title;
+      var store = values.modifier === "public" ? 1 : 0;
 
       if(!this.props.id) {
-        this.props.saveExercise(title, this.state.details);
+        this.props.saveExercise(title, this.state.details, store);
       }
       else {
-        this.props.modifyExercise(title, this.state.details, this.props.id);
+        this.props.modifyExercise(title, this.state.details, this.props.id, store);
       }
     });
   };
@@ -151,6 +162,7 @@ class Details extends Component {
               onCancel={this.handleCancel}
               onCreate={this.handleCreate}
               name={this.props.name}
+              store={this.props.store}
             />
 
             <ExerciceLaunchModal

@@ -381,11 +381,11 @@ class CreateExerciseWindow extends Component {
     }
   }
 
-  saveExercice(title, description) {
+  saveExercice(title, description, store) {
     var buildedExercice = {
       title: title,
       text: description,
-      public: 0,
+      public: store,
       code: this.state.editorValue,
       gridObject: this.state.gridObject,
       lines: this.state.gridProperties.lines,
@@ -401,11 +401,11 @@ class CreateExerciseWindow extends Component {
     exercices.createExercice(buildedExercice);
   }
 
-  modifyExercise(title, description, id) {
+  modifyExercise(title, description, id, store) {
     var buildedExercice = {
       title: title,
       text: description,
-      public: 0,
+      public: store,
       code: this.state.editorValue,
       gridObject: this.state.gridObject,
       lines: this.state.gridProperties.lines,
@@ -473,6 +473,7 @@ class CreateExerciseWindow extends Component {
                   id={this.props.id}
                   name={this.props.name}
                   details={this.props.details}
+                  store={this.props.store}
                   />
               </div>
             </div>

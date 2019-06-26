@@ -1,4 +1,4 @@
-<MyEditText xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.code4all.customviews.MyEditText xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="40dp"
               android:layout_centerHorizontal="true"
@@ -10,4 +10,4 @@
               android:drawablePadding="5dp"
               android:textSize="20sp">
 
-</MyEditText>
+</com.example.code4all.customviews.MyEditText>

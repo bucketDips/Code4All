@@ -14,6 +14,7 @@ public class SnackbarBuilder {
         if(color != -1){
             View snackView = snackbar.getView();
             TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             textView.setTextColor(ContextCompat.getColor(view.getContext(), color));
         }
 

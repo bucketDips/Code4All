@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.code4all.data_pojo.block.GridExerciceElement xmlns:android="http://schemas.android.com/apk/res/android"
-                                                          android:layout_width="100dp"
-                                                          android:layout_height="100dp"
-                                                          android:background="@drawable/grid_block">
-</com.example.code4all.data_pojo.block.GridExerciceElement>
+<View xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      android:background="@drawable/grid_block">
+</View>

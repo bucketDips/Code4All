@@ -63,6 +63,14 @@
     top: 8%;
 }
 
+:local(.delete_button) {
+    width: 10%;
+    top: 9%;
+    right: 9%;
+    position: absolute;
+    cursor: pointer;
+}
+
 :local(.person) {
     position: relative;
     overflow: hidden;

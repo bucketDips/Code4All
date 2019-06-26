@@ -3,6 +3,7 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 import HomeWindow from './Components/ConnectedWindows/Home';
 import ExercicesWindow from './Components/ConnectedWindows/Exercices';
 import ClassesWindow from './Components/ConnectedWindows/Classes';
+import StoreWindow from './Components/ConnectedWindows/Store';
 import NotConnectedWindow from './Components/NotConnectedWindow/';
 import RealisationExerciseWindow from './Components/RealisationWindow/';
 import { ProtectedRoute } from './Components/ProtectedRoute';
@@ -18,6 +19,7 @@ class App extends Component {
             <ProtectedRoute exact path="/home" component={HomeWindow} />
             <ProtectedRoute exact path="/exercices" component={ExercicesWindow} />
             <ProtectedRoute exact path="/classes" component={ClassesWindow} />
+            <ProtectedRoute exact path="/store" component={StoreWindow} />
             <NotConnectedRoute exact path="/create" component={RealisationExerciseWindow} />
             <NotConnectedRoute exact path="/" component={NotConnectedWindow} />
             {/*<Route component={ErrorWindow} />*/}

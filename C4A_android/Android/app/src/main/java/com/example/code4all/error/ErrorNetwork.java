@@ -5,7 +5,6 @@ import android.widget.Toast;
 import com.android.volley.*;
 import com.example.code4all.R;
 import com.example.code4all.serverhandler.ServerHandler;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,8 +14,12 @@ import java.nio.charset.StandardCharsets;
 public class ErrorNetwork extends VolleyError {
 
 //    Keys for json search
-    private final String ERROR_MESSAGE_KEY = "error";
-    private final String ERROR_CODE_KEY = "errorCode";
+    public static final String ERROR_MESSAGE_KEY = "message";
+    public static final String ERROR_CODE_KEY = "code";
+
+    public static final String ERROR_CODE_INCORRECT_TOKEN_VALUE = "INCORRECT_TOKEN";
+
+
 
     private JSONObject errorContent;
 
@@ -34,16 +37,54 @@ public class ErrorNetwork extends VolleyError {
 //            }
 
     }
-    public static void parseVolleyError(VolleyError error, Context context){
+    public static String parseVolleyError(VolleyError error, Context context){
         try {
-            String responseBody = new String(error.networkResponse.data, "utf-8");
+            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
             JSONObject data = new JSONObject(responseBody);
-            String message = data.getString("message");
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-        } catch (JSONException ignored) {
-        } catch (UnsupportedEncodingException ignored) {
-        }
+            String message = data.getString(ERROR_MESSAGE_KEY);
+            return message;
+        } catch (JSONException e){e.printStackTrace();}
+
+        return null;
     }
+
+    public static String getErrorCode(VolleyError error){
+        try {
+            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+            JSONObject data = new JSONObject(responseBody);
+            return data.getString(ERROR_CODE_KEY);
+        } catch (JSONException e){e.printStackTrace();}
+
+        return null;
+    }
+
+    public static String getVolleyError(VolleyError error, Context context){
+        try {
+            if (error instanceof NetworkError) {
+                return context.getString(R.string.network_error_network_error);
+
+            } else if (error instanceof ServerError) {
+                return context.getString(R.string.network_error_server_error);
+
+            } else if (error instanceof AuthFailureError) {
+                String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                JSONObject data = new JSONObject(responseBody);
+                return data.getString(ERROR_MESSAGE_KEY);
+
+            } else if (error instanceof ParseError) {
+                return context.getString(R.string.network_error_parser_error);
+
+            } else if (error instanceof TimeoutError) {
+                return context.getString(R.string.network_error_time_out);
+            }
+
+        }
+        catch (JSONException ignored) {}
+
+        return null;
+    }
+
+
     private String setMessage(VolleyError error, Context context) {
         /*
         if (error.networkResponse != null) {
@@ -52,19 +93,11 @@ public class ErrorNetwork extends VolleyError {
                 return ServerHandler.getStringFromJsonObject(dataJsonMessage, ERROR_MESSAGE_KEY);
             }
         }*/
-        if (error instanceof NetworkError) {
-             return context.getString(R.string.network_error_network_error);
-        } else if (error instanceof ServerError) {
-            return context.getString(R.string.network_error_server_error);
-        } else if (error instanceof AuthFailureError) {
-            return context.getString(R.string.network_error_auth_failure);
-        } else if (error instanceof ParseError) {
-            return context.getString(R.string.network_error_parser_error);
-        } else if (error instanceof TimeoutError) {
-            return context.getString(R.string.network_error_time_out);
-        }
+
+
         return "";
     }
+
     public String diplayErrorMessage(){
         try {
             return ServerHandler.getStringFromJsonObject(errorContent, ERROR_MESSAGE_KEY);
@@ -73,9 +106,5 @@ public class ErrorNetwork extends VolleyError {
         }
 
         return "";
-    }
-
-    public String getErrorCode() throws JSONException {
-        return ServerHandler.getStringFromJsonObject(errorContent, ERROR_CODE_KEY);
     }
 }

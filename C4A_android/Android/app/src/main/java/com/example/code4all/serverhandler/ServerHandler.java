@@ -91,7 +91,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
 
     @Override
     public void findUser(@NotNull String nameOrEmail, @NotNull String token, @NotNull IAPICallbackJsonArray callback) {
-        String finalUrl = rootUrl + user + find_user + "/" + nameOrEmail;
+        String finalUrl = rootUrl +  user + find_user + "/" + nameOrEmail;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET, finalUrl, null,
@@ -363,5 +363,10 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
         };
 
         this.requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void getFileById(int patternId, @NotNull String tokenSaved, @NotNull IAPICallbackJsonObject iapiCallbackJsonObject) {
+
     }
 }

@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_height="wrap_content" android:id="@+id/nameSection">
+            android:layout_height="wrap_content" android:id="@+id/nameSection" android:visibility="invisible">
 
         <TextView
                 android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
 
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_height="wrap_content" android:id="@+id/creatorSection">
+            android:layout_height="wrap_content" android:id="@+id/creatorSection" android:visibility="invisible">
         <TextView
                 android:text="@string/exercice_fragment_exercice_creator_label"
                 style="@style/MainTheme"
@@ -105,7 +105,7 @@
 
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            style="@style/MainTheme"/>
+            style="@style/MainTheme" android:id="@+id/description" android:visibility="invisible"/>
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/exercice_name"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textAlignment="textStart"/>
+            android:textAlignment="textStart" android:visibility="invisible"/>
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -137,7 +137,7 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="64dp"
                 app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" android:visibility="invisible"/>
         <ProgressBar
                 style="?android:attr/progressBarStyle"
                 android:indeterminateDrawable="@drawable/progress"

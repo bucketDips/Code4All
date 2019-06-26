@@ -17,15 +17,15 @@ class AddPersonWindowWrapper extends Component {
     };
 
     async handleSave(props){
-      var ids = await props.map(async id => {
+      var values = await Promise.all(props.map(id => {
         if(this.props.teacher) {
-          var res = await classes.addProfessorToClass(id, this.props.idClass);
-          return res;
+          classes.addProfessorToClass(id, this.props.idClass);
         }
         else {
-          var res = await classes.addStudentToClass(id, this.props.idClass);
-          return res;
+          classes.addStudentToClass(id, this.props.idClass);
         }
+      })).then(function(values) {
+        return values;
       });
       this.props.refill();
       this.setState({ visible: false });

@@ -39,6 +39,7 @@ public class LoginFragment extends Fragment{
     private SharedPreferenceManager cache;
     private Context context;
     private ProgressBar progressBar;
+    private LoginActivity parent;
 
 
     @Nullable
@@ -46,6 +47,7 @@ public class LoginFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragment = inflater.inflate(R.layout.fragment_login, container, false);
         cache = new SharedPreferenceManager(getContext());
+        parent = (LoginActivity) getActivity();
 
         Button button = fragment.findViewById(R.id.buttonConnect);
         button.setOnClickListener(this::onClickLogin);
@@ -87,8 +89,6 @@ public class LoginFragment extends Fragment{
                     if (res.equals("true") || code.equals("AUTHENTIFICATION_SUCCESS")){
                         Intent intent = new Intent(getActivity(), MainMenuActivity.class);
                         String token = result.getString("token");
-
-                        cache.saveToken(token);
 
                         saveUserInfos(username.getText().toString(), token, intent);
                     }else{
@@ -135,7 +135,10 @@ public class LoginFragment extends Fragment{
                     Gson gson = new GsonBuilder().create();
                     JSONObject userJson = result.getJSONObject(0);
                     User user = gson.fromJson(String.valueOf(userJson), User.class);
+
                     cache.saveUserInfos(user);
+                    cache.saveToken(token);
+
                     startActivity(intent);
 
                 } catch (JSONException e) {
@@ -146,6 +149,7 @@ public class LoginFragment extends Fragment{
             @Override
             public void onErrorResponse(@NotNull VolleyError error) {
                 progressBar.setVisibility(View.GONE);
+                parent.returnHome(error);
             }
         });
 

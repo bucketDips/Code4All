@@ -23,6 +23,7 @@ import com.example.code4all.data_pojo.exercice.ExerciceManager;
 import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
+import com.example.code4all.serverhandler.IAPICallbackJsonObject;
 import com.example.code4all.viewtools.SnackbarBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,7 +59,7 @@ public class ExerciceListActivity extends MyAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
@@ -113,6 +114,11 @@ public class ExerciceListActivity extends MyAppCompatActivity {
         return R.layout.activity_exercice_list;
     }
 
+    @Override
+    protected View getRootView() {
+        return findViewById(R.id.root);
+    }
+
     private void setupRecyclerView(RecyclerView recyclerView1, RecyclerView recyclerView2, RecyclerView recyclerView3, CoordinatorLayout rootView) {
 
         recyclerView1.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -154,65 +160,35 @@ public class ExerciceListActivity extends MyAppCompatActivity {
 
     public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        //private final ExerciceListActivity parentActivity;
-
         private final View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //exerciceManager.getExerciceById(Integer.parseInt(view.getTag().toString()));
 
                 int position = getItemPositionClick(view);
-
-                Log.d(TAG, "Position : "  + position);
-
-
-
                 Exercice exerciceToSend = exerciceManager.getExercice(position);
-                //Log.d(TAG, exerciceToSend.getTitle());
 
                 Gson gson = new GsonBuilder().create();
+                String exerciceJson = gson.toJson(exerciceToSend);
 
+                if (twoPanneMod) {
+                    Bundle arguments = new Bundle();
+                    arguments.putString(ExerciceDetailFragment.EXERCICE_JSON, exerciceJson);
+                    ExerciceDetailFragment fragment = new ExerciceDetailFragment();
+                    fragment.setArguments(arguments);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.exercice_detail_container, fragment)
+                            .commit();
+                } else {
+                    Context context = view.getContext();
+                    Intent intent = new Intent(context, ExerciceDetailActivity.class);
+                    intent.putExtra(ExerciceDetailFragment.EXERCICE_JSON, exerciceJson);
+                    startActivity(intent);
+                }
 
                 // get creator infos
-                if(exerciceToSend.getAuthor_id() > 0)
-                    getServerHandler().getUser(exerciceToSend.getAuthor_id(), getSharedPreferenceManager().getTokenSaved(), new IAPICallbackJsonArray() {
-                        @Override
-                        public void onSuccessResponse(@NotNull JSONArray result) {
-                            try {
-                                String exerciceJson = gson.toJson(exerciceToSend);
-                                JSONObject creatorJson = result.getJSONObject(0);
-                                User creator = gson.fromJson(String.valueOf(creatorJson), User.class);
-                                String creatorJsonString = gson.toJson(creator);
+                if(exerciceToSend.getAuthor_id() > 0){
 
-
-                                if (twoPanneMod) {
-                                    Bundle arguments = new Bundle();
-                                    //arguments.putInt(ExerciceDetailFragment.ARG_ITEM_POSITION, position);*
-                                    arguments.putString(ExerciceDetailFragment.EXERCICE_JSON, exerciceJson);
-                                    arguments.putString(ExerciceDetailFragment.EXERCICE_CREATOR_JSON, creatorJsonString);
-                                    ExerciceDetailFragment fragment = new ExerciceDetailFragment();
-                                    fragment.setArguments(arguments);
-                                    getSupportFragmentManager().beginTransaction()
-                                            .replace(R.id.exercice_detail_container, fragment)
-                                            .commit();
-                                } else {
-                                    Context context = view.getContext();
-                                    Intent intent = new Intent(context, ExerciceDetailActivity.class);
-                                    intent.putExtra(ExerciceDetailFragment.EXERCICE_JSON, exerciceJson);
-                                    intent.putExtra(ExerciceDetailFragment.EXERCICE_CREATOR_JSON, creatorJsonString);
-                                    //intent.putExtra(ExerciceDetailFragment.ARG_ITEM_POSITION, position);
-                                    startActivity(intent);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void onErrorResponse(@NotNull VolleyError error) {
-
-                        }
-                    });
+                }
             }
 
             private int getItemPositionClick(View view) {
@@ -273,14 +249,14 @@ public class ExerciceListActivity extends MyAppCompatActivity {
             return exercices.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             final TextView classeName;
             final TextView exerciceName;
 
             ViewHolder(View view) {
                 super(view);
-                classeName = (TextView) view.findViewById(R.id.classeName);
-                exerciceName = (TextView) view.findViewById(R.id.exerciceName);
+                classeName = view.findViewById(R.id.classeName);
+                exerciceName = view.findViewById(R.id.exerciceName);
             }
         }
     }

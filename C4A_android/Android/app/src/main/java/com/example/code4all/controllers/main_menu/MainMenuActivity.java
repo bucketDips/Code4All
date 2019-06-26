@@ -1,15 +1,25 @@
 package com.example.code4all.controllers.main_menu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.code4all.R;
+import com.example.code4all.controllers.login.LoginActivity;
 import com.example.code4all.customviews.MyAppCompatActivity;
 import com.example.code4all.controllers.classes_menu.ClasseActivity;
 import com.example.code4all.controllers.exercices_menu.ExerciceListActivity;
@@ -17,6 +27,8 @@ import com.example.code4all.data_pojo.user.IUserManagerListener;
 import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.data_pojo.user.UserManager;
 import com.example.code4all.databinding.ActivityMainMenuBinding;
+import com.example.code4all.error.Error;
+import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -52,7 +64,7 @@ public class MainMenuActivity extends MyAppCompatActivity {
 
                 @Override
                 public void onErrorResponse(@NotNull VolleyError error) {
-
+                    setUpBasicBackground();
                 }
             });
 
@@ -66,19 +78,17 @@ public class MainMenuActivity extends MyAppCompatActivity {
                 @Override
                 public void onUserLoaded(User user) {
                     Log.d(TAG, TAG + "onUserLoaded");
-
                     renderTextViews(user);
-                    //Toast.makeText(getApplicationContext(), TAG + "onUserLoaded()", Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onUserLoadFail(String user, VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "User load has fail", Toast.LENGTH_LONG).show();
+                    returnHome(error);
                 }
             });
 
             userManager.loadUserFromSharedPreference();
-            //User user = sharedPreferenceManager.getUserInfos();
+            //userManager.loadUserInfos(sharedPreferenceManager.getUserInfos().getEmail());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,7 +100,17 @@ public class MainMenuActivity extends MyAppCompatActivity {
 
         binding.button1.setOnClickListener(v -> onClickButtonMenu(binding.button1));
         binding.button2.setOnClickListener(v -> onClickButtonMenu(binding.button2));
+        binding.disconnectButton.setOnClickListener(v -> returnHome(null));
+
         binding.datalabel.setText(getString(R.string.datalabel,DateFormat.getDateTimeInstance().format(new Date())));
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void setUpBasicBackground() {
+        binding.background.setImageResource(R.color.black);
+        binding.pixabayLegend.setVisibility(View.INVISIBLE);
+        showUi();
+
     }
 
     private void loadUI(JSONObject result) {
@@ -102,6 +122,11 @@ public class MainMenuActivity extends MyAppCompatActivity {
         return R.layout.activity_main_menu;
     }
 
+    @Override
+    protected View getRootView() {
+        return findViewById(R.id.root);
+    }
+
     private void loadBackgroundImage(JSONObject result) {
         try {
             JSONArray jsonArray = result.getJSONArray("hits");
@@ -109,26 +134,23 @@ public class MainMenuActivity extends MyAppCompatActivity {
 
             JSONObject pictureChoosen = jsonArray.getJSONObject((int) randomNumber);
             String url = pictureChoosen.getString("largeImageURL");
-            Picasso.with(this).load(url).fit().centerCrop().into(binding.background, new Callback() {
+
+            Glide.with(this).load(url).listener(new RequestListener<Drawable>() {
+                @SuppressLint("RestrictedApi")
                 @Override
-                public void onSuccess() {
-                    binding.background.setVisibility(View.VISIBLE);
-                    binding.rows.setVisibility(View.VISIBLE);
-                    binding.title.setVisibility(View.VISIBLE);
-                    binding.progressBar.setVisibility(View.GONE);
-                    Log.d(TAG, "Image downloaded");
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    showUi();
+                    binding.pixabayLegend.setVisibility(View.GONE);
+                    return false;
                 }
 
+                @SuppressLint("RestrictedApi")
                 @Override
-                public void onError() {
-                    Log.d(TAG, "Can't dl the image");
-                    binding.background.setVisibility(View.GONE);
-                    binding.rows.setVisibility(View.VISIBLE);
-                    binding.title.setVisibility(View.VISIBLE);
-                    binding.progressBar.setVisibility(View.GONE);
-                    binding.title.setTextColor(getResources().getColor(R.color.black));
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    showUi();
+                    return false;
                 }
-            });
+            }).fitCenter().placeholder(R.color.white).transition(DrawableTransitionOptions.withCrossFade(1000)).centerCrop().into(binding.background);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -139,8 +161,7 @@ public class MainMenuActivity extends MyAppCompatActivity {
         if(user != null){
             Log.d(TAG, user.getName());
             binding.title.setText(getString(R.string.welcoming_msg, user.getName()));
-        }
-        else
+        } else
             binding.title.setText(getString(R.string.welcoming_msg,""));
 
         String message = "";
@@ -172,6 +193,15 @@ public class MainMenuActivity extends MyAppCompatActivity {
         sharedPreferenceManager.clearCache();
         Log.d(TAG, "Cache cleared");
         super.onDestroy();
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void showUi(){
+        binding.disconnectButton.setVisibility(View.VISIBLE);
+        binding.background.setVisibility(View.VISIBLE);
+        binding.rows.setVisibility(View.VISIBLE);
+        binding.title.setVisibility(View.VISIBLE);
+        binding.progressBar.setVisibility(View.GONE);
     }
 
 }
