@@ -5,6 +5,7 @@ var md5 = require('md5');
 var con = require('./connexionDatabase.js');
 var jwt = require('jsonwebtoken');
 var config = require("./config");
+var grid = require("./grid.js")
 var AUTH = require('./AUTHENTIFICATION')
 var gEval =eval;
 var fs = require('fs');
@@ -44,7 +45,7 @@ function insertExerciceFunctions(functions, exercice_id) {
         var reccords = [];
         var str = "";
         for (var i = 0; i < functions.length; ++i){
-            str += "('"+exercice_id+"','"+escapeQuote(functions[i].code)+"','"+escapeQuote(functions[i].name)+"','"+escapeQuote(functions[i].description)+"'),"
+            str += "("+exercice_id+","+SqlString.escape(functions[i].code)+","+SqlString.escape(functions[i].name)+","+SqlString.escape(functions[i].description)+"),"
 
         }
         str = str.substring(0,str.length - 1)
@@ -56,25 +57,45 @@ function insertExerciceFunctions(functions, exercice_id) {
         });
     });
 }
+function insertExerciceTests(tests, exercice_id) {
+    return new Promise(function(resolve, reject) {
+        var reccords = [];
+        var str = "";
+        for (var i = 0; i < tests.length; ++i){
+            str += "("+exercice_id+","+SqlString.escape(tests[i].code)+","+SqlString.escape(tests[i].name)+","+SqlString.escape(tests[i].description)+"),"
+
+        }
+        str = str.substring(0,str.length - 1)
+        var sql = "INSERT INTO exercice_tests (exercice_id, code, name, description) VALUES " + str
+        console.log(sql)
+        con.query(sql,function (err, rows, fields) {
+            if (err) return reject(err);
+            resolve(rows);
+        });
+    });
+}
 /* GET users listing. */
 router.get('/test', function(request, res, next) {
-    var id = request.params.id;
-    var temp = {}
-    function getLastRecord(id) {
-        return new Promise(function(resolve, reject) {
-            var sql = "select * from users where id='"+id+"';";
-            con.query(sql, function (err, rows, fields) {
-                if (err) return reject(err);
-                resolve(rows);
-            });
-        });
-    }
-    temp[funcString[0].name] = createFunction(funcString[0].code);
-    var ret = temp[funcString[0].name]();
-    console.log("res")
-    console.log(ret)
-    console.log("res")
-
+    // var id = request.params.id;
+    // var temp = {}
+    // function getLastRecord(id) {
+    //     return new Promise(function(resolve, reject) {
+    //         var sql = "select * from users where id='"+id+"';";
+    //         con.query(sql, function (err, rows, fields) {
+    //             if (err) return reject(err);
+    //             resolve(rows);
+    //         });
+    //     });
+    // }
+    // temp[funcString[0].name] = createFunction(funcString[0].code);
+    // var ret = temp[funcString[0].name]();
+    // console.log("res")
+    // console.log(ret)
+    // console.log("res")
+    var grille = new grid.
+    Grid(5,5,1)
+    console.log("grille")
+    console.log(grille)
     res.send("toto");
 });
 router.post('/addExerciceToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom ,function(request, res, next) {
@@ -481,12 +502,23 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     }
 
     insertExercice(contentOjb,author_id).then(function(rows){
-        if (contentOjb.functions.length == 0){
+        if (contentOjb.functions.length == 0 && contentOjb.tests.length == 0){
             res.send(rows);
         }
         else {
             insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows1){
-                res.json(rows);
+                // if (contentOjb.tests.length == 0){
+                if (true){
+                    res.send(rows);
+                }
+                else {
+                    insertExerciceTests(contentOjb.tests,rows.insertId).then(function(rows2){
+                        res.send(rows);
+                    }).catch(function(err){
+                        return res.status(403).json(err);
+                    });
+
+                }
             }).catch(function(err){
                 return res.status(403).json(err);
             });
