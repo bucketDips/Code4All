@@ -52,6 +52,10 @@
     display: flex;
 }
 
+:local(.textArea) {
+    height: 100% !important;
+}
+
 #code-editor {
     height: 100% !important;
 }
@@ -82,3 +86,7 @@
     z-index: 5000;
 }
 
+.ant-input[disabled] {
+    cursor: pointer !important;
+    color: rgba(0, 0, 0, 0.40) !important;
+}

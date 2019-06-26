@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import CustomSlider from './CustomSlider';
 import Case from './Case'
-/*import Block from './Block'
+import Block from './Block'
 import Npc from './Npc'
 import Pc from './Pc'
-import Label from './Label'*/
+import Label from './Label'
 import styles from './style.css';
 
 class Grid extends Component {
@@ -13,7 +13,7 @@ class Grid extends Component {
   constructor() {
     super();
     this.state = {
-      gridProperties: {}
+      gridProperties: {},
     }
   }
 
@@ -49,7 +49,6 @@ class Grid extends Component {
       cases: this.props.parameters.cases,
       size: this.props.parameters.size,
       background: this.props.parameters.background,
-      backgroundId: this.props.parameters.backgroundId
     };
     this.setState(
       {
@@ -67,9 +66,33 @@ class Grid extends Component {
     this.setState({gridProperties: properties});
   }
 
+  getPropsForElement(element, text) {
+    if(text) {
+      return {
+        id: element.id,
+        rowStart: element.row,
+        columnStart: element.column,
+        width: element.width,
+        height: element.height,
+        text: element.text
+      }
+    }
+    else {
+      return {
+        id: element.id,
+        rowStart: element.row,
+        columnStart: element.column,
+        width: element.width,
+        height: element.height,
+        background: this.props.getUrlForPatternId(element.patternId),
+      }
+    }
+    
+  }
+
   render() {
-    /*let background = this.state.gridProperties.background == null ? "" : 
-    (<div style={{
+    let background = (
+    <div style={{
       gridColumnStart: 1,
       gridRowStart: 1,
       zIndex: 2,
@@ -79,69 +102,21 @@ class Grid extends Component {
       backgroundSize: "100% 100%"
     }} />)
 
-    let blocks;
-    let npcs;
-    let pcs;
-    let labels;
+    let blocks = Object.entries(this.props.blocks).map(block => {
+      return (<Block {... this.getPropsForElement(block[1], false)} />)
+    }, this);
+    
+    let npcs = Object.entries(this.props.npcs).map(npc => {
+      return (<Npc {... this.getPropsForElement(npc[1], false)} />)
+    }, this);
 
-    if(this.props.blocks) {
-        blocks = Object.entries(this.props.blocks).map(block => {
-          return (<Block
-            id={block[1].id}
-            rowStart={block[1].rowStart}
-            columnStart={block[1].columnStart}
-            width={block[1].width}
-            height={block[1].height}
-            background={block[1].background}
-            backgroundId={block[1].backgroundId}
-            changeParametersWindow={this.askEditElement.bind(this)}
-          />)
-        }, this);
-    }
-    if(this.props.npcs) {
-        npcs = Object.entries(this.props.npcs).map(npc => {
-          return (<Npc
-            id={npc[1].id}
-            rowStart={npc[1].rowStart}
-            columnStart={npc[1].columnStart}
-            width={npc[1].width}
-            height={npc[1].height}
-            background={npc[1].background}
-            backgroundId={npc[1].backgroundId}
-            changeParametersWindow={this.askEditElement.bind(this)}
-          />)
-        }, this);
-    }
+    let pcs = Object.entries(this.props.pcs).map(pc => {
+      return (<Pc {... this.getPropsForElement(pc[1], false)} />)
+    }, this);
 
-    if(this.props.pcs) {
-        pcs = Object.entries(this.props.pcs).map(pc => {
-          return (<Pc
-            id={pc[1].id}
-            rowStart={pc[1].rowStart}
-            columnStart={pc[1].columnStart}
-            width={pc[1].width}
-            height={pc[1].height}
-            background={pc[1].background}
-            backgroundId={pc[1].backgroundId}
-            changeParametersWindow={this.askEditElement.bind(this)}
-          />)
-        }, this);
-    }
-
-    if(this.props.labels) {
-        labels = Object.entries(this.props.labels).map(label => {
-          return (<Label
-            id={label[1].id}
-            rowStart={label[1].rowStart}
-            columnStart={label[1].columnStart}
-            width={label[1].width}
-            height={label[1].height}
-            text={label[1].text}
-            changeParametersWindow={this.askEditElement.bind(this)}
-            caseSize={this.state.gridProperties.size}
-          />)
-        }, this);
-    }*/
+    let labels = Object.entries(this.props.labels).map(label => {
+      return (<Label {... this.getPropsForElement(label[1], true)} />)
+    }, this);
     
     return (
         <div className={styles.grid}>
@@ -154,11 +129,11 @@ class Grid extends Component {
                 gridAutoColumns: this.state.gridProperties.size + "px",
               }}>
                 {this.state.gridProperties.cases}
-                {/*{blocks}
+                {blocks}
                 {npcs}
                 {pcs}
                 {labels}
-                {background}*/}
+                {background}
               </div>
             </div>
             <CustomSlider className="custom-slider-grid" changeSize={this.changeSizeValue.bind(this)} min={5} max={100} default={this.state.gridProperties.size}/>
