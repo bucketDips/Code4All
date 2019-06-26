@@ -307,33 +307,36 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
 
                     function stand(str) {
                         str = str.substring(1, str.length - 1)
-                        var find = "\\\\"
+                        var find = "\\\\r\\\\n"
                         var re = new RegExp(find, 'g');
+                        str = str.replace(re, "\r\n")
+                        find = "\\\\"
+                        re = new RegExp(find, 'g');
                         str = str.replace(re, "")
-                        str = rmendOfLine(str)
+                        // str = rmendOfLine(str)
                         return str
                     }
 
                     rows[0].title = rows[0].title.substring(1, rows[0].title.length - 1)
                     rows[0].description = rows[0].description.substring(1, rows[0].description.length - 1)
                     rows[0].code = stand(rows[0].code)
-                    var find = ";rnrn"
-                    var re = new RegExp(find, 'g');
-                    rows[0].code = rows[0].code.replace(re, ";\r\n\r\n")
+                    // var find = "\\\\r\\\\n"
+                    // var re = new RegExp(find, 'g');
+                    // rows[0].code = rows[0].code.replace(re, "\r\n")
                     // find = "rn"
                     // re = new RegExp(find, 'g');
                     // rows[0].code = rows[0].code.replace(re, "\r\n")
-                    find = ";nn"
-                    re = new RegExp(find, 'g');
-                    rows[0].code = rows[0].code.replace(re, ";\n\n")
-                    find = ";n"
-                    re = new RegExp(find, 'g');
-                    rows[0].code = rows[0].code.replace(re, ";\n")
+                    // find = ";nn"
+                    // re = new RegExp(find, 'g');
+                    // rows[0].code = rows[0].code.replace(re, ";\n\n")
+                    // find = ";n"
+                    // re = new RegExp(find, 'g');
+                    // rows[0].code = rows[0].code.replace(re, ";\n")
                     rows[0].blocks = JSON.parse(stand(rows[0].blocks))
                     rows[0].npcs = JSON.parse(stand(rows[0].npcs))
                     rows[0].pcs = JSON.parse(stand(rows[0].pcs))
                     rows[0].labels = JSON.parse(stand(rows[0].labels))
-                    console.log(rows[0].labels)
+                    // console.log(rows[0].labels)
                     rows[0].functions = rows1;
                     rows[0].fichiers = fileExo;
                     rows[0].tests = rowsTests;
