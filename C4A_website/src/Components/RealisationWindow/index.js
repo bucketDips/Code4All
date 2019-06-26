@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import Code from './Code';
 
+import { Input } from 'antd';
 import style from './style.css';
+
+const TextArea = Input.TextArea;
+
+
 
 class RealisationExerciseWindow extends Component {
 
@@ -59,7 +64,9 @@ class RealisationExerciseWindow extends Component {
             </div>
             <div className={style.right_panel}>
                 <Code />
-                <div className={style.description}></div>
+                <div className={style.description}>
+                  <TextArea className={style.textArea} rows={4} defaultValue={this.props.bundle.description} disabled />
+                </div>
             </div>
         </div>
     );
