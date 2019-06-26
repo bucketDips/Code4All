@@ -507,8 +507,8 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
         }
         else {
             insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows1){
-                // if (contentOjb.tests.length == 0){
-                if (true){
+                if (contentOjb.tests.length == 0){
+                // if (true){
                     res.send(rows);
                 }
                 else {
