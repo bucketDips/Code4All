@@ -139,22 +139,40 @@ class Details extends Component {
   }
 
   render() {
+    var saveB = this.props.info === null ? (
+      <Button id="save-button" type="primary" icon="download" size={"large"} onClick={this.showModal}>
+        {this.state.buttonValue}
+      </Button>
+    ) :
+    (
+      <Button id="save-button" type="primary" icon="download" size={"large"} onClick={this.showModal} disabled>
+        {this.state.buttonValue}
+      </Button>
+    );
+
+    var launchB = this.props.info === null ? (
+      <Button id="launch-button" type="dasher" icon="caret-right" size={"large"} onClick={this.showModalLaunch}>
+        lancer
+      </Button>
+    ) :
+    (
+      <Button id="launch-button" type="dasher" icon="caret-right" size={"large"} onClick={this.showModalLaunch} disabled>
+        lancer
+      </Button>
+    );
+
     return (
         <div className={styles.details}>
             <div className="content">
             <TextArea autosize={false} rows={4} onChange={this.changeDetails.bind(this)} value={this.state.details} />
-            <Button id="save-button" type="primary" icon="download" size={"large"} onClick={this.showModal}>
-              {this.state.buttonValue}
-            </Button>
+            {saveB}
             {this.props.id && 
             
             <Button id="delete-button" type="danger" icon="delete" size={"large"} onClick={this.showConfirm.bind(this, this.props.id)}>
               supprimer
             </Button>}
 
-            <Button id="launch-button" type="dasher" icon="caret-right" size={"large"} onClick={this.showModalLaunch}>
-              lancer
-            </Button>
+            {launchB}
 
             <ExerciceCreationForm
               wrappedComponentRef={this.saveFormRef}
