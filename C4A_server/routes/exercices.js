@@ -511,10 +511,10 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     function insertExercice(contentOjb,author_id) {
         return new Promise(function(resolve, reject) {
 
-            var sql = "insert into exercices(title,description,isPublic,author_id,code,blocks,columns,labels,rows,npcs,patternId,pcs) values (?)"
+            var sql = "insert into exercices(title,description,isPublic,author_id,code,blocks,columns,labels,rows,npcs,patternId,pcs,grid) values (?)"
             var values = [];
             values.push(SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,author_id,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
-            values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)))
+            values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)),SqlString.escape(JSON.stringify(contentOjb.gridObject)))
             console.log(sql)
             con.query(sql, [values], function (err, rows, fields) {
                 if (err) return reject(err);
@@ -578,10 +578,10 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
             // var sql = "update exercices set title = ?, description = ?, isPublic = ?, code = ?, blocks = ?, columns = ?, " +
             //     "labels = ?, lines = ?, npcs = ?, patternId = ?, pcs = ? "
             // sql+="where id='"+exo_id+"' and author_id='"+author_id+"';"
-            var sql = "insert into exercices(id,title,description,isPublic,author_id,code,blocks,columns,labels,rows,npcs,patternId,pcs) values (?)"
+            var sql = "insert into exercices(id,title,description,isPublic,author_id,code,blocks,columns,labels,rows,npcs,patternId,pcs,grid) values (?)"
             var values = [];
             values.push(exo_id,SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,author_id,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
-            values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)))
+            values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)),SqlString.escape(JSON.stringify(contentOjb.gridObject)))
             // console.log(sql)
             con.query(sql, [values], function (err, rows, fields) {
                 if (err) return reject(err);
