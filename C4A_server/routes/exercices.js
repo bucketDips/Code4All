@@ -331,6 +331,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                     re = new RegExp(find, 'g');
                     rows[0].code = rows[0].code.replace(re, ";\n")
                     rows[0].blocks = JSON.parse(stand(rows[0].blocks))
+                    rows[0].grid = JSON.parse(stand(rows[0].grid))
                     rows[0].npcs = JSON.parse(stand(rows[0].npcs))
                     rows[0].pcs = JSON.parse(stand(rows[0].pcs))
                     rows[0].labels = JSON.parse(stand(rows[0].labels))
