@@ -21,5 +21,8 @@ interface IServerHandler {
 
     fun getAllExercicesOfTheUserSession(tokenSaved: String, callback: IAPICallbackJsonObject)
     fun getExerciceById(idExercice: Int, tokenSaved: String, callback: IAPICallbackJsonObject)
+    fun getFileById(patternId: Int, tokenSaved: String, iapiCallbackJsonObject: IAPICallbackJsonObject) {
+
+    }
 
 }

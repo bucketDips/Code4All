@@ -38,7 +38,7 @@ public class UserManager extends DataManager implements IUserManager {
         String token = this.sharedPreferenceManager.getTokenSaved();
 
         if (token != null && userNameOrEmail.length() > 0) {
-            serverHandler.findUser(userNameOrEmail, token, new IAPICallbackJsonArray() {
+            serverHandler.findUser(userNameOrEmail, token+"a", new IAPICallbackJsonArray() {
                 @Override
                 public void onSuccessResponse(@NotNull JSONArray result) {
                     try {
@@ -49,21 +49,10 @@ public class UserManager extends DataManager implements IUserManager {
                         } else {
                             listener.onUserLoaded(null);
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                }
-
-                private User getUserFromJson(JSONArray result) throws JSONException {
-                    Gson gson = new Gson();
-                    JSONObject userInfos = result.getJSONObject(0);
-                    return gson.fromJson(String.valueOf(userInfos), User.class);
-                }
-
-                private boolean userExist(JSONArray result) {
-                    return result.length() > 0;
                 }
 
                 @Override
@@ -85,5 +74,15 @@ public class UserManager extends DataManager implements IUserManager {
         // load the user saved in cache to memory
         loadUserFromSharedPreference();
 
+    }
+
+    private User getUserFromJson(JSONArray result) throws JSONException {
+        Gson gson = new Gson();
+        JSONObject userInfos = result.getJSONObject(0);
+        return gson.fromJson(String.valueOf(userInfos), User.class);
+    }
+
+    private boolean userExist(JSONArray result) {
+        return result.length() > 0;
     }
 }

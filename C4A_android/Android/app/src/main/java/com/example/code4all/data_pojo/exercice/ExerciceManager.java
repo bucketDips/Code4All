@@ -116,7 +116,7 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
                         JSONObject exerciceJson = result.getJSONObject("exercice");
                         Exercice exercice = gson.fromJson(String.valueOf(exerciceJson), Exercice.class);
 
-                        if(exercice.getContent() != null){
+                        if(exercice != null){
                             ArrayList<Exercice> exercices = new ArrayList<>();
                             exercices.add(exercice);
                             listener.onExercicesLoaded(exercices, null, null);

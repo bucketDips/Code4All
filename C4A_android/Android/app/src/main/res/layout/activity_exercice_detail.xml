@@ -6,7 +6,7 @@
                                                  android:layout_height="match_parent"
                                                  android:fitsSystemWindows="true"
                                                  tools:context=".controllers.exercices_menu.ExerciceDetailActivity"
-                                                 tools:ignore="MergeRootFrame">
+                                                 tools:ignore="MergeRootFrame" android:id="@+id/root">
 
     <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"

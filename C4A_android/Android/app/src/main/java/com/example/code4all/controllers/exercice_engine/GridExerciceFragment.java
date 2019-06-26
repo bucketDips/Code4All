@@ -2,8 +2,8 @@ package com.example.code4all.controllers.exercice_engine;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.example.code4all.R;
-import com.example.code4all.data_pojo.block.GridExerciceElement;
 import com.example.code4all.data_pojo.exercice.Exercice;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,13 +26,15 @@ import com.google.gson.GsonBuilder;
 public class GridExerciceFragment extends Fragment {
 
     private final String TAG = "GridExerciceFragment";
-    private final String CONTENT_GRID = "CONTENT_GRID";
+
     private OnFragmentInteractionListener mListener;
     private LinearLayout exerciceGrid;
     private TextView textViewGrid;
     private Exercice exercice;
     private GridExerciceFactory factory;
     private SeekBar seekbar;
+    private ConstraintLayout gridborder;
+    private GifImageView gridBackGround;
 
     public GridExerciceFragment() {
     }
@@ -50,22 +52,21 @@ public class GridExerciceFragment extends Fragment {
             String exerciceJson = getArguments().getString(ExerciceEngineActivity.EXERCICE_JSON);
             exercice = gson.fromJson(exerciceJson, Exercice.class);
 
+
+            /*
+            // test
+            Block block = new Block(getContext(),3,2,2,2,2,2);
+            exercice = new Exercice(3,"toto","description",0,5,"console.log('dddd')",
+                    22,4,10,new Block[]{block}, new NonPlayerCharacter[]{}, new PlayableCharacter[]{},new Label[]{}, 2);
+                    */
+
             assert parent != null;
-            factory = new GridExerciceFactory(getContext(), parent.getSharedPreferenceManager(), parent.getServerHandler(), exercice, new IGridExerciceListener() {
-                @Override
-                public void onClickElement(int indexRow, int indexColumn) {
-                    Log.d(TAG, (indexRow + 1)  + " " + (indexColumn+1) );
-                    GridExerciceElement element = factory.getItem(indexRow, indexColumn);
-
-                    Log.d(TAG, element.getClass().toString());
-
-
-                }
-            });
+            factory = new GridExerciceFactory(getContext(), gridborder, gridBackGround, parent.getSharedPreferenceManager(), parent.getServerHandler(), exercice);
             exerciceGrid = (LinearLayout) factory.build(exerciceGrid);
-            textViewGrid.setText(getString(R.string.simple_string_placeholder, String.valueOf("Exercice " + exercice.getTitle())));
+            textViewGrid.setText(getString(R.string.simple_string_placeholder,
+                    String.valueOf("Exercice " + exercice.getTitle() + " " +
+                            exercice.getColumns() + "x" + exercice.getRows())));
 
-            //createExerciceGrid(factory, exerciceGrid, fragment,20, 30);
         }
         return fragment;
     }
@@ -73,6 +74,8 @@ public class GridExerciceFragment extends Fragment {
     private void loadUi(View fragment) {
         exerciceGrid = fragment.findViewById(R.id.grid);
         textViewGrid = fragment.findViewById(R.id.textViewExerciceGrid);
+        gridborder = fragment.findViewById(R.id.gridborder);
+        gridBackGround = fragment.findViewById(R.id.gridBackGround);
         seekbar = fragment.findViewById(R.id.zoomSeekbar);
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

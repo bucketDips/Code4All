@@ -1,15 +1,20 @@
 package com.example.code4all.controllers.exercices_menu;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.view.Surface;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import com.example.code4all.R;
+import com.example.code4all.customviews.MyAppCompatActivity;
 
 /**
  * An activity representing a single Exercice detail screen. This
@@ -17,16 +22,19 @@ import com.example.code4all.R;
  * item details are presented side-by-side with a list of items
  * in a {@link ExerciceListActivity}.
  */
-public class ExerciceDetailActivity extends AppCompatActivity {
+public class ExerciceDetailActivity extends MyAppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercice_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        //setContentView(R.layout.activity_exercice_detail);
+        Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        //fixScreenRotation();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,6 +73,34 @@ public class ExerciceDetailActivity extends AppCompatActivity {
             //arguments.putInt(ExerciceDetailFragment.ARG_ITEM_POSITION, position);
 
         }
+    }
+
+    private void fixScreenRotation() {
+        final int screenOrientation = ((WindowManager) getBaseContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
+        switch (screenOrientation) {
+            case Surface.ROTATION_180:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                break;
+            case Surface.ROTATION_270:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                break;
+            case Surface.ROTATION_0:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                break;
+            case Surface.ROTATION_90:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                break;
+        }
+    }
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_exercice_detail;
+    }
+
+    @Override
+    protected View getRootView() {
+        return findViewById(R.id.root);
     }
 
     @Override

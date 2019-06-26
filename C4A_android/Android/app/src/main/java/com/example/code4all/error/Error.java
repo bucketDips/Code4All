@@ -11,7 +11,7 @@ public enum Error {
     private final int code;
     private final String description;
 
-    private Error(int code, String description) {
+    Error(int code, String description) {
         this.code = code;
         this.description = description;
     }

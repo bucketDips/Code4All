@@ -1,23 +1,24 @@
 package com.example.code4all.data_pojo.exercice;
 
-import com.example.code4all.data_pojo.block.*;
+import com.example.code4all.data_pojo.grid_exercice_element.*;
 
 public class ExerciceContent {
     private String title;
     private String text;
     //private int public;
-    private int lines;
+    private int rows;
     private int columns;
     private int patternId;
+
     private Block[] blocks;
     private NonPlayerCharacter[] npcs;
     private PlayableCharacter[] pcs;
     private Label[] labels;
 
-    public ExerciceContent(String title, String text, int lines, int columns, int patternId, Block[] blocks, NonPlayerCharacter[] npcs, PlayableCharacter[] pcs, Label[] labels) {
+    public ExerciceContent(String title, String text, int rows, int columns, int patternId, Block[] blocks, NonPlayerCharacter[] npcs, PlayableCharacter[] pcs, Label[] labels) {
         this.title = title;
         this.text = text;
-        this.lines = lines;
+        this.rows = rows;
         this.columns = columns;
         this.patternId = patternId;
         this.blocks = blocks;
@@ -42,12 +43,12 @@ public class ExerciceContent {
         this.text = text;
     }
 
-    public int getLines() {
-        return lines;
+    public int getRows() {
+        return rows;
     }
 
-    public void setLines(int lines) {
-        this.lines = lines;
+    public void setRows(int rows) {
+        this.rows = rows;
     }
 
     public int getColumns() {
