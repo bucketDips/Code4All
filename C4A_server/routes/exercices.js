@@ -42,6 +42,9 @@ function deleteExercice(exo_id,author_id) {
 }
 function insertExerciceFunctions(functions, exercice_id) {
     return new Promise(function(resolve, reject) {
+        if (functions.length == 0){
+            resolve({});
+        }
         var reccords = [];
         var str = "";
         for (var i = 0; i < functions.length; ++i){
@@ -59,6 +62,9 @@ function insertExerciceFunctions(functions, exercice_id) {
 }
 function insertExerciceTests(tests, exercice_id) {
     return new Promise(function(resolve, reject) {
+        if (tests.length == 0){
+            resolve({});
+        }
         var reccords = [];
         var str = "";
         for (var i = 0; i < tests.length; ++i){
@@ -502,27 +508,15 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
     }
 
     insertExercice(contentOjb,author_id).then(function(rows){
-        if (contentOjb.functions.length == 0 && contentOjb.tests.length == 0){
-            res.send(rows);
-        }
-        else {
             insertExerciceFunctions(contentOjb.functions,rows.insertId).then(function(rows1){
-                if (contentOjb.tests.length == 0){
-                // if (true){
+                insertExerciceTests(contentOjb.tests,rows.insertId).then(function(rows2){
                     res.send(rows);
-                }
-                else {
-                    insertExerciceTests(contentOjb.tests,rows.insertId).then(function(rows2){
-                        res.send(rows);
-                    }).catch(function(err){
-                        return res.status(403).json(err);
-                    });
-
-                }
+                }).catch(function(err){
+                    return res.status(403).json(err);
+                });
             }).catch(function(err){
                 return res.status(403).json(err);
             });
-        }
 
     }).catch(function(err){
         return res.status(403).json(err);
@@ -533,6 +527,17 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
 function deleteExerciceFunctions(exo_id) {
     return new Promise(function(resolve, reject) {
         var sql = "delete from exercice_functions where exercice_id='"+exo_id+"';"
+        console.log(sql)
+        con.query(sql, function (err, rows, fields) {
+            if (err) return reject(err);
+            resolve(rows);
+        });
+
+    });
+}
+function deleteExerciceTests(exo_id) {
+    return new Promise(function(resolve, reject) {
+        var sql = "delete from exercice_tests where exercice_id='"+exo_id+"';"
         console.log(sql)
         con.query(sql, function (err, rows, fields) {
             if (err) return reject(err);
@@ -571,21 +576,24 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
 
     deleteExercice(exo_id,author_id).then(function(r){
         modifyExercice(exo_id,contentOjb,author_id).then(function(rows){
-            deleteExerciceFunctions(exo_id).then(function(rowsf){
-                // console.log(rows)
-                if (contentOjb.functions.length == 0){
-                    res.send(rows);
-                }
-                else{
-                    insertExerciceFunctions(contentOjb.functions,exo_id).then(function(rows1){
-                        res.send(rows);
-                    }).catch(function(err){
+
+            deleteExerciceTests(exo_id).then(function(rowst) {
+                deleteExerciceFunctions(exo_id).then(function (rowsf) {
+                    // console.log(rows)
+
+                    insertExerciceFunctions(contentOjb.functions, exo_id).then(function (rows1) {
+                        insertExerciceTests(contentOjb.tests, exo_id).then(function (rows1) {
+                            res.send(rows);
+                        }).catch(function (err) {
+                            return res.status(403).json(err);
+                        });
+                    }).catch(function (err) {
                         return res.status(403).json(err);
                     });
-
-                }
-
-            }).catch(function(err){
+                }).catch(function (err) {
+                    return res.status(403).json(err);
+                });
+            }).catch(function (err) {
                 return res.status(403).json(err);
             });
         }).catch(function(err){
@@ -642,12 +650,16 @@ router.post('/delete/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
             return res.status(403).json({
                 success: false,
                 code : 'MISSING_AUTHORISATION',
-                message: 'Cet exercice ne vous appartient!'
+                message: 'Cet exercice ne vous appartient pas!'
             })
         deleteUserExercice(exo_id).then(function(rowsUserExercice){
             deleteClassExercice(exo_id).then(function(rowsClassExercice){
-                deleteExerciceFunction(exo_id).then(function(rows){
-                    res.send(rows);
+                deleteExerciceFunction(exo_id).then(function(rowsDeleteF){
+                    deleteExerciceTests(exo_id).then(function(rowsDeleteT){
+                        res.send(rowsExercice);
+                    }).catch(function(err){
+                        return res.status(403).json(err);
+                    });
                 }).catch(function(err){
                     return res.status(403).json(err);
                 });
