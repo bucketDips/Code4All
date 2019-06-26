@@ -8,9 +8,8 @@ export class Grid {
       this.pcs = [];
       this.labels = [];
       this.functions = [];
+      this.tests = [];
     }
-  
-    changePattern(patternId){};
   
     checkIfIdAlreadyExists(elements, id) {
         elements.forEach(element => {
@@ -48,6 +47,12 @@ export class Grid {
         if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
         //this.functions.push(new Func(name, String(code), description));
         this.functions.push(func);
+    }
+
+    addTest(func) {
+        if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
+        //this.functions.push(new Func(name, String(code), description));
+        this.tests.push(func);
     }
 
     removeElement(elements, id) {
@@ -93,6 +98,35 @@ export class Grid {
 
     getFunctions() {
         return this.functions;
+    }
+
+    getTests() {
+        return this.tests;
+    }
+
+    getElementById(id, elements) {
+        elements.map(element => {
+            if(element.id === id) {
+                return element;
+            }
+        });
+        throw new Error("Il n'y a pas d'élément avec cet id");
+    }
+
+    getBlock(id) {
+        return this.getElementById(id, this.blocks);
+    }
+
+    getNpc(id) {
+        return this.getElementById(id, this.npcs);
+    }
+
+    getPc(id) {
+        return this.getElementById(id, this.pcs);
+    }
+
+    getLabel(id) {
+        return this.getElementById(id, this.labels);
     }
   }
   

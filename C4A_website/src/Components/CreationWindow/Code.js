@@ -235,7 +235,8 @@ class Code extends Component {
       var pcs = grid.getPcs();
       var labels = grid.getLabels();
       var functions = grid.getFunctions();
-      this.props.synchroniseElements(blocks, npcs, pcs, labels, functions);
+      var tests = grid.getTests();
+      this.props.synchroniseElements(blocks, npcs, pcs, labels, functions, tests);
       this.setState({fromEdit: false});
   }
 
