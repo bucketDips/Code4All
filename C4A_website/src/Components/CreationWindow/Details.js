@@ -62,7 +62,7 @@ const ExerciceLaunchModal = Form.create({ name: 'launch_modal' })(
           title="Lancement exercice"
           destroyOnClose={true}
         >
-          <RealisationExerciseWindow />
+          <RealisationExerciseWindow bundle={this.props.launchBundle} />
         </Modal>
       );
     }
@@ -191,7 +191,7 @@ class Details extends Component {
       tests: Object.values(state.tests),
       fichiers: fichiers
     }
-    console.log(launchBundle);
+
     this.setState({ launchModalVisible: true, launchBundle: launchBundle });
   };
 
