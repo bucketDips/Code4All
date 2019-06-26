@@ -54,9 +54,13 @@ class Exercices {
     }
 
     async createExercice(exercice) {
+
+        console.log(exercice);
+        return;
         var patterns = this.extractPatterns(exercice);
 
         let data = {'exercice': JSON.stringify(exercice)};
+        console.log(data);
 
         Axios.post(consts.url() + 'exercices/add', qs.stringify(data),
         {
@@ -77,6 +81,7 @@ class Exercices {
         var patterns = this.extractPatterns(exercice);
 
         let data = {'exercice': JSON.stringify(exercice)};
+        console.log(data);
 
         // EXTRACT NOT SAVED PATTERN
     
@@ -91,6 +96,7 @@ class Exercices {
             window.location.href = "/exercices";
           })
           .catch(function (error) {
+              console.log(JSON.stringify(error));
             alert(JSON.stringify(error.response));
           });
     }

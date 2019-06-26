@@ -85,6 +85,7 @@ class CreateExerciseWindow extends Component {
       pc: {},
       labels: {},
       functions: [],
+      tests: [],
       editorValue: "",
       gridObject: null
     });
@@ -213,8 +214,8 @@ class CreateExerciseWindow extends Component {
     this.setState({delete: null});
   }
 
-  synchroniseFunctions(functions) {
-    this.setState({functions: functions});
+  synchroniseFunctions(functions, tests) {
+    this.setState({functions: functions, tests: tests});
   }
 
   synchroniseForOneTypeOfElements(elements, type) {
@@ -271,12 +272,12 @@ class CreateExerciseWindow extends Component {
     }
   }
 
-  synchroniseElements(blocks, npcs, pcs, labels, functions) {
+  synchroniseElements(blocks, npcs, pcs, labels, functions, tests) {
     this.synchroniseForOneTypeOfElements(blocks, "BLOCK");
     this.synchroniseForOneTypeOfElements(npcs, "NPC");
     this.synchroniseForOneTypeOfElements(pcs, "PC");
     this.synchroniseForOneTypeOfElements(labels, "LABEL");
-    this.synchroniseFunctions(functions);
+    this.synchroniseFunctions(functions, tests);
   }
 
   getMaxKeyOf(dictionary) {
@@ -395,7 +396,8 @@ class CreateExerciseWindow extends Component {
       npcs: Object.values(this.state.gridObject.npcs),
       pcs: Object.values(this.state.gridObject.pcs),
       labels: Object.values(this.state.gridObject.labels),
-      functions: this.state.functions
+      functions: this.state.functions,
+      tests: this.state.tests
     }
     
     exercices.createExercice(buildedExercice);
@@ -415,7 +417,8 @@ class CreateExerciseWindow extends Component {
       npcs: Object.values(this.state.gridObject.npcs),
       pcs: Object.values(this.state.gridObject.pcs),
       labels: Object.values(this.state.gridObject.labels),
-      functions: this.state.functions
+      functions: this.state.functions,
+      tests: this.state.tests
     }
   
     exercices.modifyExercice(buildedExercice, id);
