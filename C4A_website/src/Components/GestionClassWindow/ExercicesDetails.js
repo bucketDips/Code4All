@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import style from './style.css';
-import classes from '../../Providers/classes';
+import exercices from '../../Providers/exercices';
 
 import AddExerciceWindowWrapper from './AddExerciceWindowWrapper';
 
@@ -22,21 +22,15 @@ class ExercicesDetails extends Component {
         confirm({
             title: 'Etes-vous sûr de vouloir supprimer cet exercice de la classe ?',
             onOk() {
-                classes.deleteExerciceFrom(classId, exerciceId, cb);
+                exercices.deleteExerciceFromClass(classId, exerciceId, cb);
             },
             onCancel() {
             },
         });
     }
 
-    async refill() {
-        var exercices = await classes.getExercices();
-        this.setState({exercices: exercices});
-        console.log("refill");
-    }
-
-    async componentWillMount() {
-        this.refill();
+    refill() {
+        this.props.refill();
     }
 
     deleteExerciceFromClass(id) {
@@ -44,15 +38,14 @@ class ExercicesDetails extends Component {
     }
 
     render() {
-        var exercices = this.state.exercices.map(exercice => {
-            exercice.author = "jesus";
-            return (<Exercice infos={exercice} delete={this.deleteExerciceFromClass.bind(this, exercice.id)} />);
+        var exercices = this.props.exos.map(exercice => {
+            return (<Exercice infos={exercice} delete={this.deleteExerciceFromClass.bind(this, exercice.exercice_id)} />);
         });
 
         return (
             <div className={style.exercices_details}>
                 <h1>Détail des exercices
-                    <AddExerciceWindowWrapper refill={this.props.refill} idClass={this.props.classRoom.id} />
+                    <AddExerciceWindowWrapper refill={this.props.refill} exos={this.props.exos} />
                 </h1>
                 <div className={style.exercice_detail}>
                     {exercices}

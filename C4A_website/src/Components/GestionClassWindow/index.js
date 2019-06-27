@@ -3,9 +3,6 @@ import style from './style.css';
 import classes from '../../Providers/classes';
 import ClassDetails from './ClassDetails';
 import ExercicesDetails from './ExercicesDetails';
-import { Modal } from 'antd';
-
-const confirm = Modal.confirm;
 
 class GestionClassWindow extends Component {
 
@@ -15,6 +12,7 @@ class GestionClassWindow extends Component {
         classRoom: {},
         studentList: [],
         profList: [],
+        exosList: [],
         exercicesDetailsVisible: false
     }
   }
@@ -25,6 +23,7 @@ class GestionClassWindow extends Component {
       classRoom: classInfo.classRoom,
       studentList: classInfo.studentList,
       profList: classInfo.profList,
+      exosList: classInfo.exerciceList
     });
   }
 
@@ -49,7 +48,9 @@ class GestionClassWindow extends Component {
               teacher={this.props.teacher} />
             {this.state.exercicesDetailsVisible &&
               <ExercicesDetails
-                classRoom={this.state.classRoom} 
+                classRoom={this.state.classRoom}
+                exos={this.state.exosList}
+                refill={this.refill.bind(this)}
               />
             }
         </div>

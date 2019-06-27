@@ -139,6 +139,21 @@ class Exercices {
             }, 300);
         });
     }
+
+    deleteExerciceFromClass(idClass, idExercice, cb) {
+        Axios.post(consts.url() + 'exercices/deleteFromClass/' + idExercice + '/' + idClass, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            cb();
+        })
+        .catch(function (error) {
+            alert(JSON.stringify(error.response));
+        });
+    }
 }
 
 export default new Exercices();

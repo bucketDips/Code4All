@@ -33,7 +33,7 @@ class AddExerciceWindowWrapper extends Component {
               visible={this.state.visible}
               onCancel={this.handleCancel}
               onSave={this.handleSave.bind(this)}
-              
+              exos={this.props.exos}
             />
           </div>
         );
