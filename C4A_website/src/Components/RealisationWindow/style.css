@@ -45,6 +45,8 @@
 
 :local(.tests) {
     flex: 1.3;
+    overflow-y: auto;
+    overflow-x: unset;
 }
 
 :local(.code_content) {

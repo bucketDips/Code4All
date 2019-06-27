@@ -22,8 +22,10 @@ class RealisationExerciseWindow extends Component {
       npcs: [],
       pcs: [],
       labels: [],
+      tests: [],
       code: "",
-      buttonCompile: true
+      buttonCompile: true,
+      load: false
     }
   }
 
@@ -48,7 +50,8 @@ class RealisationExerciseWindow extends Component {
       blocks: this.props.bundle.blocks,
       npcs: this.props.bundle.npcs,
       pcs: this.props.bundle.pcs,
-      labels: this.props.bundle.labels
+      labels: this.props.bundle.labels,
+      tests: this.props.bundle.tests
     });
   }
 
@@ -78,16 +81,31 @@ class RealisationExerciseWindow extends Component {
       labels: newState.labels
     })
   }
+  
+  displayResults(error, results) {
+    var tests = this.state.tests;
+    for(var i = 0; i < tests.length; i++) {
+      if(error) {
+        tests[i].result = [false, error];
+      }
+      else {
+        tests[i].result = results[tests[i].name].result;
+      }
+    }
+    this.setState({tests: tests});
+  }
 
   compile() {
-    this.setState({buttonCompile: false});
+    this.setNewState(this.props.bundle.gridObject);
+    this.setState({buttonCompile: false, load: true});
     var compilator = new Compilator(this.props.bundle.gridObject);
     compilator.compile(this.state.code);
 
     for(var i = 0; i < compilator.states.length; i++) {
       setTimeout(this.setNewState.bind(this, compilator.states[i]), 500 * i); 
     }
-    setTimeout(() => { this.setState({buttonCompile: true});}, 500 * compilator.states.length + 1);
+    setTimeout(() => { this.setState({buttonCompile: true, load: false});}, 500 * compilator.states.length + 1);
+    setTimeout(() => { this.displayResults(compilator.error, compilator.testsResult); }, 500 * compilator.states.length + 1);
   }
 
   render() {
@@ -109,7 +127,7 @@ class RealisationExerciseWindow extends Component {
                     getUrlForPatternId={this.getUrlForPatternId.bind(this)}
                 />
                 <div className={style.tests}>
-                  <TestsResults />
+                  <TestsResults load={this.state.load} tests={this.state.tests} />
                 </div>
             </div>
             <div className={style.right_panel}>

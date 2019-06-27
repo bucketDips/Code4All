@@ -2,23 +2,43 @@ import React, { Component } from 'react';
 
 import style from './style.css';
 
-import { Collapse } from 'antd';
+import { Collapse, Spin, Icon } from 'antd';
 
 const Panel = Collapse.Panel;
 
 class TestResults extends Component {
+    genExtra(load, result){
+        if(load) {
+            return (<Spin size="small" />)
+        }
+        else {
+            if(result) {
+                if(result[0] === true) {
+                    return (<Icon type="smile" theme="twoTone" twoToneColor="#00e310" />)
+                }
+                else {
+                    console.log("false");
+                    return (<Icon type="frown" theme="twoTone" twoToneColor="#fa0000" />)
+                }
+            }
+            return (<div></div>)
+        }
+    }
+
     render() {
+        var tests = this.props.tests.map((test, index) => {
+            return (
+            <Panel header={test.name} key={index} extra={this.genExtra(this.props.load, test.result)}>
+                <b>Description du test : </b> {test.description} 
+                {test.result && 
+                    <div><b>Résultat du test : </b>  {test.result[1]}</div>
+                }
+            </Panel>)
+        });
+
         return (
             <Collapse>
-                <Panel header="This is panel header 1" key="1">
-                <p>"pipou"</p>
-                </Panel>
-                <Panel header="This is panel header 2" key="2">
-                <p>"pipou"</p>
-                </Panel>
-                <Panel header="This is panel header 3" key="3">
-                <p>"pipou"</p>
-                </Panel>
+                {tests}
             </Collapse>
         );
     }

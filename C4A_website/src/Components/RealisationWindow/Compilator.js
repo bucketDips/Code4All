@@ -76,7 +76,7 @@ export default class Compilator {
       }
       catch(error) {
         console.log(error);
-        if(error.message !== undefined && error.message !== "" && error.message !== null) {
+        if(this.error === null && error.message !== undefined && error.message !== "" && error.message !== null) {
           this.error = error.message;
         }
       }
