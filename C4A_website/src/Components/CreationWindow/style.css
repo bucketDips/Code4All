@@ -286,4 +286,5 @@ html, body {
 
 .launch_modal .ant-modal-body {
     height: 93% !important;
+    padding: 0 !important;
 }

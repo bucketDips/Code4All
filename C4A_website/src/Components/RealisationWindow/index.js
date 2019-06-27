@@ -110,10 +110,10 @@ class RealisationExerciseWindow extends Component {
 
   render() {
     if(this.state.buttonCompile) {
-      var buttonCompile = (<Button onClick={this.compile.bind(this)}>compiler</Button>);
+      var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
     }
     else {
-      var buttonCompile = (<Button onClick={this.compile.bind(this)} disabled>compiler</Button>);
+      var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)} disabled>compiler</Button>);
     }
     return (
         <div className={style.app}>
