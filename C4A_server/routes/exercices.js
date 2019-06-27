@@ -415,6 +415,78 @@ var instanciateGrid = function(exercice){
     return grid;
 }
 router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
+    var exerciceData = JSON.parse(request.body.exercice);
+    var exercice = exerciceData.exercice;
+    var grid = instanciateGrid(exercice);
+    var exerciceSteps = [];
+    var addState = function(){
+        console.log("addState")
+        exerciceSteps.push(JSON.parse(JSON.stringify(grid)))
+    }
+    addState();
+    grid["boucle"] = function(start, end, actions){
+        for (var w = start; w < end; ++w){
+            for (var i = 0; i < actions.length; ++i){
+                var currentAction = actions[i];
+                if (currentAction.type === "boucle"){
+                    this.boucle(currentAction.start,currentAction.end, currentAction.actions)
+                }
+                else if (currentAction.type === "condition"){
+                    this.condition(cond, currentAction.actions)
+                }
+                else{
+                    this[currentAction](this);
+                    addState();
+                }
+
+            }
+        }
+
+
+    }
+    grid["condition"] = function(cond, actions){
+        if (this[cond] && this[cond](this)){
+            for (var i = 0; i < actions.length; ++i){
+                var currentAction = actions[i];
+                if (currentAction.type === "boucle"){
+                    this.boucle(currentAction.start,currentAction.end, currentAction.actions)
+                }
+                else if (currentAction.type === "condition"){
+                    this.condition(cond, currentAction.actions)
+                }
+                else{
+                    this[currentAction](this);
+                    addState();
+                }
+            }
+        }
+
+
+
+
+    }
+    for (var i = 0; i < exercice.functions.length; ++i) {
+        var func = exercice.functions[i];
+        func.code = func.code.replace(func.name + "()", func.name+"(grid)")
+        grid[func.name] = createFunction(func.code);
+    }
+    for (var i = 0; i < exerciceData.solution.length; ++i){
+        var currentAction = exerciceData.solution[i];
+        if (currentAction.type === "boucle"){
+            grid.boucle(currentAction.start,currentAction.end, currentAction.actions)
+        }
+        else if (currentAction.type === "condition"){
+            grid.condition(cond, currentAction.actions)
+        }
+        else{
+            grid[currentAction](grid);
+            addState();
+        }
+
+    }
+    return res.send(exerciceSteps);
+});
+router.post('/executeExerciceTest', AUTH.VERIFYAUTH,function(request, res, next) {
     // var exerciceData = JSON.parse(request.body.exercice);
     var exerciceData = {
         "exercice": {
@@ -673,7 +745,26 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
                 }
             ]
         },
-        "solution": "avanceMarioDroite();boucle(0,4, \"avanceMarioDroite()|avanceMarioDroite()|\");avanceMarioDroite();"
+        // "solution": "avanceMarioDroite();boucle(0,4, \"avanceMarioDroite()|avanceMarioDroite()|\");avanceMarioDroite();"
+        "solution": [
+            "avanceMarioDroite",
+            {
+                "type":"boucle",
+                "start":0,
+                "end":4,
+                "actions":[
+                    "avanceMarioDroite",
+                    {
+                        "type":"boucle",
+                        "start":0,
+                        "end":2,
+                        "actions":[
+                            "avanceMarioDroite"
+                        ]
+                    }
+                ]
+            }
+        ]
     }
     var exercice = exerciceData.exercice;
     var grid = instanciateGrid(exercice);
@@ -684,119 +775,67 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
         exerciceSteps.push(JSON.parse(JSON.stringify(grid)))
     }
     addState();
-    var functionUsedList = exerciceData.solution.split(";")
-    console.log("functionUsedList")
-    console.log(functionUsedList)
-    var getFuncFromGrid = function(grid, name){
-        for (var i = 0; i < grid.functions.length; ++i){
-            if (grid.functions[i].name == name){
-                return grid.functions[i];
-            }
-
-        }
-    }
-    grid["boucle"] = function(str){
-        console.log("MICHELLLLLEEEE ASSIS PRES DE TOI");
-        var arg1 = parseInt(str.substring(0,str.indexOf(",")));
-        var arg2 = 4;
-        var arg3 = str.substring(str.indexOf('"'));
-        console.log("arg1");
-        console.log(arg1);
-        console.log("arg2");
-        console.log(arg2);
-        console.log("arg3");
-        console.log(arg3);
-        var actions = arg3.split("|");
-        for (var i = arg1; i < arg2; ++i){
-            for (var j = 0; j < actions.length; ++j){
-                var fName = actions[j].substring(0,actions[j].length - 2).replace('"', "");
-                console.log("fName")
-                console.log(fName)
-                if (fName.length > 0){
-                    this[fName](this);
+    grid["boucle"] = function(start, end, actions){
+        for (var w = start; w < end; ++w){
+            for (var i = 0; i < actions.length; ++i){
+                var currentAction = actions[i];
+                if (currentAction.type === "boucle"){
+                    this.boucle(currentAction.start,currentAction.end, currentAction.actions)
+                }
+                else if (currentAction.type === "condition"){
+                    this.condition(cond, currentAction.actions)
+                }
+                else{
+                    this[currentAction](this);
                     addState();
                 }
 
             }
         }
-    }
 
-    for (var i = 0; i < functionUsedList.length; ++i){
-        var tmp={};
-        var funcName = functionUsedList[i].substring(0,functionUsedList[i].indexOf("("));
-        var func = getFuncFromGrid(grid, funcName);
-        console.log("funcName")
-        console.log(funcName)
-        // console.log("func")
-        // console.log(func)
-        if (!func){
-            if (funcName == "boucle")
-                grid[funcName](functionUsedList[i].substring(functionUsedList[i].indexOf("(") + 1,functionUsedList[i].length - 1));
-            continue;
+
+    }
+    grid["condition"] = function(cond, actions){
+       if (this[cond] && this[cond](this)){
+           for (var i = 0; i < actions.length; ++i){
+               var currentAction = actions[i];
+               if (currentAction.type === "boucle"){
+                   this.boucle(currentAction.start,currentAction.end, currentAction.actions)
+               }
+               else if (currentAction.type === "condition"){
+                   this.condition(cond, currentAction.actions)
+               }
+               else{
+                   this[currentAction](this);
+                   addState();
+               }
+           }
+       }
+
+
+
+
+    }
+    for (var i = 0; i < exercice.functions.length; ++i) {
+        var func = exercice.functions[i];
+        func.code = func.code.replace(func.name + "()", func.name+"(grid)")
+        grid[func.name] = createFunction(func.code);
+    }
+    for (var i = 0; i < exerciceData.solution.length; ++i){
+        var currentAction = exerciceData.solution[i];
+        if (currentAction.type === "boucle"){
+            grid.boucle(currentAction.start,currentAction.end, currentAction.actions)
+        }
+        else if (currentAction.type === "condition"){
+            grid.condition(cond, currentAction.actions)
+        }
+        else{
+            grid[currentAction](grid);
+            addState();
         }
 
-        func.code = func.code.replace(func.name + "()", func.name+"(grid)")
-        // console.log("func.code")
-        // console.log(func.code)
-        grid[func.name] = createFunction(func.code);
-        // console.log(grid)
-        grid[func.name](grid);
-        addState();
     }
     return res.send(exerciceSteps);
-
-    for (var i = 0; i < exercice.functions.length; ++i) {
-        var name = exercice.functions[i].name;
-        functionList[name] = createFunction(exercice.functions[i].code)
-        var tmp = gEval(exercice.functions[i].code)
-        evalContext[exercice.functions[i].name] = tmp;
-        console.log("evalContext")
-        console.log(evalContext)
-
-
-    }
-    exerciceSteps.push(exercice.exercice.content);
-    var functionUsedList = exercice.solution.split(";")
-    // for (var i = 0; i < functionList.length; ++i){
-    //
-    // }
-    for (var i = 0; i < functionUsedList.length; ++i){
-        console.log(functionUsedList[i])
-        gEval(functionUsedList[i],evalContext)
-        /*var variables = functionUsedList[i]
-        variables = variables.substring(variables.indexOf('('))
-        var asParameters = false;
-        if (variables.length > 2) {
-            variables = variables.replace('(','')
-            variables = variables.replace(')','')
-            variables = variables.split(',')
-            asParameters = true;
-        }
-        var ret;
-        var funcName = getFuncName(functionUsedList[i]);
-        if (asParameters){
-
-            for (var j = 0; j < variables.length; ++j){
-                var variableName = getFuncName(variables[j]);
-                if (variables[j].indexOf("(") > 0 && functionList[variableName]){
-                    var funcCode = functionList[variableName].toString()
-                    variables[j] = funcCode.substring(funcCode.indexOf('{') + 1, funcCode.length - 1);
-                }
-
-            }
-            // console.log("apres")
-            // console.log(variables)
-            ret = functionList[funcName].apply(null, variables);
-        }
-
-        else {
-            ret = functionList[funcName].apply(null, null);
-        }*/
-        // exerciceSteps.push(exercice.exercice.content);
-    }
-    // console.log(functionUsedList);
-    // res.send(exerciceSteps)
-    res.send("toto")
 });
 var escapeQuote1 = function(str){
 
