@@ -144,6 +144,7 @@ class Details extends Component {
       title: "temporaire",
       description: "description temporaire",
       code: state.editorValue,
+      gridObject: state.gridObject,
       blocks: Object.values(state.blocks).map(block => {
         return {
           id: block.id,

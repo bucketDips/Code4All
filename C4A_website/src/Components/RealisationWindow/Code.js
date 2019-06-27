@@ -31,6 +31,7 @@ class Code extends Component {
 
   onChange(newValue, e) {
     this.setState({editorValue: newValue});
+    this.props.changeCode(newValue);
   }
 
   render() {

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Grid from './Grid';
 import Code from './Code';
+import Compilator from './Compilator';
+import TestsResults from './TestsResults';
 
 import { Input } from 'antd';
 import style from './style.css';
+import { Button } from 'antd/lib/radio';
 
 const TextArea = Input.TextArea;
 
@@ -18,7 +21,9 @@ class RealisationExerciseWindow extends Component {
       blocks: [],
       npcs: [],
       pcs: [],
-      labels: []
+      labels: [],
+      code: "",
+      buttonCompile: true
     }
   }
 
@@ -47,8 +52,51 @@ class RealisationExerciseWindow extends Component {
     });
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    return nextState.code === this.state.code;
+  }
+
+  changeCode(newCode) {
+    this.setState({code: newCode});
+    if(this.state.buttonCompile){
+      this.setNewState(this.props.bundle.gridObject);
+    }
+  }
+
+  setNewState(newState) {
+    this.setState({
+      gridProperties: {
+        lines: newState.lines,
+        columns: newState.columns,
+        size: this.state.gridProperties.size,
+        cases: this.state.gridProperties.cases,
+        background: this.getUrlForPatternId(newState.patternId)
+      },
+      blocks: newState.blocks,
+      npcs: newState.npcs,
+      pcs: newState.pcs,
+      labels: newState.labels
+    })
+  }
+
+  compile() {
+    this.setState({buttonCompile: false});
+    var compilator = new Compilator(this.props.bundle.gridObject);
+    compilator.compile(this.state.code);
+
+    for(var i = 0; i < compilator.states.length; i++) {
+      setTimeout(this.setNewState.bind(this, compilator.states[i]), 500 * i); 
+    }
+    setTimeout(() => { this.setState({buttonCompile: true});}, 500 * compilator.states.length + 1);
+  }
+
   render() {
-    console.log(this.props.bundle);
+    if(this.state.buttonCompile) {
+      var buttonCompile = (<Button onClick={this.compile.bind(this)}>compiler</Button>);
+    }
+    else {
+      var buttonCompile = (<Button onClick={this.compile.bind(this)} disabled>compiler</Button>);
+    }
     return (
         <div className={style.app}>
             <div className={style.left_panel}>
@@ -60,12 +108,15 @@ class RealisationExerciseWindow extends Component {
                     labels={this.state.labels}
                     getUrlForPatternId={this.getUrlForPatternId.bind(this)}
                 />
-                <div className={style.tests}></div>
+                <div className={style.tests}>
+                  <TestsResults />
+                </div>
             </div>
             <div className={style.right_panel}>
-                <Code />
+                <Code changeCode={this.changeCode.bind(this)} />
                 <div className={style.description}>
                   <TextArea className={style.textArea} rows={4} defaultValue={this.props.bundle.description} disabled />
+                  {buttonCompile}
                 </div>
             </div>
         </div>
