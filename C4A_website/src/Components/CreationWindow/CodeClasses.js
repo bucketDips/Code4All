@@ -11,6 +11,10 @@ export class Grid {
       this.tests = [];
     }
 
+    changePattern(n) {
+        this.patternId = n;
+    }
+
     copy() {
         var grid = new Grid(this.lines, this.columns, this.patternId);
         for(var i = 0; i < this.blocks.length; i++) {

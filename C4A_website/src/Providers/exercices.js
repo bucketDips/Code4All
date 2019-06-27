@@ -42,6 +42,16 @@ class Exercices {
         });
     }
 
+    extractPatternsFromCode(code, patterns) {
+        var matches = code.match(/changePattern\(\d+\)/g);
+        for(var i = 0; i < matches.length; i++) {
+            var id = Number(matches[i].split("(")[1].split(")")[0]);
+            if(!patterns.includes(id)) {
+                patterns.push(id);
+            }
+        }
+    }
+
     extractPatterns(exercice) {
         var patterns = [];
         if(exercice.patternId !== null && exercice.patternId !== undefined) {
@@ -49,7 +59,8 @@ class Exercices {
         }
         this.extractPatternsFromArray(exercice.blocks, patterns);
         this.extractPatternsFromArray(exercice.npcs, patterns);
-        this.extractPatternsFromArray(exercice.pcs, patterns)
+        this.extractPatternsFromArray(exercice.pcs, patterns);
+        this.extractPatternsFromCode(exercice.code, patterns);
         return patterns;
     }
 
@@ -57,7 +68,6 @@ class Exercices {
         var patterns = this.extractPatterns(exercice);
 
         let data = {'exercice': JSON.stringify(exercice)};
-        console.log(data);
 
         Axios.post(consts.url() + 'exercices/add', qs.stringify(data),
         {
@@ -78,9 +88,6 @@ class Exercices {
         var patterns = this.extractPatterns(exercice);
 
         let data = {'exercice': JSON.stringify(exercice)};
-        console.log(data);
-
-        // EXTRACT NOT SAVED PATTERN
     
         Axios.post(consts.url() + 'exercices/modify/' + id, qs.stringify(data),
         {
@@ -93,7 +100,6 @@ class Exercices {
             window.location.href = "/exercices";
           })
           .catch(function (error) {
-              console.log(JSON.stringify(error));
             alert(JSON.stringify(error.response));
           });
     }

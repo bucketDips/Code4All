@@ -51,8 +51,6 @@ export default class Compilator {
 
       this.customEvalOfCode(grid, saveState, end, functions + "\n\n" + code);
       this.customEvalOfTests(grid, setTestResult, tests + "\n" + testsCalls);
-
-      console.log(this.testsResult);
     }
     
     customEvalOfCode(grid, saveState, end, buildedCode) {
@@ -68,14 +66,12 @@ export default class Compilator {
     }
 
     customEvalOfTests(grid, setTestResult, buildedCode) {
-      console.log(buildedCode);
       if(this.error) return;
       try {
         // eslint-disable-next-line
         eval(buildedCode);
       }
       catch(error) {
-        console.log(error);
         if(this.error === null && error.message !== undefined && error.message !== "" && error.message !== null) {
           this.error = error.message;
         }

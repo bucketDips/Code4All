@@ -17,7 +17,6 @@ class TestResults extends Component {
                     return (<Icon type="smile" theme="twoTone" twoToneColor="#00e310" />)
                 }
                 else {
-                    console.log("false");
                     return (<Icon type="frown" theme="twoTone" twoToneColor="#fa0000" />)
                 }
             }
