@@ -51,6 +51,16 @@ function deleteClassExercice(exo_id) {
 
     });
 }
+function deleteExerciceFromClass(exo_id, class_id) {
+    return new Promise(function(resolve, reject) {
+        var sql = "delete from class_exercices where exercice_id = ? and class_id = ?;"
+        con.query(sql,[exo_id, class_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            resolve(rows);
+        });
+
+    });
+}
 function insertExerciceFunctions(functions, exercice_id) {
     return new Promise(function(resolve, reject) {
         if (functions.length == 0){
@@ -871,9 +881,10 @@ function deleteExerciceTests(exo_id) {
 
     });
 }
-router.post('/deleteFromClass/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+router.post('/deleteFromClass/:exerciceId/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStudentInThisClassRoom,function(request, res, next) {
     var exerciceId = request.params.exerciceId;
-    deleteClassExercice(exerciceId).then(function(rows){
+    var classId = request.params.classId;
+    deleteExerciceFromClass(exerciceId,classId).then(function(rows){
         res.send(rows)
     }).catch(function (err) {
         return res.status(403).json(err);
