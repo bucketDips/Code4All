@@ -39,9 +39,18 @@ class GestionClassWindow extends Component {
   render() {
     return (
         <div className={style.class} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "blackboard.jpg)", backgroundSize: "cover"}}>
-            <ClassDetails showExosPanel={this.showExosPanel.bind(this)} exos={this.state.exercicesDetailsVisible} refill={this.refill.bind(this)} classRoom={this.state.classRoom} students={this.state.studentList} profs={this.state.profList} teacher={this.props.teacher} />
+            <ClassDetails 
+              showExosPanel={this.showExosPanel.bind(this)} 
+              exos={this.state.exercicesDetailsVisible} 
+              refill={this.refill.bind(this)} 
+              classRoom={this.state.classRoom} 
+              students={this.state.studentList} 
+              profs={this.state.profList} 
+              teacher={this.props.teacher} />
             {this.state.exercicesDetailsVisible &&
-              <ExercicesDetails />
+              <ExercicesDetails
+                classRoom={this.state.classRoom} 
+              />
             }
         </div>
     );

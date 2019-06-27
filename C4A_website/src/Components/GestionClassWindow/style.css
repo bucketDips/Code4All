@@ -32,6 +32,17 @@
     margin-left: 30%;
     transform: rotate(0.8deg);
 }
+
+:local(.delete_exo_button) {
+    width: 3%;
+    bottom: 4vh;
+    right: 0;
+    margin-right: 25%;
+    position: absolute;
+    cursor: pointer;
+}
+
+
 :local(.class_details) {
     padding-left: 2%;
     display: flex;
@@ -49,6 +60,7 @@
 :local(.exercice_detail) {
     flex: 1;
     border-left: 3px solid white;
+    overflow-y: auto;
 }
 
 :local(.empty) {

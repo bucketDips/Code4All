@@ -9,6 +9,7 @@ class ExercicesDetails extends Component {
             <div className={style.exercice}>
                 <img src={"note.png"} className={style.note} />
                 <b><span className={style.exercice_infos}>Nom : {this.props.infos.title} Créé par : {this.props.infos.author}</span></b>
+                <img alt="delete" onClick={this.props.delete} className={style.delete_exo_button} src={process.env.PUBLIC_URL + 'cross.png'} />
             </div>
         );
     }

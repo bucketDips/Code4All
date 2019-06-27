@@ -33,6 +33,11 @@ class Classes {
         });
     }
 
+    deleteExerciceFrom(idClass, idExercice, cb) {
+        cb();
+        return "ok";
+    }
+
     createClass(name) {
         Axios.post(consts.url() + 'classes/createClassroom/' + name, {},
         {
