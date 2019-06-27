@@ -11,6 +11,27 @@
     flex-direction: row;
 }
 
+:local(.note) {
+    padding-left: 20%;
+    width: 80%;
+    margin-top: 3%;
+    filter: drop-shadow(2px 1px 2px black);
+}
+
+:local(.exercice) {
+    position: relative;
+}
+
+:local(.exercice_infos) {
+    position: absolute;
+    bottom: 2vh;
+    left: 0;
+    font-family: lfl;
+    font-size: 1vw !important;
+    width: 45%;
+    margin-left: 30%;
+    transform: rotate(0.8deg);
+}
 :local(.class_details) {
     padding-left: 2%;
     display: flex;
@@ -44,7 +65,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 3vw;
-    grid-auto-rows: minmax(120px, 120px);
+    grid-auto-rows: minmax(17vh, 17vh);
 }
 
 :local(.min_grid_persons) {
@@ -53,7 +74,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 3vw;
-    grid-auto-rows: minmax(120px, 120px);
+    grid-auto-rows: minmax(17vh, 17vh);
 }
 
 :local(.tiny_grid_persons) {
@@ -61,8 +82,8 @@
     padding-left: 2vw;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-gap: 3vw;
-    grid-auto-rows: minmax(120px, 120px);
+    grid-gap: 2.5vw;
+    grid-auto-rows: minmax(17vh, 17vh);
 }
 
 :local(.professors_infos) {
@@ -101,6 +122,8 @@
 :local(.person) {
     position: relative;
     overflow: hidden;
+    filter: drop-shadow(1px 1px 1px black);
+
 }
 
 :local(.name) {

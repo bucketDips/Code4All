@@ -21,6 +21,18 @@ class Classes {
         });
     }
 
+    getExercices() {
+        var headers = {
+            'Authorization': 'Bearer ' +  localStorage.sessionToken
+        }
+
+        return Axios.get(consts.url() + "exercices/getUserExercices", {headers: headers}).then(response => {
+            return response.data.perso;
+        }).catch(error => {
+            alert(JSON.stringify(error));
+        });
+    }
+
     createClass(name) {
         Axios.post(consts.url() + 'classes/createClassroom/' + name, {},
         {

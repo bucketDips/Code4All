@@ -125,6 +125,9 @@ class Details extends Component {
 
   extractPatternsFromCode(code, patterns) {
     var matches = code.match(/changePattern\(\d+\)/g);
+    if(matches === null) {
+      return;
+    }
     for(var i = 0; i < matches.length; i++) {
         var id = Number(matches[i].split("(")[1].split(")")[0]);
         if(!patterns.includes(id)) {
