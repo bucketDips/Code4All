@@ -11,6 +11,7 @@ var gEval =eval;
 var fs = require('fs');
 var sEval = require('safe-eval');
 var SqlString = require('sqlstring');
+
 var evalContext = {
     evalContext: this,
     sEval:sEval,
@@ -34,6 +35,16 @@ function deleteExercice(exo_id,author_id) {
     return new Promise(function(resolve, reject) {
         var sql = "delete from exercices where id = ? and author_id = ?;"
         con.query(sql,[exo_id,author_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            resolve(rows);
+        });
+
+    });
+}
+function deleteClassExercice(exo_id) {
+    return new Promise(function(resolve, reject) {
+        var sql = "delete from class_exercices where exercice_id = ?"
+        con.query(sql,[exo_id], function (err, rows, fields) {
             if (err) return reject(err);
             resolve(rows);
         });
@@ -652,7 +663,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
                 }
             ]
         },
-        "solution": "avanceMarioDroite();avanceMarioDroite();avanceMarioDroite();"
+        "solution": "avanceMarioDroite();boucle(0,4, \"avanceMarioDroite()|avanceMarioDroite()|\");avanceMarioDroite();"
     }
     var exercice = exerciceData.exercice;
     var grid = instanciateGrid(exercice);
@@ -664,7 +675,8 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
     }
     addState();
     var functionUsedList = exerciceData.solution.split(";")
-
+    console.log("functionUsedList")
+    console.log(functionUsedList)
     var getFuncFromGrid = function(grid, name){
         for (var i = 0; i < grid.functions.length; ++i){
             if (grid.functions[i].name == name){
@@ -673,21 +685,52 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
 
         }
     }
+    grid["boucle"] = function(str){
+        console.log("MICHELLLLLEEEE ASSIS PRES DE TOI");
+        var arg1 = parseInt(str.substring(0,str.indexOf(",")));
+        var arg2 = 4;
+        var arg3 = str.substring(str.indexOf('"'));
+        console.log("arg1");
+        console.log(arg1);
+        console.log("arg2");
+        console.log(arg2);
+        console.log("arg3");
+        console.log(arg3);
+        var actions = arg3.split("|");
+        for (var i = arg1; i < arg2; ++i){
+            for (var j = 0; j < actions.length; ++j){
+                var fName = actions[j].substring(0,actions[j].length - 2).replace('"', "");
+                console.log("fName")
+                console.log(fName)
+                if (fName.length > 0){
+                    this[fName](this);
+                    addState();
+                }
+
+            }
+        }
+    }
+
     for (var i = 0; i < functionUsedList.length; ++i){
         var tmp={};
-        var funcName = functionUsedList[i].substring(0,functionUsedList[i].length - 2);
+        var funcName = functionUsedList[i].substring(0,functionUsedList[i].indexOf("("));
         var func = getFuncFromGrid(grid, funcName);
-        if (!func){
-            continue;
-        }
+        console.log("funcName")
+        console.log(funcName)
         // console.log("func")
         // console.log(func)
+        if (!func){
+            if (funcName == "boucle")
+                grid[funcName](functionUsedList[i].substring(functionUsedList[i].indexOf("(") + 1,functionUsedList[i].length - 1));
+            continue;
+        }
+
         func.code = func.code.replace(func.name + "()", func.name+"(grid)")
         // console.log("func.code")
         // console.log(func.code)
-        tmp[func.name] = createFunction(func.code);
+        grid[func.name] = createFunction(func.code);
         // console.log(grid)
-        tmp[func.name](grid);
+        grid[func.name](grid);
         addState();
     }
     return res.send(exerciceSteps);
@@ -828,6 +871,14 @@ function deleteExerciceTests(exo_id) {
 
     });
 }
+router.post('/deleteFromClass/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+    var exerciceId = request.params.exerciceId;
+    deleteClassExercice(exerciceId).then(function(rows){
+        res.send(rows)
+    }).catch(function (err) {
+        return res.status(403).json(err);
+    });
+})
 router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
     var contentOjb =JSON.parse(request.body.exercice);
     var author_id = request.decoded.id
@@ -905,16 +956,7 @@ router.post('/delete/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
 
         });
     }
-    function deleteClassExercice(exo_id) {
-        return new Promise(function(resolve, reject) {
-            var sql = "delete from class_exercices where exercice_id = ?"
-            con.query(sql,[exo_id], function (err, rows, fields) {
-                if (err) return reject(err);
-                resolve(rows);
-            });
 
-        });
-    }
     function deleteExerciceFunction(exo_id) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from exercice_functions where exercice_id = ?"
