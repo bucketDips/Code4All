@@ -154,6 +154,23 @@ class Exercices {
             alert(JSON.stringify(error.response));
         });
     }
+
+    async addExercicesToClass(idClass, exercices, cb) {
+        for(var i = 0; i < exercices.length; i++) {
+            await Axios.post(consts.url() + 'exercices/addExerciceToClass/' + exercices[i].id + '/' + idClass, {},
+            {
+                headers: {
+                    'Authorization': 'Bearer ' +  localStorage.sessionToken
+                }
+            })
+            .then(function (response) {
+            })
+            .catch(function (error) {
+                alert(JSON.stringify(error.response));
+            });
+        }
+        cb();
+    }
 }
 
 export default new Exercices();

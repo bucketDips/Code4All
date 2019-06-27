@@ -50,7 +50,10 @@ class AddExerciceForm extends Component {
         this.setState({
             addedExercices: ex,
             exercices: filtered
+        }, () => {
+            this.props.updateToAdd(this.state.addedExercices);
         });
+
     }
 
     remove(exo) {
@@ -62,6 +65,8 @@ class AddExerciceForm extends Component {
         this.setState({
             addedExercices: filtered,
             exercices: ex
+        }, () => {
+            this.props.updateToAdd(this.state.addedExercices);
         });
     }
 

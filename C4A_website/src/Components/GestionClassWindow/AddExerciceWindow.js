@@ -28,9 +28,9 @@ const AddExerciceWindow = Form.create({ name: 'form_in_modal' })(
           title="Ajouter des exercices à la classe"
           okText= "Sauvegarder"
           onCancel={onCancel}
-          onOk={onSave.bind(this, this.state.toAdd)}
+          onOk={this.props.onSave.bind(this, this.state.toAdd)}
         >
-          <AddExerciceForm exercices={this.props.exos} />
+          <AddExerciceForm updateToAdd={this.setToAdd.bind(this)} exercices={this.props.exos} />
         </Modal>
       );
     }

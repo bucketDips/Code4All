@@ -45,7 +45,7 @@ class ExercicesDetails extends Component {
         return (
             <div className={style.exercices_details}>
                 <h1>Détail des exercices
-                    <AddExerciceWindowWrapper refill={this.props.refill} exos={this.props.exos} />
+                    <AddExerciceWindowWrapper refill={this.props.refill} exos={this.props.exos} classRoom={this.props.classRoom.id} />
                 </h1>
                 <div className={style.exercice_detail}>
                     {exercices}
