@@ -488,6 +488,7 @@ class CreateExerciseWindow extends Component {
                   details={this.props.details}
                   store={this.props.store}
                   info={this.state.infoText}
+                  patterns={this.state.patterns}
                   getParentState={this.getFullState.bind(this)}
                   />
               </div>

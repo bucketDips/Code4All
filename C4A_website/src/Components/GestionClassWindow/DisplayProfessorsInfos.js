@@ -41,7 +41,7 @@ class DisplayProfessorsInfos extends Component {
                     <AddPersonWindowWrapper refill={this.props.refill} persons={this.props.all} teacher={true} idClass={this.props.idClass} /> 
                 }
                 </h2>
-                <div className={style.grid_persons}>
+                <div className={this.props.exos ? style.tiny_grid_persons : style.grid_persons}>
                     {profs}
                 </div>
             </div>

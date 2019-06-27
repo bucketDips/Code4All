@@ -11,7 +11,6 @@ class GestionStoreWindow extends Component {
   }
 
   render() {
-      console.log(this.props.exercices);
     return (
         <div className={style.store} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "blackboard.jpg)", backgroundSize: "cover"}}>
             coucou

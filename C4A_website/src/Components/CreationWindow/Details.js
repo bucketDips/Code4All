@@ -6,6 +6,8 @@ import styles from './style.css';
 import { Input, Button, Radio, Modal, Form } from 'antd';
 import exercices from "../../Providers/exercices";
 
+import consts from '../../Providers/consts';
+
 const confirm = Modal.confirm;
 const TextArea = Input.TextArea;
 
@@ -121,6 +123,23 @@ class Details extends Component {
     });
   }
 
+  extractPatternsFromCode(code, patterns) {
+    var matches = code.match(/changePattern\(\d+\)/g);
+    if(matches === null) {
+      return;
+    }
+    for(var i = 0; i < matches.length; i++) {
+        var id = Number(matches[i].split("(")[1].split(")")[0]);
+        if(!patterns.includes(id)) {
+          patterns.push({
+            id: id,
+            file_id: id,
+            url: consts.url() + this.props.patterns[id].nom
+          });
+        }
+    }
+  }
+
   extractPatterns(exercice) {
       var patterns = [];
       if(exercice.gridProperties.backgroundId !== undefined && exercice.gridProperties.backgroundId !== null) {
@@ -133,6 +152,7 @@ class Details extends Component {
       this.extractPatternsFromArray(exercice.blocks, patterns);
       this.extractPatternsFromArray(exercice.npc, patterns);
       this.extractPatternsFromArray(exercice.pc, patterns)
+      this.extractPatternsFromCode(exercice.editorValue, patterns);
       return patterns;
   }
   
@@ -144,6 +164,7 @@ class Details extends Component {
       title: "temporaire",
       description: "description temporaire",
       code: state.editorValue,
+      gridObject: state.gridObject,
       blocks: Object.values(state.blocks).map(block => {
         return {
           id: block.id,

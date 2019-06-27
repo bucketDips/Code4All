@@ -124,7 +124,7 @@ class Grid extends Component {
               <div style={{
                 whiteSpace:"nowrap",
                 display:"grid",
-                gridGap: "1px",
+                gridGap: "0.1px",
                 gridAutoRows: this.state.gridProperties.size + "px",
                 gridAutoColumns: this.state.gridProperties.size + "px",
               }}>

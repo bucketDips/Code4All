@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import style from './style.css';
 import classes from '../../Providers/classes';
 import ClassDetails from './ClassDetails';
+import ExercicesDetails from './ExercicesDetails';
 import { Modal } from 'antd';
 
 const confirm = Modal.confirm;
@@ -13,7 +14,8 @@ class GestionClassWindow extends Component {
     this.state = {
         classRoom: {},
         studentList: [],
-        profList: []
+        profList: [],
+        exercicesDetailsVisible: false
     }
   }
 
@@ -26,6 +28,10 @@ class GestionClassWindow extends Component {
     });
   }
 
+  showExosPanel() {
+    this.setState({exercicesDetailsVisible: this.state.exercicesDetailsVisible ? false : true});
+  }
+
   componentWillMount() {
     this.refill();
   }
@@ -33,7 +39,10 @@ class GestionClassWindow extends Component {
   render() {
     return (
         <div className={style.class} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "blackboard.jpg)", backgroundSize: "cover"}}>
-            <ClassDetails refill={this.refill.bind(this)} classRoom={this.state.classRoom} students={this.state.studentList} profs={this.state.profList} teacher={this.props.teacher} />
+            <ClassDetails showExosPanel={this.showExosPanel.bind(this)} exos={this.state.exercicesDetailsVisible} refill={this.refill.bind(this)} classRoom={this.state.classRoom} students={this.state.studentList} profs={this.state.profList} teacher={this.props.teacher} />
+            {this.state.exercicesDetailsVisible &&
+              <ExercicesDetails />
+            }
         </div>
     );
   }
