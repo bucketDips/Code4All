@@ -35,10 +35,12 @@ class RealisationExerciseWindow extends Component {
         return this.props.bundle.fichiers[i].url;
       }
     }
-    throw new Error("Pas de background pour cette image");
+    return "";
   }
 
   componentWillMount() {
+    console.log(this.props.bundle.fichiers);
+    console.log(this.props.bundle.tests);
     this.setState({
       gridProperties: {
         lines: this.props.bundle.rows,

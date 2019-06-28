@@ -241,30 +241,23 @@ class Code extends Component {
   }
 
   evalCode(fromProps) {
-    // eslint-disable-next-line
-    var createGrid = (lines, columns, backgroundId) => this.createGrid(lines, columns, backgroundId);
-    // eslint-disable-next-line
-    var createBlock = (id, row, column, width, height, patternId) => this.createBlock(id, row, column, width, height, patternId);
-    // eslint-disable-next-line
-    var createNpc = (id, row, column, width, height, patternId) => this.createNpc(id, row, column, width, height, patternId);
-    // eslint-disable-next-line
-    var createPc = (id, row, column, width, height, patternId) => this.createPc(id, row, column, width, height, patternId);
-    // eslint-disable-next-line
-    var createLabel = (id, row, column, width, height, text) => this.createLabel(id, row, column, width, height, text);
-    // eslint-disable-next-line
-    var createFunction = (name, code, description) => this.createFunction(name, code, description);
-    // eslint-disable-next-line
-    var synchronise = (grid) => this.synchronise(grid);
-    // ici les vérification
-
     try {
-      if(fromProps) {
-        // eslint-disable-next-line
-        eval(this.state.editorValue + "\ngrid; this.props.changeGridObject(grid);");
-        return;
-      }
-      // eslint-disable-next-line
-      eval(this.state.editorValue + "\ngrid; synchronise(grid);");
+      var toEval = this.state.editorValue + (fromProps ? "\ngrid; changeGridObject(grid);" : "\ngrid; synchronise(grid);");
+      
+      consts.customEval(
+        toEval,
+        this.createGrid.bind(this),
+        this.createBlock.bind(this),
+        this.createNpc.bind(this),
+        this.createPc.bind(this),
+        this.createLabel.bind(this),
+        this.createFunction.bind(this),
+        this.synchronise.bind(this),
+        this.props.changeGridObject.bind(this)
+      )
+
+      if(fromProps) { return }
+
       this.setState({infoText: ""});
       this.props.changeInfoText("");
     }
