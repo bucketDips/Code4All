@@ -112,10 +112,10 @@ class RealisationExerciseWindow extends Component {
     compilator.compile(this.state.code);
 
     for(var i = 0; i < compilator.states.length; i++) {
-      setTimeout(this.setNewState.bind(this, compilator.states[i]), 500 * i); 
+      setTimeout(this.setNewState.bind(this, compilator.states[i]), 350 * i); 
     }
-    setTimeout(() => { this.setState({buttonCompile: true, load: false});}, 500 * compilator.states.length + 1);
-    setTimeout(() => { this.displayResults(compilator.error, compilator.testsResult); }, 500 * compilator.states.length + 1);
+    setTimeout(() => { this.setState({buttonCompile: true, load: false});}, 350 * compilator.states.length + 1);
+    setTimeout(() => { this.displayResults(compilator.error, compilator.testsResult); }, 350 * compilator.states.length + 1);
   }
 
   render() {
