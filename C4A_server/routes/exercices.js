@@ -163,12 +163,15 @@ router.get('/getAllStoreExercicesNotOwned', AUTH.VERIFYAUTH,function(request, re
     var userId = request.decoded.id
     function getAllStoreExercicesNotOwned(userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select exercices.id, exercices.title, exercices.description " +
-                "from exercices, user_exercices " +
-                "where exercices.isPublic=1 " +
-                "and exercices.id = user_exercices.exerciceId " +
-                "and user_exercices.userid != ? " +
-                "and author_id != ?;"
+            var sql = "select exercices.id as exerciceId, exercices.title,author_id, users.name as authorName, exercices.description " +
+                "from exercices, users " +
+                "where users.id = exercices.author_id " +
+                "and exercices.isPublic=1 and author_id != ? " +
+                "and exercices.id not in " +
+                "(select exercices.id from exercices, user_exercices " +
+                "where user_exercices.exerciceId = exercices.id " +
+                "and user_exercices.userID = ?);"
+            console.log(sql)
             con.query(sql, [userId,userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -178,6 +181,10 @@ router.get('/getAllStoreExercicesNotOwned', AUTH.VERIFYAUTH,function(request, re
 
 
     getAllStoreExercicesNotOwned(userId).then(function(rows){
+        for (var i = 0; i < rows.length; ++i){
+            rows[i].title = stand(rows[i].title);
+            rows[i].description = stand(rows[i].description);
+        }
         res.send(rows)
 
     }).catch(function(err){
