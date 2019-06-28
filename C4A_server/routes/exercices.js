@@ -485,6 +485,92 @@ router.post('/saveUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function
     });
 
 })
+router.post('/addSuccessTest/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+    var exerciceId = request.params.exerciceId;
+    var tests = JSON.parse(request.body.tests);
+    var userId = request.decoded.id;
+    function getTestIds(tests, exerciceId) {
+
+        return new Promise(function(resolve, reject) {
+            var sql = "select exercice_tests.id from exercice_tests where name in (?) and exercice_id = ?";
+            console.log(sql)
+            con.query(sql, [tests, exerciceId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function deleteUserExerciceTest(exerciceId, userId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from user_exercice_passed_tests where exercice_id = ? and user_id = ?";
+            console.log(sql)
+            con.query(sql, [exerciceId, userId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function saveUserExerciceTest(testIds, exerciceId, user_id) {
+        return new Promise(function(resolve, reject) {
+            var reccords = [];
+            for (var i = 0 ;i < testIds.length; ++i){
+                var tmp = []
+                tmp.push(user_id)
+                tmp.push(exerciceId)
+                tmp.push(testIds[i])
+                reccords.push(tmp)
+            }
+            var sql = "insert into user_exercice_passed_tests( user_id,exercice_id, test_id) values ?;";
+            console.log(sql)
+            con.query(sql, [reccords],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    getTestIds(tests, exerciceId).then(function(rowsTestIds){
+        var testIds = [];
+        for ( var i = 0; i < rowsTestIds.length; ++i){
+            // console.log("rowsTestIds[i].id")
+            // console.log(rowsTestIds[i].id)
+            testIds.push(rowsTestIds[i].id)
+        }
+        deleteUserExerciceTest(exerciceId, userId).then(function(rows){
+            saveUserExerciceTest(testIds, exerciceId, userId).then(function(rows){
+                res.send(rows);
+            }).catch(function(err){
+                return res.status(403).json(err);
+            });
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+});
+router.get('/getUserPassedTests/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+    var exerciceId = request.params.exerciceId;
+    var userId = request.decoded.id;
+    function getUserPassedTests(exerciceId, userId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select name from exercice_tests, user_exercice_passed_tests " +
+                "where exercice_tests.id = user_exercice_passed_tests.test_id " +
+                "and exercice_tests.exercice_id = ? and user_id = ?";
+            console.log(sql)
+            con.query(sql, [exerciceId, userId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+    getUserPassedTests(exerciceId, userId).then(function(rows){
+        res.send(rows);
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+});
 router.get('/getUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
     var exerciceId = request.params.exerciceId;
     var userId = request.decoded.id;
