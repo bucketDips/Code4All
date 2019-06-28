@@ -23,6 +23,7 @@ class RealisationExerciseWindow extends Component {
       pcs: [],
       labels: [],
       tests: [],
+      files: {},
       code: "",
       buttonCompile: true,
       load: false
@@ -30,38 +31,43 @@ class RealisationExerciseWindow extends Component {
   }
 
   getUrlForPatternId(id) {
-    for(var i = 0; i < this.props.bundle.fichiers.length; i++) {
-      if(this.props.bundle.fichiers[i].id === id) {
-        if(!this.props.bundle.id){
-          return this.props.bundle.fichiers[i].url;
-        }
-        else {
-          return "http://" + this.props.bundle.fichiers[i].url;
-        }
-      }
-    }
-    return "";
+    console.log(id);
+    return this.state.files[id];
   }
 
-  componentWillMount() {
+  initFiles() {
+    var files = {};
+
+    for(var i = 0; i < this.props.bundle.fichiers.length; i++) {
+      if(!this.props.bundle.id){
+        files[this.props.bundle.fichiers[i].id] = this.props.bundle.fichiers[i].url;
+      }
+      else {
+        files[this.props.bundle.fichiers[i].id] = "http://" + this.props.bundle.fichiers[i].url;
+      }
+    }
+    return files;
+  }
+
+  async componentWillMount() {
     if(this.props.bundle === null || this.props.bundle === undefined) {
       return;
     }
-
-    console.log(this.props.bundle);
+    var initedFiles = this.initFiles();
     this.setState({
-      gridProperties: {
-        lines: this.props.bundle.rows,
-        columns: this.props.bundle.columns,
-        size: 30,
-        cases: [],
-        background: this.getUrlForPatternId(this.props.bundle.patternId),
-      },
-      blocks: this.props.bundle.blocks,
-      npcs: this.props.bundle.npcs,
-      pcs: this.props.bundle.pcs,
-      labels: this.props.bundle.labels,
-      tests: JSON.parse(JSON.stringify(this.props.bundle.tests))
+        files: initedFiles,
+        gridProperties: {
+          lines: this.props.bundle.rows,
+          columns: this.props.bundle.columns,
+          size: 30,
+          cases: [],
+          background: initedFiles[this.props.bundle.patternId],
+        },
+        blocks: this.props.bundle.blocks,
+        npcs: this.props.bundle.npcs,
+        pcs: this.props.bundle.pcs,
+        labels: this.props.bundle.labels,
+        tests: JSON.parse(JSON.stringify(this.props.bundle.tests)),
     });
   }
 
