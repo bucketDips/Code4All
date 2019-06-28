@@ -126,8 +126,10 @@ class Details extends Component {
   extractPatternsFromCode(code, patterns) {
     var matches = code.match(/changePattern\(\d+\)/g);
     if(matches === null) {
+      console.log("null");
       return;
     }
+    console.log(matches);
     for(var i = 0; i < matches.length; i++) {
         var id = Number(matches[i].split("(")[1].split(")")[0]);
         if(!patterns.includes(id)) {
@@ -153,6 +155,7 @@ class Details extends Component {
       this.extractPatternsFromArray(exercice.npc, patterns);
       this.extractPatternsFromArray(exercice.pc, patterns)
       this.extractPatternsFromCode(exercice.editorValue, patterns);
+      console.log(patterns);
       return patterns;
   }
   

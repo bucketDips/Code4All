@@ -11,7 +11,7 @@ class Pattern extends Component {
 
     render() {
         return (
-            <div className={styles.pattern}>
+            <div className={styles.pattern} onClick={this.handleDelete.bind(this)}>
                 <div className="pattern-content">
                     <div className="pattern-img-container">
                         <img alt="pattern" className="pattern-image" src={consts.url() + this.props.name}></img>

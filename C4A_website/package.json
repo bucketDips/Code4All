@@ -25,6 +25,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
     "react-sidebar": "^3.0.2",
+    "safe-eval": "^0.4.1",
     "valid-url": "^1.0.9",
     "validatorjs": "^3.15.1"
   },
