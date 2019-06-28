@@ -9,6 +9,38 @@ exports.Grid = class Grid {
         this.labels = [];
         this.functions = [];
         this.tests = [];
+        this.states = [];
+    }
+
+    saveState() {
+        this.states.push(JSON.parse(JSON.stringify(this)));
+    }
+
+    changePattern(n) {
+        this.patternId = n;
+    }
+
+    copy() {
+        var grid = new Grid(this.lines, this.columns, this.patternId);
+        for(var i = 0; i < this.blocks.length; i++) {
+            grid.addBlock(new Block(this.blocks[i].id, this.blocks[i].row, this.blocks[i].column, this.blocks[i].width, this.blocks[i].height, this.blocks[i].patternId));
+        }
+        for(var i = 0; i < this.npcs.length; i++) {
+            grid.addNpc(new Npc(this.npcs[i].id, this.npcs[i].row, this.npcs[i].column, this.npcs[i].width, this.npcs[i].height, this.npcs[i].patternId));
+        }
+        for(var i = 0; i < this.pcs.length; i++) {
+            grid.addPc(new Pc(this.pcs[i].id, this.pcs[i].row, this.pcs[i].column, this.pcs[i].width, this.pcs[i].height, this.pcs[i].patternId));
+        }
+        for(var i = 0; i < this.labels.length; i++) {
+            grid.addLabel(new Label(this.labels[i].id, this.labels[i].row, this.labels[i].column, this.labels[i].width, this.labels[i].height, this.labels[i].text));
+        }
+        for(var i = 0; i < this.functions.length; i++) {
+            grid.addFunction(new Func(this.functions[i].name, this.functions[i].code, this.functions[i].description));
+        }
+        for(var i = 0; i < this.tests.length; i++) {
+            grid.addTest(new Func(this.tests[i].name, this.tests[i].code, this.tests[i].description));
+        }
+        return grid;
     }
 
     checkIfIdAlreadyExists(elements, id) {
@@ -56,12 +88,12 @@ exports.Grid = class Grid {
     }
 
     removeElement(elements, id) {
-        elements.array.forEach(element => {
-            if(element.id === id) {
-                elements.pop(element);
+        for(var i = 0; i < elements.length; i++) {
+            if(elements[i].id === id) {
+                elements.splice(i, 1);
                 return;
             }
-        });
+        }
     }
 
     removeBlock(id) {
@@ -127,6 +159,31 @@ exports.Grid = class Grid {
 
     getLabel(id) {
         return this.getElementById(id, this.labels);
+    }
+
+    elementExists(id, elements) {
+        for(var i = 0; i < elements.length; i++) {
+            if(elements[i].id === id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    blockExists(id) {
+        return this.elementExists(id, this.blocks);
+    }
+
+    npcExists(id) {
+        return this.elementExists(id, this.npcs);
+    }
+
+    pcExists(id) {
+        return this.elementExists(id, this.pcs);
+    }
+
+    labelExists(id) {
+        return this.elementExists(id, this.labels);
     }
 }
 
