@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Upload, message, Button, Icon } from 'antd';
+import { Upload, message, Button, Icon, Modal } from 'antd';
 import files from "../../Providers/files";
-
-
 import styles from './style.css';
 
 import Pattern from './Pattern';
+
+const confirm = Modal.confirm;
 
 class Patterns extends Component {
   
@@ -16,19 +16,27 @@ class Patterns extends Component {
     }
   }
 
-  componentWillMount() {
-    this.fillPatterns();
+  componentWillReceiveProps(newProps) {
+    this.setState({patterns: newProps.patterns});
+  }
+
+  showConfirm(patternId, cb) {
+    confirm({
+        title: 'Etes-vous sûr de vouloir supprimer ce motif ? Si des exercices à vous privés ou publics l\'utilisent, il n\'y apparaitra plus.',
+        onOk() {
+            files.deletePattern(patternId, cb);
+        },
+        onCancel() {
+        },
+    });
+  }
+
+  reloadPatterns() {
+    this.props.reloadPatterns();
   }
 
   handleDeletePattern(patternId) {
-    this.props.deletePattern(patternId);
-  }
-
-  async fillPatterns() {
-    var allExercices = await files.getMines();
-
-    this.setState({patterns: allExercices.data});
-    this.props.reloadPatterns();
+    this.showConfirm(patternId, this.reloadPatterns.bind(this));
   }
 
   onChange(info) {
@@ -36,15 +44,15 @@ class Patterns extends Component {
     }
     if (info.file.status === 'done') {
       message.success(`${info.file.name} file uploaded successfully`);
-      this.fillPatterns();
+      this.reloadPatterns();
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
   }
 
   render() {
-    var patterns = this.state.patterns.map(pattern => (
-      <Pattern id={pattern.fileid} key={pattern.fileid} name={pattern.publicName} />
+    var patterns = Object.values(this.state.patterns).map(pattern => (
+      <Pattern deletePattern={this.handleDeletePattern.bind(this)} id={pattern.id} key={pattern.id} name={pattern.nom} />
     ));
 
     return (

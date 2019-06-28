@@ -29,7 +29,7 @@ class CreateExerciseWindow extends Component {
       infoText: null
     }
   }
-
+  
   changeInfoText(infoText) {
     this.setState({infoText: (infoText === null || infoText === "") ? null : infoText});
   }

@@ -20,6 +20,21 @@ class Files {
         })
     }
 
+    deletePattern(id, cb) {
+      Axios.post(consts.url() + 'fichiers/deleteFile/' +  id, {},
+      {
+          headers: {
+              'Authorization': 'Bearer ' +  localStorage.sessionToken
+          }
+      })
+      .then(function (response) {
+        cb();
+      })
+      .catch(function (error) {
+        alert(error);
+      });
+    }
+
     async uploadFileToExo(idFile, idExo) {
       return await Axios.post(consts.url() + 'fichiers/uploadToExercice/' + idExo + "/" + idFile, {},
       {
