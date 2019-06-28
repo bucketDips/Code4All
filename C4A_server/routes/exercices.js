@@ -442,7 +442,8 @@ router.get('/getUserExerciceSolutionAndroid/:exerciceId', AUTH.VERIFYAUTH,functi
 
 });
 router.post('/saveUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
-    var solution = SqlString.escape(request.body.solution)
+    // var solution = SqlString.escape(request.body.solution)
+    var solution = request.body.solution
     var exerciceId = request.params.exerciceId
     var userId = request.decoded.id
     function deleteUserExerciceSolutionWeb(userId, exerciceId) {
