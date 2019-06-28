@@ -32,7 +32,7 @@ class RealisationExerciseWindow extends Component {
   getUrlForPatternId(id) {
     for(var i = 0; i < this.props.bundle.fichiers.length; i++) {
       if(this.props.bundle.fichiers[i].id === id) {
-        if(this.props.bundle.fichiers[i].url.includes("http")){
+        if(!this.props.bundle.id){
           return this.props.bundle.fichiers[i].url;
         }
         else {
