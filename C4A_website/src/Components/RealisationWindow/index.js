@@ -51,7 +51,7 @@ class RealisationExerciseWindow extends Component {
       npcs: this.props.bundle.npcs,
       pcs: this.props.bundle.pcs,
       labels: this.props.bundle.labels,
-      tests: this.props.bundle.tests
+      tests: JSON.parse(JSON.stringify(this.props.bundle.tests))
     });
   }
 
