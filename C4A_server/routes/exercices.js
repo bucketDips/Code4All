@@ -31,6 +31,17 @@ var funcString = [
 var createFunction = function (txt) {
     return new Function("return " + txt)();
 }
+function stand(str) {
+    str = str.substring(1, str.length - 1)
+    var find = "\\\\r\\\\n"
+    var re = new RegExp(find, 'g');
+    str = str.replace(re, "\r\n")
+    find = "\\\\"
+    re = new RegExp(find, 'g');
+    str = str.replace(re, "")
+    // str = rmendOfLine(str)
+    return str
+}
 function deleteExercice(exo_id,author_id) {
     return new Promise(function(resolve, reject) {
         var sql = "delete from exercices where id = ? and author_id = ?;"
@@ -326,17 +337,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                         return str.substring(1, str.length - 1)
                     }
 
-                    function stand(str) {
-                        str = str.substring(1, str.length - 1)
-                        var find = "\\\\r\\\\n"
-                        var re = new RegExp(find, 'g');
-                        str = str.replace(re, "\r\n")
-                        find = "\\\\"
-                        re = new RegExp(find, 'g');
-                        str = str.replace(re, "")
-                        // str = rmendOfLine(str)
-                        return str
-                    }
+
 
                     rows[0].title = rows[0].title.substring(1, rows[0].title.length - 1)
                     rows[0].description = rows[0].description.substring(1, rows[0].description.length - 1)
@@ -414,7 +415,90 @@ var instanciateGrid = function(exercice){
     }
     return grid;
 }
+router.get('/getUserExerciceSolutionAndroid/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+    var exerciceId = request.params.exerciceId;
+    var userId = request.decoded.id;
+    function getUserExerciceSolutionAndroid(userId, exerciceId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select * from user_exercice_solution_android where userId= ? and exercice_id = ?";
+            console.log(sql)
+            con.query(sql, [userId,exerciceId],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    getUserExerciceSolutionAndroid(userId, exerciceId).then(function(rows){
+
+        rows[0].solution = stand(rows[0].solution);
+        res.send(JSON.parse(rows[0].solution));
+
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+});
+router.post('/saveUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+    var solution = SqlString.escape(request.body.solution)
+    var exerciceId = request.params.exerciceId
+    var userId = request.decoded.id
+    function deleteUserExerciceSolutionWeb(userId, exerciceId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from user_exercice_solution_web where userId= ? and exercice_id = ?";
+            console.log(sql)
+            con.query(sql, [userId, exerciceId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function saveUserExerciceSolutionWeb(userId, exerciceId, sol) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into user_exercice_solution_web( userId,exercice_id, solution) values (?);";
+            console.log(sql)
+            con.query(sql, [[userId,exerciceId,sol]],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+    deleteUserExerciceSolutionWeb(userId, exerciceId).then(function(rows){
+        saveUserExerciceSolutionWeb(userId, exerciceId, solution).then(function(rows){
+            res.send(rows);
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+})
+router.get('/getUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+    var exerciceId = request.params.exerciceId;
+    var userId = request.decoded.id;
+    function getUserExerciceSolutionWeb(userId, exerciceId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select * from user_exercice_solution_web where userId= ? and exercice_id = ?";
+            console.log(sql)
+            con.query(sql, [userId,exerciceId],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    getUserExerciceSolutionWeb(userId, exerciceId).then(function(rows){
+
+        rows[0].solution = stand(rows[0].solution);
+        res.send(rows[0].solution);
+
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+});
 router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
+    var userId = request.decoded.id;
     var exerciceData = JSON.parse(request.body.exercice);
     var exercice = exerciceData.exercice;
     var grid = instanciateGrid(exercice);
@@ -424,6 +508,26 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
         exerciceSteps.push(JSON.parse(JSON.stringify(grid)))
     }
     addState();
+    function deleteUserExerciceSolutionAndroid(userId, exerciceId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from user_exercice_solution_android where userId= ? and exercice_id = ?";
+            console.log(sql)
+            con.query(sql, [userId, exerciceId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function saveUserExerciceSolutionAndroid(userId, exerciceId, sol) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into user_exercice_solution_android( userId,exercice_id, solution) values (?);";
+            console.log(sql)
+            con.query(sql, [[userId,exerciceId,sol]],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
     grid["boucle"] = function(start, end, actions){
         for (var w = start; w < end; ++w){
             for (var i = 0; i < actions.length; ++i){
@@ -484,7 +588,17 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
         }
 
     }
-    return res.send(exerciceSteps);
+    var exerciceId = exerciceData.exercice.id;
+    deleteUserExerciceSolutionAndroid(userId, exerciceId).then(function(rows){
+        saveUserExerciceSolutionAndroid(userId, exerciceId, SqlString.escape(JSON.stringify(exerciceData.solution))).then(function(rows){
+            return res.send(exerciceSteps);
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
 });
 router.post('/executeExerciceTest', AUTH.VERIFYAUTH,function(request, res, next) {
     // var exerciceData = JSON.parse(request.body.exercice);
