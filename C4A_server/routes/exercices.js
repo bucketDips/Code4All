@@ -499,7 +499,9 @@ router.get('/getUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function(r
 });
 router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id;
-    var exerciceData = JSON.parse(request.body.exercice);
+    var exerciceData = request.body.exercice;
+    exerciceData.exercice = JSON.parse(exerciceData.exercice);
+    exerciceData.solution = JSON.parse(exerciceData.solution);
     var exercice = exerciceData.exercice;
     var grid = instanciateGrid(exercice);
     var exerciceSteps = [];
