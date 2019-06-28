@@ -91,6 +91,7 @@ class Grid extends Component {
   }
 
   render() {
+    console.log(this.props);
     let background = (
     <div style={{
       gridColumnStart: 1,

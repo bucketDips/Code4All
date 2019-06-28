@@ -23,6 +23,7 @@ class RealisationExerciseWindow extends Component {
       pcs: [],
       labels: [],
       tests: [],
+      files: {},
       code: "",
       buttonCompile: true,
       load: false
@@ -30,30 +31,43 @@ class RealisationExerciseWindow extends Component {
   }
 
   getUrlForPatternId(id) {
-    for(var i = 0; i < this.props.bundle.fichiers.length; i++) {
-      if(this.props.bundle.fichiers[i].id === id) {
-        return this.props.bundle.fichiers[i].url;
-      }
-    }
-    return "";
+    console.log(id);
+    return this.state.files[id];
   }
 
-  componentWillMount() {
-    console.log(this.props.bundle.fichiers);
-    console.log(this.props.bundle.tests);
+  initFiles() {
+    var files = {};
+
+    for(var i = 0; i < this.props.bundle.fichiers.length; i++) {
+      if(!this.props.bundle.id){
+        files[this.props.bundle.fichiers[i].id] = this.props.bundle.fichiers[i].url;
+      }
+      else {
+        files[this.props.bundle.fichiers[i].id] = "http://" + this.props.bundle.fichiers[i].url;
+      }
+    }
+    return files;
+  }
+
+  async componentWillMount() {
+    if(this.props.bundle === null || this.props.bundle === undefined) {
+      return;
+    }
+    var initedFiles = this.initFiles();
     this.setState({
-      gridProperties: {
-        lines: this.props.bundle.rows,
-        columns: this.props.bundle.columns,
-        size: 30,
-        cases: [],
-        background: this.getUrlForPatternId(this.props.bundle.patternId),
-      },
-      blocks: this.props.bundle.blocks,
-      npcs: this.props.bundle.npcs,
-      pcs: this.props.bundle.pcs,
-      labels: this.props.bundle.labels,
-      tests: JSON.parse(JSON.stringify(this.props.bundle.tests))
+        files: initedFiles,
+        gridProperties: {
+          lines: this.props.bundle.rows,
+          columns: this.props.bundle.columns,
+          size: 30,
+          cases: [],
+          background: initedFiles[this.props.bundle.patternId],
+        },
+        blocks: this.props.bundle.blocks,
+        npcs: this.props.bundle.npcs,
+        pcs: this.props.bundle.pcs,
+        labels: this.props.bundle.labels,
+        tests: JSON.parse(JSON.stringify(this.props.bundle.tests)),
     });
   }
 
@@ -104,13 +118,14 @@ class RealisationExerciseWindow extends Component {
     compilator.compile(this.state.code);
 
     for(var i = 0; i < compilator.states.length; i++) {
-      setTimeout(this.setNewState.bind(this, compilator.states[i]), 500 * i); 
+      setTimeout(this.setNewState.bind(this, compilator.states[i]), 350 * i); 
     }
-    setTimeout(() => { this.setState({buttonCompile: true, load: false});}, 500 * compilator.states.length + 1);
-    setTimeout(() => { this.displayResults(compilator.error, compilator.testsResult); }, 500 * compilator.states.length + 1);
+    setTimeout(() => { this.setState({buttonCompile: true, load: false});}, 350 * compilator.states.length + 1);
+    setTimeout(() => { this.displayResults(compilator.error, compilator.testsResult); }, 350 * compilator.states.length + 1);
   }
 
   render() {
+    console.log(this.state);
     if(this.state.buttonCompile) {
       var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
     }
