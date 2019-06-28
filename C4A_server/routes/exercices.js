@@ -542,7 +542,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
                     this.boucle(currentAction.start,currentAction.end, currentAction.actions)
                 }
                 else if (currentAction.type === "condition"){
-                    this.condition(cond, currentAction.actions)
+                    this.condition(currentAction.cond, currentAction.actions)
                 }
                 else{
                     this[currentAction](this);
@@ -912,7 +912,7 @@ router.post('/executeExerciceTest', AUTH.VERIFYAUTH,function(request, res, next)
                     this.boucle(currentAction.start,currentAction.end, currentAction.actions)
                 }
                 else if (currentAction.type === "condition"){
-                    this.condition(cond, currentAction.actions)
+                    this.condition(currentAction.cond, currentAction.actions)
                 }
                 else{
                     this[currentAction](this);
