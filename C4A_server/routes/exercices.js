@@ -571,6 +571,9 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
 
 
     }
+    grid.saveState = function(){
+        return 1;
+    }
     for (var i = 0; i < exercice.functions.length; ++i) {
         var func = exercice.functions[i];
         func.code = func.code.replace(func.name + "()", func.name+"(grid)")
