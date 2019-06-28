@@ -30,7 +30,7 @@ class Consts {
         eval(toEval);
     }
 
-    customEvalOfCode(grid, saveState, end, buildedCode) {
+    customEvalOfCode(grid, buildedCode) {
         this.checkIfForbiddenWordIn(buildedCode);
         eval(buildedCode);
     }
