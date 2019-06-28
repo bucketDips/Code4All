@@ -599,7 +599,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
     var exerciceId = exerciceData.exercice.id;
     deleteUserExerciceSolutionAndroid(userId, exerciceId).then(function(rows){
         saveUserExerciceSolutionAndroid(userId, exerciceId, SqlString.escape(JSON.stringify(exerciceData.solution))).then(function(rows){
-            for (var i = 0; i < exerciceSteps.length){
+            for (var i = 0; i < exerciceSteps.length; ++i){
                 exerciceSteps[i].rows = exerciceSteps[i].lines
             }
             return res.send(exerciceSteps);
