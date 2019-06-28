@@ -38,10 +38,6 @@ export default class Compilator {
       return buildedString;
     }
 
-    saveState() {
-      this.states.push(JSON.parse(JSON.stringify(this.gridObject)));
-    }
-
     setTestResult(name, description, result){
       this.testsResult[name] = { description: description, result: result };
     }
@@ -52,17 +48,15 @@ export default class Compilator {
       var tests = this.buildStringOf(grid.tests);
       var testsCalls = this.buildTestsCall(grid.tests);
 
-      var end = (message) => {
-        throw new Error(message);
-      }
-
-      this.customEvalOfCode(grid, this.saveState.bind(this), end, functions + "\n\n" + code);
+      this.customEvalOfCode(grid, functions + "\n\n" + code);
       this.customEvalOfTests(grid, this.setTestResult.bind(this), tests + "\n" + testsCalls);
+
+      this.states = grid.states;
     }
     
-    customEvalOfCode(grid, saveState, end, buildedCode) {
+    customEvalOfCode(grid, buildedCode) {
       try {
-        consts.customEvalOfCode(grid, saveState, end, buildedCode);
+        consts.customEvalOfCode(grid, buildedCode);
       }
       catch(error) {
         if(error.message !== undefined && error.message !== "" && error.message !== null) {

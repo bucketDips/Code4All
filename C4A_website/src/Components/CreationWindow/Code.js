@@ -3,9 +3,7 @@ import AceEditor from 'react-ace';
 
 import 'brace/mode/javascript';
 import 'brace/snippets/javascript';
-
 import 'brace/theme/monokai';
-
 import "brace/ext/language_tools";
 import "brace/ext/searchbox";
 
@@ -46,7 +44,7 @@ class Code extends Component {
       newStr = this.state.editorValue.replace(matching, newStr);
     }
     else {
-      newStr = "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");\n" 
+      newStr = "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");\r\n" 
         + this.state.editorValue;
     }
     return newStr;
@@ -89,7 +87,7 @@ class Code extends Component {
     else {
       nameElement = this.getNameForANewElement(newStr, type)
       realBuiltStr = this.getRealBuiltStringForElement(nameElement, element, type);
-      newStr = newStr + "\n" + realBuiltStr;
+      newStr = newStr + "\r\n" + realBuiltStr;
     }
 
     var regexAdding = new RegExp("grid.add" + type + "\\(\\s*" + nameElement + "\\s*\\);{0,1}", "g");
@@ -101,7 +99,7 @@ class Code extends Component {
     }
     else {
       creationMatching = newStr.match(regexCreation)[0];
-      return newStr.replace(creationMatching, creationMatching + ("\ngrid.add" + type + "(" + nameElement + ");\n"));
+      return newStr.replace(creationMatching, creationMatching + ("\r\ngrid.add" + type + "(" + nameElement + ");\r\n"));
     }
   }
 
