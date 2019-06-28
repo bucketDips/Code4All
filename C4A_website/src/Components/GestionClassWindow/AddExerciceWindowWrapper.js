@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AddExerciceWindow from './AddExerciceWindow';
 import styles from './style.css';
-import classes from '../../Providers/classes';
+import exercices from '../../Providers/exercices';
 
 class AddExerciceWindowWrapper extends Component {
     state = {
@@ -16,8 +16,14 @@ class AddExerciceWindowWrapper extends Component {
         this.setState({ visible: false });
     };
 
+    refill() {
+      this.props.refill();
+    }
+
     async handleSave(props){
-      console.log(props);
+      await exercices.addExercicesToClass(this.props.classRoom, props, this.refill.bind(this));
+      this.props.refill();
+      this.setState({ visible: false });
     };
 
     saveFormRef = formRef => {
@@ -33,7 +39,7 @@ class AddExerciceWindowWrapper extends Component {
               visible={this.state.visible}
               onCancel={this.handleCancel}
               onSave={this.handleSave.bind(this)}
-              
+              exos={this.props.exos}
             />
           </div>
         );

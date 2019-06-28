@@ -201,6 +201,12 @@
     flex: 5;
 }
 
+:local(.container_exos) {
+    width: 100%;
+    overflow-y: auto;
+    flex: 5;
+}
+
 h3 {
     flex: 1;
 }
@@ -212,7 +218,18 @@ h3 {
     padding: 0 !important;
 }
 
+.add_exercices_modal .ant-modal {
+    width: 40% !important;
+    height: 55% !important;
+    top: 15% !important;
+    padding: 0 !important;
+}
+
 .add_persons_modal .ant-modal-content {
+    height: 100% !important;
+}
+
+.add_exercices_modal .ant-modal-content {
     height: 100% !important;
 }
 
@@ -220,13 +237,26 @@ h3 {
     height: 10% !important;
 }
 
+.add_exercices_modal .ant-modal-header {
+    height: 12% !important;
+}
+
 .add_persons_modal .ant-modal-body {
     height: 78% !important;
     padding: 10px !important;
 }
 
+.add_exercices_modal .ant-modal-body {
+    height: 76% !important;
+    padding: 10px !important;
+}
+
 .add_persons_modal .ant-modal-footer {
     height: 10% !important;
+}
+
+.add_exercices_modal .ant-modal-footer {
+    height: 12% !important;
 }
 
 :local(.search_add_form) {
@@ -235,6 +265,31 @@ h3 {
     flex-direction: column !important;
 }
 
-:local(.search_add_form) h3 {
+:local(.add_form_exercice) {
+    height: 100%;
+    display: flex !important;
+}
+
+h3 {
     color: black !important;
+}
+
+:local(.container_exos) :local(.note) {
+    padding-left: 10%;
+    width: 90%;
+    margin-top: 1%;
+    filter: drop-shadow(0px 1px 0px black);
+    cursor: pointer;
+}
+
+:local(.container_exos) :local(.exercice_infos) {
+    position: absolute;
+    bottom: 1.2vh;
+    left: 0;
+    font-family: lfl;
+    font-size: 1vw !important;
+    width: 55%;
+    margin-left: 25%;
+    transform: rotate(0.8deg);
+    cursor: pointer;
 }

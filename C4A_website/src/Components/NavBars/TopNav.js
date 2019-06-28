@@ -33,9 +33,6 @@ class TopNav extends Component {
                   <Nav.Link href="/classes">Classes</Nav.Link>
                   <Nav.Link href="/exercices">Exercices</Nav.Link>
                   <Nav.Link href="/store">Store</Nav.Link>
-                  <Nav.Link href="/tutorial">Tutorial</Nav.Link>
-                  <Nav.Link href="/faq">FAQ</Nav.Link>
-                  <Nav.Link href="/contact">Contact</Nav.Link>
               
               </Nav>
               <Form inline>

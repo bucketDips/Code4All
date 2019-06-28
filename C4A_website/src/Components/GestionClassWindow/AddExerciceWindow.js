@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import AddExerciceForm from './AddExerciceForm';
 import styles from './style.css';
 import { Input, Button, Modal, Form } from 'antd';
 
@@ -24,13 +24,13 @@ const AddExerciceWindow = Form.create({ name: 'form_in_modal' })(
         <Modal
           destroyOnClose={true}
           visible={visible}
-          wrapClassName="add_persons_modal"
-          title="Ajouter des élèves ou professeurs"
+          wrapClassName="add_exercices_modal"
+          title="Ajouter des exercices à la classe"
           okText= "Sauvegarder"
           onCancel={onCancel}
-          onOk={onSave.bind(this, this.state.toAdd)}
+          onOk={this.props.onSave.bind(this, this.state.toAdd)}
         >
-          
+          <AddExerciceForm updateToAdd={this.setToAdd.bind(this)} exercices={this.props.exos} />
         </Modal>
       );
     }
