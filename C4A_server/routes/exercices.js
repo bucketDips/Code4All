@@ -492,7 +492,7 @@ router.get('/getUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function(r
     }
     getUserExerciceSolutionWeb(userId, exerciceId).then(function(rows){
 
-        rows[0].solution = stand(rows[0].solution);
+        rows[0].solution =  rows[0].solution.substring(1,  rows[0].solution.length - 1);
         res.send(rows[0].solution);
 
     }).catch(function(err){
