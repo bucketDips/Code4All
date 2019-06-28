@@ -51,6 +51,7 @@ class GestionClassWindow extends Component {
                 classRoom={this.state.classRoom}
                 exos={this.state.exosList}
                 refill={this.refill.bind(this)}
+                teacher={this.props.teacher}
               />
             }
         </div>

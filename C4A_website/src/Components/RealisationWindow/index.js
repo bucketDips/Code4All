@@ -32,15 +32,23 @@ class RealisationExerciseWindow extends Component {
   getUrlForPatternId(id) {
     for(var i = 0; i < this.props.bundle.fichiers.length; i++) {
       if(this.props.bundle.fichiers[i].id === id) {
-        return this.props.bundle.fichiers[i].url;
+        if(this.props.bundle.fichiers[i].url.includes("http")){
+          return this.props.bundle.fichiers[i].url;
+        }
+        else {
+          return "http://" + this.props.bundle.fichiers[i].url;
+        }
       }
     }
     return "";
   }
 
   componentWillMount() {
-    console.log(this.props.bundle.fichiers);
-    console.log(this.props.bundle.tests);
+    if(this.props.bundle === null || this.props.bundle === undefined) {
+      return;
+    }
+
+    console.log(this.props.bundle);
     this.setState({
       gridProperties: {
         lines: this.props.bundle.rows,
@@ -111,6 +119,7 @@ class RealisationExerciseWindow extends Component {
   }
 
   render() {
+    console.log(this.state);
     if(this.state.buttonCompile) {
       var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
     }
