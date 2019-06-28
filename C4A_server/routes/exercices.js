@@ -584,6 +584,11 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
         func.code = func.code.replace(func.name + "()", func.name+"(grid)")
         grid[func.name] = createFunction(func.code);
     }
+    for (var i = 0; i < exercice.tests.length; ++i) {
+        var func = exercice.tests[i];
+        func.code = func.code.replace(func.name + "()", func.name+"(grid)")
+        grid[func.name] = createFunction(func.code);
+    }
     for (var i = 0; i < exerciceData.solution.length; ++i){
         var currentAction = exerciceData.solution[i];
 
@@ -606,7 +611,20 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
             for (var i = 0; i < exerciceSteps.length; ++i){
                 exerciceSteps[i].rows = exerciceSteps[i].lines
             }
-            return res.send(exerciceSteps);
+            var testResult = []
+            for (var i = 0; i < exercice.tests.length; ++i) {
+                var func = exercice.tests[i];
+                testResult.push({
+                    name: func.name,
+                    result: grid[func.name](grid)
+                })
+
+            }
+            resJson = {
+                exerciceSteps:exerciceSteps,
+                testResult:testResult
+            }
+            return res.send(resJson);
         }).catch(function(err){
             return res.status(403).json(err);
         });
