@@ -28,6 +28,9 @@ var funcString = [
         "description":"o"
     }
 ]
+var saveState = function(){
+    return 1;
+}
 var createFunction = function (txt) {
     return new Function("return " + txt)();
 }
