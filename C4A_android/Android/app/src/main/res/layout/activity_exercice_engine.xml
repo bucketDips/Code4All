@@ -1,25 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                                             android:layout_height="match_parent" android:id="@+id/root">
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".controllers.exercice_engine.ExerciceEngineActivity"
+        android:layout_width="match_parent"
+        android:background="@drawable/aquabc"
+        android:layout_height="match_parent" android:id="@+id/root">
 
     <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:baselineAligned="false">
-        <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:name="com.example.code4all.controllers.exercice_engine.GridExerciceFragment"
-                android:id="@+id/fragment_grid_holder" android:layout_weight="1"
-                tools:layout="@layout/fragment_grid_exercice" android:visibility="gone"/>
-        <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent" android:id="@+id/fragment_code_blocks" android:layout_weight="1"
-        />
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:background="@color/blue"
+                android:layout_height="0dp" android:layout_weight="0.05" android:visibility="gone">
+
+            <SeekBar
+                    android:progress="50"
+                    android:thumbTint="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp" android:id="@+id/seekBarTop"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            />
+        </android.support.constraint.ConstraintLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" android:baselineAligned="false"
+                android:layout_weight=".95" android:id="@+id/linearLayout">
+            <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/fragment_grid_holder"
+                    android:layout_weight="0.495"
+            />
+            <View
+                    android:background="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/separation" android:layout_weight="0.01"/>
+            <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/fragment_code_blocks"
+                    android:layout_weight=".495"
+            />
+        </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

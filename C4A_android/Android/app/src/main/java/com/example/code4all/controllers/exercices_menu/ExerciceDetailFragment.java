@@ -20,6 +20,7 @@ import com.example.code4all.controllers.exercice_engine.ExerciceEngineActivity;
 import com.example.code4all.controllers.main_menu.MainMenuActivity;
 import com.example.code4all.customviews.MyAppCompatActivity;
 import com.example.code4all.data_pojo.exercice.Exercice;
+import com.example.code4all.data_pojo.grid_exercice_element.MyExclusionStrategy;
 import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
@@ -60,7 +61,7 @@ public class ExerciceDetailFragment extends Fragment {
 
         if (getArguments() != null && getArguments().containsKey(EXERCICE_JSON)) {
             String jsonExercice = getArguments().getString(EXERCICE_JSON);
-            gson = new GsonBuilder().create();
+            gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
 
 
 

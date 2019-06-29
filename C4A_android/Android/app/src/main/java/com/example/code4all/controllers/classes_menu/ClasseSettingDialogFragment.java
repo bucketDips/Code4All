@@ -25,6 +25,7 @@ import com.example.code4all.R;
 import com.example.code4all.customviews.MyDialogFragment;
 import com.example.code4all.customviews.MyEditText;
 import com.example.code4all.data_pojo.classe.Classe;
+import com.example.code4all.data_pojo.grid_exercice_element.MyExclusionStrategy;
 import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
@@ -230,7 +231,7 @@ public class ClasseSettingDialogFragment extends MyDialogFragment {
                         public void onSuccessResponse(@NotNull JSONArray result) {
                             progressBar.setVisibility(View.GONE);
 
-                            Gson gson = new GsonBuilder().create();
+                            Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
                             ArrayList<User> users = new ArrayList<>();
                             for(int i = 0; i < result.length(); i++){
                                 try {

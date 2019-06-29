@@ -47,7 +47,7 @@
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
 
         <activity android:name=".controllers.exercice_engine.ExerciceEngineActivity"
-                  android:screenOrientation="landscape"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
 
         </activity>

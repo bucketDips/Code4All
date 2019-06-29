@@ -69,22 +69,7 @@ class RecyclerViewUsersAdapter extends RecyclerView.Adapter<RecyclerViewUsersAda
         viewHolder.userMail.setText(users.get(pos).getEmail());
         viewHolder.userName.setText(users.get(pos).getName());
 
-        viewHolder.row.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //changeRowBackGround(v, pos);
-                callback.onUserSelected(users.get(pos));
-            }
-        });
-    }
-
-    private void changeRowBackGround(View view, int i){
-        if(!isSelected.get(i)){
-            view.setBackgroundColor(context.getColor(R.color.blue));
-        } else {
-            view.setBackgroundColor(context.getColor(R.color.text));
-        }
-        isSelected.set(i, !isSelected.get(i));
+        viewHolder.row.setOnClickListener(v -> callback.onUserSelected(users.get(pos)));
     }
 
     @Override

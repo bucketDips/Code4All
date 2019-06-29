@@ -2,6 +2,7 @@ package com.example.code4all.controllers.exercice_engine;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.LinearLayout;
 import com.example.code4all.serverhandler.ServerHandler;
 import com.example.code4all.settings.SharedPreferenceManager;
 
@@ -16,7 +17,7 @@ public abstract class Factory {
         this.serverHandler = serverHandler;
     }
 
-    protected abstract View build(View root);
+    protected abstract View build(LinearLayout root);
 
     public Context getContext() {
         return context;

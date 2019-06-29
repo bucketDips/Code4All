@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@color/black"
-             tools:context=".controllers.exercice_engine.GridExerciceFragment">
+<FrameLayout        xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:layout_width="match_parent">
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/root">
 
-    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
-                                                 android:layout_height="match_parent">
         <ScrollView
                 android:layout_width="match_parent" android:layout_height="match_parent"
                 android:scrollbars="vertical"
@@ -19,7 +20,6 @@
                     android:fillViewport="true">
 
                 <android.support.constraint.ConstraintLayout android:layout_width="wrap_content"
-                                                             android:background="@drawable/aquabc"
                                                              android:layout_height="match_parent">
                     <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
                                  app:layout_constraintEnd_toEndOf="parent"
@@ -63,6 +63,27 @@
             </HorizontalScrollView>
 
         </ScrollView>
+        <HorizontalScrollView
+                android:fillViewport="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:background="@color/transparent"
+                          android:orientation="horizontal" android:id="@+id/testArea">
+                <ImageButton
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" app:srcCompat="@android:drawable/ic_dialog_info"
+                        android:id="@+id/imageButtonTestDetail" android:tint="@color/blue"/>
+                <TextView
+                        android:text="@string/tests"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/white"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent" android:id="@+id/textView"
+                        android:layout_width="wrap_content" android:textAlignment="center"/>
+            </LinearLayout>
+        </HorizontalScrollView>
         <SeekBar
                 android:tooltipText="Zoom"
                 android:layout_width="100dp"

@@ -8,7 +8,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import com.example.code4all.R;
+import com.google.gson.FieldAttributes;
 
+//@Expose(serialize = false, )
 public class GridExerciceElement extends View implements IGridExerciceElement {
 
     private int id;
@@ -18,7 +20,8 @@ public class GridExerciceElement extends View implements IGridExerciceElement {
     private int height;
     private int patternId;
 
-    public GridExerciceElement(Context context) {
+
+    public GridExerciceElement(Context context, View view) {
         super(context);
         Log.d("GridExerciceElement","GridExerciceElement(Context context)" );
 
