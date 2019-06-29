@@ -192,6 +192,25 @@ router.post('/addExerciceToUser/:exerciceId', AUTH.VERIFYAUTH, function(request,
         return res.status(403).json(err);
     });
 });
+router.post('/removeExerciceFromUser/:exerciceId', AUTH.VERIFYAUTH, function(request, res, next) {
+    var userId = request.decoded.id;
+    var exerciceId = request.params.exerciceId;
+
+    function removeExerciceFromUser(exerciceId,userId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from user_exercices(userID, exerciceiD) values ('"+userId+"','"+exerciceId+"');"
+            con.query(sql,function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    removeExerciceFromUser(exerciceId,userId).then(function(rows){
+        res.send(rows)
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+});
 router.get('/getAllStoreExercicesNotOwned', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id
     function getAllStoreExercicesNotOwned(userId) {
