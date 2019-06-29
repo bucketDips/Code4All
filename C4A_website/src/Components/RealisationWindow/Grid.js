@@ -60,6 +60,24 @@ class Grid extends Component {
     );
   }
 
+  componentWillReceiveProps(newProps) {
+    let properties = {
+      lines: newProps.parameters.lines,
+      columns: newProps.parameters.columns,
+      cases: newProps.parameters.cases,
+      size: newProps.parameters.size,
+      background: newProps.parameters.background,
+    };
+    this.setState(
+      {
+        gridProperties: properties
+      },
+      function() {
+        this.fillCases();
+      }
+    );
+  }
+
   changeSizeValue(newSize) {
     let properties = this.state.gridProperties;
     properties.size = newSize;
@@ -91,7 +109,6 @@ class Grid extends Component {
   }
 
   render() {
-    console.log(this.props);
     let background = (
     <div style={{
       gridColumnStart: 1,
