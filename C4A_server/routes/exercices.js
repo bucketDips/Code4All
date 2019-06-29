@@ -198,7 +198,7 @@ router.post('/removeExerciceFromUser/:exerciceId', AUTH.VERIFYAUTH, function(req
 
     function removeExerciceFromUser(exerciceId,userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "delete from user_exercices(userID, exerciceId) where userID = ? and exerciceId = ?;"
+            var sql = "delete from user_exercices where userID = ? and exerciceId = ?;"
             con.query(sql,[userId,exerciceId],function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
