@@ -159,7 +159,7 @@ class Exercices {
             .then(function (response) {
             })
             .catch(function (error) {
-                alert(JSON.stringify(error.response));
+                alert(JSON.stringify(error.response))
             });
         }
         cb();
