@@ -27,7 +27,7 @@ class StoreWindow extends Component {
 
     seeAll() {
         return new Promise((resolve, reject) => { resolve([(
-            <GestionStoreWindow exercices={this.state.exercices} />
+            <GestionStoreWindow exercices={this.state.exercices} type={"all"} />
         ), "collapsed"]); });
     }
 

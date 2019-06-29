@@ -7,6 +7,7 @@ import TestsResults from './TestsResults';
 import { Input } from 'antd';
 import style from './style.css';
 import { Button } from 'antd/lib/radio';
+import exercices from '../../Providers/exercices';
 
 const TextArea = Input.TextArea;
 
@@ -31,7 +32,6 @@ class RealisationExerciseWindow extends Component {
   }
 
   getUrlForPatternId(id) {
-    console.log(id);
     return this.state.files[id];
   }
 
@@ -49,10 +49,21 @@ class RealisationExerciseWindow extends Component {
     return files;
   }
 
-  async componentWillMount() {
-    if(this.props.bundle === null || this.props.bundle === undefined) {
-      return;
+  init(code, tests) {
+    var initedTests = JSON.parse(JSON.stringify(this.props.bundle.tests));
+    if(tests !== null) {
+      for(var i = 0; i < initedTests.length; i++) {
+        for(var j = 0; j < tests.length; j++) {
+          if(tests[j].name === initedTests[i].name) {
+            initedTests[i].result = [true, ""];
+          }
+        }
+        if(initedTests[i].result === undefined) {
+          initedTests[i].result = [false, ""];
+        }
+      }
     }
+
     var initedFiles = this.initFiles();
     this.setState({
         files: initedFiles,
@@ -67,12 +78,22 @@ class RealisationExerciseWindow extends Component {
         npcs: this.props.bundle.npcs,
         pcs: this.props.bundle.pcs,
         labels: this.props.bundle.labels,
-        tests: JSON.parse(JSON.stringify(this.props.bundle.tests)),
+        tests: initedTests,
+        code: code,
     });
   }
 
-  shouldComponentUpdate(nextProps, nextState){
-    return nextState.code === this.state.code;
+  componentWillMount() {
+    if(this.props.bundle === null || this.props.bundle === undefined) {
+      return;
+    }
+
+    if(this.props.bundle.id) {
+      exercices.getCodeForExercice(this.props.bundle.id, this.init.bind(this));  
+    }
+    else {
+      this.init("", null);
+    }
   }
 
   changeCode(newCode) {
@@ -122,6 +143,18 @@ class RealisationExerciseWindow extends Component {
     }
     setTimeout(() => { this.setState({buttonCompile: true, load: false});}, 350 * compilator.states.length + 1);
     setTimeout(() => { this.displayResults(compilator.error, compilator.testsResult); }, 350 * compilator.states.length + 1);
+
+    if(this.props.bundle.id) {
+      exercices.setNewCodeForExercice(this.props.bundle.id, this.state.code);
+      var keys = Object.keys(compilator.testsResult);
+      var winnedTests = [];
+      for(var i = 0; i < keys.length; i++) {
+        if(compilator.testsResult[keys[i]].result[0]) {
+          winnedTests.push(keys[i]);
+        }
+      }
+      exercices.uploadTestsForExercice(this.props.bundle.id, winnedTests);
+    }
   }
 
   render() {
@@ -148,7 +181,7 @@ class RealisationExerciseWindow extends Component {
                 </div>
             </div>
             <div className={style.right_panel}>
-                <Code changeCode={this.changeCode.bind(this)} />
+                <Code changeCode={this.changeCode.bind(this)} code={this.state.code} />
                 <div className={style.description}>
                   <TextArea className={style.textArea} rows={4} defaultValue={this.props.bundle.description} disabled />
                   {buttonCompile}

@@ -1,4 +1,15 @@
 :local(.store) {
-    background-color: gray;
+    padding-left: 3%;
+    padding-top: 3%;
     height: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 3%;
+    grid-auto-rows: minmax(25vh, 25vh);
+}
+
+.ant-card-bordered {
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
 }

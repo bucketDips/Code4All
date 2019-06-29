@@ -25,6 +25,12 @@ class Code extends Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    if(props.code) {
+      this.setState({editorValue: props.code});
+    }
+  }
+
   changeSizeValue(newSize) {
     this.setState({fontSize: newSize});
   }
