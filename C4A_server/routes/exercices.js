@@ -179,7 +179,7 @@ router.post('/addExerciceToUser/:exerciceId', AUTH.VERIFYAUTH, function(request,
 
     function addExerciceToUser(exerciceId,userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "insert into user_exercices(userID, exerciceiD) values ('"+userId+"','"+exerciceId+"');"
+            var sql = "insert into user_exercices(userID, exerciceId) values ('"+userId+"','"+exerciceId+"');"
             con.query(sql,function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -198,8 +198,8 @@ router.post('/removeExerciceFromUser/:exerciceId', AUTH.VERIFYAUTH, function(req
 
     function removeExerciceFromUser(exerciceId,userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "delete from user_exercices(userID, exerciceiD) values ('"+userId+"','"+exerciceId+"');"
-            con.query(sql,function (err, rows, fields) {
+            var sql = "delete from user_exercices(userID, exerciceId) where userID = ? and exerciceId = ?;"
+            con.query(sql,[userId,exerciceId],function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
