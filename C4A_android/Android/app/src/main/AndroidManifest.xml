@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.example.code4all">
+          package="com.example.codinschool">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -15,25 +15,25 @@
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning" tools:targetApi="m">
         <activity
-                android:name=".controllers.exercices_menu.ExerciceListActivity"
+                android:name="com.example.codinschool.controllers.exercices_menu.ExerciceListActivity"
                 android:label="@string/title_exercice_list"
                 android:theme="@style/MainTheme">
         </activity>
         <activity
-                android:name=".controllers.exercices_menu.ExerciceDetailActivity"
+                android:name="com.example.codinschool.controllers.exercices_menu.ExerciceDetailActivity"
                 android:label="@string/title_exercice_detail"
-                android:parentActivityName=".controllers.exercices_menu.ExerciceListActivity"
+                android:parentActivityName="com.example.codinschool.controllers.exercices_menu.ExerciceListActivity"
                 android:theme="@style/MainTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.example.code4all.controllers.exercices_menu.ExerciceListActivity"/>
+                    android:value="com.example.codinschool.controllers.exercices_menu.ExerciceListActivity"/>
         </activity>
         <activity
-                android:name=".controllers.classes_menu.ClasseActivity"
+                android:name="com.example.codinschool.controllers.classes_menu.ClasseActivity"
                 android:screenOrientation="landscape">
         </activity>
         <activity
-                android:name=".controllers.login.LoginActivity"
+                android:name="com.example.codinschool.controllers.login.LoginActivity"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -42,13 +42,17 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".controllers.main_menu.MainMenuActivity"
+                android:name="com.example.codinschool.controllers.main_menu.MainMenuActivity"
                 android:screenOrientation="landscape"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
 
-        <activity android:name=".controllers.exercice_engine.ExerciceEngineActivity"
+        <activity android:name="com.example.codinschool.controllers.exercice_engine.ExerciceEngineActivity"
                   android:configChanges="orientation|keyboardHidden|screenSize"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+
+        </activity>
+        <activity android:name="com.example.codinschool.controllers.store.StoreActivity"
+                  android:screenOrientation="landscape">
 
         </activity>
     </application>

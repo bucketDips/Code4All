@@ -122,21 +122,14 @@ class Exercices {
     }
 
     async getFromStore() {
-        return await new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              resolve([
-                {
-                    id: 2,
-                    name: "coucou",
-                    description: "coucoud"
-                },
-                {
-                    id: 3,
-                    name: "jesus",
-                    description: "jesus2"
-                }
-            ]);
-            }, 300);
+        var headers = {
+            'Authorization': 'Bearer ' +  localStorage.sessionToken
+        }
+
+        return Axios.get(consts.url() + "exercices/getAllStoreExercicesNotOwned", {headers: headers}).then(response => {
+            return response.data;
+        }).catch(error => {
+            alert(JSON.stringify(error));
         });
     }
 

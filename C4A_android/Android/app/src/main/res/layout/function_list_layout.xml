@@ -27,8 +27,8 @@
                     android:id="@+id/button_close"
                     app:layout_constraintTop_toTopOf="@+id/function_list_label"
                     app:layout_constraintBottom_toBottomOf="@+id/function_list_label"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
-            <com.example.code4all.customviews.AutoResizeTextView
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:visibility="gone"/>
+            <com.example.codinschool.customviews.AutoResizeTextView
                     android:text="@string/functions_list_label"
                     android:layout_width="0dp"
                     android:layout_height="43dp"
