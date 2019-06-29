@@ -165,6 +165,22 @@ class Exercices {
         cb();
     }
 
+    addExercicesToUser(id, cb) {
+        Axios.post(consts.url() + 'exercices/addExerciceToUser/' + id, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            cb();
+        })
+        .catch(function (error) {
+            console.log(error);
+            alert(JSON.stringify(error.response));
+        });
+    }
+
     setNewCodeForExercice(idExo, code){
         let data = {'solution': code};
 

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import exercices from '../../Providers/exercices';
-
 import GestionStoreWindow from '../GestionStoreWindow';
 
 import ConnectedWindowsStructure from '../ConnectedWindowsStructure/';
@@ -13,7 +11,6 @@ class StoreWindow extends Component {
         this.state = {
             menus: [],
             content: null,
-            exercices: []
         }
     }
 
@@ -27,13 +24,11 @@ class StoreWindow extends Component {
 
     seeAll() {
         return new Promise((resolve, reject) => { resolve([(
-            <GestionStoreWindow exercices={this.state.exercices} type={"all"} />
+            <GestionStoreWindow type={"all"} />
         ), "collapsed"]); });
     }
 
     async componentWillMount() {
-        var allExercices = await exercices.getFromStore();
-
         var menus = [];
         menus.push({
             name: "presentation",
@@ -50,7 +45,6 @@ class StoreWindow extends Component {
             this.setState({ 
                 menus: menus,
                 content: result[0],
-                exercices: allExercices
              });
         });
     }
