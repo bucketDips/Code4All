@@ -20,6 +20,7 @@ import com.example.code4all.R;
 import com.example.code4all.customviews.MyAppCompatActivity;
 import com.example.code4all.data_pojo.exercice.Exercice;
 import com.example.code4all.data_pojo.exercice.ExerciceManager;
+import com.example.code4all.data_pojo.grid_exercice_element.MyExclusionStrategy;
 import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
@@ -167,7 +168,7 @@ public class ExerciceListActivity extends MyAppCompatActivity {
                 int position = getItemPositionClick(view);
                 Exercice exerciceToSend = exerciceManager.getExercice(position);
 
-                Gson gson = new GsonBuilder().create();
+                Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
                 String exerciceJson = gson.toJson(exerciceToSend);
 
                 if (twoPanneMod) {

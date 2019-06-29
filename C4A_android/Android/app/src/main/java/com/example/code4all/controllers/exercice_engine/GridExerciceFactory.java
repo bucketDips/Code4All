@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.code4all.R;
 import com.example.code4all.customviews.AutoResizeTextView;
+import com.example.code4all.data_pojo.exercice_functions.ExerciceFunction;
 import com.example.code4all.data_pojo.file.File;
 import com.example.code4all.data_pojo.grid_exercice_element.*;
 import com.example.code4all.data_pojo.exercice.Exercice;
@@ -30,7 +31,7 @@ import java.util.Map;
 public class GridExerciceFactory extends Factory{
 
     private final String TAG = "GridExerciceFactory";
-    private final Exercice exercice;
+    private Exercice exercice;
 
     private View[][] grid;
     private LayoutInflater layoutInflater;
@@ -40,6 +41,8 @@ public class GridExerciceFactory extends Factory{
     private GifImageView gridBackground;
     private HashMap<GridExerciceElement, GifImageView> imageViewRegister;
     private HashMap<GridExerciceElement, AutoResizeTextView> labelRegister;
+    private File[] files;
+        private ExerciceFunction[] tests;
 
 
     GridExerciceFactory(Context context, ConstraintLayout gridborder, GifImageView gridBackground, SharedPreferenceManager sharedPreferenceManager, ServerHandler serverHandler, Exercice exercice) {
@@ -49,6 +52,7 @@ public class GridExerciceFactory extends Factory{
         this.exercice = exercice;
         this.imageViewRegister = new HashMap<>();
         this.labelRegister = new HashMap<>();
+        this.files = exercice.getFichiers();
         this.grid = initGridLayout();
         this.gridBackground = gridBackground;
     }
@@ -62,35 +66,78 @@ public class GridExerciceFactory extends Factory{
             }
         }
 
-        for(Block block : this.exercice.getBlocks()){
-            GifImageView imageView = generateImageView(block, exercice.getFichiers());
-            imageViewRegister.put(block, imageView);
+
+        if(this.exercice.getBlocks() !=null){
+            for(Block block : this.exercice.getBlocks()){
+                GifImageView imageView = generateImageView(block, this.files);
+                imageViewRegister.put(block, imageView);
+            }
         }
 
-        for(Label label : this.exercice.getLabels()){
-            labelRegister.put(label, generateTextView(label));
+        if(this.exercice.getLabels() !=null){
+            for(Label label : this.exercice.getLabels()){
+                labelRegister.put(label, generateTextView(label));
+            }
         }
 
-        for(NonPlayerCharacter npc : this.exercice.getNpcs()){
-            GifImageView imageView = generateImageView(npc, exercice.getFichiers());
-            imageViewRegister.put(npc, imageView);
+
+        if(this.exercice.getNpcs() != null){
+            for(NonPlayerCharacter npc : this.exercice.getNpcs()){
+                GifImageView imageView = generateImageView(npc, this.files);
+                imageViewRegister.put(npc, imageView);
+            }
         }
 
-        for(PlayableCharacter pc : this.exercice.getPcs()){
-            GifImageView imageView = generateImageView(pc, exercice.getFichiers());
-            imageViewRegister.put(pc, imageView);
+        if(this.exercice.getPcs() != null){
+            for(PlayableCharacter pc : this.exercice.getPcs()){
+                GifImageView imageView = generateImageView(pc, this.files);
+                imageViewRegister.put(pc, imageView);
+            }
         }
 
         return data;
     }
 
+    public LinearLayout updateGrid(Exercice exercice, LinearLayout root){
+        this.exercice = exercice;
+        eraseBlocks();
+        this.grid = initGridLayout();
+
+        return build(root);
+    }
+
+    public void eraseBlocks() {
+        Iterator it = imageViewRegister.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+            GifImageView imageViewToDelete = (GifImageView) pair.getValue();
+            gridBorder.removeView(imageViewToDelete);
+        }
+
+        it = labelRegister.entrySet().iterator();
+        while (it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+            AutoResizeTextView labelToDelete = (AutoResizeTextView) pair.getValue();
+            gridBorder.removeView(labelToDelete);
+        }
+
+        this.labelRegister.clear();
+        this.imageViewRegister.clear();
+    }
+
     @Override
-    public View build(View root) {
-        LinearLayout grid = (LinearLayout) root;
+    public LinearLayout build(LinearLayout root) {
+        //LinearLayout grid =  root;
         int numRow = this.grid.length;
         int numColumn = this.grid[0].length;
 
+        if(root.getChildCount() > 0){
+            root.removeAllViews();
+        }
+
         for(int i = 0; i < numRow; i++){
+
+            // create row
             LinearLayout row = new LinearLayout(getContext());
             row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT, 1 ));
             for(int y = 0; y < numColumn; y++){
@@ -100,19 +147,19 @@ public class GridExerciceFactory extends Factory{
                 row.addView(block);
             }
 
-            grid.addView(row);
+            root.addView(row);
         }
 
-        ViewGroup.LayoutParams layoutParams = grid.getLayoutParams();
+        ViewGroup.LayoutParams layoutParams = root.getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         drawBlocks();
 
-        imageSetBackground(grid, exercice.getFichiers(), null);
+        imageSetBackground(root, this.files, null);
 
 
-        return grid;
+        return root;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

@@ -21,10 +21,11 @@ public class Exercice {
     private int classe_id;
     private ExerciceFunction[] functions;
     private File[] fichiers;
+    private ExerciceFunction[] tests;
 
+    public Exercice(){}
 
-
-    public Exercice(int id, String title, String description, int isPublic, int author_id, String code, int classe_id, int rows, int columns, Block[] blocks, NonPlayerCharacter[] npcs, PlayableCharacter[] pcs, Label[] labels, int patternId, ExerciceFunction[] functions, File[] fichiers) {
+    public Exercice(int id, String title, String description, int isPublic, int author_id, String code, int classe_id, int rows, int columns, Block[] blocks, NonPlayerCharacter[] npcs, PlayableCharacter[] pcs, Label[] labels, int patternId, ExerciceFunction[] functions, File[] fichiers, ExerciceFunction[] tests) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -41,6 +42,7 @@ public class Exercice {
         this.patternId = patternId;
         this.functions = functions;
         this.fichiers = fichiers;
+        this.tests = tests;
     }
 
     public ExerciceFunction[] getFunctions() {
@@ -53,6 +55,14 @@ public class Exercice {
 
     public File[] getFichiers() {
         return fichiers;
+    }
+
+    public ExerciceFunction[] getTests() {
+        return tests;
+    }
+
+    public void setTests(ExerciceFunction[] tests) {
+        this.tests = tests;
     }
 
     public void setFichiers(File[] fichiers) {

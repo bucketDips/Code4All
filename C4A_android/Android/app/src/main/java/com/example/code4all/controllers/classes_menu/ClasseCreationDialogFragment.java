@@ -6,16 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import com.example.code4all.R;
 import com.example.code4all.customviews.MyDialogFragment;
 import com.example.code4all.customviews.MyEditText;
-import com.example.code4all.tools.DialogBoxBuilder;
 import com.example.code4all.viewtools.SnackbarBuilder;
 
 public class ClasseCreationDialogFragment extends MyDialogFragment {
@@ -40,7 +37,7 @@ public class ClasseCreationDialogFragment extends MyDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View dialogFragment = inflater.inflate(R.layout.dialog_fragment_classe_creation, null);
 
-        editTextClasseName =dialogFragment.findViewById(R.id.editTextClasseName);
+        editTextClasseName = dialogFragment.findViewById(R.id.editTextStart);
         buttonCreate = dialogFragment.findViewById(R.id.buttonAdd);
         parent = (ClasseActivity) getActivity();
 

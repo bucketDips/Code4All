@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CodinSchool.</string>
+    <string name="app_name" translatable="false">CodinSchool.</string>
 
     // SharedPref Vars
     <string name="remember_me" translatable="false">remember_me</string>
@@ -10,7 +10,7 @@
     <string name="apikeypixabay" translatable="false">12798900-ca01678f7e4820e80f3435d26</string>
 
 
-    <string name="network_error_network_error">Cannot connect to Internet...Please check your connection!</string>
+    <string name="network_error_network_error">Cannot connect to Internet… Please check your connection!</string>
     <string name="network_error_server_error">The server could not be found. Please try again after some time!!</string>
     <string name="network_error_auth_failure">Your request have been refused !</string>
     <string name="network_error_parser_error">Parsing error! Please try again after some time!!</string>
@@ -28,10 +28,10 @@
     <string name="classe_list_as_professor_label">My classes</string>
     <string name="classe_list_as_student_label">Member of</string>
     <string name="fragment_classes_list_title_label">Classes</string>
-    <string name="empty_message_for_dialog_fragment">%1$s</string>
+    <string name="empty_message_for_dialog_fragment" translatable="false">%1$s</string>
 
     <string name="classe_label">Classe %1$s %2$d user(s)</string>
-    <string name="user_grid_layout_label">%1$s</string>
+    <string name="user_grid_layout_label" translatable="false">%1$s</string>
     <string name="professors_label">Professors %1$s</string>
     <string name="students_label">Students %1$s</string>
     <string name="classe_details_fragment_title">Classe details</string>
@@ -42,11 +42,11 @@
     <string name="list_of_new_user_clic_to_remove_user">List of new user (clic to remove user)</string>
     <string name="title_exercice_list">Exercices</string>
     <string name="title_exercice_detail">Exercice Detail</string>
-    <string name="simple_string_placeholder">%1$s</string>
+    <string name="simple_string_placeholder" translatable="false">%1$s</string>
     <string name="button_play">run</string>
 
-    <string name="user_test">spyroo913@hotmail.com</string>
-    <string name="password_test">1991</string>
+    <string name="user_test" translatable="false">spyroo913@hotmail.com</string>
+    <string name="password_test" translatable="false">1991</string>
     <string name="exercice_fragment_exercice_creator_label">Creator :</string>
     <string name="exercice_fragment_exercice_description">Description :</string>
     <string name="exercice_fragment_exercice_name">Name :</string>
@@ -56,5 +56,20 @@
     <string name="from_classe_list_label">From my classes</string>
     <string name="exercice_grid_label">Exercice grid</string>
     <string name="functions_list_label">Functions</string>
+    <string name="remove_codeblock_message_dialog_box">Are you sure to do this ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="primary_function_label">Primary function</string>
+    <string name="exercice_functions_label">Exercice Functions</string>
+    <string name="dialog_fragment_edit_block_end">End</string>
+    <string name="dialog_fragment_edit_block_start">Start</string>
+    <string name="code_block_boucle_title">For</string>
+    <string name="code_block_condition_title">If</string>
+    <string name="button_apply">Apply</string>
+    <string name="select_your_condition_below">Select your condition below</string>
+    <string name="enter_a_start_and_a_end">Enter a start and a end</string>
+    <string name="apply">Apply</string>
+    <string name="test_details">Test details</string>
+    <string name="tests">Tests :</string>
 
 </resources>

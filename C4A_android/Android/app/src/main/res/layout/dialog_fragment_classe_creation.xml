@@ -23,12 +23,12 @@
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="32dp"
-                app:layout_constraintTop_toBottomOf="@+id/editTextClasseName"/>
+                app:layout_constraintTop_toBottomOf="@+id/editTextStart"/>
         <TextView
                 android:text="Classe creation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView" android:layout_marginTop="16dp"
+                android:id="@+id/resultLabel" android:layout_marginTop="16dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
         />
@@ -37,9 +37,9 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:ems="10"
-                android:id="@+id/editTextClasseName"
+                android:id="@+id/editTextStart"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resultLabel" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/edit_rounds"
                 android:drawableStart="@android:drawable/ic_menu_agenda"

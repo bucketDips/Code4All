@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.example.code4all.R;
 import com.example.code4all.controllers.main_menu.MainMenuActivity;
 import com.example.code4all.customviews.MyEditText;
+import com.example.code4all.data_pojo.grid_exercice_element.MyExclusionStrategy;
 import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
@@ -132,7 +133,7 @@ public class LoginFragment extends Fragment{
             @Override
             public void onSuccessResponse(@NotNull JSONArray result) {
                 try {
-                    Gson gson = new GsonBuilder().create();
+                    Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
                     JSONObject userJson = result.getJSONObject(0);
                     User user = gson.fromJson(String.valueOf(userJson), User.class);
 

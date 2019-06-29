@@ -2,6 +2,7 @@ package com.example.code4all.serverhandler
 
 import com.example.code4all.data_pojo.classe.Classe
 import com.example.code4all.data_pojo.user.User
+import org.json.JSONObject
 
 interface IServerHandler {
     fun connect(mail: String, password: String, iapiCallbackJsonObject: IAPICallbackJsonObject)
@@ -21,8 +22,7 @@ interface IServerHandler {
 
     fun getAllExercicesOfTheUserSession(tokenSaved: String, callback: IAPICallbackJsonObject)
     fun getExerciceById(idExercice: Int, tokenSaved: String, callback: IAPICallbackJsonObject)
-    fun getFileById(patternId: Int, tokenSaved: String, iapiCallbackJsonObject: IAPICallbackJsonObject) {
+    fun getFileById(parameterJson: JSONObject, patternId: Int, tokenSaved: String, iapiCallbackJsonObject: IAPICallbackJsonObject)
 
-    }
-
+    fun executeExercice(parameterJson: JSONObject, exercice: String, solution: String, tokenSaved: String, iapiCallbackJsonObject: IAPICallbackJsonObject)
 }

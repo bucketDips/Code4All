@@ -3,6 +3,7 @@ package com.example.code4all.data_pojo.exercice;
 import android.content.Context;
 import com.android.volley.VolleyError;
 import com.example.code4all.data_pojo.DataManager;
+import com.example.code4all.data_pojo.grid_exercice_element.MyExclusionStrategy;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonObject;
 import com.example.code4all.serverhandler.ServerHandler;
@@ -44,7 +45,7 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
             @Override
             public void onSuccessResponse(@NotNull JSONObject result) {
                 // int array for exercices type split
-                Gson gson = new GsonBuilder().create();
+                Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
                 ArrayList<Exercice> myExercices = new ArrayList<>();
                 ArrayList<Exercice> fromStoreExercices = new ArrayList<>();
                 ArrayList<Exercice> fromClassesExercices = new ArrayList<>();
@@ -61,7 +62,8 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
 
 
                     for(int i = 0; i < exercicesJsonArray.length(); i++){
-                        allExercices.add(gson.fromJson(String.valueOf(exercicesJsonArray.getJSONObject(i)), Exercice.class));
+                        Exercice exercice = gson.fromJson(String.valueOf(exercicesJsonArray.getJSONObject(i)), Exercice.class);
+                        allExercices.add(exercice);
                         myExercices.add(gson.fromJson(String.valueOf(exercicesJsonArray.getJSONObject(i)), Exercice.class));
                     }
 
@@ -110,7 +112,7 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
             public void onSuccessResponse(@NotNull JSONObject result) {
                 if(result.has("exercice")){
 
-                    Gson gson = new GsonBuilder().create();
+                    Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
 
                     try {
                         JSONObject exerciceJson = result.getJSONObject("exercice");

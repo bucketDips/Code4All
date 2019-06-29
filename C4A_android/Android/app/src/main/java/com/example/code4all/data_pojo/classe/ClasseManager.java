@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import com.android.volley.VolleyError;
 import com.example.code4all.data_pojo.DataManager;
+import com.example.code4all.data_pojo.grid_exercice_element.MyExclusionStrategy;
 import com.example.code4all.data_pojo.user.User;
 import com.example.code4all.error.ErrorNetwork;
 import com.example.code4all.serverhandler.IAPICallbackJsonArray;
@@ -41,7 +42,7 @@ public class ClasseManager extends DataManager implements IClasseManager{
     @Override
     public void loadClassesFromUser() {
         String token = sharedPreferenceManager.getTokenSaved();
-        Gson gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
 
         if(token != null){
             serverHandler.getAllClassesOfUserAsProfessor(token, new IAPICallbackJsonArray() {
@@ -125,7 +126,7 @@ public class ClasseManager extends DataManager implements IClasseManager{
             public void onSuccessResponse(@NotNull JSONArray result) {
 
                 ArrayList<User> professors = new ArrayList<>();
-                Gson gson = new GsonBuilder().create();
+                Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
 
                 for(int i = 0; i < result.length(); i++){
                     try {
@@ -156,7 +157,7 @@ public class ClasseManager extends DataManager implements IClasseManager{
             public void onSuccessResponse(@NotNull JSONArray result) {
 
                 ArrayList<User> students = new ArrayList<>();
-                Gson gson = new GsonBuilder().create();
+                Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
 
                 for(int i = 0; i < result.length(); i++){
                     try {

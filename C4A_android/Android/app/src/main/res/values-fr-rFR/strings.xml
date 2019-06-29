@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Code Pour Tous</string>
     <string name="login">Se connecter</string>
     <string name="password">mot de passe</string>
     <string name="username">nom d\'utilisateur</string>
@@ -18,4 +17,43 @@
     <string name="background_powered_by_pixabay_api">Fond d\'ecran fourni par l\'API Pixabay</string>
     <string name="datalabel">%1$s</string>
     <string name="message_user_connected">Connecté en tant que %1$s .</string>
+    <string name="classe_list_as_professor_label">Mes classe</string>
+    <string name="classe_list_as_student_label">"Membre de "</string>
+    <string name="fragment_classes_list_title_label">Classes</string>
+    <string name="classe_label">Classe %1$s %2$d utilisateur(s)</string>
+    <string name="professors_label">Professeurs %1$s</string>
+    <string name="students_label">Etudiants %1$s</string>
+    <string name="classe_details_fragment_title">Détail de la classe</string>
+    <string name="button_close_label">Femer</string>
+    <string name="button_add_dialog_fragment_classe">Ajouter</string>
+    <string name="search_an_user_dialog_fragment_classe">Rechercher un utilisateur :</string>
+    <string name="name_or_email_hint_dialog_fragment_classe">Nom ou Email</string>
+    <string name="list_of_new_user_clic_to_remove_user">Liste des nouveaux utilisateurs (clic pour retirer)</string>
+    <string name="title_exercice_list">Exercices</string>
+    <string name="title_exercice_detail">Détail de l\'exercice</string>
+    <string name="button_play">jouer</string>
+    <string name="exercice_fragment_exercice_creator_label">Créateur :</string>
+    <string name="exercice_fragment_exercice_description">Description :</string>
+    <string name="exercice_fragment_exercice_name">Nom :</string>
+    <string name="exercice_fragment_visibility_status_label">Public :</string>
+    <string name="my_exercices_list_label">Mes exercices</string>
+    <string name="from_store_list_label">Depuis le store</string>
+    <string name="from_classe_list_label">Depuis mes classes</string>
+    <string name="exercice_grid_label">Grille d\'exercice</string>
+    <string name="functions_list_label">Fonctions</string>
+    <string name="remove_codeblock_message_dialog_box">Êtes-vous sûr de faire cela ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="primary_function_label">Fonctions primaires</string>
+    <string name="exercice_functions_label">Fonctions de l\'exercice</string>
+    <string name="dialog_fragment_edit_block_end">Fin</string>
+    <string name="dialog_fragment_edit_block_start">Début</string>
+    <string name="code_block_boucle_title">Boucle</string>
+    <string name="code_block_condition_title">Si</string>
+    <string name="button_apply">Appliquer</string>
+    <string name="select_your_condition_below">Selectionnez une condition ci-dessous</string>
+    <string name="enter_a_start_and_a_end">Entrer un début et une fin</string>
+    <string name="apply">Appliquer</string>
+    <string name="test_details">Détails des tests</string>
+    <string name="tests">Tests :</string>
 </resources>
