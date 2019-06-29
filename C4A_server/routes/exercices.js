@@ -45,6 +45,18 @@ function stand(str) {
     // str = rmendOfLine(str)
     return str
 }
+function getUserPassedTests(exerciceId, userId) {
+    return new Promise(function(resolve, reject) {
+        var sql = "select name from exercice_tests, user_exercice_passed_tests " +
+            "where exercice_tests.id = user_exercice_passed_tests.test_id " +
+            "and exercice_tests.exercice_id = ? and user_id = ?";
+        console.log(sql)
+        con.query(sql, [exerciceId, userId], function (err, rows, fields) {
+            if (err) return reject(err);
+            resolve(rows);
+        });
+    });
+}
 function deleteExercice(exo_id,author_id) {
     return new Promise(function(resolve, reject) {
         var sql = "delete from exercices where id = ? and author_id = ?;"
@@ -548,21 +560,165 @@ router.post('/addSuccessTest/:exerciceId', AUTH.VERIFYAUTH,function(request, res
         return res.status(403).json(err);
     });
 });
-router.get('/getUserPassedTests/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
-    var exerciceId = request.params.exerciceId;
-    var userId = request.decoded.id;
-    function getUserPassedTests(exerciceId, userId) {
+router.get('/getClassStudentPassedTests/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStudentInThisClassRoom,function(request, res, next) {
+    var classId = request.params.classId;
+    function getClassDetail(classId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select name from exercice_tests, user_exercice_passed_tests " +
+            var sql = "select * from classroom where id='"+classId+"'"+";";
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function getStudentListInClass(classId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select users.id, users.name, email from classroom, users, classroom_students " +
+                "where users.id=classroom_students.idStudent " +
+                "and classroom.id=classroom_students.idclassroom " +
+                "and classroom.id="+classId+" " +
+                ";";
+
+            con.query(sql, function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function getClassExercice(classId){
+        return new Promise(function(resolve, reject) {
+            var sql = "select exercices.id as exercice_id, exercices.title,exercices.description, users.name as author " +
+                "from exercices, users, class_exercices " +
+                "where exercices.id = class_exercices.exercice_id " +
+                "and users.id = exercices.author_id " +
+                "and class_exercices.class_id = ?";
+            con.query(sql, [classId],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function getUserPassedTestsWithUserInfo(exerciceId, userId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select name, user_exercice_passed_tests.exercice_id, user_id from exercice_tests, user_exercice_passed_tests " +
                 "where exercice_tests.id = user_exercice_passed_tests.test_id " +
                 "and exercice_tests.exercice_id = ? and user_id = ?";
-            console.log(sql)
+            // console.log(sql)
             con.query(sql, [exerciceId, userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
         });
     }
+    function getExerciceTests(exerciceId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "select exercices.title, name, exercice_id from exercice_tests, exercices where exercices.id = exercice_id and exercice_id = ?";
+            // console.log(sql + " " + exerciceId)
+            con.query(sql, [exerciceId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    getClassDetail(classId).then(function(rowsClass){
+            getStudentListInClass(classId).then(function(rowsStudent){
+                getClassExercice(classId).then(function(rowsExercice){
+                    var testPromises = [];
+                    for (var a = 0; a < rowsExercice.length; ++a){
+                        testPromises.push(getExerciceTests(rowsExercice[a].exercice_id))
+                    }
+                    Promise.all(testPromises).then(function(testsExerciceData){
+                        rowsClass[0].studentCount = rowsStudent.length;
+                        rowsClass[0].exerciceCount = rowsExercice.length;
+
+                        var promises = []
+                        for (var i = 0; i < rowsStudent.length; ++i){
+                            rowsStudent[i].exercices = [];
+                            for (var j = 0; j < rowsExercice.length; ++j){
+                                rowsExercice[j].passedTest = [];
+                                var exerciceId = rowsExercice[j].exercice_id;
+                                var userId = rowsStudent[i].id
+                                promises.push(getUserPassedTestsWithUserInfo(exerciceId, userId))
+                            }
+                        }
+                        Promise.all(promises)
+                            .then(function(data){
+                                var resultArray = Object.values(JSON.parse(JSON.stringify(data)))
+                                for (var i = 0; i < resultArray.length - 1; ++i){
+                                    for (var j = 0; j < rowsStudent.length; ++j){
+                                        if (rowsStudent[j].id === resultArray[i][0].user_id){
+                                            var exerciceInfo = {};
+                                            exerciceInfo.exercice_id = resultArray[i][0].exercice_id
+                                            exerciceInfo.exercice_title = ""
+                                            exerciceInfo.tests = {}
+                                            exerciceInfo.tests.total = 0
+                                            exerciceInfo.tests.passed = resultArray[i].length
+                                            exerciceInfo.tests.passedTests = [];
+                                            exerciceInfo.tests.notPassedTests = [];
+                                            for (var w = 0; w < resultArray[i].length; ++w){
+
+                                                exerciceInfo.tests.passedTests.push(resultArray[i][w].name)
+                                            }
+                                            for (var x = 0; x < testsExerciceData.length; ++x){
+                                                for (var y = 0; y < testsExerciceData[x].length; ++y){
+                                                    if (testsExerciceData[x][y].exercice_id == exerciceInfo.exercice_id){
+                                                        exerciceInfo.exercice_title = testsExerciceData[x][y].title
+                                                        ++exerciceInfo.tests.total;
+                                                        var passed = false;
+                                                        for (var w = 0; w < exerciceInfo.tests.passedTests.length; ++w){
+                                                            if (exerciceInfo.tests.passedTests[w] ===testsExerciceData[x][y].name)
+                                                                passed = true;
+                                                        }
+                                                        if (passed == false){
+                                                            exerciceInfo.tests.notPassedTests.push(testsExerciceData[x][y].name)
+                                                        }
+                                                    }
+
+                                                }
+
+                                            }
+                                            // rowsStudent[j].exercices.push(resultArray[i]);
+                                            rowsStudent[j].exercices.push(exerciceInfo);
+                                        }
+                                    }
+                                }
+                                var resultJson = {
+                                    classRoom:rowsClass[0],
+                                    studentList:rowsStudent
+                                };
+                                res.send(resultJson);
+                            })
+                        .catch(function(err){
+                             console.log("error multiple promises")
+                             return res.status(403).json(err);
+                         });
+                    })
+                     .catch(function(err){
+                            console.log("error multiple promises")
+                            return res.status(403).json(err);
+                        });
+
+
+                }).catch(function(err){
+                    console.log("err1")
+                    return res.status(403).json(err);
+                });
+            }).catch(function(err){
+                console.log("err2")
+                return res.status(403).json(err);
+            });
+
+    }).catch(function(err){
+        console.log("err4")
+        return res.status(403).json(err);
+    });
+
+
+});
+router.get('/getUserPassedTests/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) {
+    var exerciceId = request.params.exerciceId;
+    var userId = request.decoded.id;
+
 
     getUserPassedTests(exerciceId, userId).then(function(rows){
         res.send(rows);
@@ -602,12 +758,12 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
     exerciceData.solution = JSON.parse(exerciceData.solution);
     var exercice = exerciceData.exercice;
     var grid = instanciateGrid(exercice);
-    var exerciceSteps = [];
+    // var exerciceSteps = [];
     var addState = function(){
         console.log("addState")
         exerciceSteps.push(JSON.parse(JSON.stringify(grid)))
     }
-    addState();
+    // addState();
     function deleteUserExerciceSolutionAndroid(userId, exerciceId) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from user_exercice_solution_android where userId= ? and exercice_id = ?";
@@ -640,7 +796,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
                 }
                 else{
                     this[currentAction](this);
-                    addState();
+                    // addState();
                 }
 
             }
@@ -661,7 +817,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
                 }
                 else{
                     this[currentAction](this);
-                    addState();
+                    // addState();
                 }
             }
         }
@@ -670,9 +826,9 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
 
 
     }
-    grid.saveState = function(){
-        return 1;
-    }
+    // grid.saveState = function(){
+    //     return 1;
+    // }
     for (var i = 0; i < exercice.functions.length; ++i) {
         var func = exercice.functions[i];
         func.code = func.code.replace(func.name + "()", func.name+"(grid)")
@@ -695,7 +851,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
         }
         else{
             grid[currentAction](grid);
-            addState();
+            // addState();
         }
 
     }
@@ -715,7 +871,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
 
             }
             resJson = {
-                exerciceSteps:exerciceSteps,
+                exerciceSteps:grid.states,
                 testResult:testResult
             }
             return res.send(resJson);
