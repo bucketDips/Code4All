@@ -65,7 +65,7 @@ class Grid extends Component {
       lines: newProps.parameters.lines,
       columns: newProps.parameters.columns,
       cases: newProps.parameters.cases,
-      size: newProps.parameters.size,
+      size: this.state.gridProperties.size,
       background: newProps.parameters.background,
     };
     this.setState(
