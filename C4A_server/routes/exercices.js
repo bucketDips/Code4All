@@ -839,6 +839,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
         func.code = func.code.replace(func.name + "()", func.name+"(grid)")
         grid[func.name] = createFunction(func.code);
     }
+    grid.saveState();
     var exerciceId = exerciceData.exercice.id;
     var exerciceSteps= grid.states;
     try {
