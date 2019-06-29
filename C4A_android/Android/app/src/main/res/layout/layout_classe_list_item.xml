@@ -34,7 +34,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                    android:backgroundTint="@color/white" android:src="@drawable/school_logo"/>
+                    android:backgroundTint="@color/white"/>
             <TextView
                     android:id="@+id/classesize"
                     android:layout_width="0dp"

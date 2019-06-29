@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <color name="colorPrimary">#129ADA</color>
+    <color name="beige">#fff1c7</color>
+    <color name="colorPrimaryDark">#0625E7</color>
+    <color name="bordeaux">#480308</color>
+    <color name="red">#E60814</color>
+    <color name="blue">#129ADA</color>
+    <color name="blue_material_design">#0827AE</color>
+    <color name="green">#08C905</color>
+    <color name="yellow">#ffe100</color>
+    <color name="purple">#7405C9</color>
+    <color name="pink">#D50DCB</color>
+    <color name="text">#E0F2F1</color>
+    <color name="black">#000000</color>
+    <color name="semitransparentblack">#33000000</color>
+    <color name="semitransparentwhite">#80FFFFFF</color>
+    <color name="transparentwhite">#4DFFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="verytransparentwhite">#33FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="spinner_hint_text_color">#FFFFCC</color>
+    <color name="pressed_color">#4DFFFFFF</color>
+    <color name="focused_color">#E6deecef</color>
+    <color name="selected_color">#fff1c7</color>
+
+
+
+    <declare-styleable name="MaterialSpinner">
+        <attr name="ms_baseColor" format="color"/>
+        <attr name="ms_highlightColor" format="color"/>
+        <attr name="ms_errorColor" format="color"/>
+        <attr name="ms_error" format="string"/>
+        <attr name="ms_hint" format="string"/>
+        <attr name="ms_hintColor" format="color"/>
+        <attr name="ms_hintTextSize" format="dimension"/>
+        <attr name="ms_floatingLabelText" format="string"/>
+        <attr name="ms_floatingLabelColor" format="color"/>
+        <attr name="ms_multiline" format="boolean"/>
+        <attr name="ms_nbErrorLines" format="integer"/>
+        <attr name="ms_typeface" format="string"/>
+        <attr name="ms_alignLabels" format="boolean"/>
+        <attr name="ms_thickness" format="dimension"/>
+        <attr name="ms_thickness_error" format="dimension"/>
+        <attr name="ms_arrowSize" format="dimension"/>
+        <attr name="ms_arrowColor" format="color"/>
+        <attr name="ms_enableFloatingLabel" format="boolean"/>
+        <attr name="ms_enableErrorLabel" format="boolean"/>
+        <attr name="ms_alwaysShowFloatingLabel" format="boolean"/>
+        <attr name="ms_isRtl" format="boolean"/>
+        <attr name="ms_hintView" format="reference"/>
+        <attr name="ms_dropDownHintView" format="reference"/>
+
+    </declare-styleable>
+</resources>

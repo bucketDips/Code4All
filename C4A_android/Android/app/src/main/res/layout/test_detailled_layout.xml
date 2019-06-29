@@ -8,7 +8,7 @@
     <TextView
             android:text="@string/simple_string_placeholder"
             android:textColor="@color/blue"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
 
@@ -16,10 +16,11 @@
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="32dp"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp" android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toStartOf="@+id/view2"/>
     <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp" app:srcCompat="@drawable/notverified"
+            android:layout_width="40dp"
+            android:layout_height="40dp" app:srcCompat="@drawable/notverified"
             android:id="@+id/imageIcon"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/testDetail"
@@ -30,10 +31,16 @@
             android:textColor="@color/blue"
 
             android:layout_height="wrap_content"
-            android:id="@+id/testDetail" app:layout_constraintStart_toEndOf="@+id/testName"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageIcon"/>
+            android:id="@+id/testDetail"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageIcon"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view2" android:layout_marginStart="8dp"/>
+    <View
+            android:layout_width="5dp"
+            android:layout_height="0dp"
+            android:id="@+id/view2" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="200dp"/>
 </android.support.constraint.ConstraintLayout>

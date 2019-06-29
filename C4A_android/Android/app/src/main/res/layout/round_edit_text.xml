@@ -1,13 +1,13 @@
-<com.example.code4all.customviews.MyEditText xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="40dp"
-              android:layout_centerHorizontal="true"
-              android:layout_marginTop="150dp"
-                android:background="@drawable/edit_rounds"
-            android:drawableStart="@android:drawable/ic_menu_myplaces"
-            android:paddingStart="10dp"
-              android:paddingEnd="10dp"
-              android:drawablePadding="5dp"
-              android:textSize="20sp">
+<com.example.codinschool.customviews.MyEditText xmlns:android="http://schemas.android.com/apk/res/android"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="40dp"
+                                                android:layout_centerHorizontal="true"
+                                                android:layout_marginTop="150dp"
+                                                android:background="@drawable/edit_rounds"
+                                                android:drawableStart="@android:drawable/ic_menu_myplaces"
+                                                android:paddingStart="10dp"
+                                                android:paddingEnd="10dp"
+                                                android:drawablePadding="5dp"
+                                                android:textSize="20sp">
 
-</com.example.code4all.customviews.MyEditText>
+</com.example.codinschool.customviews.MyEditText>

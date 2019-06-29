@@ -13,7 +13,7 @@ android:background="@drawable/aquabc">
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <fragment
-                android:name="com.example.code4all.controllers.classes_menu.ClassesListFragment"
+                android:name="com.example.codinschool.controllers.classes_menu.ClassesListFragment"
                 tools:layout="@layout/fragment_classes_list" android:id="@+id/fragment_classes_list"
                 android:layout_weight=".39" android:layout_width="0dp" android:layout_height="match_parent"/>
         <View
