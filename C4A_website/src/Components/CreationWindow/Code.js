@@ -3,9 +3,7 @@ import AceEditor from 'react-ace';
 
 import 'brace/mode/javascript';
 import 'brace/snippets/javascript';
-
 import 'brace/theme/monokai';
-
 import "brace/ext/language_tools";
 import "brace/ext/searchbox";
 
@@ -46,7 +44,7 @@ class Code extends Component {
       newStr = this.state.editorValue.replace(matching, newStr);
     }
     else {
-      newStr = "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");\n" 
+      newStr = "var grid = createGrid(" + props.grid.lines + ", " + props.grid.columns + ", " + (props.grid.backgroundId) + ");\r\n" 
         + this.state.editorValue;
     }
     return newStr;
@@ -89,7 +87,7 @@ class Code extends Component {
     else {
       nameElement = this.getNameForANewElement(newStr, type)
       realBuiltStr = this.getRealBuiltStringForElement(nameElement, element, type);
-      newStr = newStr + "\n" + realBuiltStr;
+      newStr = newStr + "\r\n" + realBuiltStr;
     }
 
     var regexAdding = new RegExp("grid.add" + type + "\\(\\s*" + nameElement + "\\s*\\);{0,1}", "g");
@@ -101,7 +99,7 @@ class Code extends Component {
     }
     else {
       creationMatching = newStr.match(regexCreation)[0];
-      return newStr.replace(creationMatching, creationMatching + ("\ngrid.add" + type + "(" + nameElement + ");\n"));
+      return newStr.replace(creationMatching, creationMatching + ("\r\ngrid.add" + type + "(" + nameElement + ");\r\n"));
     }
   }
 
@@ -235,39 +233,35 @@ class Code extends Component {
       var pcs = grid.getPcs();
       var labels = grid.getLabels();
       var functions = grid.getFunctions();
-      this.props.synchroniseElements(blocks, npcs, pcs, labels, functions);
+      var tests = grid.getTests();
+      this.props.synchroniseElements(blocks, npcs, pcs, labels, functions, tests);
       this.setState({fromEdit: false});
   }
 
   evalCode(fromProps) {
-    // eslint-disable-next-line
-    var createGrid = (lines, columns, backgroundId) => this.createGrid(lines, columns, backgroundId);
-    // eslint-disable-next-line
-    var createBlock = (id, row, column, width, height, patternId) => this.createBlock(id, row, column, width, height, patternId);
-    // eslint-disable-next-line
-    var createNpc = (id, row, column, width, height, patternId) => this.createNpc(id, row, column, width, height, patternId);
-    // eslint-disable-next-line
-    var createPc = (id, row, column, width, height, patternId) => this.createPc(id, row, column, width, height, patternId);
-    // eslint-disable-next-line
-    var createLabel = (id, row, column, width, height, text) => this.createLabel(id, row, column, width, height, text);
-    // eslint-disable-next-line
-    var createFunction = (name, code, description) => this.createFunction(name, code, description);
-    // eslint-disable-next-line
-    var synchronise = (grid) => this.synchronise(grid);
-    // ici les vérification
-
     try {
-      if(fromProps) {
-        // eslint-disable-next-line
-        eval(this.state.editorValue + "\ngrid; this.props.changeGridObject(grid);");
-        return;
-      }
-      // eslint-disable-next-line
-      eval(this.state.editorValue + "\ngrid; synchronise(grid);");
+      var toEval = this.state.editorValue + (fromProps ? "\ngrid; changeGridObject(grid);" : "\ngrid; synchronise(grid);");
+      
+      consts.customEval(
+        toEval,
+        this.createGrid.bind(this),
+        this.createBlock.bind(this),
+        this.createNpc.bind(this),
+        this.createPc.bind(this),
+        this.createLabel.bind(this),
+        this.createFunction.bind(this),
+        this.synchronise.bind(this),
+        this.props.changeGridObject.bind(this)
+      )
+
+      if(fromProps) { return }
+
       this.setState({infoText: ""});
+      this.props.changeInfoText("");
     }
     catch(error) {
       this.setState({infoText: error.message});
+      this.props.changeInfoText(error.message);
     }
   }
 

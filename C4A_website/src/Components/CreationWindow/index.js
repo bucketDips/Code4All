@@ -25,8 +25,13 @@ class CreateExerciseWindow extends Component {
       patterns: [],
       neutralElements: [],
       gridObject: null,
-      delete: null
+      delete: null,
+      infoText: null
     }
+  }
+  
+  changeInfoText(infoText) {
+    this.setState({infoText: (infoText === null || infoText === "") ? null : infoText});
   }
 
   async setPatterns() {
@@ -85,6 +90,7 @@ class CreateExerciseWindow extends Component {
       pc: {},
       labels: {},
       functions: [],
+      tests: [],
       editorValue: "",
       gridObject: null
     });
@@ -213,8 +219,8 @@ class CreateExerciseWindow extends Component {
     this.setState({delete: null});
   }
 
-  synchroniseFunctions(functions) {
-    this.setState({functions: functions});
+  synchroniseFunctions(functions, tests) {
+    this.setState({functions: functions, tests: tests});
   }
 
   synchroniseForOneTypeOfElements(elements, type) {
@@ -271,12 +277,12 @@ class CreateExerciseWindow extends Component {
     }
   }
 
-  synchroniseElements(blocks, npcs, pcs, labels, functions) {
+  synchroniseElements(blocks, npcs, pcs, labels, functions, tests) {
     this.synchroniseForOneTypeOfElements(blocks, "BLOCK");
     this.synchroniseForOneTypeOfElements(npcs, "NPC");
     this.synchroniseForOneTypeOfElements(pcs, "PC");
     this.synchroniseForOneTypeOfElements(labels, "LABEL");
-    this.synchroniseFunctions(functions);
+    this.synchroniseFunctions(functions, tests);
   }
 
   getMaxKeyOf(dictionary) {
@@ -395,7 +401,8 @@ class CreateExerciseWindow extends Component {
       npcs: Object.values(this.state.gridObject.npcs),
       pcs: Object.values(this.state.gridObject.pcs),
       labels: Object.values(this.state.gridObject.labels),
-      functions: this.state.functions
+      functions: this.state.functions,
+      tests: this.state.tests
     }
     
     exercices.createExercice(buildedExercice);
@@ -415,10 +422,15 @@ class CreateExerciseWindow extends Component {
       npcs: Object.values(this.state.gridObject.npcs),
       pcs: Object.values(this.state.gridObject.pcs),
       labels: Object.values(this.state.gridObject.labels),
-      functions: this.state.functions
+      functions: this.state.functions,
+      tests: this.state.tests
     }
   
     exercices.modifyExercice(buildedExercice, id);
+  }
+
+  getFullState() {
+    return this.state;
   }
 
   render() {
@@ -451,6 +463,7 @@ class CreateExerciseWindow extends Component {
                   changeParametersWindow={this.onChangeParameters.bind(this)}
                   changeEditorValue={this.onChangeEditorValue.bind(this)}
                   changeGridObject={this.onChangeGridObject.bind(this)}
+                  changeInfoText={this.changeInfoText.bind(this)}
                   />
               </div>
               <div className={style.bottom_panel}>
@@ -474,6 +487,9 @@ class CreateExerciseWindow extends Component {
                   name={this.props.name}
                   details={this.props.details}
                   store={this.props.store}
+                  info={this.state.infoText}
+                  patterns={this.state.patterns}
+                  getParentState={this.getFullState.bind(this)}
                   />
               </div>
             </div>

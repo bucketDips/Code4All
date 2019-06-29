@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import style from './style.css';
 import classes from '../../Providers/classes';
 import ClassDetails from './ClassDetails';
-import { Modal } from 'antd';
-
-const confirm = Modal.confirm;
+import ExercicesDetails from './ExercicesDetails';
 
 class GestionClassWindow extends Component {
 
@@ -13,7 +11,9 @@ class GestionClassWindow extends Component {
     this.state = {
         classRoom: {},
         studentList: [],
-        profList: []
+        profList: [],
+        exosList: [],
+        exercicesDetailsVisible: false
     }
   }
 
@@ -23,7 +23,12 @@ class GestionClassWindow extends Component {
       classRoom: classInfo.classRoom,
       studentList: classInfo.studentList,
       profList: classInfo.profList,
+      exosList: classInfo.exerciceList
     });
+  }
+
+  showExosPanel() {
+    this.setState({exercicesDetailsVisible: this.state.exercicesDetailsVisible ? false : true});
   }
 
   componentWillMount() {
@@ -33,7 +38,22 @@ class GestionClassWindow extends Component {
   render() {
     return (
         <div className={style.class} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "blackboard.jpg)", backgroundSize: "cover"}}>
-            <ClassDetails refill={this.refill.bind(this)} classRoom={this.state.classRoom} students={this.state.studentList} profs={this.state.profList} teacher={this.props.teacher} />
+            <ClassDetails 
+              showExosPanel={this.showExosPanel.bind(this)} 
+              exos={this.state.exercicesDetailsVisible} 
+              refill={this.refill.bind(this)} 
+              classRoom={this.state.classRoom} 
+              students={this.state.studentList} 
+              profs={this.state.profList} 
+              teacher={this.props.teacher} />
+            {this.state.exercicesDetailsVisible &&
+              <ExercicesDetails
+                classRoom={this.state.classRoom}
+                exos={this.state.exosList}
+                refill={this.refill.bind(this)}
+                teacher={this.props.teacher}
+              />
+            }
         </div>
     );
   }

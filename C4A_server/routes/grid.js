@@ -1,31 +1,19 @@
-export class Grid {
+exports.Grid = class Grid {
     constructor(lines, columns, patternId) {
-      this.lines = lines;
-      this.columns = columns;
-      this.patternId = patternId;
-      this.blocks = [];
-      this.npcs = [];
-      this.pcs = [];
-      this.labels = [];
-      this.functions = [];
-      this.tests = [];
-      this.states = [];
+        this.lines = lines;
+        this.columns = columns;
+        this.patternId = patternId;
+        this.blocks = [];
+        this.npcs = [];
+        this.pcs = [];
+        this.labels = [];
+        this.functions = [];
+        this.tests = [];
+        this.states = [];
     }
 
     saveState() {
-        this.states.push(JSON.parse(JSON.stringify({
-            lines: this.lines,
-            columns: this.columns,
-            patternId: this.patternId,
-            blocks: this.blocks,
-            npcs: this.npcs,
-            pcs: this.pcs,
-            labels: this.labels,
-        })));
-    }
-
-    end(message) {
-        throw new Error(message);
+        this.states.push(JSON.parse(JSON.stringify(this)));
     }
 
     changePattern(n) {
@@ -54,7 +42,7 @@ export class Grid {
         }
         return grid;
     }
-  
+
     checkIfIdAlreadyExists(elements, id) {
         elements.forEach(element => {
             if(element.id === id) {
@@ -64,37 +52,37 @@ export class Grid {
     }
 
     addBlock(block) {
-        if(!(block instanceof Block)) throw new Error("The added element should be of type 'block'");
+        // if(!(block instanceof Block)) throw new Error("The added element should be of type 'block'");
         this.checkIfIdAlreadyExists(this.blocks, block.id);
         this.blocks.push(block);
     };
 
     addNpc(npc) {
-        if(!(npc instanceof Npc)) throw new Error("The added element should be of type 'npc'");
+        // if(!(npc instanceof Npc)) throw new Error("The added element should be of type 'npc'");
         this.checkIfIdAlreadyExists(this.npcs, npc.id);
         this.npcs.push(npc);
     };
 
     addPc(pc) {
-        if(!(pc instanceof Pc)) throw new Error("The added element should be of type 'pc'");
+        // if(!(pc instanceof Pc)) throw new Error("The added element should be of type 'pc'");
         this.checkIfIdAlreadyExists(this.pcs, pc.id);
         this.pcs.push(pc);
     };
 
     addLabel(label) {
-        if(!(label instanceof Label)) throw new Error("The added element should be of type 'label'");
+        // if(!(label instanceof Label)) throw new Error("The added element should be of type 'label'");
         this.checkIfIdAlreadyExists(this.labels, label.id);
         this.labels.push(label);
     };
 
     addFunction(func) {
-        if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
+        // if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
         //this.functions.push(new Func(name, String(code), description));
         this.functions.push(func);
     }
 
     addTest(func) {
-        if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
+        // if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
         //this.functions.push(new Func(name, String(code), description));
         this.tests.push(func);
     }
@@ -123,7 +111,7 @@ export class Grid {
     removeLabel(id) {
         this.removeElement(this.labels, id);
     }
-  
+
     getBlocks() {
         return this.blocks;
     }
@@ -197,9 +185,9 @@ export class Grid {
     labelExists(id) {
         return this.elementExists(id, this.labels);
     }
-  }
-  
-export class Block {
+}
+
+exports.Block = class Block {
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
         this.row = row;
@@ -230,7 +218,7 @@ export class Block {
     }
 }
 
-export class Npc {
+exports.Npc = class Npc {
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
         this.row = row;
@@ -261,7 +249,7 @@ export class Npc {
     }
 }
 
-export class Pc {
+exports.Pc = class Pc {
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
         this.row = row;
@@ -292,7 +280,7 @@ export class Pc {
     }
 }
 
-export class Label {
+exports.Label = class Label {
     constructor(id, row, column, width, height, text) {
         this.id = id;
         this.row = row;
@@ -323,11 +311,10 @@ export class Label {
     }
 }
 
-export class Func {
+exports.Func = class Func {
     constructor(name, code, description) {
         this.name = name;
         this.code = code;
         this.description = description;
     }
 }
-  

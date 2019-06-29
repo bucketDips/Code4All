@@ -8,17 +8,17 @@
 }
 
 :local(.left_panel) {
-    background-color: red;
     flex: 3;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 :local(.right_panel) {
-    background-color: yellow;  
     flex: 1.5; 
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 :local(.grid) {
@@ -30,6 +30,9 @@
 
 :local(.description) {
     flex: 1.3;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 :local(.grid_content) {
@@ -45,11 +48,18 @@
 
 :local(.tests) {
     flex: 1.3;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 :local(.code_content) {
     height: 100%;
     display: flex;
+}
+
+:local(.textArea) {
+    height: 80% !important;
+    flex: 4;
 }
 
 #code-editor {
@@ -82,3 +92,12 @@
     z-index: 5000;
 }
 
+.ant-input[disabled] {
+    cursor: pointer !important;
+    color: rgba(0, 0, 0, 0.40) !important;
+}
+
+.ant-radio-button-wrapper {
+    height: 20%;
+    width: 100%;
+}

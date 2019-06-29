@@ -56,19 +56,84 @@ router.get('/getUserFileList', AUTH.VERIFYAUTH, function(request, res, next) {
     });
 
 })
-router.get('/getUserFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
+function getFileNameFromBatabase(fileId,userId) {
+    return new Promise(function(resolve, reject) {
+        var sql = "select * from fichier, user_files where user_files.fileId=fichier.id and (fichier.sender= ? or user_files.userId=?) and fichier.id = ?";
+        con.query(sql,[userId, userId, fileId], function (err, rows, fields) {
+            if (err) return reject(err);
+            resolve(rows);
+        });
+    });
+}
+router.post('/deleteFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
+    var userId = request.decoded.id;
+    console.log("userId")
+    console.log(userId)
     var fileId = request.params.fileId;
-    var userId = request.decoded.id
-    // var userId = 6
-    function getFileNameFromBatabase(fileId,userId) {
+    function deleteFile(userId,fileId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select * from fichier, user_files where fileId=id and userId="+userId+" and id ='"+fileId+"';";
-            con.query(sql, function (err, rows, fields) {
+            var sql = "delete from fichier where sender = ? and id = ?;";
+            con.query(sql,[userId, fileId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
             });
         });
     }
+    function deleteUserFile(fileId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from user_files where fileId = ?;";
+            con.query(sql,[fileId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function deleteClassFile(fileId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from classRoom_files where fileId = ?;";
+            con.query(sql,[fileId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    function deleteExerciceFile(fileId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from exercices_Files where file_id = ?;";
+            con.query(sql,[fileId], function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    getFileNameFromBatabase(fileId, userId).then(function (rows) {
+        if (rows.length == 0){
+            return res.status(403).json({
+                success: false,
+                code : 'INCORRECT_FILE',
+                message: "Ce fichier n'existe pas, ou il ne vous appartient pas"
+            })
+        }
+        deleteFile(userId, fileId).then(function (rows) {
+            res.send(rows);
+        }).catch(function(err){
+            return res.status(403).json(err);
+        });;
+        deleteUserFile(fileId);
+        deleteExerciceFile(fileId);
+        deleteClassFile(fileId);
+
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+
+
+})
+router.get('/getUserFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
+    var fileId = request.params.fileId;
+    var userId = request.decoded.id
+    // var userId = 6
+
 
     getFileNameFromBatabase(fileId,userId).then(rows => {
         if (!rows["0"])

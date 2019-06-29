@@ -92,24 +92,46 @@ router.get('/getClassDetail/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStuden
             });
         });
     }
+    function getClassExercice(classId){
+        return new Promise(function(resolve, reject) {
+            var sql = "select exercices.id as exercice_id,exercices.title,exercices.description, users.name as author from exercices, users, class_exercices " +
+                "where exercices.id = class_exercices.exercice_id " +
+                "and users.id = exercices.author_id " +
+                "and class_exercices.class_id = ?";
+            con.query(sql, [classId],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
     getClassDetail(classId).then(function(rowsClass){
         getProfessorListInClass(classId).then(function(rowsProf){
             getStudentListInClass(classId).then(function(rowsStudent){
-                rowsClass[0].studentCount = rowsStudent.length;
-                rowsClass[0].profCount = rowsProf.length;
-                var resultJson = {
-                    classRoom:rowsClass[0],
-                    profList:rowsProf,
-                    studentList:rowsStudent
-                }
-                res.send(resultJson);
+                getClassExercice(classId).then(function(rowsExercice){
+                    rowsClass[0].studentCount = rowsStudent.length;
+                    rowsClass[0].profCount = rowsProf.length;
+                    rowsClass[0].exerciceCount = rowsExercice.length;
+                    var resultJson = {
+                        classRoom:rowsClass[0],
+                        profList:rowsProf,
+                        studentList:rowsStudent,
+                        exerciceList : rowsExercice
+                    }
+                    res.send(resultJson);
+                }).catch(function(err){
+                    console.log("err1")
+                    return res.status(403).json(err);
+                });
             }).catch(function(err){
+                console.log("err2")
                 return res.status(403).json(err);
             });
         }).catch(function(err){
+            console.log("err3")
             return res.status(403).json(err);
         });
     }).catch(function(err){
+        console.log("err4")
         return res.status(403).json(err);
     });
 
