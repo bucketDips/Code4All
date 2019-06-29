@@ -13,7 +13,19 @@ exports.Grid = class Grid {
     }
 
     saveState() {
-        this.states.push(JSON.parse(JSON.stringify(this)));
+        this.states.push(JSON.parse(JSON.stringify({
+            lines: this.lines,
+            columns: this.columns,
+            patternId: this.patternId,
+            blocks: this.blocks,
+            npcs: this.npcs,
+            pcs: this.pcs,
+            labels: this.labels,
+        })));
+    }
+
+    end(message) {
+        throw new Error(message);
     }
 
     changePattern(n) {
