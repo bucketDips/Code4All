@@ -171,6 +171,27 @@ router.post('/addExerciceToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfesso
         return res.status(403).json(err);
     });
 });
+
+
+router.post('/addExerciceToUser/:exerciceId', AUTH.VERIFYAUTH, function(request, res, next) {
+    var userId = request.decoded.id;
+    var exerciceId = request.params.exerciceId;
+
+    function addExerciceToUser(exerciceId,userId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "insert into user_exercices(userID, exerciceiD) values ('"+userId+"','"+exerciceId+"');"
+            con.query(sql,function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    addExerciceToUser(exerciceId,userId).then(function(rows){
+        res.send(rows)
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+});
 router.get('/getAllStoreExercicesNotOwned', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id
     function getAllStoreExercicesNotOwned(userId) {
