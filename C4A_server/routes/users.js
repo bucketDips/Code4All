@@ -7,8 +7,6 @@ var jwt = require('jsonwebtoken');
 var config = require("./config");
 var AUTH = require('./AUTHENTIFICATION')
 
-
-/* GET users listing. */
 router.get('/getUser/:id', AUTH.VERIFYAUTH, function(request, res, next) {
 	var id = request.params.id;
 	function getLastRecord(id) {

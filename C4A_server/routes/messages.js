@@ -91,7 +91,7 @@ router.post('/sendMessageToClass/:classId/:subject/:msg', AUTH.VERIFYAUTH, AUTH.
 
 
 // Recupere les messages adressés a l'utilisateur, ainsi que ceux de toute les classRoom dans lesquelle il est
-router.get('/:getUserMsg', AUTH.VERIFYAUTH,function(request, res, next) {
+router.get('/getUserMsg', AUTH.VERIFYAUTH,function(request, res, next) {
     var userId = request.decoded.id;
     function createMessage(userId) {
         return new Promise(function(resolve, reject) {
