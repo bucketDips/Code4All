@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import CustomSlider from './CustomSlider';
 import Case from './Case'
 import Block from './Block'
@@ -8,8 +7,14 @@ import Pc from './Pc'
 import Label from './Label'
 import styles from './style.css';
 
+/**
+ * class corresponds to the grid module in the realisationwindow
+ */
 class Grid extends Component {
 
+  /**
+   * constructor
+   */
   constructor() {
     super();
     this.state = {
@@ -17,6 +22,10 @@ class Grid extends Component {
     }
   }
 
+  /**
+   * fill the cases of the grid with the values
+   * of the state (with size, lines, columns)
+   */
   fillCases() {
     let cases = [];
     let index = 1;
@@ -42,6 +51,10 @@ class Grid extends Component {
     this.setState({gridProperties: properties});
   }
 
+  /**
+   * change the grid state with the props (size, lines, columns),
+   * fillcases will be called again
+   */
   componentWillMount() {
     let properties = {
       lines: this.props.parameters.lines,
@@ -60,6 +73,10 @@ class Grid extends Component {
     );
   }
 
+  /**
+   * change the grid state with the props (size, lines, columns),
+   * fillcases will be called again
+   */
   componentWillReceiveProps(newProps) {
     let properties = {
       lines: newProps.parameters.lines,
@@ -78,12 +95,19 @@ class Grid extends Component {
     );
   }
 
+  /**
+   * change the size of the cases
+   */
   changeSizeValue(newSize) {
     let properties = this.state.gridProperties;
     properties.size = newSize;
     this.setState({gridProperties: properties});
   }
 
+  /**
+   * return the props of the element to forward
+   * it to the differents elements in the grid
+   */
   getPropsForElement(element, text) {
     if(text) {
       return {
@@ -108,6 +132,9 @@ class Grid extends Component {
     
   }
 
+  /**
+   * render method
+   */
   render() {
     let background = (
     <div style={{

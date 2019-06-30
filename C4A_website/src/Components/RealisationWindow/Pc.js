@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 
+/**
+ * class represents a pc in the grid
+ */
 class Pc extends Component {
+
+    /**
+     * render method
+     */
     render() {
         return (
             <div style={{

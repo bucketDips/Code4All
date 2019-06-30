@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 
+/**
+ * class represents a label in the grid
+ */
 class Label extends Component {
+
+    /**
+     * render method
+     */
     render() {
         return (
             <div style={{

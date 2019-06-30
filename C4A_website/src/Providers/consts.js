@@ -1,3 +1,6 @@
+/**
+ * used at multiple places functions
+ */
 class Consts {
     forbiddenWords = [
     "boucle", "condition", "this", "setState", "state", "process", "window", "await",
@@ -13,10 +16,16 @@ class Consts {
     "select",   "self", "setInterval",  "setTimeout", "status",   "submit",   "taint", "textarea", "top",  "unescape", "untaint"   
     ];
 
+    /**
+     * url of the API
+     */
     url() {
         return "http://212.47.235.40:3000/";
     }
 
+    /**
+     * check if a forbidden word is in the string
+     */
     checkIfForbiddenWordIn(str) {
         for(var i = 0; i < this.forbiddenWords.length; i++) {
             if(str.includes(this.forbiddenWords[i])){
@@ -25,18 +34,27 @@ class Consts {
         }
     }
 
+    /**
+     * safe eval of code
+     */
     customEval(toEval, createGrid, createBlock, createNpc, createPc, createLabel, createFunction, synchronise, changeGridObject) {
         this.checkIfForbiddenWordIn(toEval);
         // eslint-disable-next-line
         eval(toEval);
     }
 
+    /**
+     * safe eval of code
+     */
     customEvalOfCode(grid, buildedCode) {
         this.checkIfForbiddenWordIn(buildedCode);
         // eslint-disable-next-line
         eval(buildedCode);
     }
 
+    /**
+     * safe eval of tests
+     */
     customEvalOfTests(grid, setTestResult, buildedCode) {
         this.checkIfForbiddenWordIn(buildedCode);
         // eslint-disable-next-line

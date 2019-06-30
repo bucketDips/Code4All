@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-
 // eslint-disable-next-line
 import style from './style.css';
-
 import { Collapse, Spin, Icon } from 'antd';
 
 const Panel = Collapse.Panel;
 
+/**
+ * correspond to the testsresults module in the window
+ */
 class TestResults extends Component {
+
+    /**
+     * get the good icon for the test result
+     */
     genExtra(load, result){
         if(load) {
             return (<Spin size="small" />)
@@ -25,6 +30,9 @@ class TestResults extends Component {
         }
     }
 
+    /**
+     * render method
+     */
     render() {
         var tests = this.props.tests.map((test, index) => {
             return (

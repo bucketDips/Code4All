@@ -2,6 +2,9 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import auth from '../Providers/auth';
 
+/**
+ * correspond to a not connected route (login inscription)
+ */
 export const NotConnectedRoute = ({component: Component, ...rest}) => {
     return (
         <Route 
