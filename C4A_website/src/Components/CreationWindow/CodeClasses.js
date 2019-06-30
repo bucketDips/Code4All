@@ -2,6 +2,10 @@
  * class grid represents a grid in code
  */
 export class Grid {
+
+    /**
+     * constructor
+     */
     constructor(lines, columns, patternId) {
       this.lines = lines;
       this.columns = columns;
@@ -330,7 +334,14 @@ export class Grid {
     }
   }
   
+/**
+ * class block represents a block in code
+ */
 export class Block {
+
+    /**
+     * constructor
+     */
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
         this.row = row;
@@ -340,28 +351,55 @@ export class Block {
         this.patternId = patternId;
     }
 
+    /**
+     * method called by teacher
+     * change the starting row ot this element
+     */
     changeRow(n) {
         this.row = n;
     }
 
+    /**
+     * method called by teacher
+     * change the starting column ot this element
+     */
     changeColumn(n) {
         this.column = n;
     }
 
+    /**
+     * method called by teacher
+     * change the width ot this element
+     */
     changeWidth(n) {
         this.width = n;
     }
 
+    /**
+     * method called by teacher
+     * change the heigth ot this element
+     */
     changeHeight(n) {
         this.height = n;
     }
 
+    /**
+     * method called by teacher
+     * change the pattern id of this element
+     */
     changePattern(n) {
         this.patternId = n;
     }
 }
 
+/**
+ * class npc represents a pc in code
+ */
 export class Npc {
+
+    /**
+     * constructor
+     */
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
         this.row = row;
@@ -371,28 +409,55 @@ export class Npc {
         this.patternId = patternId;
     }
 
+    /**
+     * method called by teacher
+     * change the starting row ot this element
+     */
     changeRow(n) {
         this.row = n;
     }
 
+    /**
+     * method called by teacher
+     * change the starting column ot this element
+     */
     changeColumn(n) {
         this.column = n;
     }
 
+    /**
+     * method called by teacher
+     * change the width ot this element
+     */
     changeWidth(n) {
         this.width = n;
     }
 
+    /**
+     * method called by teacher
+     * change the heigth ot this element
+     */
     changeHeight(n) {
         this.height = n;
     }
 
+    /**
+     * method called by teacher
+     * change the pattern id of this element
+     */
     changePattern(n) {
         this.patternId = n;
     }
 }
 
+/**
+ * class pc represents a pc in code
+ */
 export class Pc {
+
+    /**
+     * constructor
+     */
     constructor(id, row, column, width, height, patternId) {
         this.id = id;
         this.row = row;
@@ -402,28 +467,55 @@ export class Pc {
         this.patternId = patternId;
     }
 
+    /**
+     * method called by teacher
+     * change the starting row ot this element
+     */
     changeRow(n) {
         this.row = n;
     }
 
+    /**
+     * method called by teacher
+     * change the starting column ot this element
+     */
     changeColumn(n) {
         this.column = n;
     }
 
+    /**
+     * method called by teacher
+     * change the width ot this element
+     */
     changeWidth(n) {
         this.width = n;
     }
 
+    /**
+     * method called by teacher
+     * change the heigth ot this element
+     */
     changeHeight(n) {
         this.height = n;
     }
 
+    /**
+     * method called by teacher
+     * change the pattern id of this element
+     */
     changePattern(n) {
         this.patternId = n;
     }
 }
 
+/**
+ * class label represents a label in code
+ */
 export class Label {
+
+    /**
+     * constructor
+     */
     constructor(id, row, column, width, height, text) {
         this.id = id;
         this.row = row;
@@ -433,28 +525,54 @@ export class Label {
         this.text = text;
     }
 
+    /**
+     * method called by teacher
+     * change the starting row ot this element
+     */
     changeRow(n) {
         this.row = n;
     }
 
+    /**
+     * method called by teacher
+     * change the starting column ot this element
+     */
     changeColumn(n) {
         this.column = n;
     }
 
+    /**
+     * method called by teacher
+     * change the width ot this element
+     */
     changeWidth(n) {
         this.width = n;
     }
 
+    /**
+     * method called by teacher
+     * change the heigth ot this element
+     */
     changeHeight(n) {
         this.height = n;
     }
-
+    /**
+     * method called by teacher
+     * change the text of this element
+     */
     changeText(n) {
         this.text = n;
     }
 }
 
+/**
+ * class func represents a function or test in code
+ */
 export class Func {
+
+    /**
+     * constructor
+     */
     constructor(name, code, description) {
         this.name = name;
         this.code = code;

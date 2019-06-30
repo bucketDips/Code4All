@@ -1,37 +1,53 @@
 import React, { Component } from 'react';
-
 import styles from './style.css';
 import CustomSlider from './CustomSlider'
-
 import consts from '../../Providers/consts';
 
-
+/**
+ * one element of parameters displayed in the parameters
+ * module of the creation window 
+ */
 class ParametersElement extends Component {
 
+  /**
+   * action when changing row slider value
+   */
   changeRowsValue(e) {
     let params = this.props.parameters;
     params.rowStart = e;
     this.props.changeElementParameters(params, this.props.type);
   }
 
+  /**
+   * action when changing column slider value
+   */
   changeColumnsValue(e) {
     let params = this.props.parameters;
     params.columnStart = e;
     this.props.changeElementParameters(params, this.props.type);
   }
 
+  /**
+   * action when changing the width slider value
+   */
   changeWidth(e) {
     let params = this.props.parameters;
     params.width = e;
     this.props.changeElementParameters(params, this.props.type);
   }
 
+  /**
+   * action when changing the heigth slider value
+   */
   changeHeight(e) {
     let params = this.props.parameters;
     params.height = e;
     this.props.changeElementParameters(params, this.props.type);
   }
 
+  /**
+   * action when changing the pattern id dropdown value
+   */
   changePatternValue(e) {
     switch(this.props.type) {
       case 'BLOCK':
@@ -58,17 +74,26 @@ class ParametersElement extends Component {
     this.props.changeElementParameters(params, this.props.type);
   }
 
+  /**
+   * action when changing the text input value
+   */
   changeTextValue(e) {
     let params = this.props.parameters;
     params.text = (e.target.value === null ? "" : e.target.value);
     this.props.changeElementParameters(params, this.props.type);
   }
 
+  /**
+   * action when clicking on delete
+   */
   handleDelete(e) {
       e.preventDefault();
       this.props.deleteElement(this.props.parameters.id, this.props.type);
   }
 
+  /**
+   * get all the patterns retrieved from the bdd in props
+   */
   getPatterns() {
     if(this.props.type === "LABEL") {
       return (<div></div>);
@@ -95,6 +120,9 @@ class ParametersElement extends Component {
     );
   }
 
+  /**
+   * get text if the element is a label, otherwise an empty div
+   */
   getText() {
     if(this.props.type !== "LABEL") {
       return (<div></div>);
@@ -102,8 +130,10 @@ class ParametersElement extends Component {
     return (<input type="text" onChange={this.changeTextValue.bind(this)} value={this.props.parameters.text}></input>);
   }
 
+  /**
+   * render method
+   */
   render() {
-
     return (
         <div className={styles.parametersblock}>
             <div className="content">

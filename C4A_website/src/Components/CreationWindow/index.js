@@ -7,15 +7,18 @@ import Code from './Code';
 import Details from './Details';
 import Parameters from './Parameters';
 import Patterns from './Patterns';
-
 import exercices from '../../Providers/exercices';
-
 import files from '../../Providers/files';
-
 import consts from '../../Providers/consts';
 
+/**
+ * CreationWindow class, group all of the modules(grid, ace editor, etc)
+ */
 class CreateExerciseWindow extends Component {
 
+  /**
+   * constructor
+   */
   constructor() {
     super();
     this.state = {
@@ -30,10 +33,16 @@ class CreateExerciseWindow extends Component {
     }
   }
   
+  /**
+   * change the error message for the editor
+   */
   changeInfoText(infoText) {
     this.setState({infoText: (infoText === null || infoText === "") ? null : infoText});
   }
 
+  /**
+   * get back the patterns from the database and set it
+   */
   async setPatterns() {
     var patterns = await files.getMines();
     var newPatterns = {};
@@ -48,6 +57,10 @@ class CreateExerciseWindow extends Component {
     this.setState({patterns: newPatterns});
   }
 
+  /**
+   * set the patterns, options of toolbox and
+   * differents states of the database
+   */
   componentWillMount() {
     this.setPatterns();
 
@@ -96,6 +109,9 @@ class CreateExerciseWindow extends Component {
     });
   }
 
+  /**
+   * if editorvalue or gridobject different don't update
+   */
   shouldComponentUpdate(nextProps, nextState){
     if(nextState.editorValue !== this.state.editorValue || nextState.gridObject !== this.state.gridObject) {
       return false;
@@ -103,10 +119,18 @@ class CreateExerciseWindow extends Component {
     return true;
   }
 
+  /**
+   * action for clicking on askedit of the grid or an element,
+   * change the parameters module in the creation window
+   */
   onChangeParameters(parameters) {
     this.setState({parameters: parameters});
   }
 
+  /**
+   * called when changing grid parameters in parameters
+   * module
+   */
   onChangeGridParameters(parameters) {
     let properties = this.state.gridProperties;
     properties.lines = parameters.lines;
@@ -116,6 +140,10 @@ class CreateExerciseWindow extends Component {
     this.setState({gridProperties: properties});
   }
 
+  /**
+   * change element of id with the new parameters
+   * in the array elements
+   */
   formatElements(elements, parameters) {
     // à voir différence lorsque label
     Object.values(elements).forEach(element => {
@@ -136,14 +164,25 @@ class CreateExerciseWindow extends Component {
     return elements;
   }
 
+  /**
+   * action when teacher change the ace editor value
+   */
   onChangeEditorValue(newValue) {
     this.setState({editorValue: newValue});
   }
 
+  /**
+   * action when code is compiled and a new gridobject
+   * is generated
+   */
   onChangeGridObject(newValue) {
     this.setState({gridObject: newValue});
   }
 
+  /**
+   * action when user click on edit an element or the grid,
+   * change the state with the bundle parameters and the type
+   */
   onChangeElementParameters(parameters, type) {
     let elements = null;
     switch(type) {
@@ -169,10 +208,9 @@ class CreateExerciseWindow extends Component {
     }
   }
 
-  handleDeletePattern(patternId) {
-    
-  }
-
+  /**
+   * delete an element of the id from the array elements
+   */
   deleteElementFromElements(elements, id) {
     let b;
     for(var key in elements) {
@@ -184,6 +222,9 @@ class CreateExerciseWindow extends Component {
     return elements;
   }
 
+  /**
+   * action when clicking on delete element in the module parameters
+   */
   onDeleteElement(id, type) {
     let elements = null;
     switch(type) {
@@ -215,14 +256,23 @@ class CreateExerciseWindow extends Component {
     });
   }
 
+  /**
+   * reset delete after deleting an element
+   */
   resetDelete() {
     this.setState({delete: null});
   }
 
+  /**
+   * synchronise functions from the code editor
+   */
   synchroniseFunctions(functions, tests) {
     this.setState({functions: functions, tests: tests});
   }
 
+  /**
+   * synchronise elements of one type from the code editor
+   */
   synchroniseForOneTypeOfElements(elements, type) {
     var newElements = {};
 
@@ -277,6 +327,10 @@ class CreateExerciseWindow extends Component {
     }
   }
 
+  /**
+   * synchronise all elements from the code editor with
+   * the root and the grid
+   */
   synchroniseElements(blocks, npcs, pcs, labels, functions, tests) {
     this.synchroniseForOneTypeOfElements(blocks, "BLOCK");
     this.synchroniseForOneTypeOfElements(npcs, "NPC");
@@ -285,6 +339,9 @@ class CreateExerciseWindow extends Component {
     this.synchroniseFunctions(functions, tests);
   }
 
+  /**
+   * get max key of a dictionary
+   */
   getMaxKeyOf(dictionary) {
     var maxKey = _.max(Object.keys(dictionary).map(function(item) {
       return Number(item);
@@ -295,6 +352,9 @@ class CreateExerciseWindow extends Component {
     return maxKey;
   }
 
+  /**
+   * add block from the drag and drop
+   */
   addBlock(rowId, columnId, width, height, background, backgroundId){
     var maxKey = this.getMaxKeyOf(this.state.blocks);
     
@@ -313,6 +373,9 @@ class CreateExerciseWindow extends Component {
     this.setState({blocks: blocks});
   }
 
+  /**
+   * add npc from the drag and drop
+   */
   addNPC(rowId, columnId, width, height, background, backgroundId) {
     var maxKey = this.getMaxKeyOf(this.state.npc);
 
@@ -331,6 +394,9 @@ class CreateExerciseWindow extends Component {
     this.setState({npc: npcs});
   }
 
+  /**
+   * add pc from the drag and drop
+   */
   addPC(rowId, columnId, width, height, background, backgroundId) {
     var maxKey = this.getMaxKeyOf(this.state.pc);
 
@@ -349,6 +415,9 @@ class CreateExerciseWindow extends Component {
     this.setState({pc: pcs});
   }
 
+  /**
+   * add label from the drag and drop
+   */
   addLabel(rowId, columnId, width, height, text) {
     var maxKey = this.getMaxKeyOf(this.state.labels);
 
@@ -366,6 +435,10 @@ class CreateExerciseWindow extends Component {
     this.setState({labels: labels});
   }
 
+  /**
+   * action when drop of the drag and drop module,
+   * add the element in the grid
+   */
   onDragEnd = result => {
     if(result.destination === null) return;
 
@@ -387,6 +460,9 @@ class CreateExerciseWindow extends Component {
     }
   }
 
+  /**
+   * action of saving the exercice in the database
+   */
   saveExercice(title, description, store) {
     var buildedExercice = {
       title: title,
@@ -408,6 +484,9 @@ class CreateExerciseWindow extends Component {
     exercices.createExercice(buildedExercice);
   }
 
+  /**
+   * action of modifiying the exercice in the database
+   */
   modifyExercise(title, description, id, store) {
     var buildedExercice = {
       title: title,
@@ -429,10 +508,16 @@ class CreateExerciseWindow extends Component {
     exercices.modifyExercice(buildedExercice, id);
   }
 
+  /**
+   * get all the state
+   */
   getFullState() {
     return this.state;
   }
 
+  /**
+   * render method
+   */
   render() {
     return (
             <div className={style.app}>
