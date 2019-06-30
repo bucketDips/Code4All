@@ -18,7 +18,7 @@ class RealisationExerciseWindow extends Component {
   constructor() {
     super();
     this.state = {
-      gridProperties: {size: 30},
+      gridProperties: {size: 30, lines: 1, columns: 1},
       blocks: [],
       npcs: [],
       pcs: [],
@@ -154,7 +154,7 @@ class RealisationExerciseWindow extends Component {
         return;
       }
       var errors = 0;
-      for(var i = 0; i < tests.length; i++) {
+      for(i = 0; i < tests.length; i++) {
         if(tests[i].result[0] === false) {
           errors += 1;
         }
@@ -201,7 +201,7 @@ class RealisationExerciseWindow extends Component {
       exercices.setNewCodeForExercice(this.props.bundle.id, this.state.code);
       var keys = Object.keys(compilator.testsResult);
       var winnedTests = [];
-      for(var i = 0; i < keys.length; i++) {
+      for(i = 0; i < keys.length; i++) {
         if(compilator.testsResult[keys[i]].result[0]) {
           winnedTests.push(keys[i]);
         }
@@ -215,7 +215,7 @@ class RealisationExerciseWindow extends Component {
       var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
     }
     else {
-      var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)} disabled>compiler</Button>);
+      buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)} disabled>compiler</Button>);
     }
     return (
         <div className={style.app}>

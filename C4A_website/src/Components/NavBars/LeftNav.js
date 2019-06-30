@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Layout } from 'antd';
 
+// eslint-disable-next-line
 import styles from '../NavBars/style.css';
 
 const SubMenu = Menu.SubMenu;

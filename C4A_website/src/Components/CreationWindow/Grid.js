@@ -105,6 +105,7 @@ class Grid extends Component {
     if(this.props.blocks) {
         blocks = Object.entries(this.props.blocks).map(block => {
           return (<Block
+            key={block[1].id}
             id={block[1].id}
             rowStart={block[1].rowStart}
             columnStart={block[1].columnStart}
@@ -119,6 +120,7 @@ class Grid extends Component {
     if(this.props.npcs) {
         npcs = Object.entries(this.props.npcs).map(npc => {
           return (<Npc
+            key={npc[1].id}
             id={npc[1].id}
             rowStart={npc[1].rowStart}
             columnStart={npc[1].columnStart}
@@ -134,6 +136,7 @@ class Grid extends Component {
     if(this.props.pcs) {
         pcs = Object.entries(this.props.pcs).map(pc => {
           return (<Pc
+            key={pc[1].id}
             id={pc[1].id}
             rowStart={pc[1].rowStart}
             columnStart={pc[1].columnStart}
@@ -149,6 +152,7 @@ class Grid extends Component {
     if(this.props.labels) {
         labels = Object.entries(this.props.labels).map(label => {
           return (<Label
+            key={label[1].id}
             id={label[1].id}
             rowStart={label[1].rowStart}
             columnStart={label[1].columnStart}

@@ -17,16 +17,15 @@ class AddPersonWindowWrapper extends Component {
     };
 
     async handleSave(props){
-      var values = await Promise.all(props.map(id => {
+      await Promise.all(props.map(id => {
         if(this.props.teacher) {
           classes.addProfessorToClass(id, this.props.idClass);
         }
         else {
           classes.addStudentToClass(id, this.props.idClass);
         }
-      })).then(function(values) {
-        return values;
-      });
+        return id;
+      }));
       this.props.refill();
       this.setState({ visible: false });
     };
@@ -38,7 +37,7 @@ class AddPersonWindowWrapper extends Component {
     render() {
         return (
           <div className={styles.wrapper}>
-            <img className={styles.button_wrapper} src={process.env.PUBLIC_URL + "plus.png"} onClick={this.showModal}/>
+            <img alt='plus' className={styles.button_wrapper} src={process.env.PUBLIC_URL + "plus.png"} onClick={this.showModal}/>
             <AddPersonWindow
               wrappedComponentRef={this.saveFormRef}
               visible={this.state.visible}

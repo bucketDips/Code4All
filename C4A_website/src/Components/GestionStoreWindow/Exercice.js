@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { Card, Icon, Modal } from 'antd';
+// eslint-disable-next-line
 import style from './style.css';
 import exercices from '../../Providers/exercices';
 
 const confirm = Modal.confirm;
 
 class Exercice extends Component {
-
-    constructor() {
-        super();
-    }
 
     refill(element){
         element.props.refill();

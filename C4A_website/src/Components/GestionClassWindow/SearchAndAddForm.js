@@ -33,6 +33,7 @@ class SearchAndAddForm extends Component {
             if(person.id === id) {
                 present = true;
             }
+            return person;
         });
         return present;
     }
@@ -53,16 +54,14 @@ class SearchAndAddForm extends Component {
     }
 
     remove(person) {
-        var toAdd = this.state.toAdd;
-        var addedPersons = this.state.addedPersons;
         var filteredPersons = this.state.persons.filter(function(value, index, arr){
-            return value != person;
+            return value !== person;
         });
         var filteredToAdd = this.state.toAdd.filter(function(value, index, arr){
-            return value != person.id;
+            return value !== person.id;
         });
         var filteredAddedPersons = this.state.addedPersons.filter(function(value, index, arr){
-            return value != person;
+            return value !== person;
         });
         this.setState({
             persons: filteredPersons,

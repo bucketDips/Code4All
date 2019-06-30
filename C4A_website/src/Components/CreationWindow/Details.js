@@ -111,7 +111,7 @@ class Details extends Component {
   }
 
   extractPatternsFromArray(array, patterns) {
-    var newElements = Object.values(array).map((element) => {
+    Object.values(array).map((element) => {
         if(element.backgroundId !== null && element.backgroundId !== undefined && !this.isIn(patterns, element.backgroundId)) {
           patterns.push({
             id: element.backgroundId,

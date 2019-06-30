@@ -29,6 +29,7 @@ class GestionStoreWindow extends Component {
   render() {
     var exercices = this.state.exercices.map(exercice => {
       return (<Exercice 
+        key={exercice.exerciceId}
         refill={this.refill.bind(this)}
         id={exercice.exerciceId} 
         title={exercice.title} 

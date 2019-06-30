@@ -11,7 +11,7 @@ class ClassDetails extends Component {
             var exoButton = (<h2 style={{cursor: "pointer", width: "30%", flex: 1}} onClick={this.props.showExosPanel}>Gérer les exercices ></h2>)
         } 
         else {
-            var exoButton = (<h2 style={{cursor: "pointer", width: "30%", flex: 1}} onClick={this.props.showExosPanel}>Exercices de la classe ></h2>)
+            exoButton = (<h2 style={{cursor: "pointer", width: "30%", flex: 1}} onClick={this.props.showExosPanel}>Exercices de la classe ></h2>)
         }
         return (
             <div className={style.class_details}>

@@ -31,7 +31,7 @@ class AddExerciceForm extends Component {
                 disponibleExercices.push(allExercices.data.perso[i]);
             }
         }
-        for(var i = 0; i < allExercices.data.forked.fromStore.length; i++) {
+        for(i = 0; i < allExercices.data.forked.fromStore.length; i++) {
             if(!this.isIn(allExercices.data.forked.fromStore[i].id, this.props.exercices)){
                 allExercices.data.forked.fromStore[i].author = " un autre";
                 allExercices.data.forked.fromStore[i].exercice_id = allExercices.data.forked.fromStore[i].id;
@@ -45,7 +45,7 @@ class AddExerciceForm extends Component {
         var ex = this.state.addedExercices;
         ex.push(exo);
         var filtered = this.state.exercices.filter(function(value, index, arr){
-            return value.id != exo.id;
+            return value.id !== exo.id;
         });
         this.setState({
             addedExercices: ex,
@@ -60,7 +60,7 @@ class AddExerciceForm extends Component {
         var ex = this.state.exercices;
         ex.push(exo);
         var filtered = this.state.addedExercices.filter(function(value, index, arr){
-            return value.id != exo.id;
+            return value.id !== exo.id;
         });
         this.setState({
             addedExercices: filtered,
@@ -72,11 +72,11 @@ class AddExerciceForm extends Component {
 
     render() {
         var exercices = this.state.exercices.map(exercice => {
-            return <Exercice infos={exercice} onClick={this.add.bind(this, exercice)} />
+            return <Exercice key={exercice.exercice_id} infos={exercice} onClick={this.add.bind(this, exercice)} />
         });
 
         var addedExercices = this.state.addedExercices.map(exercice => {
-            return <Exercice infos={exercice} onClick={this.remove.bind(this, exercice)} />
+            return <Exercice key={exercice.exercice_id} infos={exercice} onClick={this.remove.bind(this, exercice)} />
         });
 
         return (

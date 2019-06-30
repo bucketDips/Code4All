@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AddExerciceForm from './AddExerciceForm';
+// eslint-disable-next-line
 import styles from './style.css';
-import { Input, Button, Modal, Form } from 'antd';
-
-const confirm = Modal.confirm;
-const TextArea = Input.TextArea;
+import { Modal, Form } from 'antd';
 
 const AddExerciceWindow = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
@@ -18,8 +16,7 @@ const AddExerciceWindow = Form.create({ name: 'form_in_modal' })(
     }
 
     render() {
-      const { visible, onCancel, onSave, form } = this.props;
-      const { getFieldDecorator } = form;
+      const { visible, onCancel } = this.props;
       return (
         <Modal
           destroyOnClose={true}

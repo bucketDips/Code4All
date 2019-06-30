@@ -28,9 +28,9 @@ class DisplayProfessorsInfos extends Component {
     render() {
         var profs = this.props.infos.map(prof => {
             if(this.props.teacher) {
-                return <Person name={prof.name} id={prof.id} email={prof.email} delete={this.showConfirm.bind(this, prof.id, this.props.idClass, this.refill.bind(this))} />
+                return <Person key={prof.id} name={prof.name} id={prof.id} email={prof.email} delete={this.showConfirm.bind(this, prof.id, this.props.idClass, this.refill.bind(this))} />
             }
-            return <Person name={prof.name} id={prof.id} email={prof.email} />
+            return <Person key={prof.id} name={prof.name} id={prof.id} email={prof.email} />
         });
 
         return (

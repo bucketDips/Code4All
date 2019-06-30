@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+// eslint-disable-next-line
 import style from './style.css';
 
 import { Collapse, Spin, Icon } from 'antd';

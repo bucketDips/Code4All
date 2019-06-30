@@ -67,19 +67,19 @@ class ExercicesDetails extends Component {
         for(var i = 0; i < blocks.length; i++) {
             grid.addBlock(new Block(blocks[i].id, blocks[i].row, blocks[i].column, blocks[i].width, blocks[i].height, blocks[i].patternId));
         }
-        for(var i = 0; i < npcs.length; i++) {
+        for(i = 0; i < npcs.length; i++) {
             grid.addNpc(new Npc(npcs[i].id, npcs[i].row, npcs[i].column, npcs[i].width, npcs[i].height, npcs[i].patternId));
         }
-        for(var i = 0; i < pcs.length; i++) {
+        for(i = 0; i < pcs.length; i++) {
             grid.addPc(new Pc(pcs[i].id, pcs[i].row, pcs[i].column, pcs[i].width, pcs[i].height, pcs[i].patternId));
         }
-        for(var i = 0; i < labels.length; i++) {
+        for(i = 0; i < labels.length; i++) {
             grid.addLabel(new Label(labels[i].id, labels[i].row, labels[i].column, labels[i].width, labels[i].height, labels[i].text));
         }
-        for(var i = 0; i < functions.length; i++) {
+        for(i = 0; i < functions.length; i++) {
             grid.addFunction(new Func(functions[i].name, functions[i].code, functions[i].description));
         }
-        for(var i = 0; i < tests.length; i++) {
+        for(i = 0; i < tests.length; i++) {
             grid.addTest(new Func(tests[i].name, tests[i].code, tests[i].description));
         }
         return grid;
@@ -107,6 +107,7 @@ class ExercicesDetails extends Component {
     render() {
         var exercices = this.props.exos.map(exercice => {
             return (<Exercice 
+                key={exercice.exercice_id}
                 infos={exercice} 
                 launch={this.launchExercice.bind(this, exercice.exercice_id)} 
                 delete={this.deleteExerciceFromClass.bind(this, exercice.exercice_id)}

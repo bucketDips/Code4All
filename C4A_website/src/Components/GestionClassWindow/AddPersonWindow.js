@@ -1,11 +1,8 @@
-import React, { Component } from 'react';
-
+import React from 'react';
+// eslint-disable-next-line
 import styles from './style.css';
-import { Input, Button, Modal, Form } from 'antd';
+import { Modal, Form } from 'antd';
 import SearchAndAddForm from './SearchAndAddForm';
-
-const confirm = Modal.confirm;
-const TextArea = Input.TextArea;
 
 const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
@@ -19,8 +16,7 @@ const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
     }
 
     render() {
-      const { visible, onCancel, onSave, form } = this.props;
-      const { getFieldDecorator } = form;
+      const { visible, onCancel, onSave } = this.props;
       return (
         <Modal
           destroyOnClose={true}

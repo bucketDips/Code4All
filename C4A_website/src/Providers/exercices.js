@@ -1,12 +1,7 @@
 import Axios from 'axios';
 import qs from 'qs';
-import { Input } from 'antd';
 import consts from '../Providers/consts'
 import files from '../Providers/files';
-
-const Search = Input.Search;
-
-
 
 class Exercices {
     async getMines() {
@@ -39,7 +34,7 @@ class Exercices {
     }
 
     extractPatternsFromArray(array, patterns) {
-        var newElements = array.map((element) => {
+        array.map((element) => {
             if(element.patternId !== null && element.patternId !== undefined && !patterns.includes(element.patternId)) {
                 patterns.push(element.patternId);
             }
