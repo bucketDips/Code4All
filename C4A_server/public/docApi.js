@@ -227,7 +227,7 @@ $(document).ready(function() {
 				"</div>"
 		$("#routesList").append(div);
 		categorie.list.forEach(function(route,index){
-			var div = "<div  class=\"container\" data-toggle=\"collapse\" data-target=\"#info"+categorie.name+index+"\">" +
+			var div = "<div  style='cursor: pointer' class=\"container\" data-toggle=\"collapse\" data-target=\"#info"+categorie.name+index+"\">" +
 				"<h2>"+route.path+"</h2>\n" +
 				"<div id=\"info"+categorie.name+index+"\" class=\"collapse\">" +
 				"<div>Method : "+route.method+"</div>" +
