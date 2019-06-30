@@ -10,6 +10,7 @@ import RealisationExerciseWindow from './Components/RealisationWindow/';
 import { ProtectedRoute } from './Components/ProtectedRoute';
 import { NotConnectedRoute } from './Components/NotConnectedRoute';
 import ErrorWindow from '../src/Components/Error';
+import TermsWindow from '../src/Components/Terms';
 
 class App extends Component {
 
@@ -24,6 +25,7 @@ class App extends Component {
             <ProtectedRoute exact path="/store" component={StoreWindow} />
             <NotConnectedRoute exact path="/create" component={RealisationExerciseWindow} />
             <NotConnectedRoute exact path="/" component={NotConnectedWindow} />
+            <Route exact path="/terms" component={TermsWindow} />
             <Route component={ErrorWindow} />
           </Switch>
         </BrowserRouter>
