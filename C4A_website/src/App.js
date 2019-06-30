@@ -6,10 +6,10 @@ import ExercicesWindow from './Components/ConnectedWindows/Exercices';
 import ClassesWindow from './Components/ConnectedWindows/Classes';
 import StoreWindow from './Components/ConnectedWindows/Store';
 import NotConnectedWindow from './Components/NotConnectedWindow/';
-import RealisationExerciseWindow from './Components/RealisationWindow/';
 import { ProtectedRoute } from './Components/ProtectedRoute';
 import { NotConnectedRoute } from './Components/NotConnectedRoute';
 import ErrorWindow from '../src/Components/Error';
+import TermsWindow from '../src/Components/Terms';
 
 class App extends Component {
 
@@ -18,12 +18,12 @@ class App extends Component {
       <div style={{height: "100%"}}>
         <BrowserRouter>
           <Switch>
-            <ProtectedRoute exact path="/home" component={HomeWindow} />
+            <ProtectedRoute exact path="/accueil" component={HomeWindow} />
             <ProtectedRoute exact path="/exercices" component={ExercicesWindow} />
             <ProtectedRoute exact path="/classes" component={ClassesWindow} />
-            <ProtectedRoute exact path="/store" component={StoreWindow} />
-            <NotConnectedRoute exact path="/create" component={RealisationExerciseWindow} />
+            <ProtectedRoute exact path="/magasin" component={StoreWindow} />
             <NotConnectedRoute exact path="/" component={NotConnectedWindow} />
+            <Route exact path="/terms" component={TermsWindow} />
             <Route component={ErrorWindow} />
           </Switch>
         </BrowserRouter>

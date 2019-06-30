@@ -17,7 +17,7 @@
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp" app:layout_constraintHorizontal_bias="0.0"
                 android:id="@+id/linearLayout3">
-            <com.example.codinschool.customviews.MyEditText
+            <com.codinschool.android.customviews.MyEditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
@@ -29,7 +29,7 @@
                     android:paddingEnd="5dp"
                     android:hint="@string/dialog_fragment_edit_block_start"
                     android:layout_weight="0.50"/>
-            <com.example.codinschool.customviews.MyEditText
+            <com.codinschool.android.customviews.MyEditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"

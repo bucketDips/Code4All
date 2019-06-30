@@ -1,8 +1,14 @@
 import Axios from 'axios';
 import consts from '../Providers/consts'
 
-
+/**
+ * correspond the requested of API for the "fichiers/" routes
+ */
 class Files {
+
+    /**
+     * upload file for me (only pattern for now on)
+     */
     uploadFileToUser(options) {
         const data= new FormData()
         data.append('file', options.file)
@@ -20,6 +26,9 @@ class Files {
         })
     }
 
+    /**
+     * delete image for me by id
+     */
     deletePattern(id, cb) {
       Axios.post(consts.url() + 'fichiers/deleteFile/' +  id, {},
       {
@@ -35,6 +44,9 @@ class Files {
       });
     }
 
+    /**
+     * upload a file to exercice
+     */
     async uploadFileToExo(idFile, idExo) {
       return await Axios.post(consts.url() + 'fichiers/uploadToExercice/' + idExo + "/" + idFile, {},
       {
@@ -51,6 +63,9 @@ class Files {
       });
   }
 
+    /**
+     * get my images
+     */
     async getMines() {
       var headers = {
           'Authorization': 'Bearer ' +  localStorage.sessionToken

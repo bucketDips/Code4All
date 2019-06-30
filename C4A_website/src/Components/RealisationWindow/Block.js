@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 
+/**
+ * class represents a block in the grid
+ */
 class Block extends Component {
+
+     /**
+     * render method
+     */
     render() {
         return (
             <div style={{

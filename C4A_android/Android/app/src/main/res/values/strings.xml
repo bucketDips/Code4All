@@ -17,8 +17,6 @@
     <string name="network_error_time_out">Connection TimeOut! Please check your internet connection.</string>
 
     <string name="c_d_button_to_my_classes" translatable="false">Button to my classes</string>
-    <string name="classe_name">Classe name : %s</string>
-    <string name="classe_size">Number of members : %d</string>
     <string name="button_label_delete">delete</string>
     <string name="message_classe_list_error">Your classe list is empty</string>
     <string name="welcoming_msg">Hello %1$s</string>
@@ -30,7 +28,7 @@
     <string name="fragment_classes_list_title_label">Classes</string>
     <string name="empty_message_for_dialog_fragment" translatable="false">%1$s</string>
 
-    <string name="classe_label">Classe %1$s %2$d user(s)</string>
+    <string name="classe_label" >Classe %1$s %2$d user(s)</string>
     <string name="user_grid_layout_label" translatable="false">%1$s</string>
     <string name="professors_label">Professors %1$s</string>
     <string name="students_label">Students %1$s</string>
@@ -45,8 +43,6 @@
     <string name="simple_string_placeholder" translatable="false">%1$s</string>
     <string name="button_play">run</string>
 
-    <string name="user_test" translatable="false">spyroo913@hotmail.com</string>
-    <string name="password_test" translatable="false">1991</string>
     <string name="exercice_fragment_exercice_creator_label">Creator :</string>
     <string name="exercice_fragment_exercice_description">Description :</string>
     <string name="exercice_fragment_exercice_name">Name :</string>
@@ -79,5 +75,11 @@
     <string name="store_empty_exercice_list">There is no exercice available for you</string>
     <string name="fork_succes">Exercice forked with success !</string>
     <string name="icon_label_credits">Icons made by %1$s from www.flaticon.com</string>
+    <string name="store">Store</string>
+    <string name="classes">Classes</string>
+    <string name="exercice">Exercice</string>
+    <string name="look_in_the_store">Look in the store</string>
+    <string name="last_exercice_added">Last exercice added</string>
+    <string name="email">email</string>
 
 </resources>

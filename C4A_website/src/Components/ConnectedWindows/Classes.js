@@ -145,17 +145,17 @@ class ClassesWindow extends Component {
             action: this.presentation
         });
         menus.push({
-            name: "as student",
+            name: "comme étudiant",
             icon: "user",
             submenus: student
         });
         menus.push({
-            name: "as professor",
+            name: "comme professeur",
             icon: "team",
             submenus: professor
         });
         menus.push({
-            name: "create class",
+            name: "créer une classe",
             icon: "plus",
             action: this.createClass.bind(this)
         });

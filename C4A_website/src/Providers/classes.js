@@ -1,7 +1,14 @@
 import Axios from 'axios';
 import consts from '../Providers/consts'
 
+/**
+ * correspond the requested of API for the "classes/" routes
+ */
 class Classes {
+
+    /**
+     * get my classes (as prof or as user)
+     */
     async getMines() {
         var headers = {
             'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -21,6 +28,9 @@ class Classes {
         });
     }
 
+    /**
+     * get my exercices
+     */
     getExercices() {
         var headers = {
             'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -33,6 +43,9 @@ class Classes {
         });
     }
 
+    /**
+     * create a classroom
+     */
     createClass(name) {
         Axios.post(consts.url() + 'classes/createClassroom/' + name, {},
         {
@@ -48,6 +61,9 @@ class Classes {
         });
     }
 
+    /**
+     * get informations for class (student, professor, exercices)
+     */
     async getClassInfo(id) {
         var headers = {
             'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -60,6 +76,9 @@ class Classes {
         });
     }
 
+    /**
+     * add a student to a class
+     */
     async addStudentToClass(idPerson, idClass) {
         return await Axios.post(consts.url() + 'classes/addStudentToClass/' + idPerson + '/' + idClass, {},
         {
@@ -75,6 +94,9 @@ class Classes {
         });
     }
 
+    /**
+     * add a professor to a class
+     */
     async addProfessorToClass(idPerson, idClass) {
         return await Axios.post(consts.url() + 'classes/addProfessorToClass/' + idPerson + '/' + idClass, {},
         {
@@ -90,6 +112,9 @@ class Classes {
         });
     }
 
+    /**
+     * delete professor from a class
+     */
     deleteProfessorFromClass(idPerson, idClass, cb) {
         Axios.post(consts.url() + 'classes/removeProfessorFromClass/' + idPerson + '/' + idClass, {},
         {
@@ -107,7 +132,10 @@ class Classes {
                 alert("une erreur est survenue");
         });
     }
-
+    
+    /**
+     * delete a student from a class
+     */
     deleteStudentFromClass(idPerson, idClass, cb) {
         Axios.post(consts.url() + 'classes/removeStudentFromClass/' + idPerson + '/' + idClass, {},
         {

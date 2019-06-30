@@ -91,7 +91,7 @@ class ExercicesWindow extends Component {
      * exercices from the database
      */
     async componentWillMount() {
-        var allExercices = await exercices.getMines("coucou");
+        var allExercices = await exercices.getMines();
         var myExercices = [];
         var forkedExercices = []
         for(var exercice in allExercices.data.perso) {
@@ -120,17 +120,17 @@ class ExercicesWindow extends Component {
             action: this.presentation
         });
         menus.push({
-            name: "my exercices",
+            name: "mes exercices",
             icon: "ordered-list",
             submenus: myExercices
         });
         menus.push({
-            name: "forked exercices",
+            name: "exercices du store",
             icon: "cloud",
             submenus: forkedExercices
         });
         menus.push({
-            name: "create exercice",
+            name: "créer un exercice",
             icon: "plus",
             action: this.createExercice
         });

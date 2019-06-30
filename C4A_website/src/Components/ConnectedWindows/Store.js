@@ -52,7 +52,7 @@ class StoreWindow extends Component {
             action: this.presentation
         });
         menus.push({
-            name: "see all",
+            name: "voir tout",
             icon: "menu",
             action: this.seeAll.bind(this)
         });

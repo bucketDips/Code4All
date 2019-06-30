@@ -1,7 +1,14 @@
 import Axios from 'axios';
 import consts from '../Providers/consts'
 
+/**
+ * correspond the requested of API for the "users/" routes but not auth
+ */
 class Persons {
+    
+    /**
+     * get users that email or name correspond to the name
+     */
     async getUsersForName(name) {
         var headers = {
             'Authorization': 'Bearer ' +  localStorage.sessionToken

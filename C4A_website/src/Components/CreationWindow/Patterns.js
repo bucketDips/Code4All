@@ -91,7 +91,7 @@ class Patterns extends Component {
                   }}
                   onChange={this.onChange.bind(this)}>
                   <Button>
-                    <Icon type="upload" /> Click to Upload
+                    <Icon type="upload" /> Cliquer pour ajouter
                   </Button>
                 </Upload>  
               </div>            

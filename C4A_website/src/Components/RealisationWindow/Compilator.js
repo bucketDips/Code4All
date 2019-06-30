@@ -1,7 +1,14 @@
 import consts from '../../Providers/consts';
 
+/**
+ * module that compile the code of the student
+ * from the editor value
+ */
 export default class Compilator {
   
+  /**
+   * constructor
+   */
     constructor(gridObject) {
       this.gridObject = gridObject.copy();
       this.states = [];
@@ -9,16 +16,9 @@ export default class Compilator {
       this.error = null;
     }
 
-    iterationCopy(src) {
-      let target = {};
-      for (let prop in src) {
-        if (src.hasOwnProperty(prop)) {
-          target[prop] = src[prop];
-        }
-      }
-      return target;
-    }
-
+    /**
+     * build the string of functions definitions
+     */
     buildStringOf(functions) {
       var buildedString = "";
       for(var i = 0; i < functions.length; i++) {
@@ -27,6 +27,9 @@ export default class Compilator {
       return buildedString;
     }
 
+    /**
+     * build the string of functions auto calls
+     */
     buildTestsCall(tests) {
       var buildedString = "";
       for(var i = 0; i < tests.length; i++) {
@@ -36,10 +39,16 @@ export default class Compilator {
       return buildedString;
     }
 
+    /**
+     * after calling one test, push the result in the state array testResult
+     */
     setTestResult(name, description, result){
       this.testsResult[name] = { description: description, result: result };
     }
 
+    /**
+     * callable method from the realisation window root
+     */
     compile(code) {
       var grid = this.gridObject;
       var functions = this.buildStringOf(grid.functions);
@@ -52,6 +61,9 @@ export default class Compilator {
       this.states = grid.states;
     }
     
+    /**
+     * eval the student code
+     */
     customEvalOfCode(grid, buildedCode) {
       try {
         consts.customEvalOfCode(grid, buildedCode);
@@ -63,6 +75,9 @@ export default class Compilator {
       }
     }
 
+    /**
+     * auto eval of the founded tests
+     */
     customEvalOfTests(grid, setTestResult, buildedCode) {
       if(this.error) return;
       try {
