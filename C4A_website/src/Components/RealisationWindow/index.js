@@ -4,7 +4,7 @@ import Code from './Code';
 import Compilator from './Compilator';
 import TestsResults from './TestsResults';
 
-import { Input } from 'antd';
+import { Input, notification } from 'antd';
 import style from './style.css';
 import { Button } from 'antd/lib/radio';
 import exercices from '../../Providers/exercices';
@@ -12,13 +12,12 @@ import exercices from '../../Providers/exercices';
 const TextArea = Input.TextArea;
 
 
-
 class RealisationExerciseWindow extends Component {
 
   constructor() {
     super();
     this.state = {
-      gridProperties: {},
+      gridProperties: {size: 30},
       blocks: [],
       npcs: [],
       pcs: [],
@@ -130,6 +129,48 @@ class RealisationExerciseWindow extends Component {
       }
     }
     this.setState({tests: tests});
+
+    if(tests.length === 0) {
+      if(error) {
+        notification["error"]({
+          message: 'Résultats des tests',
+          description: 'Aucun tests de programmé, mais une erreur est survenue pendant le jeu !\nErreur : ' + error,
+        });
+      }
+      else {
+        notification["warning"]({
+          message: 'Résultats des tests',
+          description: 'Aucun tests de programmé !',
+        });
+      }
+    }
+    else {
+      if(error) {
+        notification["error"]({
+          message: 'Résultats des tests',
+          description: 'Plusieurs tests de programmé, mais une erreur est survenue pendant le jeu !\nErreur : ' + error,
+        });
+        return;
+      }
+      var errors = 0;
+      for(var i = 0; i < tests.length; i++) {
+        if(tests[i].result[0] === false) {
+          errors += 1;
+        }
+      }
+      if(errors > 0) {
+        notification["error"]({
+          message: 'Résultats des tests',
+          description: 'Seulement ' + (tests.length - errors) + ' tests passés sur ' + tests.length,
+        });
+      }
+      else {
+        notification["success"]({
+          message: 'Résultats des tests',
+          description: 'Tous les tests sont passés !',
+        });
+      }
+    }
   }
 
   compile() {
@@ -158,7 +199,6 @@ class RealisationExerciseWindow extends Component {
   }
 
   render() {
-    console.log(this.state);
     if(this.state.buttonCompile) {
       var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
     }

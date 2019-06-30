@@ -55,17 +55,14 @@ export default class Compilator {
     }
     
     customEvalOfCode(grid, buildedCode) {
-      console.log(grid);
       try {
         consts.customEvalOfCode(grid, buildedCode);
       }
       catch(error) {
-        console.log(error);
         if(error.message !== undefined && error.message !== "" && error.message !== null) {
-          this.error = error.message + error.stack;
+          this.error = error.message;
         }
       }
-      console.log(grid);
     }
 
     customEvalOfTests(grid, setTestResult, buildedCode) {
@@ -74,9 +71,8 @@ export default class Compilator {
         consts.customEvalOfTests(grid, setTestResult, buildedCode);
       }
       catch(error) {
-        console.log(error);
         if(this.error === null && error.message !== undefined && error.message !== "" && error.message !== null) {
-          this.error = error.message + error.stack;
+          this.error = error.message;
         }
       }
     }

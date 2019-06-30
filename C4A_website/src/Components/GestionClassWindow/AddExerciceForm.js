@@ -33,7 +33,7 @@ class AddExerciceForm extends Component {
         }
         for(var i = 0; i < allExercices.data.forked.fromStore.length; i++) {
             if(!this.isIn(allExercices.data.forked.fromStore[i].id, this.props.exercices)){
-                allExercices.data.forked.fromStore[i].author = " moi";
+                allExercices.data.forked.fromStore[i].author = " un autre";
                 allExercices.data.forked.fromStore[i].exercice_id = allExercices.data.forked.fromStore[i].id;
                 disponibleExercices.push(allExercices.data.forked.fromStore[i]);
             }

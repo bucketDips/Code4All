@@ -25,7 +25,6 @@ class TestResults extends Component {
     }
 
     render() {
-        console.log(this.props.tests);
         var tests = this.props.tests.map((test, index) => {
             return (
             <Panel header={test.name} key={index} extra={this.genExtra(this.props.load, test.result)}>
