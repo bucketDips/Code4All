@@ -17,7 +17,7 @@ class RealisationExerciseWindow extends Component {
   constructor() {
     super();
     this.state = {
-      gridProperties: {},
+      gridProperties: {size: 30},
       blocks: [],
       npcs: [],
       pcs: [],

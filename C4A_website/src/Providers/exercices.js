@@ -27,7 +27,12 @@ class Exercices {
         }
 
         return Axios.get(consts.url() + "exercices/getExercice/" + id, {headers: headers}).then(response => {
-            return cb(response);
+            if(cb) {
+                return cb(response);
+            }
+            else {
+                return response;
+            }
         }).catch(error => {
             alert(JSON.stringify(error));
         });
@@ -203,9 +208,13 @@ class Exercices {
         }
 
         Axios.get(consts.url() + "exercices/getUserExerciceSolutionWeb/" + idExo, {headers: headers}).then(response => {
-            this.getUserPassedTestsForExercice(idExo, response.data, cb);
+            if(response.data){
+                this.getUserPassedTestsForExercice(idExo, response.data, cb);
+                return;
+            }
+            this.getUserPassedTestsForExercice(idExo, "", cb);
         }).catch(error => {
-            alert(JSON.stringify(error));
+            this.getUserPassedTestsForExercice(idExo, "", cb);
         });
     }
 
@@ -215,13 +224,21 @@ class Exercices {
         }
 
         Axios.get(consts.url() + "exercices/getUserPassedTests/" + idExo, {headers: headers}).then(response => {
-            cb(code, response.data);
+            if(response.data) {
+                cb(code, response.data);
+            }
+            else {
+                cb(code, null);
+            }
+            
         }).catch(error => {
+            console.log(error);
             alert(JSON.stringify(error));
         });
     }
 
     uploadTestsForExercice(idExo, testArray) {
+        if(testArray.length === 0) return;
         let data = {'tests': JSON.stringify(testArray)};
 
         Axios.post(consts.url() + 'exercices/addSuccessTest/' + idExo, qs.stringify(data),
