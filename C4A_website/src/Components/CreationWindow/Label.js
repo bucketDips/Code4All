@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import styles from './style.css';
 
+/**
+ * class represents a label in the grid
+ */
 class Label extends Component {
+
+    /**
+     * action for the click on the label
+     */
     askEditLabel() {
         let parameters = {
             type: "LABEL",
@@ -12,10 +19,12 @@ class Label extends Component {
             height: this.props.height,
             text: this.props.text
         }
-
         this.props.changeParametersWindow(parameters);
     }
 
+    /**
+     * render method
+     */
     render() {
         return (
             <div style={{

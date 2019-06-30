@@ -27,16 +27,19 @@ class Consts {
 
     customEval(toEval, createGrid, createBlock, createNpc, createPc, createLabel, createFunction, synchronise, changeGridObject) {
         this.checkIfForbiddenWordIn(toEval);
+        // eslint-disable-next-line
         eval(toEval);
     }
 
     customEvalOfCode(grid, buildedCode) {
         this.checkIfForbiddenWordIn(buildedCode);
+        // eslint-disable-next-line
         eval(buildedCode);
     }
 
     customEvalOfTests(grid, setTestResult, buildedCode) {
         this.checkIfForbiddenWordIn(buildedCode);
+        // eslint-disable-next-line
         eval(buildedCode);
     }
 }

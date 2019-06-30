@@ -5,13 +5,20 @@ import DisplayClassroomInfos from './DisplayClassroomInfos';
 import DisplayStudentsInfos from './DisplayStudentsInfos';
 import DisplayProfessorsInfos from './DisplayProfessorsInfos';
 
+/**
+* module containing all of the class details (person, exercices)
+*/
 class ClassDetails extends Component {
+
+    /**
+    * render method
+    */
     render() {
         if(this.props.teacher) {
             var exoButton = (<h2 style={{cursor: "pointer", width: "30%", flex: 1}} onClick={this.props.showExosPanel}>Gérer les exercices ></h2>)
         } 
         else {
-            var exoButton = (<h2 style={{cursor: "pointer", width: "30%", flex: 1}} onClick={this.props.showExosPanel}>Exercices de la classe ></h2>)
+            exoButton = (<h2 style={{cursor: "pointer", width: "30%", flex: 1}} onClick={this.props.showExosPanel}>Exercices de la classe ></h2>)
         }
         return (
             <div className={style.class_details}>

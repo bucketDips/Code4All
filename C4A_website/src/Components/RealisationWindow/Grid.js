@@ -29,7 +29,7 @@ class Grid extends Component {
           line: line,
           column: column,
         }
-        cells.push(<Case size={size} index={String(index)} />);
+        cells.push(<Case key={line * this.state.gridProperties.lines + column} size={size} index={String(index)} />);
         index += 1;
       }
       cases.push(cells);
@@ -121,19 +121,19 @@ class Grid extends Component {
     }} />)
 
     let blocks = Object.entries(this.props.blocks).map(block => {
-      return (<Block {... this.getPropsForElement(block[1], false)} />)
+      return (<Block key={block.id} {... this.getPropsForElement(block[1], false)} />)
     }, this);
     
     let npcs = Object.entries(this.props.npcs).map(npc => {
-      return (<Npc {... this.getPropsForElement(npc[1], false)} />)
+      return (<Npc key={npc.id} {... this.getPropsForElement(npc[1], false)} />)
     }, this);
 
     let pcs = Object.entries(this.props.pcs).map(pc => {
-      return (<Pc {... this.getPropsForElement(pc[1], false)} />)
+      return (<Pc key={pc.id} {... this.getPropsForElement(pc[1], false)} />)
     }, this);
 
     let labels = Object.entries(this.props.labels).map(label => {
-      return (<Label {... this.getPropsForElement(label[1], true)} />)
+      return (<Label key={label.id} {... this.getPropsForElement(label[1], true)} />)
     }, this);
     
     return (

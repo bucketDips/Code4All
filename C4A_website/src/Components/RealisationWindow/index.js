@@ -4,13 +4,13 @@ import Code from './Code';
 import Compilator from './Compilator';
 import TestsResults from './TestsResults';
 
-import { Input } from 'antd';
+import { Input, notification, Modal } from 'antd';
 import style from './style.css';
 import { Button } from 'antd/lib/radio';
 import exercices from '../../Providers/exercices';
 
 const TextArea = Input.TextArea;
-
+const confirm = Modal.confirm;
 
 
 class RealisationExerciseWindow extends Component {
@@ -18,7 +18,7 @@ class RealisationExerciseWindow extends Component {
   constructor() {
     super();
     this.state = {
-      gridProperties: {},
+      gridProperties: {size: 30, lines: 1, columns: 1},
       blocks: [],
       npcs: [],
       pcs: [],
@@ -130,6 +130,59 @@ class RealisationExerciseWindow extends Component {
       }
     }
     this.setState({tests: tests});
+
+    if(tests.length === 0) {
+      if(error) {
+        notification["error"]({
+          message: 'Résultats des tests',
+          description: 'Aucun tests de programmé, mais une erreur est survenue pendant le jeu !\nErreur : ' + error,
+        });
+      }
+      else {
+        notification["warning"]({
+          message: 'Résultats des tests',
+          description: 'Aucun tests de programmé !',
+        });
+      }
+    }
+    else {
+      if(error) {
+        notification["error"]({
+          message: 'Résultats des tests',
+          description: 'Plusieurs tests de programmé, mais une erreur est survenue pendant le jeu !\nErreur : ' + error,
+        });
+        return;
+      }
+      var errors = 0;
+      for(i = 0; i < tests.length; i++) {
+        if(tests[i].result[0] === false) {
+          errors += 1;
+        }
+      }
+      if(errors > 0) {
+        notification["error"]({
+          message: 'Résultats des tests',
+          description: 'Seulement ' + (tests.length - errors) + ' tests passés sur ' + tests.length,
+        });
+      }
+      else {
+        notification["success"]({
+          message: 'Résultats des tests',
+          description: 'Tous les tests sont passés !',
+        });
+      }
+    }
+  }
+
+  unfork(element) {
+    confirm({
+      title: 'Etes-vous sûr de vouloir supprimer cet exercice ? Il ne sera plus utilisable dans vos classes.',
+      onOk() {
+        exercices.deleteExercice(element.props.bundle.id);
+      },
+      onCancel() {
+      },
+    });
   }
 
   compile() {
@@ -148,7 +201,7 @@ class RealisationExerciseWindow extends Component {
       exercices.setNewCodeForExercice(this.props.bundle.id, this.state.code);
       var keys = Object.keys(compilator.testsResult);
       var winnedTests = [];
-      for(var i = 0; i < keys.length; i++) {
+      for(i = 0; i < keys.length; i++) {
         if(compilator.testsResult[keys[i]].result[0]) {
           winnedTests.push(keys[i]);
         }
@@ -158,12 +211,11 @@ class RealisationExerciseWindow extends Component {
   }
 
   render() {
-    console.log(this.state);
     if(this.state.buttonCompile) {
       var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
     }
     else {
-      var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)} disabled>compiler</Button>);
+      buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)} disabled>compiler</Button>);
     }
     return (
         <div className={style.app}>
@@ -184,7 +236,12 @@ class RealisationExerciseWindow extends Component {
                 <Code changeCode={this.changeCode.bind(this)} code={this.state.code} />
                 <div className={style.description}>
                   <TextArea className={style.textArea} rows={4} defaultValue={this.props.bundle.description} disabled />
-                  {buttonCompile}
+                  <div style={{flex: 1, display: "flex", flexDirection: "row"}}>
+                    {buttonCompile}
+                    {this.props.fork && 
+                      <Button style={{flex: 1}} onClick={this.unfork.bind(this, this)}>unfork</Button>
+                    }
+                  </div>
                 </div>
             </div>
         </div>

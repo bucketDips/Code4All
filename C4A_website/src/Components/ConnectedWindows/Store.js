@@ -1,22 +1,28 @@
 import React, { Component } from 'react';
-
-import exercices from '../../Providers/exercices';
-
 import GestionStoreWindow from '../GestionStoreWindow';
-
 import ConnectedWindowsStructure from '../ConnectedWindowsStructure/';
 
+/**
+ * The window that build the menus
+ * and the associated actions for
+ * the module store
+ */
 class StoreWindow extends Component {
 
+    /**
+     * constructor
+     */
     constructor() {
         super();
         this.state = {
             menus: [],
             content: null,
-            exercices: []
         }
     }
 
+    /**
+     * action for the click on presentation
+     */
     presentation() {
         return new Promise((resolve, reject) => { resolve([(
             <div>
@@ -25,15 +31,20 @@ class StoreWindow extends Component {
         ), "not-collapsed"]); });
     }
 
+    /**
+     * action for the click on see all
+     */
     seeAll() {
         return new Promise((resolve, reject) => { resolve([(
-            <GestionStoreWindow exercices={this.state.exercices} type={"all"} />
+            <GestionStoreWindow type={"all"} />
         ), "collapsed"]); });
     }
 
+    /**
+     * build the menus with the datas
+     * of the exercices from the database
+     */
     async componentWillMount() {
-        var allExercices = await exercices.getFromStore();
-
         var menus = [];
         menus.push({
             name: "presentation",
@@ -50,11 +61,13 @@ class StoreWindow extends Component {
             this.setState({ 
                 menus: menus,
                 content: result[0],
-                exercices: allExercices
              });
         });
     }
 
+    /**
+     * render method
+     */
     render() {
         return (
             <div>

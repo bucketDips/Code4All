@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-
 import RealisationExerciseWindow from '../../Components/RealisationWindow/';
-
 import styles from './style.css';
 import { Input, Button, Radio, Modal, Form } from 'antd';
 import exercices from "../../Providers/exercices";
-
 import consts from '../../Providers/consts';
 
 const confirm = Modal.confirm;
 const TextArea = Input.TextArea;
 
+/**
+ * modal opened when clicking on sauvegarder or modifier
+ */
 const ExerciceCreationForm = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class extends React.Component {
@@ -50,6 +50,9 @@ const ExerciceCreationForm = Form.create({ name: 'form_in_modal' })(
   },
 );
 
+/**
+ * modal called when clicking on lancer
+ */
 const ExerciceLaunchModal = Form.create({ name: 'launch_modal' })(
   // eslint-disable-next-line
   class extends React.Component {
@@ -71,6 +74,9 @@ const ExerciceLaunchModal = Form.create({ name: 'launch_modal' })(
   },
 );
 
+/**
+ * class corresponds to the details module in the creation window
+ */
 class Details extends Component {
 
   state = {
@@ -80,6 +86,10 @@ class Details extends Component {
     launchBundle: null
   };
 
+  /**
+   * changing the value of the button if
+   * it's a retrieved exercice or a created one
+   */
   componentWillMount() {
     if(this.props.details) {
       this.setState({details: this.props.details, buttonValue: "modifier"});
@@ -89,18 +99,31 @@ class Details extends Component {
     }
   }
 
+  /**
+   * changing the details/description of the exercice
+   */
   changeDetails(details) {
     this.setState({details: details.target.value});
   };
 
+  /**
+   * show the save modal
+   */
   showModal = () => {
     this.setState({ saveModalVisible: true });
   };
 
+  /**
+   * hide the save modal
+   */
   handleCancel = () => {
     this.setState({ saveModalVisible: false });
   };
 
+  /**
+   * check if a pattern of this id
+   * exists in the array patterns
+   */
   isIn(patterns, id) {
     for(var i = 0; i < patterns.length; i++) {
       if (patterns[i].id === id) {
@@ -110,8 +133,12 @@ class Details extends Component {
     return false;
   }
 
+  /**
+   * return all of the patterns of the elements
+   * in the grid (blocks, etc)
+   */
   extractPatternsFromArray(array, patterns) {
-    var newElements = Object.values(array).map((element) => {
+    Object.values(array).map((element) => {
         if(element.backgroundId !== null && element.backgroundId !== undefined && !this.isIn(patterns, element.backgroundId)) {
           patterns.push({
             id: element.backgroundId,
@@ -123,6 +150,11 @@ class Details extends Component {
     });
   }
 
+  /**
+   * return all of the patterns found in the
+   * code of the ace editor, by checking the id
+   * in the regex changePattern(id)
+   */
   extractPatternsFromCode(code, patterns) {
     var matches = code.match(/changePattern\(\d+\)/g);
     if(matches === null) {
@@ -140,6 +172,10 @@ class Details extends Component {
     }
   }
 
+  /**
+   * return all of the patterns in the elements
+   * and in the code of the ace editor
+   */
   extractPatterns(exercice) {
       var patterns = [];
       if(exercice.gridProperties.backgroundId !== undefined && exercice.gridProperties.backgroundId !== null) {
@@ -156,6 +192,9 @@ class Details extends Component {
       return patterns;
   }
   
+  /**
+   * show the launch modal
+   */
   showModalLaunch = () => {
     var state = this.props.getParentState();
     var fichiers = this.extractPatterns(state);
@@ -216,10 +255,18 @@ class Details extends Component {
     this.setState({ launchModalVisible: true, launchBundle: launchBundle });
   };
 
+  /**
+   * hide the launch modal
+   */
   handleCancelLaunch = () => {
     this.setState({ launchModalVisible: false });
   };
 
+  /**
+   * handle the creation/modification of a new exercice,
+   * get the details/description and the isPublic
+   * and call the save or modification of the exercice
+   */
   handleCreate = () => {
     const { form } = this.formRef.props;
     form.validateFields((err, values) => {
@@ -239,10 +286,16 @@ class Details extends Component {
     });
   };
 
+  /**
+   * save the form ref here
+   */
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
 
+  /**
+   * show the modal of deleting an exercice
+   */
   showConfirm(id) {
     confirm({
       title: 'Etes-vous sûr de vouloir supprimer cet exercice ?',
@@ -254,6 +307,9 @@ class Details extends Component {
     });
   }
 
+  /**
+   * render method
+   */
   render() {
     var saveB = this.props.info === null ? (
       <Button id="save-button" type="primary" icon="download" size={"large"} onClick={this.showModal}>

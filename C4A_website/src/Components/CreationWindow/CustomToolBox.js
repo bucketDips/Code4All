@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import ToolBoxElement from './ToolBoxElement';
 
+/**
+ * toolbox contained in the module grid of the window,
+ * float left bottom
+ */
 class CustomToolBox extends Component {
 
+  /**
+   * render method
+   */
   render() {
     let options;
     if(this.props.elements) {

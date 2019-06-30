@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, Form, Button } from 'react-bootstrap';
 import  { Redirect } from 'react-router-dom'
-
 import auth from '../../Providers/auth';
 
+/**
+* correspond to the top navigation that contains the
+* differents windows of the website (classes/exercices/store/home)
+*/
 class TopNav extends Component {
 
+  /**
+  * constructor
+  */
   constructor() {
     super();
     this.state = {
@@ -13,12 +19,18 @@ class TopNav extends Component {
     }
   }
   
+  /**
+  * action with clicking on disconnect
+  */
   onLogout() {
     auth.logout(() => {
       this.setState({redirectToLogin: true});
     })
   }
 
+  /**
+  * render method
+  */
   render() {
     if (this.state.redirectToLogin){
       return (<Redirect to='/'  />);

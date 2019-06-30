@@ -101,3 +101,7 @@
     height: 20%;
     width: 100%;
 }
+
+.ant-notification {
+    z-index: 9999 !important;
+}

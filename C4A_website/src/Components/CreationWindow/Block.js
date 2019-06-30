@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import styles from './style.css';
 
+/**
+ * class represents a block in the grid
+ */
 class Block extends Component {
+
+    /**
+     * action for the click on the block
+     */
     askEditBlock() {
         let parameters = {
             type: "BLOCK",
@@ -17,6 +24,9 @@ class Block extends Component {
         this.props.changeParametersWindow(parameters);
     }
 
+    /**
+     * render method
+     */
     render() {
         return (
             <div style={{

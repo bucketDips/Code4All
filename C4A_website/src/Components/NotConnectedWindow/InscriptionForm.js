@@ -7,17 +7,22 @@ import {
   Checkbox,
   Button,
 } from 'antd';
-
 import auth from '../../Providers/auth';
 // eslint-disable-next-line
 import styles from './style.css';
 
-
+/**
+* inscription to the website form (contained in the same window)
+*/
 class RegistrationForm extends Component {
+
   state = {
     confirmDirty: false,
   };
 
+  /**
+  * action when clicking on the save button
+  */
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -27,11 +32,17 @@ class RegistrationForm extends Component {
     });
   };
 
+  /**
+  * action for confirm the password
+  */
   handleConfirmBlur = e => {
     const value = e.target.value;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
 
+  /**
+  * comparing the two passwords
+  */
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
@@ -41,6 +52,9 @@ class RegistrationForm extends Component {
     }
   };
 
+  /**
+  * action for validating the password
+  */
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && this.state.confirmDirty) {
@@ -49,6 +63,9 @@ class RegistrationForm extends Component {
     callback();
   };
 
+  /**
+  * render method
+  */
   render() {
     const { getFieldDecorator } = this.props.form;
 

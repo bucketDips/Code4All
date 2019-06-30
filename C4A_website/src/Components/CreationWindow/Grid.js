@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import Case from './Case'
 import CustomSlider from './CustomSlider'
 import CustomToolBox from './CustomToolBox'
@@ -9,8 +8,14 @@ import Pc from './Pc'
 import Label from './Label'
 import styles from './style.css';
 
+/**
+ * class corresponds to the grid module in the creationwindow
+ */
 class Grid extends Component {
 
+  /**
+   * constructor
+   */
   constructor() {
     super();
     this.state = {
@@ -18,6 +23,10 @@ class Grid extends Component {
     }
   }
 
+  /**
+   * fill the cases of the grid with the values
+   * of the state (with size, lines, columns)
+   */
   fillCases() {
     let cases = [];
     let index = 1;
@@ -43,6 +52,10 @@ class Grid extends Component {
     this.setState({gridProperties: properties});
   }
 
+  /**
+   * change the grid state with the props (size, lines, columns),
+   * fillcases will be called again
+   */
   componentWillReceiveProps() {
     var size = this.state.gridProperties.size === undefined ? this.props.parameters.size : this.state.gridProperties.size;
     let properties = {
@@ -63,12 +76,18 @@ class Grid extends Component {
     );
   }
 
+  /**
+   * change the size of the cases
+   */
   changeSizeValue(newSize) {
     let properties = this.state.gridProperties;
     properties.size = newSize;
     this.setState({gridProperties: properties});
   }
 
+  /**
+   * action for clicking on the grid parameters button
+   */
   askEditGrid(e) {
     let parameters = {
       type: "GRID",
@@ -81,10 +100,17 @@ class Grid extends Component {
     e.preventDefault();
   }
 
+  /**
+   * bridge between askeditelement of the differents elements
+   * and the root of creationwindow
+   */
   askEditElement(parameters) {
     this.props.changeParametersWindow(parameters);
   }
 
+  /**
+   * render method
+   */
   render() {
     let background = this.state.gridProperties.background == null ? "" : 
     (<div style={{
@@ -105,6 +131,7 @@ class Grid extends Component {
     if(this.props.blocks) {
         blocks = Object.entries(this.props.blocks).map(block => {
           return (<Block
+            key={block[1].id}
             id={block[1].id}
             rowStart={block[1].rowStart}
             columnStart={block[1].columnStart}
@@ -119,6 +146,7 @@ class Grid extends Component {
     if(this.props.npcs) {
         npcs = Object.entries(this.props.npcs).map(npc => {
           return (<Npc
+            key={npc[1].id}
             id={npc[1].id}
             rowStart={npc[1].rowStart}
             columnStart={npc[1].columnStart}
@@ -134,6 +162,7 @@ class Grid extends Component {
     if(this.props.pcs) {
         pcs = Object.entries(this.props.pcs).map(pc => {
           return (<Pc
+            key={pc[1].id}
             id={pc[1].id}
             rowStart={pc[1].rowStart}
             columnStart={pc[1].columnStart}
@@ -149,6 +178,7 @@ class Grid extends Component {
     if(this.props.labels) {
         labels = Object.entries(this.props.labels).map(label => {
           return (<Label
+            key={label[1].id}
             id={label[1].id}
             rowStart={label[1].rowStart}
             columnStart={label[1].columnStart}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import HomeWindow from './Components/ConnectedWindows/Home';
 import ExercicesWindow from './Components/ConnectedWindows/Exercices';
 import ClassesWindow from './Components/ConnectedWindows/Classes';
@@ -8,12 +9,13 @@ import NotConnectedWindow from './Components/NotConnectedWindow/';
 import RealisationExerciseWindow from './Components/RealisationWindow/';
 import { ProtectedRoute } from './Components/ProtectedRoute';
 import { NotConnectedRoute } from './Components/NotConnectedRoute';
+import ErrorWindow from '../src/Components/Error';
 
 class App extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{height: "100%"}}>
         <BrowserRouter>
           <Switch>
             <ProtectedRoute exact path="/home" component={HomeWindow} />
@@ -22,7 +24,7 @@ class App extends Component {
             <ProtectedRoute exact path="/store" component={StoreWindow} />
             <NotConnectedRoute exact path="/create" component={RealisationExerciseWindow} />
             <NotConnectedRoute exact path="/" component={NotConnectedWindow} />
-            {/*<Route component={ErrorWindow} />*/}
+            <Route component={ErrorWindow} />
           </Switch>
         </BrowserRouter>
         <link

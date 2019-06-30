@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import { Upload, message, Button, Icon, Modal } from 'antd';
 import files from "../../Providers/files";
 import styles from './style.css';
-
 import Pattern from './Pattern';
 
 const confirm = Modal.confirm;
 
+/**
+ * patterns module of the creationwidnow
+ */
 class Patterns extends Component {
   
+  /**
+   * constructor
+   */
   constructor() {
     super();
     this.state = {
@@ -16,10 +21,16 @@ class Patterns extends Component {
     }
   }
 
+  /**
+   * change the state if new patterns (adding one)
+   */
   componentWillReceiveProps(newProps) {
     this.setState({patterns: newProps.patterns});
   }
 
+  /**
+   * show the modal of deleting a pattern 
+   */
   showConfirm(patternId, cb) {
     confirm({
         title: 'Etes-vous sûr de vouloir supprimer ce motif ? Si des exercices à vous privés ou publics l\'utilisent, il n\'y apparaitra plus.',
@@ -31,14 +42,23 @@ class Patterns extends Component {
     });
   }
 
+  /**
+   * recharge patterns from the props
+   */
   reloadPatterns() {
     this.props.reloadPatterns();
   }
 
+  /**
+   * action when delete a pattern
+   */
   handleDeletePattern(patternId) {
     this.showConfirm(patternId, this.reloadPatterns.bind(this));
   }
 
+  /**
+   * action of changing the input file of the patterns module
+   */
   onChange(info) {
     if (info.file.status !== 'uploading') {
     }
@@ -50,6 +70,9 @@ class Patterns extends Component {
     }
   }
 
+  /**
+   * render method
+   */
   render() {
     var patterns = Object.values(this.state.patterns).map(pattern => (
       <Pattern deletePattern={this.handleDeletePattern.bind(this)} id={pattern.id} key={pattern.id} name={pattern.nom} />
