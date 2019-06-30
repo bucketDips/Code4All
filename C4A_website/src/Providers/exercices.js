@@ -319,6 +319,21 @@ class Exercices {
             alert(JSON.stringify(error.response));
         });
     }
+
+    /**
+     * get all of students of the class and theirs results
+     */
+    async getResultsOfStudents(idClass) {
+        var headers = {
+            'Authorization': 'Bearer ' +  localStorage.sessionToken
+        }
+
+        return Axios.get(consts.url() + "exercices/getClassStudentPassedTests/" + idClass, {headers: headers}).then(response => {
+            return response.data.studentList;
+        }).catch(error => {
+            alert(JSON.stringify(error));
+        });
+    }
 }
 
 export default new Exercices();
