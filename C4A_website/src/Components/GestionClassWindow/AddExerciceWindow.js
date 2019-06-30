@@ -4,17 +4,28 @@ import AddExerciceForm from './AddExerciceForm';
 import styles from './style.css';
 import { Modal, Form } from 'antd';
 
+/**
+* modal containing the add exercice form 
+*/
 const AddExerciceWindow = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class extends React.Component {
+
     state={
       toAdd: []
     }
 
+    /**
+    * changing the value of ids of exercices to add
+    * to the class 
+    */
     setToAdd(toAdd) {
       this.setState({toAdd: toAdd});
     }
 
+    /**
+    * render method 
+    */
     render() {
       const { visible, onCancel } = this.props;
       return (

@@ -4,6 +4,9 @@ import styles from './style.css';
 import { Modal, Form } from 'antd';
 import SearchAndAddForm from './SearchAndAddForm';
 
+/**
+ * form of adding a person to the class
+ */
 const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class extends React.Component {
@@ -11,10 +14,17 @@ const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
       toAdd: []
     }
 
+    /**
+     * change the value of the ids of persons
+     * to add to the class
+     */
     setToAdd(toAdd) {
       this.setState({toAdd: toAdd});
     }
 
+    /**
+     * render method
+     */
     render() {
       const { visible, onCancel, onSave } = this.props;
       return (

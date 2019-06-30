@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import style from './style.css';
 
+/**
+* class correspond to a person in the class
+*/
 class Person extends Component {
+    
+    /**
+    * render method
+    */
     render() {
         var avatar = "https://avatars.dicebear.com/v2/jdenticon/" + this.props.name + ".svg"
         return (

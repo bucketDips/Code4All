@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import style from './style.css';
 
+/**
+* module representing one exercice in the class
+*/
 class ExercicesDetails extends Component {
+
+    /**
+    * render method
+    */
     render() {
         return (
             <div className={style.exercice} onClick={this.props.onClick}>

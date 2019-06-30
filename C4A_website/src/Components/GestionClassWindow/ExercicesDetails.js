@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import style from './style.css';
 import exercices from '../../Providers/exercices';
-
 import AddExerciceWindowWrapper from './AddExerciceWindowWrapper';
 import RealisationExerciseWindow from '../RealisationWindow';
-
 import Exercice from './Exercice';
-
 import { Modal, Form } from 'antd';
 import { Grid, Npc, Pc, Label, Block, Func } from '../CreationWindow/CodeClasses';
 
 const confirm = Modal.confirm;
 
+/**
+* modal of launching an exercice for a student in the exercices details
+*/
 const ExerciceLaunchModal = Form.create({ name: 'launch_modal' })(
     // eslint-disable-next-line
     class extends React.Component {
@@ -33,6 +33,9 @@ const ExerciceLaunchModal = Form.create({ name: 'launch_modal' })(
     },
   );
 
+/**
+* module containing all of the exercices of a class
+*/
 class ExercicesDetails extends Component {
     constructor() {
         super();
@@ -43,6 +46,9 @@ class ExercicesDetails extends Component {
         }
     }
 
+    /**
+    * show the suppression modal for an exercice in the class
+    */
     showConfirm(classId, exerciceId, cb) {
         confirm({
             title: 'Etes-vous sûr de vouloir supprimer cet exercice de la classe ?',
@@ -54,14 +60,24 @@ class ExercicesDetails extends Component {
         });
     }
 
+    /**
+    * reload the exercices in class details
+    */
     refill() {
         this.props.refill();
     }
 
+    /**
+    * show the suppression modal
+    */
     deleteExerciceFromClass(id) {
         this.showConfirm(this.props.classRoom.id, id, this.refill.bind(this));
     }
 
+    /**
+    * generate a new grid object from all the grid informations
+    * from the database
+    */
     copy(lines, columns, patternId, blocks, npcs, pcs, labels, functions, tests) {
         var grid = new Grid(lines, columns, patternId);
         for(var i = 0; i < blocks.length; i++) {
@@ -85,6 +101,9 @@ class ExercicesDetails extends Component {
         return grid;
     }
 
+    /**
+    * action when clicking on the play button
+    */
     launchModalWindow(bddResponse) {
         var bundle = bddResponse.data.exercice;
         bundle.gridObject = this.copy(bundle.rows, bundle.columns, bundle.patternId, bundle.blocks, bundle.npcs, bundle.pcs, bundle.labels, bundle.functions, bundle.tests);
@@ -96,14 +115,23 @@ class ExercicesDetails extends Component {
         });
     }
 
+    /**
+    * method called when clicking on play button for an exercice
+    */
     launchExercice(id) {
         exercices.getMyExercice(id, this.launchModalWindow.bind(this));
     }
 
+    /**
+    * method called when clicking on cancel of cross
+    */
     handleCancelLaunch = () => {
         this.setState({ visible: false });
     };
 
+    /**
+    * render method
+    */
     render() {
         var exercices = this.props.exos.map(exercice => {
             return (<Exercice 
