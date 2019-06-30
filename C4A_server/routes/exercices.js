@@ -179,7 +179,7 @@ router.post('/addExerciceToUser/:exerciceId', AUTH.VERIFYAUTH, function(request,
 
     function addExerciceToUser(exerciceId,userId) {
         return new Promise(function(resolve, reject) {
-            var sql = "insert into user_exercices(userID, exerciceiD) values ('"+userId+"','"+exerciceId+"');"
+            var sql = "insert into user_exercices(userID, exerciceId) values ('"+userId+"','"+exerciceId+"');"
             con.query(sql,function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -187,6 +187,25 @@ router.post('/addExerciceToUser/:exerciceId', AUTH.VERIFYAUTH, function(request,
         });
     }
     addExerciceToUser(exerciceId,userId).then(function(rows){
+        res.send(rows)
+    }).catch(function(err){
+        return res.status(403).json(err);
+    });
+});
+router.post('/removeExerciceFromUser/:exerciceId', AUTH.VERIFYAUTH, function(request, res, next) {
+    var userId = request.decoded.id;
+    var exerciceId = request.params.exerciceId;
+
+    function removeExerciceFromUser(exerciceId,userId) {
+        return new Promise(function(resolve, reject) {
+            var sql = "delete from user_exercices where userID = ? and exerciceId = ?;"
+            con.query(sql,[userId,exerciceId],function (err, rows, fields) {
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    }
+    removeExerciceFromUser(exerciceId,userId).then(function(rows){
         res.send(rows)
     }).catch(function(err){
         return res.status(403).json(err);
