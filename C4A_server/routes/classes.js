@@ -119,19 +119,18 @@ router.get('/getClassDetail/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorOrStuden
                     }
                     res.send(resultJson);
                 }).catch(function(err){
-                    console.log("err1")
                     return res.status(403).json(err);
                 });
             }).catch(function(err){
-                console.log("err2")
+
                 return res.status(403).json(err);
             });
         }).catch(function(err){
-            console.log("err3")
+
             return res.status(403).json(err);
         });
     }).catch(function(err){
-        console.log("err4")
+
         return res.status(403).json(err);
     });
 

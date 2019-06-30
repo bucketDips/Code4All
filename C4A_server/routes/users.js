@@ -75,7 +75,6 @@ router.get('/resetPwd/:email', function(request, res, next) {
 	function changePwd(id, pwd)
 	{
 		pwd=md5(pwd)
-		console.log(pwd)
 		return new Promise(function(resolve, reject) {
 			var sql = "update users set password='"+pwd+"' where id='"+id+"';";
 			con.query(sql, function (err, rows, fields) {
@@ -103,7 +102,7 @@ router.get('/resetPwd/:email', function(request, res, next) {
 		var newPwd=makeRandomPwd();
 		// res.send((rows["0"].id).toString);
 		var email=rows["0"].email;
-		console.log(rows["0"])
+
 		var send = require('gmail-send')({
 		  user: config.SERVERMAIL, // creer adresse pour cod4all
 		  pass: config.SERVERMAILPWD,
@@ -121,10 +120,7 @@ router.get('/resetPwd/:email', function(request, res, next) {
 });
 /* GET all users */
 router.get('/getAllUser', AUTH.VERIFYAUTH, function(request, res, next) {
-	// if (!request.decoded){
-		// console.log("pas d'authorisation");
-		 // return failAuth(res);
-	// }
+
 
 	function getLastRecord() {
 		return new Promise(function(resolve, reject) {
@@ -228,7 +224,7 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 	var email = request.params.email;
 	var pwd = md5(request.params.pwd);
 	// var pwd = request.params.pwd;
-	console.log(email + " " + pwd);
+
 	function getLastRecord(email) {
 		return new Promise(function(resolve, reject) {
 			var sql = "select * from users where email='"+email+"';";
@@ -239,7 +235,7 @@ router.get('/connect/:email/:pwd', function(request, res, next) {
 		});
 	}
 	getLastRecord(email).then(function(rows){
-		console.log(JSON.stringify(rows))
+
 		var jsonResponse="";
 		if (!rows["0"])
 		{
@@ -339,7 +335,7 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 				"name":pseudo,
 				"id":rows.insertId
 			}
-			console.log(userInfo);
+
 			jwt.sign(userInfo, config.JWTKEY, {expiresIn: config.EXPIRATIONTIME}, function(err, token) {
 				if(err) return next(err);
 				
@@ -356,7 +352,7 @@ router.get('/create/:pseudo/:pwd/:email', function(request, res, next) {
 								+ config.PORTSERVEUR
 								+ "/users/validate/"
 								+ token;
-				console.log(msgText);				
+
 				var send = require('gmail-send')({
 					user: config.SERVERMAIL,
 					pass: config.SERVERMAILPWD,
@@ -404,8 +400,6 @@ router.post('/changPwd/:pwd/:newPwd', AUTH.VERIFYAUTH,function(request, res, nex
 	}
 	getLastRecord(email).then(function(rows){
 		console.log("rows = " + JSON.stringify(rows))
-		console.log("pwd = " + pwd)
-		console.log("BASEpwd = " + rows["0"].pwd)
 		if (rows["0"].password == pwd)
 			changePassword(email, newPwd).then(function(rows){ res.send(true); });
 		else
@@ -436,8 +430,7 @@ router.post('/changEmail/:pwd/:newEmail', AUTH.VERIFYAUTH, function(request, res
 		});
 	}
 	getLastRecord(email).then(function(rows){
-		console.log("rows = " + JSON.stringify(rows))
-		console.log("pwd = " + pwd)
+
 
 		if (rows.length > 0 && rows["0"].password == pwd)
 			changeEmail(email, newEmail).then(function(rows){ res.send(true); }).catch(function(err){
