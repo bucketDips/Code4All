@@ -1,5 +1,6 @@
 :local(.store) {
     padding-left: 3%;
+    padding-right: 3%;
     padding-top: 3%;
     height: 100%;
     display: grid;

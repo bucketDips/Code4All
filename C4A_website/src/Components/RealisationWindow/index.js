@@ -4,12 +4,13 @@ import Code from './Code';
 import Compilator from './Compilator';
 import TestsResults from './TestsResults';
 
-import { Input, notification } from 'antd';
+import { Input, notification, Modal } from 'antd';
 import style from './style.css';
 import { Button } from 'antd/lib/radio';
 import exercices from '../../Providers/exercices';
 
 const TextArea = Input.TextArea;
+const confirm = Modal.confirm;
 
 
 class RealisationExerciseWindow extends Component {
@@ -173,6 +174,17 @@ class RealisationExerciseWindow extends Component {
     }
   }
 
+  unfork(element) {
+    confirm({
+      title: 'Etes-vous sûr de vouloir supprimer cet exercice ? Il ne sera plus utilisable dans vos classes.',
+      onOk() {
+        exercices.deleteExercice(element.props.bundle.id);
+      },
+      onCancel() {
+      },
+    });
+  }
+
   compile() {
     this.setNewState(this.props.bundle.gridObject);
     this.setState({buttonCompile: false, load: true});
@@ -224,7 +236,12 @@ class RealisationExerciseWindow extends Component {
                 <Code changeCode={this.changeCode.bind(this)} code={this.state.code} />
                 <div className={style.description}>
                   <TextArea className={style.textArea} rows={4} defaultValue={this.props.bundle.description} disabled />
-                  {buttonCompile}
+                  <div style={{flex: 1, display: "flex", flexDirection: "row"}}>
+                    {buttonCompile}
+                    {this.props.fork && 
+                      <Button style={{flex: 1}} onClick={this.unfork.bind(this, this)}>unfork</Button>
+                    }
+                  </div>
                 </div>
             </div>
         </div>

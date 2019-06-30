@@ -186,6 +186,22 @@ class Exercices {
         });
     }
 
+    removeExerciceFromUser(id) {
+        Axios.post(consts.url() + 'exercices/removeExerciceFromUser/' + id, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            window.location.href = "/exercices";
+        })
+        .catch(function (error) {
+            console.log(error);
+            alert(JSON.stringify(error.response));
+        });
+    }
+
     setNewCodeForExercice(idExo, code){
         let data = {'solution': code};
 
