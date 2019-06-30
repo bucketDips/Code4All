@@ -562,7 +562,6 @@ class CreateExerciseWindow extends Component {
                   />
                   <Patterns 
                   patterns={this.state.patterns} 
-                  deletePattern={this.handleDeletePattern.bind(this)} 
                   reloadPatterns={this.setPatterns.bind(this)}
                   />
                   <Details 

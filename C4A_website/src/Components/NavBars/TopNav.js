@@ -41,14 +41,14 @@ class TopNav extends Component {
               <Navbar.Brand href="/home">CodeInSchool</Navbar.Brand>
               <Nav className="mr-auto">
               
-                  <Nav.Link href="/home">Home</Nav.Link>
+                  <Nav.Link href="/accueil">Accueil</Nav.Link>
                   <Nav.Link href="/classes">Classes</Nav.Link>
                   <Nav.Link href="/exercices">Exercices</Nav.Link>
-                  <Nav.Link href="/store">Store</Nav.Link>
+                  <Nav.Link href="/magasin">Magasin</Nav.Link>
               
               </Nav>
               <Form inline>
-              <Button variant="outline-light" onClick={this.onLogout.bind(this)}>Disconnect</Button>
+              <Button variant="outline-light" onClick={this.onLogout.bind(this)}>Se déconnecter</Button>
               </Form>
           </Navbar>
       );

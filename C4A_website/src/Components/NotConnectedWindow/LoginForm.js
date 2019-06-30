@@ -63,28 +63,28 @@ class LoginWindow extends Component {
             rules: [
               {
                 type: 'email',
-                message: 'The input is not valid E-mail!',
+                message: 'Ce n\'est pas un email valide !',
               },
               {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: 'Entrez votre email svp !',
               },
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="Password" hasFeedback>
+        <Form.Item label="Mot de passe" hasFeedback>
           {getFieldDecorator('password', {
             rules: [
               {
                 required: true,
-                message: 'Please input your password!',
+                message: 'Entrez votre mot de passe svp !',
               }
             ],
           })(<Input.Password />)}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">
-            Login
+            Se connecter
           </Button>
         </Form.Item>
       </Form>

@@ -16,7 +16,7 @@ export const NotConnectedRoute = ({component: Component, ...rest}) => {
                 else {
                     return <Redirect to={
                         {
-                            pathname: "/home",
+                            pathname: "/accueil",
                             state: { from: props.location }
                         }
                     } />
