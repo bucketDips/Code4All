@@ -49,7 +49,7 @@
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toTopOf="@+id/buttonConnect">
-                <com.example.codinschool.customviews.MyEditText
+                <com.codinschool.android.customviews.MyEditText
                         android:background="@drawable/edit_rounds"
                         android:drawableStart="@android:drawable/ic_menu_myplaces"
                         android:paddingStart="10dp"
@@ -64,7 +64,7 @@
                         android:id="@+id/username" android:autofillHints="" tools:targetApi="o"
                         android:hint="@string/email"/>
                 <View android:layout_width="match_parent" android:layout_height="10dp"/>
-                <com.example.codinschool.customviews.MyEditText
+                <com.codinschool.android.customviews.MyEditText
                         android:background="@drawable/edit_rounds"
                         android:drawableStart="@android:drawable/ic_secure"
                         android:paddingStart="10dp"
