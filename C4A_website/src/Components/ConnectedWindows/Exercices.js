@@ -39,7 +39,7 @@ class ExercicesWindow extends Component {
         var bundle = await exercices.getMyExercice(code.id);
         bundle = bundle.data.exercice;
         bundle.gridObject = this.copy(bundle.rows, bundle.columns, bundle.patternId, bundle.blocks, bundle.npcs, bundle.pcs, bundle.labels, bundle.functions, bundle.tests);
-        return new Promise((resolve, reject) => { resolve([(<RealisationExerciseWindow bundle={bundle} />), "collapsed"]); });
+        return new Promise((resolve, reject) => { resolve([(<RealisationExerciseWindow bundle={bundle} fork={true} />), "collapsed"]); });
     }
 
     copy(lines, columns, patternId, blocks, npcs, pcs, labels, functions, tests) {

@@ -208,13 +208,13 @@ class Exercices {
         }
 
         Axios.get(consts.url() + "exercices/getUserExerciceSolutionWeb/" + idExo, {headers: headers}).then(response => {
-            if(response.data){
-                this.getUserPassedTestsForExercice(idExo, response.data, cb);
+            if(response.data.length > 0){
+                this.getUserPassedTestsForExercice(idExo, response.data[0].solution, cb);
                 return;
             }
             this.getUserPassedTestsForExercice(idExo, "", cb);
         }).catch(error => {
-            this.getUserPassedTestsForExercice(idExo, "", cb);
+            alert(JSON.stringify(error));
         });
     }
 
