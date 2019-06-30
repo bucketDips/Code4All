@@ -12,6 +12,7 @@
     "express": "~4.16.0",
     "formidable": "^1.2.1",
     "fs": "0.0.1-security",
+    "get-routes": "^0.2.0",
     "gmail-send": "^1.2.14",
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.5.1",

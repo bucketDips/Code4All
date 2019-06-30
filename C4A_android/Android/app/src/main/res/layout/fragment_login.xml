@@ -49,7 +49,7 @@
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toTopOf="@+id/buttonConnect">
-                <com.example.codinschool.customviews.MyEditText
+                <com.codinschool.android.customviews.MyEditText
                         android:background="@drawable/edit_rounds"
                         android:drawableStart="@android:drawable/ic_menu_myplaces"
                         android:paddingStart="10dp"
@@ -59,14 +59,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
-                        android:ems="20"
                         android:textSize="25sp"
                         android:textColor="@color/black"
-
                         android:id="@+id/username" android:autofillHints="" tools:targetApi="o"
-                        android:hint="@string/username" android:text="@string/user_test"/>
+                        android:hint="@string/email"/>
                 <View android:layout_width="match_parent" android:layout_height="10dp"/>
-                <com.example.codinschool.customviews.MyEditText
+                <com.codinschool.android.customviews.MyEditText
                         android:background="@drawable/edit_rounds"
                         android:drawableStart="@android:drawable/ic_secure"
                         android:paddingStart="10dp"
@@ -80,7 +78,7 @@
                         android:textSize="25sp"
                         android:id="@+id/password" android:autofillHints="" tools:targetApi="o"
                         android:textColor="@color/black"
-                        android:hint="@string/password" android:text="@string/password_test"/>
+                        android:hint="@string/password"/>
             </LinearLayout>
             <Button
                     android:text="@string/login"
