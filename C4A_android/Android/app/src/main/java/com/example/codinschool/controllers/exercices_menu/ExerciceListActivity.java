@@ -28,12 +28,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 
 /**
- * An activity representing a list of Exercices. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link ExerciceDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
+ * The type Exercice list activity.
  */
 public class ExerciceListActivity extends MyAppCompatActivity {
 
@@ -44,9 +39,6 @@ public class ExerciceListActivity extends MyAppCompatActivity {
     private final String TAG = "ExerciceListActivity";
     private boolean twoPaneMod;
     private ExerciceManager exerciceManager;
-    private ArrayList<Exercice> myExercices;
-    private ArrayList<Exercice> fromStoreExercices;
-    private ArrayList<Exercice> fromClassesExercices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +49,6 @@ public class ExerciceListActivity extends MyAppCompatActivity {
         toolbar.setTitle(getTitle());
 
         if (findViewById(R.id.exercice_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             twoPaneMod = true;
         }
         CoordinatorLayout rootView = findViewById(R.id.root);
@@ -98,6 +86,11 @@ public class ExerciceListActivity extends MyAppCompatActivity {
         setupRecyclerView(recyclerViews.get(0), recyclerViews.get(1), recyclerViews.get(2), rootView);
     }
 
+    /**
+     * Gets exercice manager.
+     *
+     * @return the exercice manager
+     */
     public ExerciceManager getExerciceManager() {
         return exerciceManager;
     }
@@ -132,14 +125,12 @@ public class ExerciceListActivity extends MyAppCompatActivity {
                     recyclerView2.setAdapter(new SimpleItemRecyclerViewAdapter(fromStoreExercices, twoPaneMod));
                     recyclerView3.setAdapter(new SimpleItemRecyclerViewAdapter(fromClassesExercices, twoPaneMod));
 
-                    Log.d(TAG, "allexercicelist :" + exerciceManager.getExercicesList().size());
                 }
 
                 @Override
                 public void onExercicesLoadedFail(ErrorNetwork errorNetwork) {
 
                     SnackbarBuilder.make(rootView, errorNetwork.diplayErrorMessage(), Snackbar.LENGTH_LONG, R.color.white).show();
-                    Log.d(TAG, "onExercicesLoadedFail()");
                     recyclerView1.setAdapter(new SimpleItemRecyclerViewAdapter(new ArrayList<>(), twoPaneMod));
                     recyclerView2.setAdapter(new SimpleItemRecyclerViewAdapter(new ArrayList<>(), twoPaneMod));
                     recyclerView3.setAdapter(new SimpleItemRecyclerViewAdapter(new ArrayList<>(), twoPaneMod));
@@ -151,6 +142,9 @@ public class ExerciceListActivity extends MyAppCompatActivity {
 
     }
 
+    /**
+     * The type Simple item recycler view adapter.
+     */
     public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -176,11 +170,6 @@ public class ExerciceListActivity extends MyAppCompatActivity {
                     Intent intent = new Intent(context, ExerciceDetailActivity.class);
                     intent.putExtra(ExerciceDetailFragment.EXERCICE_JSON, exerciceJson);
                     startActivity(intent);
-                }
-
-                // get creator infos
-                if(exerciceToSend.getAuthor_id() > 0){
-
                 }
             }
 
@@ -209,12 +198,23 @@ public class ExerciceListActivity extends MyAppCompatActivity {
         private final boolean twoPanneMod;
 
 
+        /**
+         * Instantiates a new Simple item recycler view adapter.
+         *
+         * @param exercices the exercices
+         * @param twoPane   the two pane
+         */
         SimpleItemRecyclerViewAdapter(ArrayList<Exercice> exercices, boolean twoPane) {
             this.exercices = exercices;
             //this.parentActivity = parent;
             this.twoPanneMod = twoPane;
         }
 
+        /**
+         * Gets exercices.
+         *
+         * @return the exercices
+         */
         public ArrayList<Exercice> getExercices() {
             return exercices;
         }
@@ -242,10 +242,24 @@ public class ExerciceListActivity extends MyAppCompatActivity {
             return exercices.size();
         }
 
+        /**
+         * The type View holder.
+         */
         public class ViewHolder extends RecyclerView.ViewHolder {
+            /**
+             * The Classe name.
+             */
             final TextView classeName;
+            /**
+             * The Exercice name.
+             */
             final TextView exerciceName;
 
+            /**
+             * Instantiates a new View holder.
+             *
+             * @param view the view
+             */
             ViewHolder(View view) {
                 super(view);
                 classeName = view.findViewById(R.id.classeName);

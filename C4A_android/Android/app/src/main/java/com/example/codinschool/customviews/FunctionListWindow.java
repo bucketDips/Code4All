@@ -20,6 +20,9 @@ import com.example.codinschool.data_pojo.exercice_functions.ExerciceFunction;
 
 import java.util.ArrayList;
 
+/**
+ * The type Function list window.
+ */
 @SuppressLint("ViewConstructor")
 public class FunctionListWindow extends CardView {
 
@@ -49,15 +52,38 @@ public class FunctionListWindow extends CardView {
             R.color.purple
     };
 
+    /**
+     * The Index.
+     */
     int index = 0;
+    /**
+     * The Index primay.
+     */
     int indexPrimay = 0;
 
+    /**
+     * Instantiates a new Function list window.
+     *
+     * @param context                     the context
+     * @param functions                   the functions
+     * @param onClickButtonCloseListener  the on click button close listener
+     * @param onTouchFunctionListWindows  the on touch function list windows
+     * @param onTouchRecyclerViewListener the on touch recycler view listener
+     */
     public FunctionListWindow(Context context, ArrayList<ExerciceFunction> functions, OnClickListener onClickButtonCloseListener, CodeExerciceFragment.OnTouchFunctionListWindows onTouchFunctionListWindows,
                               CodeExerciceFragment.OnTouchRecyclerViewListener onTouchRecyclerViewListener) {
         super(context);
         init(functions, onClickButtonCloseListener, onTouchFunctionListWindows,  onTouchRecyclerViewListener);
     }
 
+    /**
+     * Init.
+     *
+     * @param functions                   the functions
+     * @param onClickButtonCloseListener  the on click button close listener
+     * @param onTouchFunctionListWindows  the on touch function list windows
+     * @param onTouchRecyclerViewListener the on touch recycler view listener
+     */
     @SuppressLint("ClickableViewAccessibility")
     public void init(ArrayList<ExerciceFunction> functions, OnClickListener onClickButtonCloseListener, CodeExerciceFragment.OnTouchFunctionListWindows onTouchFunctionListWindows,
                      CodeExerciceFragment.OnTouchRecyclerViewListener onTouchRecyclerViewListener){
@@ -84,6 +110,9 @@ public class FunctionListWindow extends CardView {
         buttonClose.setOnClickListener(v -> onClickButtonCloseListener.onClick(functionWindow));
     }
 
+    /**
+     * Hide list.
+     */
     public void hideList() {
         if(bottomPart.getVisibility() == View.GONE){
             bottomPart.setVisibility(View.VISIBLE);
@@ -92,6 +121,12 @@ public class FunctionListWindow extends CardView {
         }
     }
 
+    /**
+     * Get exercice function exercice function.
+     *
+     * @param exerciceFunctionName the exercice function name
+     * @return the exercice function
+     */
     public ExerciceFunction getExerciceFunction(String exerciceFunctionName){
         for(ExerciceFunction exerciceFunction : primaryFunctions){
             if(exerciceFunction.getName().equals(exerciceFunctionName))
@@ -114,6 +149,12 @@ public class FunctionListWindow extends CardView {
         return primaryFunctions;
     }
 
+    /**
+     * Is primary boolean.
+     *
+     * @param function the function
+     * @return the boolean
+     */
     public boolean isPrimary(ExerciceFunction function) {
         for (ExerciceFunction exerciceFunction : primaryFunctions) {
             if (exerciceFunction.equals(function))
@@ -123,18 +164,30 @@ public class FunctionListWindow extends CardView {
         return false;
     }
 
+    /**
+     * The type Function list adapter.
+     */
     public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapter.ViewHolder> {
 
         private final CodeExerciceFragment.OnTouchRecyclerViewListener onTouchRecyclerViewListener;
         private ArrayList<ExerciceFunction> functions;
-        int position = 0;
 
-
+        /**
+         * Instantiates a new Function list adapter.
+         *
+         * @param functions the functions
+         * @param listener  the listener
+         */
         FunctionListAdapter(ArrayList<ExerciceFunction> functions, CodeExerciceFragment.OnTouchRecyclerViewListener listener) {
             this.functions = functions;
             this.onTouchRecyclerViewListener = listener;
         }
 
+        /**
+         * Gets functions.
+         *
+         * @return the functions
+         */
         public ArrayList<ExerciceFunction> getFunctions() {
             return functions;
         }
@@ -142,7 +195,6 @@ public class FunctionListWindow extends CardView {
         @Override
         public FunctionListWindow.FunctionListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_function_list_item, parent, false);
-            Log.d(TAG, "FunctionListWindow.FunctionListAdapter.ViewHolder onCreateViewHolder");
             return new ViewHolder(view, null);
         }
 
@@ -164,15 +216,33 @@ public class FunctionListWindow extends CardView {
             return functions.size();
         }
 
+        /**
+         * The type View holder.
+         */
         class ViewHolder extends RecyclerView.ViewHolder {
+            /**
+             * The Function name.
+             */
             final TextView functionName;
             private ExerciceFunction function;
 
+            /**
+             * Instantiates a new View holder.
+             *
+             * @param view     the view
+             * @param function the function
+             */
             ViewHolder(View view, ExerciceFunction function) {
                 super(view);
                 this.function = function;
                 functionName = view.findViewById(R.id.functionName);
             }
+
+            /**
+             * Get function from view holder exercice function.
+             *
+             * @return the exercice function
+             */
             public ExerciceFunction getFunctionFromViewHolder(){
                 return this.function;
             }

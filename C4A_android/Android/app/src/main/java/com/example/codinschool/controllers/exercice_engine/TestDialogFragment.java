@@ -14,10 +14,19 @@ import com.example.codinschool.R;
 import com.example.codinschool.customviews.MyDialogFragment;
 import com.example.codinschool.data_pojo.exercice_functions.ExerciceFunction;
 
+/**
+ * The type Test dialog fragment.
+ */
 public class TestDialogFragment  extends MyDialogFragment {
 
     private static ExerciceFunction[] tests;
 
+    /**
+     * Get instance test dialog fragment.
+     *
+     * @param testsReceived the tests received
+     * @return the test dialog fragment
+     */
     public static TestDialogFragment getInstance(ExerciceFunction[] testsReceived){
         TestDialogFragment fragment = new TestDialogFragment();
         tests = testsReceived;

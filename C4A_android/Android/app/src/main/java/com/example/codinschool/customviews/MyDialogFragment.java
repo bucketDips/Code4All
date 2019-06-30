@@ -10,6 +10,9 @@ import android.view.Window;
 
 import java.util.Objects;
 
+/**
+ * The type My dialog fragment.
+ */
 public class MyDialogFragment extends DialogFragment {
 
     @NonNull

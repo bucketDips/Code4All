@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.code4all"
+        applicationId "com.example.codinschool"
         vectorDrawables.useSupportLibrary = true
 
         minSdkVersion 19

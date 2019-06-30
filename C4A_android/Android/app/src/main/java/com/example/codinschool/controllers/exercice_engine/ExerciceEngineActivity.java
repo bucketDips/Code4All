@@ -1,5 +1,7 @@
 package com.example.codinschool.controllers.exercice_engine;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -16,10 +18,22 @@ import com.example.codinschool.data_pojo.tests.Test;
 
 import java.util.ArrayList;
 
+/**
+ * The type Exercice engine activity.
+ */
 public class ExerciceEngineActivity extends MyAppCompatActivity{
 
+    /**
+     * The Exercice json.
+     */
     static final String EXERCICE_JSON = "EXERCICE_JSON";
+    /**
+     * The Exercice files json array.
+     */
     static final String EXERCICE_FILES_JSON_ARRAY = "EXERCICE_FILES_JSON_ARRAY";
+    /**
+     * The Exercice function json array.
+     */
     static final String EXERCICE_FUNCTION_JSON_ARRAY = "EXERCICE_FUNCTION_JSON_ARRAY";
     private final String TAG = "ExerciceEngineActivity";
     private ExerciceManager exerciceManager;
@@ -29,11 +43,12 @@ public class ExerciceEngineActivity extends MyAppCompatActivity{
     private LinearLayout linearLayout;
     private GridExerciceFragment gridExerciceFragment;
     private CodeExerciceFragment codeExerciceFragment;
+    private SeekBar topSeekBar;
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.d(TAG, "onConfigurationChanged");
         updateLinearLayoutChildren(newConfig);
 
     }
@@ -65,15 +80,21 @@ public class ExerciceEngineActivity extends MyAppCompatActivity{
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    private void bindUi(){
         root = findViewById(R.id.root);
-        SeekBar topSeekBar = findViewById(R.id.seekBarTop);
+        topSeekBar = findViewById(R.id.seekBarTop);
         frameLayoutLeft = findViewById(R.id.fragment_grid_holder);
         frameLayoutRight = findViewById(R.id.fragment_code_blocks);
         linearLayout = findViewById(R.id.linearLayout);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bindUi();
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            updateLinearLayoutChildren(this.getResources().getConfiguration());
+        }
 
         topSeekBar.setOnSeekBarChangeListener(new ExerciceEngineActivityOnSeekBarChangeListener());
 
@@ -82,6 +103,11 @@ public class ExerciceEngineActivity extends MyAppCompatActivity{
             showGridExerciceFragment(getSupportFragmentManager(), exerciceJson);
             showCodeExerciceFragment(getSupportFragmentManager(), exerciceJson);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void showGridExerciceFragment(FragmentManager supportFragmentManager, String exerciceJson) {
@@ -104,7 +130,6 @@ public class ExerciceEngineActivity extends MyAppCompatActivity{
 
 
     private void updateTwoFragmentWeight(int progress){
-        Log.d(TAG, "updateTwoFragmentWeight: ExerciceEngineActivity");
         float progressRescaled = (float) progress / 100;
 
         LinearLayout.LayoutParams layoutParamsFrameLayoutLeft = (LinearLayout.LayoutParams) this.frameLayoutLeft.getLayoutParams();
@@ -112,11 +137,8 @@ public class ExerciceEngineActivity extends MyAppCompatActivity{
 
         if (layoutParamsFrameLayoutLeft != null && layoutParamsFrameLayoutRight != null) {
 
-            layoutParamsFrameLayoutRight.weight = (float) progressRescaled;
+            layoutParamsFrameLayoutRight.weight = progressRescaled;
             layoutParamsFrameLayoutLeft.weight = (float) 1 - progressRescaled;
-            Log.d(TAG, "fragments.setLayoutParams");
-            Log.d(TAG, layoutParamsFrameLayoutLeft.width +" "+ layoutParamsFrameLayoutLeft.height +" "+  layoutParamsFrameLayoutLeft.weight );
-            Log.d(TAG, layoutParamsFrameLayoutRight.width +" "+ layoutParamsFrameLayoutRight.height +" "+  layoutParamsFrameLayoutRight.weight );
         }
     }
 
@@ -135,15 +157,31 @@ public class ExerciceEngineActivity extends MyAppCompatActivity{
         return root;
     }
 
+    /**
+     * Send frames to grid exercice fragment.
+     *
+     * @param exerciceFrames the exercice frames
+     * @param tests          the tests
+     */
     public void sendFramesToGridExerciceFragment(ArrayList<Exercice> exerciceFrames, ArrayList<Test> tests) {
         gridExerciceFragment.updateFragmentGrid(exerciceFrames, tests);
     }
 
+    /**
+     * Show dialog test details.
+     *
+     * @param tests the tests
+     */
     public void showDialogTestDetails(ExerciceFunction[] tests) {
         TestDialogFragment dialogFragment = TestDialogFragment.getInstance(tests);
         dialogFragment.show(getSupportFragmentManager(), "DIALOG_FRAGMENT_TESTS_DETAILS");
     }
 
+    /**
+     * Show result dialog fragment.
+     *
+     * @param tests the tests
+     */
     public void showResultDialogFragment(ArrayList<Test> tests) {
         ResultDialogFragment dialogFragment = ResultDialogFragment.getInstance(tests);
         dialogFragment.show(getSupportFragmentManager(), "DIALOG_FRAGMENT_RESULT");
@@ -151,6 +189,9 @@ public class ExerciceEngineActivity extends MyAppCompatActivity{
     }
 
     private final class ExerciceEngineActivityOnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
+        /**
+         * Instantiates a new Exercice engine activity on seek bar change listener.
+         */
         ExerciceEngineActivityOnSeekBarChangeListener(){ }
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

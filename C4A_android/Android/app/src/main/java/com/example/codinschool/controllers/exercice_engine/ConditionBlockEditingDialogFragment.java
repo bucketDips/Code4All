@@ -15,11 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The type Condition block editing dialog fragment.
+ */
 public class ConditionBlockEditingDialogFragment extends MyDialogFragment {
 
     private IEditBlockDialogBoxCallback callback;
     private ArrayList<ExerciceFunction> functions;
 
+    /**
+     * Get instance condition block editing dialog fragment.
+     *
+     * @param callback  the callback
+     * @param functions the functions
+     * @return the condition block editing dialog fragment
+     */
     public static ConditionBlockEditingDialogFragment getInstance(IEditBlockDialogBoxCallback callback, ArrayList<ExerciceFunction> functions){
         ConditionBlockEditingDialogFragment fragment = new ConditionBlockEditingDialogFragment();
         fragment.callback = callback;

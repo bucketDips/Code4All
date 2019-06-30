@@ -12,9 +12,15 @@ import com.example.codinschool.data_pojo.user.User;
 
 import java.util.ArrayList;
 
+/**
+ * The type Grid users adapter.
+ */
 public class GridUsersAdapter extends BaseAdapter {
 
     private ArrayList<User> users;
+    /**
+     * The Avatars.
+     */
     public static Integer[] avatars = {
         R.drawable.boy,
         R.drawable.boy1,
@@ -29,6 +35,12 @@ public class GridUsersAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
 
+    /**
+     * Instantiates a new Grid users adapter.
+     *
+     * @param userList the user list
+     * @param context  the context
+     */
     GridUsersAdapter(ArrayList<User> userList, Context context) {
         super();
         this.users = userList;
@@ -71,6 +83,11 @@ public class GridUsersAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * Get random picture integer.
+     *
+     * @return the integer
+     */
     public static Integer getRandomPicture(){
         double randomNumber = Math.random() * ( avatars.length);
         return avatars[(int) randomNumber];

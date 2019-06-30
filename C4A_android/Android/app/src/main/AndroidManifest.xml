@@ -34,6 +34,7 @@
         </activity>
         <activity
                 android:name="com.example.codinschool.controllers.login.LoginActivity"
+                android:screenOrientation="landscape"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -52,7 +53,7 @@
 
         </activity>
         <activity android:name="com.example.codinschool.controllers.store.StoreActivity"
-                  android:screenOrientation="landscape">
+        android:screenOrientation="landscape">
 
         </activity>
     </application>

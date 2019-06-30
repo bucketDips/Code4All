@@ -18,10 +18,20 @@ import com.example.codinschool.data_pojo.tests.Test;
 
 import java.util.ArrayList;
 
+/**
+ * The type Result dialog fragment.
+ */
 public class ResultDialogFragment extends MyDialogFragment {
 
     private static ArrayList<Test> tests;
     private static final String TAG = "ResultDialogFragment";
+
+    /**
+     * Get instance result dialog fragment.
+     *
+     * @param testsReceived the tests received
+     * @return the result dialog fragment
+     */
     public static ResultDialogFragment getInstance(ArrayList<Test> testsReceived){
         ResultDialogFragment fragment = new ResultDialogFragment();
         tests = testsReceived;
@@ -51,8 +61,6 @@ public class ResultDialogFragment extends MyDialogFragment {
             testName.setText(test.getName());
             if(result != null){
                 testDescription.setText(String.valueOf(result[1]));
-
-                Log.d(TAG, result[0].toString());
                 if(!((boolean) result[0]))
                     image.setImageResource(R.drawable.notverified);
                 else{

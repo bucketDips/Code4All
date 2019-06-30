@@ -27,6 +27,9 @@ import com.example.codinschool.viewtools.SnackbarBuilder;
 
 import java.util.ArrayList;
 
+/**
+ * The type Classes list fragment.
+ */
 public class ClassesListFragment extends Fragment{
     private static final String TAG = "ClassesListFragment";
     private View fragment;
@@ -50,7 +53,6 @@ public class ClassesListFragment extends Fragment{
         Context context = getContext();
 
         if(parent != null){
-            //binding = DataBindingUtil.setContentView(parent, R.layout.fragment_classes_list);
             cache = parent.getSharedPreferenceManager();
             serverHandler = parent.getServerHandler();
 
@@ -58,12 +60,7 @@ public class ClassesListFragment extends Fragment{
             RecyclerViewListAsStudent = fragment.findViewById(R.id.classeListAsStudent);
             buttonCreateClasse = fragment.findViewById(R.id.buttonCreation);
 
-            buttonCreateClasse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    parent.displayClasseCreationDialogFragment();
-                }
-            });
+            buttonCreateClasse.setOnClickListener(v -> parent.displayClasseCreationDialogFragment());
 
             recyclerViewAdapterListener = new IRecyclerViewClassesAdapterListener() {
                 @Override
@@ -93,8 +90,6 @@ public class ClassesListFragment extends Fragment{
 
             ArrayList<Classe> classesAsProfessor = new ArrayList<>();
             ArrayList<Classe> classesAsStudent = new ArrayList<>();
-            //classesTest.add(new Classe(2,"5-F"));
-            //classesTest.add(new Classe(3,"5-X"));
 
             RecyclerViewClassesAdapter recyclerViewAdapterProfessor = new RecyclerViewClassesAdapter(classesAsProfessor, recyclerViewAdapterListener);
             RecyclerViewClassesAdapter recyclerViewAdapterStudent = new RecyclerViewClassesAdapter(classesAsStudent, recyclerViewAdapterListener);
@@ -138,8 +133,6 @@ public class ClassesListFragment extends Fragment{
                         if (classeToDelete.equals(classeSelected)){
                             parent.removeClasseDetailFragment();
                         }
-
-                        Log.d(TAG, "onClickButton1 classe "+ classeToDelete.toString() + "should be deleted");
                         dialogBox.dismiss();
                     }
 
@@ -153,18 +146,18 @@ public class ClassesListFragment extends Fragment{
     private void renderRecyclerViewAsProfessor(ArrayList<Classe> classes){
         RecyclerViewClassesAdapter recyclerViewAdapter = new RecyclerViewClassesAdapter(classes,recyclerViewAdapterListener);
         RecyclerViewListAsProfessor.setAdapter(recyclerViewAdapter);
-        //classeManager.printAllClasses();
     }
 
     private void renderRecyclerViewAsStudent(ArrayList<Classe> classes){
         RecyclerViewClassesAdapter recyclerViewAdapter = new RecyclerViewClassesAdapter(classes,recyclerViewAdapterListener);
         RecyclerViewListAsStudent.setAdapter(recyclerViewAdapter);
-
-        //classeManager.printAllClasses();
-        //RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(classes);
-        //RecyclerViewListAsStudent.getAdapter();
     }
 
+    /**
+     * Gets classe manager.
+     *
+     * @return the classe manager
+     */
     public ClasseManager getClasseManager() {
         return classeManager;
     }

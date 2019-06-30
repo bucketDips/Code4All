@@ -12,6 +12,9 @@ import com.example.codinschool.R;
 import com.example.codinschool.customviews.MyDialogFragment;
 import com.example.codinschool.customviews.MyEditText;
 
+/**
+ * The type Boucle block editing dialog fragment.
+ */
 public class BoucleBlockEditingDialogFragment extends MyDialogFragment {
 
     private Button buttonCreate;
@@ -19,6 +22,12 @@ public class BoucleBlockEditingDialogFragment extends MyDialogFragment {
     private MyEditText editTextEnd;
     private IEditBlockDialogBoxCallback callback;
 
+    /**
+     * Get instance boucle block editing dialog fragment.
+     *
+     * @param callback the callback
+     * @return the boucle block editing dialog fragment
+     */
     public static BoucleBlockEditingDialogFragment getInstance(IEditBlockDialogBoxCallback callback){
         BoucleBlockEditingDialogFragment fragment = new BoucleBlockEditingDialogFragment();
         fragment.callback = callback;

@@ -8,7 +8,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.example.codinschool.R;
 
+/**
+ * The type Dialog box builder.
+ */
 public class DialogBoxBuilder {
+    /**
+     * Build alert dialog.
+     *
+     * @param context        the context
+     * @param dialogMessage  the dialog message
+     * @param labelButton1   the label button 1
+     * @param labelButton2   the label button 2
+     * @param layoutInflater the layout inflater
+     * @param callBack       the call back
+     * @return the alert dialog
+     */
     public static AlertDialog build(Context context, String dialogMessage, String labelButton1, String labelButton2, LayoutInflater layoutInflater, IBasicDialogCallBack callBack){
         View view = layoutInflater.inflate(R.layout.simple_dialog_box_with, null);
 

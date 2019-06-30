@@ -15,11 +15,9 @@ import android.view.WindowManager;
 import com.example.codinschool.R;
 import com.example.codinschool.customviews.MyAppCompatActivity;
 
+
 /**
- * An activity representing a single Exercice detail screen. This
- * activity is only used on narrow width devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a {@link ExerciceListActivity}.
+ * The type Exercice detail activity.
  */
 public class ExerciceDetailActivity extends MyAppCompatActivity {
 
@@ -27,11 +25,9 @@ public class ExerciceDetailActivity extends MyAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_exercice_detail);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        //fixScreenRotation();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,11 +62,6 @@ public class ExerciceDetailActivity extends MyAppCompatActivity {
                         .add(R.id.exercice_detail_container, fragment)
                         .commit();
             }
-
-
-            //int position = getIntent().getIntExtra(ExerciceDetailFragment.ARG_ITEM_POSITION,0);
-            //arguments.putInt(ExerciceDetailFragment.ARG_ITEM_POSITION, position);
-
         }
     }
 
@@ -106,12 +97,6 @@ public class ExerciceDetailActivity extends MyAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
             navigateUpTo(new Intent(this, ExerciceListActivity.class));
             return true;
         }

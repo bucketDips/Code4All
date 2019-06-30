@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * The type Grid exercice factory.
+ */
 public class GridExerciceFactory extends Factory{
 
     private final String TAG = "GridExerciceFactory";
@@ -47,6 +50,17 @@ public class GridExerciceFactory extends Factory{
     private ExerciceFunction[] tests;
 
 
+    /**
+     * Instantiates a new Grid exercice factory.
+     *
+     * @param fragment                the fragment
+     * @param context                 the context
+     * @param gridborder              the gridborder
+     * @param gridBackground          the grid background
+     * @param sharedPreferenceManager the shared preference manager
+     * @param serverHandler           the server handler
+     * @param exercice                the exercice
+     */
     GridExerciceFactory(GridExerciceFragment fragment, Context context, ConstraintLayout gridborder, GifImageView gridBackground, SharedPreferenceManager sharedPreferenceManager, ServerHandler serverHandler, Exercice exercice) {
         super(context, sharedPreferenceManager, serverHandler);
         this.fragmentCaller = fragment;
@@ -60,6 +74,11 @@ public class GridExerciceFactory extends Factory{
         this.gridBackground = gridBackground;
     }
 
+    /**
+     * Sets progress.
+     *
+     * @param progressValue the progress value
+     */
     public void setProgress(int progressValue) {
         this.progress = progressValue;
     }
@@ -105,6 +124,13 @@ public class GridExerciceFactory extends Factory{
         return data;
     }
 
+    /**
+     * Update grid linear layout.
+     *
+     * @param exercice the exercice
+     * @param root     the root
+     * @return the linear layout
+     */
     public LinearLayout updateGrid(Exercice exercice, LinearLayout root){
         this.exercice = exercice;
         eraseBlocks();
@@ -113,6 +139,9 @@ public class GridExerciceFactory extends Factory{
         return build(root);
     }
 
+    /**
+     * Erase blocks.
+     */
     public void eraseBlocks() {
         Iterator it = imageViewRegister.entrySet().iterator();
         while(it.hasNext()){
@@ -134,7 +163,6 @@ public class GridExerciceFactory extends Factory{
 
     @Override
     public LinearLayout build(LinearLayout root) {
-        //LinearLayout grid =  root;
         int numRow = this.grid.length;
         int numColumn = this.grid[0].length;
 
@@ -225,13 +253,15 @@ public class GridExerciceFactory extends Factory{
 
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
             updateLayoutParams(layoutParams, newWidth, newHeight, gridExerciceElement);
-            updateLabelTextSize(textView, value);
 
         }
 
 
     }
 
+    /**
+     * Resize grid.
+     */
     void resizeGrid(){
         int numRow = this.grid.length;
         int numColumn = this.grid[0].length;
@@ -277,7 +307,6 @@ public class GridExerciceFactory extends Factory{
     private AutoResizeTextView generateTextView(Label label){
 
         AutoResizeTextView textView = new AutoResizeTextView(context);
-        //set tag with base textsize
         textView.setText(label.getText());
         textView.setGravity(Gravity.CENTER);
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
@@ -320,8 +349,6 @@ public class GridExerciceFactory extends Factory{
     }
 
     private void updateLabelTextSize(TextView textView, int seekBarValue){
-        //float textSize = (float) textView.getTag() + (float) seekBarValue / 100;
-        //textView.setTextSize(textSize);
     }
 
     private void updateLayoutParams(ConstraintLayout.LayoutParams layoutParams, int newWidth, int newHeight, GridExerciceElement gridExerciceElement){

@@ -11,6 +11,9 @@ import com.example.codinschool.settings.SharedPreferenceManager;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The type Code blocks chain factory.
+ */
 public class CodeBlocksChainFactory extends Factory implements ICodeBlockChainListener{
 
 
@@ -19,6 +22,15 @@ public class CodeBlocksChainFactory extends Factory implements ICodeBlockChainLi
     private CodeBlockChain headOfTheChain;
     private LinearLayout root;
 
+    /**
+     * Instantiates a new Code blocks chain factory.
+     *
+     * @param functions               the functions
+     * @param context                 the context
+     * @param sharedPreferenceManager the shared preference manager
+     * @param serverHandler           the server handler
+     * @param dragInputListener       the drag input listener
+     */
     CodeBlocksChainFactory(ExerciceFunction[] functions, Context context, SharedPreferenceManager sharedPreferenceManager, ServerHandler serverHandler, CodeExerciceFragment.DragInputListener dragInputListener) {
         super(context, sharedPreferenceManager, serverHandler);
         this.functionsList = Arrays.asList(functions);
@@ -26,11 +38,19 @@ public class CodeBlocksChainFactory extends Factory implements ICodeBlockChainLi
         this.onDragListener = dragInputListener;
     }
 
+    /**
+     * Rebuild.
+     */
     void rebuild(){
         root.removeAllViews();
         parcours(headOfTheChain);
     }
 
+    /**
+     * Parcours.
+     *
+     * @param headOfTheChain the head of the chain
+     */
     void parcours(CodeBlockChain headOfTheChain){
 
         for(int i = 0; i < headOfTheChain.size(); i ++){
@@ -39,6 +59,11 @@ public class CodeBlocksChainFactory extends Factory implements ICodeBlockChainLi
         }
     }
 
+    /**
+     * Push code block.
+     *
+     * @param codeBlock the code block
+     */
     void pushCodeBlock(CodeBlock codeBlock){
         headOfTheChain.addLast(codeBlock);
     }
@@ -47,6 +72,12 @@ public class CodeBlocksChainFactory extends Factory implements ICodeBlockChainLi
         return headOfTheChain.pop();
     }
 
+    /**
+     * Add code block to parent.
+     *
+     * @param target the target
+     * @param parent the parent
+     */
     public void addCodeBlockToParent(CodeBlock target, CodeBlock parent){
         headOfTheChain.addToThisParent(target, parent);
     }
@@ -63,7 +94,7 @@ public class CodeBlocksChainFactory extends Factory implements ICodeBlockChainLi
 
     @Override
     protected View build(LinearLayout view) {
-        root = (LinearLayout) view;
+        root = view;
         root.setOnDragListener(onDragListener);
         return root;
     }

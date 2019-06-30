@@ -5,6 +5,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+/**
+ * The type Image view on touch listener.
+ */
 public class ImageViewOnTouchListener implements View.OnTouchListener {
 
 

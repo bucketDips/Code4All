@@ -9,6 +9,9 @@ import com.example.codinschool.customviews.MyAppCompatActivity;
 import com.example.codinschool.data_pojo.user.User;
 import com.example.codinschool.serverhandler.ServerHandler;
 
+/**
+ * The type Login activity.
+ */
 public class LoginActivity extends MyAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {

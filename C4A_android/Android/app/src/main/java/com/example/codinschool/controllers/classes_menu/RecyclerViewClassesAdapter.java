@@ -15,6 +15,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.util.ArrayList;
 
+/**
+ * The type Recycler view classes adapter.
+ */
 class RecyclerViewClassesAdapter extends RecyclerView.Adapter<RecyclerViewClassesAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
@@ -23,14 +26,23 @@ class RecyclerViewClassesAdapter extends RecyclerView.Adapter<RecyclerViewClasse
     private ArrayList<Classe> classes;
     private IRecyclerViewClassesAdapterListener callback;
 
+    /**
+     * Instantiates a new Recycler view classes adapter.
+     *
+     * @param classes  the classes to show in the recyclerview
+     * @param callback the callback to user action
+     */
     RecyclerViewClassesAdapter(ArrayList<Classe> classes, IRecyclerViewClassesAdapterListener callback) {
-        Log.d(TAG, "constructor called");
         this.classes = classes;
         this.callback = callback;
     }
 
 
-
+    /**
+     * Update data.
+     *
+     * @param classeList the classe list
+     */
     public void updateData(ArrayList<Classe> classeList) {
         classes.clear();
         classes.addAll(classeList);
@@ -40,32 +52,24 @@ class RecyclerViewClassesAdapter extends RecyclerView.Adapter<RecyclerViewClasse
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Log.d(TAG, "onCreateViewHolder called");
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_classe_list_item, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Log.d(TAG, "onBindViewHolder: called");
-        Log.d(TAG, classes.get(i).toString());
         viewHolder.classeName.setText(classes.get(i).getName());
         viewHolder.classeSize.setVisibility(View.GONE);
         viewHolder.itemView.setSelected(selectedPos == i);
 
         viewHolder.buttonDelete.setOnClickListener(v -> {
             callback.onClickDelete(classes.get(i));
-            //Toast.makeText(context, classes.get(i).getName(), Toast.LENGTH_LONG).show();
         });
 
-        viewHolder.constraintLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedPos = viewHolder.getLayoutPosition();
-                notifyItemChanged(selectedPos);
-                callback.onClasseSelected(classes.get(i));
-                Log.d(TAG, "onClick: clicked on: " + classes.get(i).getName());
-            }
+        viewHolder.constraintLayout.setOnClickListener(v -> {
+            selectedPos = viewHolder.getLayoutPosition();
+            notifyItemChanged(selectedPos);
+            callback.onClasseSelected(classes.get(i));
         });
     }
 
@@ -74,6 +78,9 @@ class RecyclerViewClassesAdapter extends RecyclerView.Adapter<RecyclerViewClasse
         return classes.size();
     }
 
+    /**
+     * The type View holder.
+     */
     class ViewHolder extends RecyclerView.ViewHolder{
         private ImageButton buttonDelete;
         private CircleImageView imageView;
@@ -81,6 +88,11 @@ class RecyclerViewClassesAdapter extends RecyclerView.Adapter<RecyclerViewClasse
         private TextView classeSize;
         private ConstraintLayout constraintLayout;
 
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param view the view
+         */
         ViewHolder(View view){
             super(view);
             constraintLayout = itemView.findViewById(R.id.constraintLayout);

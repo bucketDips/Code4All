@@ -20,6 +20,9 @@ import pl.droidsonroids.gif.GifImageView;
 
 import java.util.ArrayList;
 
+/**
+ * The type Grid exercice fragment.
+ */
 public class GridExerciceFragment extends Fragment {
 
     private final String TAG = "GridExerciceFragment";
@@ -37,13 +40,16 @@ public class GridExerciceFragment extends Fragment {
     private LinearLayout testArea;
     private ImageButton imageButtonTestDetail;
 
+    /**
+     * Instantiates a new Grid exercice fragment.
+     */
     public GridExerciceFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_grid_exercice, container, false);
-        loadUi(fragment);
+        bindUi(fragment);
 
         parent = (ExerciceEngineActivity) getActivity();
 
@@ -91,7 +97,7 @@ public class GridExerciceFragment extends Fragment {
         }
     }
 
-    private void loadUi(View fragment) {
+    private void bindUi(View fragment) {
         exerciceGrid = fragment.findViewById(R.id.grid);
         textViewGrid = fragment.findViewById(R.id.textViewExerciceGrid);
         gridborder = fragment.findViewById(R.id.gridborder);
@@ -104,12 +110,22 @@ public class GridExerciceFragment extends Fragment {
         zoomSeekbar.setOnSeekBarChangeListener(new gridExerciceOnSeekBarChangeListner());
     }
 
+    /**
+     * Sets layout params.
+     *
+     * @param layoutParamsFrameLayoutLeft the layout params frame layout left
+     */
     public void setLayoutParams(LinearLayout.LayoutParams layoutParamsFrameLayoutLeft) {
         root.setLayoutParams(layoutParamsFrameLayoutLeft);
     }
 
+    /**
+     * Update fragment grid.
+     *
+     * @param exerciceFrames the exercice frames
+     * @param tests          the tests
+     */
     public void updateFragmentGrid(ArrayList<Exercice> exerciceFrames, ArrayList<Test> tests) {
-        Log.d(TAG,"updateFragmentGrid");
         //Thread thread
         int y = exerciceFrames.size();
         Thread thread = new Thread(){
@@ -134,10 +150,20 @@ public class GridExerciceFragment extends Fragment {
         thread.start();
     }
 
+    /**
+     * Gets parent.
+     *
+     * @return the parent
+     */
     public ExerciceEngineActivity getParent() {
         return parent;
     }
 
+    /**
+     * Gets seekbar value.
+     *
+     * @return the seekbar value
+     */
     public int getSeekbarValue() {
         return zoomSeekbar.getProgress();
     }
@@ -146,7 +172,6 @@ public class GridExerciceFragment extends Fragment {
     private class gridExerciceOnSeekBarChangeListner implements SeekBar.OnSeekBarChangeListener{
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            Log.d(TAG, "onProgressChanged: GridExerciceFragment");
             factory.setProgress(progress);
             factory.resizeGrid();
         }

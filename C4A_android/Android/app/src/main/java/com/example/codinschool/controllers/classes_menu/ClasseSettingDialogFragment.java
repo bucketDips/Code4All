@@ -43,6 +43,9 @@ import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
 
+/**
+ * The type Classe setting dialog fragment.
+ */
 public class ClasseSettingDialogFragment extends MyDialogFragment {
 
     private CardView root;
@@ -69,7 +72,7 @@ public class ClasseSettingDialogFragment extends MyDialogFragment {
 
         if (bundle != null) {
             Classe classe = bundle.getParcelable("classeJson");
-            loadUI(dialogFragment);
+            bindUi(dialogFragment);
 
             buttonAdd.setVisibility(View.INVISIBLE);
             if(classe != null){
@@ -124,7 +127,6 @@ public class ClasseSettingDialogFragment extends MyDialogFragment {
                     }
                 });
             }
-            //root.setClipToOutline(true);
         }
         return dialogFragment;
     }
@@ -144,7 +146,7 @@ public class ClasseSettingDialogFragment extends MyDialogFragment {
         super.onAttach(context);
     }
 
-    private void loadUI(View dialogFragment) {
+    private void bindUi(View dialogFragment) {
         root = dialogFragment.findViewById(R.id.root);
         editTextEmail = dialogFragment.findViewById(R.id.editTextNameOrEmail);
         buttonAdd = dialogFragment.findViewById(R.id.buttonAdd);
@@ -152,20 +154,12 @@ public class ClasseSettingDialogFragment extends MyDialogFragment {
         newUserListLabel = dialogFragment.findViewById(R.id.newUserListLabel);
         switchProfessor = dialogFragment.findViewById(R.id.switchProfessor);
 
-        switchProfessor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d(TAG, String.valueOf(buttonView.isChecked()));
-            }
-        });
-
 
         userList = dialogFragment.findViewById(R.id.userList);
         userToAddList = dialogFragment.findViewById(R.id.newUserList);
 
         ArrayList<User> users = new ArrayList<User>();
         usersSelected = new ArrayList<>();
-        //users.add(new User(3,"USERTEST","toto", "test@gmail.com",1));
         recyclerViewUserAdapter = new RecyclerViewUsersAdapter(users, getContext(), new IRecyclerViewUsersAdapterListener() {
 
             @Override
@@ -241,7 +235,6 @@ public class ClasseSettingDialogFragment extends MyDialogFragment {
                             for(int i = 0; i < result.length(); i++){
                                 try {
                                     User user = gson.fromJson(String.valueOf(result.getJSONObject(i)), User.class);
-                                    //Log.d(TAG, "User found : " + user.toString());
                                     users.add(user);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -254,13 +247,7 @@ public class ClasseSettingDialogFragment extends MyDialogFragment {
                         @Override
                         public void onErrorResponse(@NotNull VolleyError error) {
                             progressBar.setVisibility(View.GONE);
-                            try {
-                                ErrorNetwork errorNetwork = new ErrorNetwork(error, Objects.requireNonNull(getActivity()).getApplicationContext());
-                                //textViewError.setText(errorNetwork.diplayErrorMessage());
-                                Log.d(TAG, "onErrorResponse: " + errorNetwork.diplayErrorMessage());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+
                         }
                     });
                 } else {
@@ -270,13 +257,14 @@ public class ClasseSettingDialogFragment extends MyDialogFragment {
         });
     }
 
+    /**
+     * Log users selected.
+     */
     public void logUsersSelected() {
         StringBuilder message = new StringBuilder("Users selected are : ");
         for(User user : usersSelected){
             message.append(user.getName()).append(" ").append(user.getEmail()).append(" / ");
         }
-
-        Log.d("logUsersSelected", message.toString());
     }
 
     @NonNull

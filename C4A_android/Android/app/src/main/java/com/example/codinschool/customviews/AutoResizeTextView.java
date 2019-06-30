@@ -11,17 +11,17 @@ import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 
+/**
+ * The type Auto resize text view.
+ */
 public class AutoResizeTextView extends android.support.v7.widget.AppCompatTextView {
     private interface SizeTester {
         /**
+         * On test size int.
          *
-         * @param suggestedSize
-         *            Size of text to be tested
-         * @param availableSpace
-         *            available space in which text must fit
-         * @return an integer < 0 if after applying {@code suggestedSize} to
-         *         text, it takes less space than {@code availableSpace}, > 0
-         *         otherwise
+         * @param suggestedSize  Size of text to be tested
+         * @param availableSpace available space in which text must fit
+         * @return an integer < 0 if after applying {@code suggestedSize} to         text, it takes less space than {@code availableSpace}, > 0         otherwise
          */
         int onTestSize(int suggestedSize, RectF availableSpace);
     }
@@ -50,16 +50,34 @@ public class AutoResizeTextView extends android.support.v7.widget.AppCompatTextV
     private boolean mEnableSizeCache = true;
     private boolean mInitializedDimens;
 
+    /**
+     * Instantiates a new Auto resize text view.
+     *
+     * @param context the context
+     */
     public AutoResizeTextView(Context context) {
         super(context);
         initialize();
     }
 
+    /**
+     * Instantiates a new Auto resize text view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public AutoResizeTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize();
     }
 
+    /**
+     * Instantiates a new Auto resize text view.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public AutoResizeTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initialize();
@@ -144,7 +162,7 @@ public class AutoResizeTextView extends android.support.v7.widget.AppCompatTextV
     /**
      * Set the lower text size limit and invalidate the view
      *
-     * @param minTextSize
+     * @param minTextSize the min text size
      */
     public void setMinTextSize(float minTextSize) {
         mMinTextSize = minTextSize;
@@ -234,8 +252,7 @@ public class AutoResizeTextView extends android.support.v7.widget.AppCompatTextV
      * size against getText().length() Be careful though while enabling it as 0
      * takes more space than 1 on some fonts and so on.
      *
-     * @param enable
-     *            Enable font size caching
+     * @param enable Enable font size caching
      */
     public void enableSizeCache(boolean enable) {
         mEnableSizeCache = enable;

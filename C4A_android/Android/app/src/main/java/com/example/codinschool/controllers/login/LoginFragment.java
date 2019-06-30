@@ -33,6 +33,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * The type Login fragment.
+ */
 public class LoginFragment extends Fragment{
     private static final String TAG = "LoginFragment";
     private View fragment;
@@ -72,7 +75,6 @@ public class LoginFragment extends Fragment{
 
     private void onClickLogin(View v) {
         Keyboard.INSTANCE.hide(this.context, v);
-        Log.d(TAG, "onClickLogin");
         MyEditText username = fragment.findViewById(R.id.username);
         MyEditText password = fragment.findViewById(R.id.password);
         progressBar = fragment.findViewById(R.id.progressBar);
@@ -81,7 +83,6 @@ public class LoginFragment extends Fragment{
         serverHandler.connect(String.valueOf(username.getText()), String.valueOf(password.getText()), new IAPICallbackJsonObject() {
             @Override
             public void onSuccessResponse(@NotNull JSONObject result) {
-                Log.d(TAG, result.toString());
                 try {
                     progressBar.setVisibility(View.GONE);
                     String res = ServerHandler.getStringFromJsonObject(result, "success");
@@ -93,7 +94,6 @@ public class LoginFragment extends Fragment{
 
                         saveUserInfos(username.getText().toString(), token, intent);
                     }else{
-                        Log.d(TAG, "onClickLogin An error has occured");
                     }
 
                 } catch (JSONException e) {
@@ -103,27 +103,9 @@ public class LoginFragment extends Fragment{
 
             @Override
             public void onErrorResponse(@NotNull VolleyError error) {
-                try {
-                    ErrorNetwork errorNetwork = new ErrorNetwork(error, getContext());
-                    SnackbarBuilder.make(fragment, errorNetwork.diplayErrorMessage(), Snackbar.LENGTH_LONG, R.color.white).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                String msg = ErrorNetwork.parseVolleyError(error, getContext());
+                SnackbarBuilder.make(fragment, msg, Snackbar.LENGTH_LONG, R.color.white).show();
                 progressBar.setVisibility(View.GONE);
-
-                /*
-                progressBar.setVisibility(View.GONE);
-                ErrorNetwork errorNetwork = null;
-                try {
-                    errorNetwork = new ErrorNetwork(error, getContext());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if(errorNetwork != null){
-                    Log.d(TAG,errorNetwork.diplayErrorMessage());
-                    Snackbar.make(fragment, errorNetwork.diplayErrorMessage(), Snackbar.LENGTH_LONG).show();
-                }*/
             }
         });
     }

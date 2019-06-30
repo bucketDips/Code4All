@@ -16,6 +16,9 @@ import com.example.codinschool.customviews.MyDialogFragment;
 import com.example.codinschool.customviews.MyEditText;
 import com.example.codinschool.viewtools.SnackbarBuilder;
 
+/**
+ * The type Classe creation dialog fragment.
+ */
 public class ClasseCreationDialogFragment extends MyDialogFragment {
 
     private Button buttonCreate;
@@ -42,7 +45,6 @@ public class ClasseCreationDialogFragment extends MyDialogFragment {
         width = (int) (width * 0.70);
         height = (int) (height * 0.40);
 
-        //float heightInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
         getDialog().getWindow().setLayout(width, height);
     }
 
@@ -56,17 +58,14 @@ public class ClasseCreationDialogFragment extends MyDialogFragment {
         parent = (ClasseActivity) getActivity();
 
 
-        buttonCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String classeName = String.valueOf(editTextClasseName.getText());
+        buttonCreate.setOnClickListener(v -> {
+            String classeName = String.valueOf(editTextClasseName.getText());
 
-                if(classeName.length() > 2){
-                    parent.getClasseManager().createClasse(classeName);
-                    dismiss();
-                } else
-                    SnackbarBuilder.make(parent.getRootView(),"The classe name must have at least 3 characters", Snackbar.LENGTH_LONG, R.color.white).show();
-            }
+            if(classeName.length() > 2){
+                parent.getClasseManager().createClasse(classeName);
+                dismiss();
+            } else
+                SnackbarBuilder.make(parent.getRootView(),"The classe name must have at least 3 characters", Snackbar.LENGTH_LONG, R.color.white).show();
         });
         return dialogFragment;
     }

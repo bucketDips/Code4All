@@ -16,6 +16,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * The type Exercice manager.
+ */
 public class ExerciceManager extends DataManager implements IExerciceManager{
 
     private IOnExerciceLoadedListener listener;
@@ -24,6 +27,12 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
     private ArrayList<Exercice> fromStoreExerciceList;
     private ArrayList<Exercice> fromClassesExerciceList;
 
+    /**
+     * Instantiates a new Exercice manager.
+     *
+     * @param serverHandler the server handler
+     * @param context       the context
+     */
     public ExerciceManager(ServerHandler serverHandler, Context context) {
         super(serverHandler, context);
         this.exercicesList = new ArrayList<>();
@@ -33,8 +42,11 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
     }
 
 
-
-
+    /**
+     * Sets listener.
+     *
+     * @param listener the listener
+     */
     public void setListener(IOnExerciceLoadedListener listener) {
         this.listener = listener;
     }
@@ -44,7 +56,6 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
         serverHandler.getAllExercicesOfTheUserSession(sharedPreferenceManager.getTokenSaved(), new IAPICallbackJsonObject() {
             @Override
             public void onSuccessResponse(@NotNull JSONObject result) {
-                // int array for exercices type split
                 Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
                 ArrayList<Exercice> myExercices = new ArrayList<>();
                 ArrayList<Exercice> fromStoreExercices = new ArrayList<>();
@@ -145,28 +156,70 @@ public class ExerciceManager extends DataManager implements IExerciceManager{
         });
     }
 
+    /**
+     * Gets exercices list.
+     *
+     * @return the exercices list
+     */
     public ArrayList<Exercice> getExercicesList() {
         return exercicesList;
     }
 
+    /**
+     * Get exercice exercice.
+     *
+     * @param position the position
+     * @return the exercice
+     */
     public Exercice getExercice(int position){
         return exercicesList.get(position);
     }
 
+    /**
+     * Gets my exercice list.
+     *
+     * @return the my exercice list
+     */
     public ArrayList<Exercice> getMyExerciceList() {
         return myExerciceList;
     }
 
+    /**
+     * Gets from classes exercice list.
+     *
+     * @return the from classes exercice list
+     */
     public ArrayList<Exercice> getFromClassesExerciceList() {
         return fromClassesExerciceList;
     }
 
+    /**
+     * Gets from store exercice list.
+     *
+     * @return the from store exercice list
+     */
     public ArrayList<Exercice> getFromStoreExerciceList() {
         return fromStoreExerciceList;
     }
 
+    /**
+     * The interface On exercice loaded listener.
+     */
     public interface IOnExerciceLoadedListener {
+        /**
+         * On exercices loaded.
+         *
+         * @param myExercices          the my exercices
+         * @param fromStoreExercices   the from store exercices
+         * @param fromClassesExercices the from classes exercices
+         */
         void onExercicesLoaded(ArrayList<Exercice> myExercices, ArrayList<Exercice> fromStoreExercices, ArrayList<Exercice> fromClassesExercices);
+
+        /**
+         * On exercices loaded fail.
+         *
+         * @param errorNetwork the error network
+         */
         void onExercicesLoadedFail(ErrorNetwork errorNetwork);
     }
 }

@@ -36,6 +36,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * The type Code exercice fragment.
+ */
 public class CodeExerciceFragment extends Fragment implements View.OnLongClickListener{
 
     private final String TAG = "CodeExerciceFragment";
@@ -58,7 +61,7 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_code_exercice, container, false);
-        loadUi(fragment);
+        bindUi(fragment);
 
         parent = (ExerciceEngineActivity) getActivity();
         Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
@@ -93,8 +96,6 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
     private void buildAndSendSolution() {
         Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).setPrettyPrinting().create();
 
-//        solutions[i] = new Action();
-
         Object[] objects = new Object[chainBlocks.getChildCount()];
         for(int i = 0; i < objects.length; i ++){
             objects[i] = parcours((CodeBlock) chainBlocks.getChildAt(i));
@@ -105,8 +106,6 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
         JSONObject response = new JSONObject();
 
         try {
-            //JSONArray solution = new JSONArray(gson.toJson(objects));
-            //JSONObject exercice = new JSONObject(gson.toJson(this.exerciceJson));
             response.put("exercice", exerciceJson);
             response.put("solution", solution);
         } catch (JSONException e) {
@@ -140,20 +139,9 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
             @Override
             public void onErrorResponse(@NotNull VolleyError error) {
                 String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-
-                Log.d(TAG, responseBody);
                 enableButtonRun();
             }
         });
-
-/*
-        String jsonObject = gson.toJson(solutions);
-        try {
-            JSONArray jsonArray = new JSONArray(jsonObject);
-            Log.d(TAG, "test jsonObject" + jsonArray.get(0));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
     }
 
     private Object parcours(CodeBlock block) {
@@ -176,7 +164,7 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
                 String end ="";
                 if(startAndEnd != null){
                     start = startAndEnd.substring(0, startAndEnd.indexOf(','));
-                    end = startAndEnd.substring(startAndEnd.indexOf(',')+1, startAndEnd.length());
+                    end = startAndEnd.substring(startAndEnd.indexOf(',')+1);
                 } else {
                     start = "0";
                     end = "0";
@@ -201,11 +189,10 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
         }
     }
 
-    private void loadUi(View fragment) {
+    private void bindUi(View fragment) {
         root = fragment.findViewById(R.id.root);
         chainBlocks = fragment.findViewById(R.id.start);
         buttonRun = fragment.findViewById(R.id.play);
-        //frameLayout = fragment.findViewById(R.id.frameLayout);
     }
 
     private void addBlock(TextView v, ExerciceFunction exerciceFunction, LinearLayout target) {
@@ -278,12 +265,11 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
         });
 
         target.addView(codeBlock);
-
-        Log.d(TAG, "addBlocks " + v.getText());
-
-
     }
 
+    /**
+     * Enable button run.
+     */
     void enableButtonRun(){
         buttonRun.setEnabled(!buttonRun.isEnabled());
     }
@@ -314,44 +300,32 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
     }
 
 
-    // LISTENER FOR CATCH DRAG INPUT IN THE LINEARELAYOUT
+    /**
+     * The type Drag input listener.
+     * // LISTENER FOR CATCH DRAG INPUT IN THE LINEARELAYOUT
+     */
     public final class DragInputListener implements View.OnDragListener{
         @Override
         public boolean onDrag(View v, DragEvent event) {
             switch (event.getAction()){
                 case DragEvent.ACTION_DRAG_STARTED:
-                    Log.d(TAG, "DragEvent.ACTION_DRAG_STARTED");
                     break;
 
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    Log.d(TAG, "DragEvent.ACTION_DRAG_ENTERED");
-                    Log.d(TAG, String.valueOf(((LinearLayout) v).getBaselineAlignedChildIndex()));
-
                     break;
                 case DragEvent.ACTION_DROP:
-                    Log.d(TAG, "DragEvent.ACTION_DROP");
 
                     TextView textView = (TextView) event.getLocalState();
                     LinearLayout linearLayout = (LinearLayout) v;
-                    Log.d(TAG, String.valueOf(v.toString()));
-
-                    //LinearLayout linearLayout = getViewByTag(v.getTag());
                     ExerciceFunction exerciceFunction = functionListWindow.getExerciceFunction(String.valueOf(textView.getText()));
                     if(exerciceFunction != null)
                         addBlock(textView, exerciceFunction, linearLayout);
-                    //root.addView(codeBlock);
-                    //chainBlocks.addView(codeBlock);
-                    //Log.d(TAG, String.valueOf(chainBlocks.getChildCount()));
-
-                    //addBlock(textView, linearLayout, v.getTag().toString());
                     break;
 
                 case DragEvent.ACTION_DRAG_ENDED:
-                    Log.d(TAG, "DragEvent.ACTION_DRAG_ENDED");
 
                     break;
                 case DragEvent.ACTION_DRAG_EXITED: {
-                    Log.d(TAG, "DragEvent.ACTION_DRAG_EXITED");
                     break;
                 }
             }
@@ -379,7 +353,10 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
         return null;
     }
 
-    // INNER CLASSE FOR THE ONTOUCH RECYCLERVIEW IN THE FUNCTIONLISTWINDOWS
+    /**
+     * The type On touch recycler view listener.
+     *  CLASSE FOR THE ONTOUCH RECYCLERVIEW IN THE FUNCTIONLISTWINDOWS
+     */
     public final class OnTouchRecyclerViewListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -395,12 +372,10 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
     }
 
 
-
-
-
-
-
-    // HANDLE FUNCTION LIST WINDOWS DRAG AND CLICK TO HIDE
+    /**
+     * The type On touch function list windows.
+     * HANDLE FUNCTION LIST WINDOWS DRAG AND CLICK TO HIDE
+     */
     public final class OnTouchFunctionListWindows implements View.OnTouchListener {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -427,7 +402,5 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
             return true;
         }
     }
-
-        // this is used to handle function list windows
 
 }

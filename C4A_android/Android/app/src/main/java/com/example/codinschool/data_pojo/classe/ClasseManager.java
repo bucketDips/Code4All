@@ -19,6 +19,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * The type Classe manager.
+ */
 public class ClasseManager extends DataManager implements IClasseManager{
 
     private static final String TAG = "ClasseManager";
@@ -27,14 +30,25 @@ public class ClasseManager extends DataManager implements IClasseManager{
     private ArrayList<Classe> classeListAsStudent;
     private IClasseManagerListener listener;
 
-    //private HashMap<Integer, ArrayList<User>> Classes
-
+    /**
+     * Instantiates a new Classe manager.
+     *
+     * @param context               the context
+     * @param serverHandler         the server handler
+     * @param classeListAsProfessor the classe list as professor
+     * @param classeListAsStudent   the classe list as student
+     */
     public ClasseManager(Context context, ServerHandler serverHandler, ArrayList<Classe> classeListAsProfessor, ArrayList<Classe> classeListAsStudent) {
         super(serverHandler, context);
         this.classeListAsProfessor = classeListAsProfessor;
         this.classeListAsStudent = classeListAsStudent;
     }
 
+    /**
+     * Sets listener.
+     *
+     * @param listener the listener
+     */
     public void setListener(IClasseManagerListener listener) {
         this.listener = listener;
     }
@@ -60,7 +74,6 @@ public class ClasseManager extends DataManager implements IClasseManager{
                 }
                 @Override
                 public void onErrorResponse(@NotNull VolleyError error) {
-                    Log.d(TAG, "onErrorResponse getAllClassesOfUserAsProfessor");
                 }
             });
 
@@ -81,7 +94,6 @@ public class ClasseManager extends DataManager implements IClasseManager{
 
                 @Override
                 public void onErrorResponse(@NotNull VolleyError error) {
-                    Log.d(TAG, "onErrorResponse getAllClassesOfUserAsStudent");
                 }
             });
         }
@@ -142,7 +154,6 @@ public class ClasseManager extends DataManager implements IClasseManager{
             public void onErrorResponse(@NotNull VolleyError error) {
                 try {
                     ErrorNetwork errorNetwork = new ErrorNetwork(error, context);
-                    Log.d(TAG, "onError " + errorNetwork.diplayErrorMessage());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -173,7 +184,6 @@ public class ClasseManager extends DataManager implements IClasseManager{
             public void onErrorResponse(@NotNull VolleyError error) {
                 try {
                     ErrorNetwork errorNetwork = new ErrorNetwork(error, context);
-                    Log.d(TAG, "onError " + errorNetwork.diplayErrorMessage());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -291,20 +301,5 @@ public class ClasseManager extends DataManager implements IClasseManager{
 
     @Override
     public void removeStudentFromClasse(User user, Classe classe) {
-        //TODO
-    }
-
-    public void printAllClasses(){
-        Log.d(TAG, "ClasseListAsProfessor");
-        for(Classe classe : getClassesListAsProfessor()){
-            Log.d(TAG, classe.toString());
-        }
-
-        for(Classe classe : getClassesListAsStudent()){
-            Log.d(TAG, classe.toString());
-        }
-        Log.d(TAG, "ClasseListAsStudent");
-
-
     }
 }

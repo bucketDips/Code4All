@@ -15,10 +15,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Server handler.
+ */
 public class ServerHandler implements IServerHandler, IAPIHandler {
     private final String TAG = "ServeurHandler";
 
-    //private final String rootUrl = "http://51.158.110.231:3000";
     private final String rootUrl = "http://212.47.235.40:3000";
     private final String authorization = "Authorization";
     private final String bearer = "Bearer ";
@@ -64,10 +66,21 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
+    /**
+     * Init instance.
+     *
+     * @param context the context
+     */
     public static void initInstance(Context context){
         serverHandler = new ServerHandler(context);
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws Exception the exception
+     */
     public static ServerHandler getInstance() throws Exception {
         if(serverHandler == null){
             throw new Exception("Instance isnt initialized");
@@ -82,8 +95,6 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     @Override
     public void connect(@NotNull String mail, @NotNull String password, @NotNull IAPICallbackJsonObject callback) {
         String finalUrl = rootUrl + user + connect + "/" + mail + "/" + password;
-        //RequestQueue requestQueue = Volley.newRequestQueue(context);
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, finalUrl, null,
                 callback::onSuccessResponse,
                 callback::onErrorResponse
@@ -239,6 +250,14 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
         this.requestQueue.add(jsonObjectRequest);
     }
 
+    /**
+     * Gets string from json object.
+     *
+     * @param jsonObject the json object
+     * @param target     the target
+     * @return the string from json object
+     * @throws JSONException the json exception
+     */
     public static String getStringFromJsonObject(JSONObject jsonObject, String target) throws JSONException {
         if(jsonObject.has(target))
             return jsonObject.getString(target);
@@ -432,7 +451,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
     public void forkThisExerciceWithTheUser(@NotNull String token, int idExercice, @NotNull IAPICallbackJsonObject callback) {
         String url = rootUrl + exercices + add_exercice_to_user + '/' + idExercice;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET, url, null,
+                Request.Method.POST, url, null,
                 callback::onSuccessResponse,
                 callback::onErrorResponse
         ){
@@ -448,8 +467,20 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
 
     }
 
+    /**
+     * The type Custom json array request.
+     */
     public class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
 
+        /**
+         * Instantiates a new Custom json array request.
+         *
+         * @param method        the method
+         * @param url           the url
+         * @param jsonRequest   the json request
+         * @param listener      the listener
+         * @param errorListener the error listener
+         */
         public CustomJsonArrayRequest(int method, String url, JSONObject jsonRequest,
                                       Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
             super(method, url, (jsonRequest == null) ? null : jsonRequest.toString(), listener,
@@ -488,7 +519,7 @@ public class ServerHandler implements IServerHandler, IAPIHandler {
                     listParams.put((String)args[i], args[i+1]);
                 }
 
-                System.out.println("args :" + (String)args[i] + " args + 1: " + args[i+1]);
+                System.out.println("args :" + args[i] + " args + 1: " + args[i+1]);
 
             }
 

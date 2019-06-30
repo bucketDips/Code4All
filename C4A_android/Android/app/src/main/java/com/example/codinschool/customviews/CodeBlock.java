@@ -17,11 +17,13 @@ import com.example.codinschool.R;
 import com.example.codinschool.controllers.exercice_engine.CodeExerciceFragment;
 import com.example.codinschool.data_pojo.exercice_functions.ExerciceFunction;
 
+/**
+ * The type Code block.
+ */
 @SuppressLint("ViewConstructor")
 public class CodeBlock extends CardView {
 
-    //private TextView blockLabel;
-    //private LinearLayout linearLayout;
+
     private ExerciceFunction function;
     private LinearLayout container;
     private ImageView buttonGetUp;
@@ -29,26 +31,51 @@ public class CodeBlock extends CardView {
     private ImageView buttonClose;
     private TextView blockLabel;
     private String startAndEnd;
-    private Object data;
     private String condition;
-    //private CodeBlock ;
 
 
+    /**
+     * Gets block label text.
+     *
+     * @return the block label text
+     */
     public String getBlockLabelText() {
         return blockLabel.getText().toString();
     }
 
+    /**
+     * Instantiates a new Code block.
+     *
+     * @param context           the context
+     * @param function          the function
+     * @param listener          the listener
+     * @param primaryFunction   the primary function
+     * @param longClickListener the long click listener
+     */
     public CodeBlock(Context context, ExerciceFunction function, CodeExerciceFragment.DragInputListener listener, boolean primaryFunction, OnLongClickListener longClickListener) {
         super(context);
         init(context, function, listener, primaryFunction, longClickListener);
     }
 
+    /**
+     * Gets function.
+     *
+     * @return the function
+     */
     public ExerciceFunction getFunction() {
         return function;
     }
 
+    /**
+     * Init.
+     *
+     * @param context           the context
+     * @param function          the function
+     * @param listener          the listener
+     * @param primaryFunction   the primary function
+     * @param longClickListener the long click listener
+     */
     public void init(Context context, ExerciceFunction function, @Nullable CodeExerciceFragment.DragInputListener listener, boolean primaryFunction, OnLongClickListener longClickListener){
-        //Log.d("CodeBlocks", "init()");
         inflate(context, R.layout.code_block, this);
         blockLabel = this.findViewById(R.id.block_label);
         buttonGetDown = this.findViewById(R.id.buttonGetDown);
@@ -60,7 +87,6 @@ public class CodeBlock extends CardView {
         if(primaryFunction){
             container.setOnDragListener(listener);
             if(function.getName().equals(ExerciceFunction.PRIMARY_FUNCTION_NAME_FOR)){
-                //data = new CodeExerciceFragment.Boucle("boucle",0,0, new CodeExerciceFragment.Action[]{});
             }
 
             this.setOnLongClickListener(longClickListener);
@@ -79,20 +105,40 @@ public class CodeBlock extends CardView {
         }
     }
 
+    /**
+     * Get condition string.
+     *
+     * @return the string
+     */
     public String getCondition(){
         return condition;
     }
 
+    /**
+     * Get start and end string.
+     *
+     * @return the string
+     */
     public String getStartAndEnd(){
         return startAndEnd;
     }
 
 
+    /**
+     * Get name of the function string.
+     *
+     * @return the string
+     */
     public String getNameOfTheFunction(){
         return function.getName();
     }
 
 
+    /**
+     * Update parameters.
+     *
+     * @param parameters the parameters
+     */
     @SuppressLint("SetTextI18n")
     public void updateParameters(String parameters){
         if(function.getName().equals(ExerciceFunction.PRIMARY_FUNCTION_NAME_IF))
@@ -110,13 +156,20 @@ public class CodeBlock extends CardView {
         return super.getChildCount();
     }
 
+    /**
+     * Have children boolean.
+     *
+     * @return the boolean
+     */
     public boolean haveChildren() {
-        if(container.getChildCount() >0 )
-            return true;
-        else
-            return false;
+        return container.getChildCount() > 0;
     }
 
+    /**
+     * Gets container.
+     *
+     * @return the container
+     */
     public LinearLayout getContainer() {
         return this.container;
     }
@@ -135,17 +188,39 @@ public class CodeBlock extends CardView {
         }
     }
 
+    /**
+     * Gets button get up.
+     *
+     * @return the button get up
+     */
     public ImageView getButtonGetUp() {
         return this.buttonGetUp;
     }
 
+    /**
+     * Gets button get down.
+     *
+     * @return the button get down
+     */
     public ImageView getButtonGetDown() {
         return this.buttonGetDown;
     }
 
+    /**
+     * Get button close image view.
+     *
+     * @return the image view
+     */
     public ImageView getButtonClose(){
         return this.buttonClose;
     }
+
+    /**
+     * Is the same boolean.
+     *
+     * @param target the target
+     * @return the boolean
+     */
     public boolean isTheSame(CodeBlock target){
         return this.equals(target);
     }

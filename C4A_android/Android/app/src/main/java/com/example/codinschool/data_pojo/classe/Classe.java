@@ -4,20 +4,37 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
+/**
+ * The type Classe.
+ */
 public class Classe implements Parcelable {
     private int id;
     private String name;
 
+    /**
+     * Instantiates a new Classe.
+     *
+     * @param id   the id
+     * @param name the name
+     */
     public Classe(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * Instantiates a new Classe.
+     *
+     * @param in the in
+     */
     protected Classe(Parcel in) {
         id = in.readInt();
         name = in.readString();
     }
 
+    /**
+     * The constant CREATOR.
+     */
     public static final Creator<Classe> CREATOR = new Creator<Classe>() {
         @Override
         public Classe createFromParcel(Parcel in) {
@@ -30,18 +47,38 @@ public class Classe implements Parcelable {
         }
     };
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }

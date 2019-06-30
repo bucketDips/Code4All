@@ -9,12 +9,24 @@ import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 
+/**
+ * The type Error network.
+ */
 public class ErrorNetwork extends VolleyError {
 
+    /**
+     * The constant ERROR_MESSAGE_KEY.
+     */
 //    Keys for json search
     public static final String ERROR_MESSAGE_KEY = "message";
+    /**
+     * The constant ERROR_CODE_KEY.
+     */
     public static final String ERROR_CODE_KEY = "code";
 
+    /**
+     * The constant ERROR_CODE_INCORRECT_TOKEN_VALUE.
+     */
     public static final String ERROR_CODE_INCORRECT_TOKEN_VALUE = "INCORRECT_TOKEN";
 
 
@@ -22,6 +34,13 @@ public class ErrorNetwork extends VolleyError {
     private JSONObject errorContent;
 
 
+    /**
+     * Instantiates a new network error .
+     *
+     * @param volleyError the volley error
+     * @param context     the context
+     * @throws JSONException the json exception
+     */
     public ErrorNetwork(VolleyError volleyError, Context context) throws JSONException {
         errorContent = new JSONObject();
         errorContent.put(ERROR_MESSAGE_KEY, setMessage(volleyError, context));
@@ -35,8 +54,19 @@ public class ErrorNetwork extends VolleyError {
 //            }
 
     }
+
+    /**
+     * Parse volley error string.
+     *
+     * @param error   the error
+     * @param context the context
+     * @return the string
+     */
     public static String parseVolleyError(VolleyError error, Context context){
         try {
+            if(error.networkResponse == null)
+                return getVolleyError(error, context);
+
             String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
             JSONObject data = new JSONObject(responseBody);
             String message = data.getString(ERROR_MESSAGE_KEY);
@@ -46,6 +76,12 @@ public class ErrorNetwork extends VolleyError {
         return null;
     }
 
+    /**
+     * Get error code string.
+     *
+     * @param error the error
+     * @return the string
+     */
     public static String getErrorCode(VolleyError error){
         try {
             String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
@@ -56,6 +92,13 @@ public class ErrorNetwork extends VolleyError {
         return null;
     }
 
+    /**
+     * Get volley error string.
+     *
+     * @param error   the error
+     * @param context the context
+     * @return the string
+     */
     public static String getVolleyError(VolleyError error, Context context){
         try {
             if (error instanceof NetworkError) {
@@ -84,18 +127,14 @@ public class ErrorNetwork extends VolleyError {
 
 
     private String setMessage(VolleyError error, Context context) {
-        /*
-        if (error.networkResponse != null) {
-            if (error.networkResponse.data != null) {
-                JSONObject dataJsonMessage = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
-                return ServerHandler.getStringFromJsonObject(dataJsonMessage, ERROR_MESSAGE_KEY);
-            }
-        }*/
-
-
         return "";
     }
 
+    /**
+     * Diplay error message string.
+     *
+     * @return the string
+     */
     public String diplayErrorMessage(){
         try {
             return ServerHandler.getStringFromJsonObject(errorContent, ERROR_MESSAGE_KEY);

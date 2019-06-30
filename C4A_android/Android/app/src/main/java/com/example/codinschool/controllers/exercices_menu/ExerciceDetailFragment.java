@@ -1,6 +1,7 @@
 package com.example.codinschool.controllers.exercices_menu;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -30,10 +31,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+/**
+ * The type Exercice detail fragment.
+ */
 public class ExerciceDetailFragment extends Fragment {
 
 
+    /**
+     * The constant EXERCICE_JSON.
+     */
     public static final String EXERCICE_JSON = "EXERCICE_JSON";
+    /**
+     * The constant EXERCICE_CREATOR_JSON.
+     */
     public static final String EXERCICE_CREATOR_JSON = "EXERCICE_CREATOR_JSON";
     private MyAppCompatActivity parent;
     private TextView exerciceName;
@@ -49,6 +59,9 @@ public class ExerciceDetailFragment extends Fragment {
     private User creator;
     private Gson gson;
 
+    /**
+     * Instantiates a new Exercice detail fragment.
+     */
     public ExerciceDetailFragment() {
     }
 
@@ -61,25 +74,14 @@ public class ExerciceDetailFragment extends Fragment {
             String jsonExercice = getArguments().getString(EXERCICE_JSON);
             gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
 
-
-
-            /*if(getArguments().containsKey(EXERCICE_CREATOR_JSON)){
-                String userJson = getArguments().getString(EXERCICE_CREATOR_JSON);
-                creator = gson.fromJson(userJson, User.class);
-            }*/
-
             exercice = gson.fromJson(jsonExercice, Exercice.class);
 
             parent.getServerHandler().getExerciceById(exercice.getId(), parent.getSharedPreferenceManager().getTokenSaved(), new IAPICallbackJsonObject() {
                 @Override
                 public void onSuccessResponse(@NotNull JSONObject result) {
-
-                    // if more detail of the exercice have been found
-
                     if(result.length() > 0){
                         try {
                             JSONObject jsonExercice = result.getJSONObject("exercice");
-                            //JSONArray functions = result.getJSONArray("function");
                             exercice = gson.fromJson(String.valueOf(jsonExercice), Exercice.class);
                             if(exercice.getAuthor_id() > 0){
                                 parent.getServerHandler().getUser(exercice.getAuthor_id(), parent.getSharedPreferenceManager().getTokenSaved(), new IAPICallbackJsonArray() {
@@ -96,7 +98,6 @@ public class ExerciceDetailFragment extends Fragment {
                                             e.printStackTrace();
                                         }
                                     }
-
                                     @Override
                                     public void onErrorResponse(@NotNull VolleyError error) {
 
@@ -106,14 +107,11 @@ public class ExerciceDetailFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        //exercice = gson.fromJson(String.valueOf(result), Exercice.class);
                     }
                 }
 
                 @Override
                 public void onErrorResponse(@NotNull VolleyError error) {
-                    // if no more detail have been found
-
                     showExerciceDetails(exercice);
 
                 }
@@ -133,12 +131,6 @@ public class ExerciceDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_exercice_detail, container, false);
         bindView(rootView);
-
-        /*
-        if(exercice != null)
-            showExerciceDetails(exercice);
-        */
-
 
         return rootView;
     }
@@ -164,7 +156,6 @@ public class ExerciceDetailFragment extends Fragment {
             String creatorJson = gson.toJson(creator);
             intent.putExtra(EXERCICE_JSON, exerciceJson);
             intent.putExtra(EXERCICE_CREATOR_JSON, creatorJson);
-
             parent.startActivity(intent);
         });
 

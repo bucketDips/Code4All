@@ -14,9 +14,18 @@ import com.example.codinschool.serverhandler.ServerHandler;
 import com.example.codinschool.settings.SharedPreferenceManager;
 import com.example.codinschool.viewtools.SnackbarBuilder;
 
+/**
+ * The type My app compat activity.
+ */
 public abstract class MyAppCompatActivity extends AppCompatActivity {
 
+    /**
+     * The Shared preference manager.
+     */
     protected SharedPreferenceManager sharedPreferenceManager;
+    /**
+     * The Server handler.
+     */
     protected ServerHandler serverHandler;
 
     @Override
@@ -24,13 +33,8 @@ public abstract class MyAppCompatActivity extends AppCompatActivity {
         super.onCreate(null, persistentState);
 
         try {
-            // ONLY TO TEST ONE ACTIVITY, DELETE IN PROD
-            //ServerHandler.initInstance(getApplicationContext());
-
             this.sharedPreferenceManager = new SharedPreferenceManager(getApplicationContext());
             this.serverHandler = ServerHandler.getInstance();
-            //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,23 +47,20 @@ public abstract class MyAppCompatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(null);
-
         try {
-            // ONLY TO TEST ONE ACTIVITY, DELETE IN PROD
-            //ServerHandler.initInstance(getApplicationContext());
-
             this.sharedPreferenceManager = new SharedPreferenceManager(getApplicationContext());
             this.serverHandler = ServerHandler.getInstance();
-            //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         setContentView(getLayoutResourceId());
     }
 
+    /**
+     * Return home.
+     *
+     * @param error the error
+     */
     public void returnHome(VolleyError error){
         if(error != null){
             String code = ErrorNetwork.getErrorCode(error);
@@ -82,19 +83,47 @@ public abstract class MyAppCompatActivity extends AppCompatActivity {
         }
 
     }
+
+    /**
+     * Gets server handler.
+     *
+     * @return the server handler
+     */
     public ServerHandler getServerHandler() {
         return serverHandler;
     }
 
+    /**
+     * Gets shared preference manager.
+     *
+     * @return the shared preference manager
+     */
     public SharedPreferenceManager getSharedPreferenceManager() {
         return sharedPreferenceManager;
     }
 
+    /**
+     * Show snackbar message.
+     *
+     * @param message the message
+     * @param color   the color
+     */
     public void showSnackbarMessage(String message, int color){
         SnackbarBuilder.make(getRootView(), message, Snackbar.LENGTH_LONG, color).show();
     }
 
+    /**
+     * Gets layout resource id.
+     *
+     * @return the layout resource id
+     */
     protected abstract int getLayoutResourceId();
+
+    /**
+     * Gets root view.
+     *
+     * @return the root view
+     */
     protected abstract View getRootView();
 
 }

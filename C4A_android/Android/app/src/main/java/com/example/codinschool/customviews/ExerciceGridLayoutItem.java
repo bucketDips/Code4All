@@ -4,29 +4,56 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.codinschool.R;
+import com.example.codinschool.controllers.store.IStoreActivity;
 import com.example.codinschool.data_pojo.exercice.Exercice;
 
+/**
+ * The type Exercice grid layout item.
+ */
 public class ExerciceGridLayoutItem extends ConstraintLayout {
-    private OnClickListener listener;
+    private IStoreActivity listener;
     private LayoutInflater layoutInflate;
     private Exercice exercice;
 
-    public ExerciceGridLayoutItem(Context context, Exercice exercice, OnClickListener listener, int imageid) {
+    /**
+     * Instantiates a new Exercice grid layout item.
+     *
+     * @param context  the context
+     * @param exercice the exercice
+     * @param listener the listener
+     * @param imageid  the imageid
+     */
+    public ExerciceGridLayoutItem(Context context, Exercice exercice, IStoreActivity listener, int imageid) {
         super(context);
-        init(imageid);
         this.listener = listener;
         this.exercice = exercice;
         this.layoutInflate = LayoutInflater.from(context);
+        init(imageid);
+
     }
 
+    /**
+     * Instantiates a new Exercice grid layout item.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public ExerciceGridLayoutItem(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * Instantiates a new Exercice grid layout item.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     */
     public ExerciceGridLayoutItem(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -44,9 +71,19 @@ public class ExerciceGridLayoutItem extends ConstraintLayout {
         authorName.setText(exercice.getAuthorName());
         exercice_description.setText(exercice.getDescription());
         imageView.setImageResource(imageid);
-        button.setOnClickListener(listener);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickAdded(exercice);
+            }
+        });
     }
 
+    /**
+     * Gets exercice.
+     *
+     * @return the exercice
+     */
     public Exercice getExercice() {
         return this.exercice;
     }

@@ -33,6 +33,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * The type Classe details fragment.
+ */
 public class ClasseDetailsFragment extends Fragment{
 
     private final String TAG = "ClasseDetailsFragment";
@@ -54,7 +57,7 @@ public class ClasseDetailsFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_classe_details, container, false);
         parent = (ClasseActivity) getActivity();
-        loadUI(fragment);
+        bindUi(fragment);
         getData(getArguments());
 
         return fragment;
@@ -75,6 +78,10 @@ public class ClasseDetailsFragment extends Fragment{
     }
 
 
+    /**
+     * Refresh classe data.
+     * get data from api
+     */
     void refreshClasseData(){
         parent.getServerHandler().getClasseDetails(parent.getSharedPreferenceManager().getTokenSaved(), classeSelected.getId(), new IAPICallbackJsonObject() {
             @Override
@@ -133,7 +140,7 @@ public class ClasseDetailsFragment extends Fragment{
         progressBar.setVisibility(View.GONE);
     }
 
-    private void loadUI(View fragment) {
+    private void bindUi(View fragment) {
         classeDetailLabel = fragment.findViewById(R.id.classeLabel);
         gridViewProfessors = fragment.findViewById(R.id.gridProfessors);
         gridViewStudents = fragment.findViewById(R.id.gridStudents);

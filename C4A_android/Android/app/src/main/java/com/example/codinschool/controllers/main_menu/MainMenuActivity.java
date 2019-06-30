@@ -18,6 +18,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.codinschool.R;
+import com.example.codinschool.controllers.store.StoreActivity;
 import com.example.codinschool.customviews.MyAppCompatActivity;
 import com.example.codinschool.controllers.classes_menu.ClasseActivity;
 import com.example.codinschool.controllers.exercices_menu.ExerciceListActivity;
@@ -35,11 +36,20 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * The type Main menu activity.
+ */
 public class MainMenuActivity extends MyAppCompatActivity {
     private ArrayList<Intent> intents;
+    /**
+     * The Binding.
+     */
     ActivityMainMenuBinding binding;
     private static final String TAG = "MainMenuActivity";
 
+    /**
+     * Instantiates a new Main menu activity.
+     */
     public MainMenuActivity() {
         super();
     }
@@ -53,7 +63,7 @@ public class MainMenuActivity extends MyAppCompatActivity {
             serverHandler.getRandomPicture(new IAPICallbackJsonObject() {
                 @Override
                 public void onSuccessResponse(@NotNull JSONObject result) {
-                    loadUI(result);
+                    bindUi(result);
                 }
 
                 @Override
@@ -66,12 +76,11 @@ public class MainMenuActivity extends MyAppCompatActivity {
             userManager.setListener(new IUserManagerListener() {
                 @Override
                 public void onUserSaved() {
-                    Log.d(TAG, TAG + "onUserSaved");
+
                 }
 
                 @Override
                 public void onUserLoaded(User user) {
-                    Log.d(TAG, TAG + "onUserLoaded");
                     renderTextViews(user);
                 }
 
@@ -82,8 +91,6 @@ public class MainMenuActivity extends MyAppCompatActivity {
             });
 
             userManager.loadUserFromSharedPreference();
-            //userManager.loadUserInfos(sharedPreferenceManager.getUserInfos().getEmail());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,9 +98,11 @@ public class MainMenuActivity extends MyAppCompatActivity {
         intents = new ArrayList<>();
         intents.add(new Intent(this, ClasseActivity.class));
         intents.add(new Intent(this, ExerciceListActivity.class));
+        intents.add(new Intent(this, StoreActivity.class));
 
         binding.button1.setOnClickListener(v -> onClickButtonMenu(binding.button1));
         binding.button2.setOnClickListener(v -> onClickButtonMenu(binding.button2));
+        binding.button3.setOnClickListener(v -> onClickButtonMenu(binding.button3));
         binding.disconnectButton.setOnClickListener(v -> returnHome(null));
 
         binding.datalabel.setText(getString(R.string.datalabel,DateFormat.getDateTimeInstance().format(new Date())));
@@ -108,7 +117,7 @@ public class MainMenuActivity extends MyAppCompatActivity {
 
     }
 
-    private void loadUI(JSONObject result) {
+    private void bindUi(JSONObject result) {
         loadBackgroundImage(result);
     }
 
@@ -151,10 +160,15 @@ public class MainMenuActivity extends MyAppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Render text views.
+     *
+     * @param user the user
+     */
     void renderTextViews(User user){
 
         if(user != null){
-            Log.d(TAG, user.getName());
             binding.title.setText(getString(R.string.welcoming_msg, user.getName()));
         } else
             binding.title.setText(getString(R.string.welcoming_msg,""));
@@ -167,6 +181,11 @@ public class MainMenuActivity extends MyAppCompatActivity {
         Snackbar.make(binding.background, message, Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     * On click button menu.
+     *
+     * @param imageView the image view
+     */
     void onClickButtonMenu(CardView imageView){
         String id = imageView.getTag().toString();
         startActivity(intents.get(Integer.parseInt(id)));
@@ -185,8 +204,6 @@ public class MainMenuActivity extends MyAppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        sharedPreferenceManager.clearCache();
-        Log.d(TAG, "Cache cleared");
         super.onDestroy();
     }
 
