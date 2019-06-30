@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-
 import ConnectedWindowsStructure from '../ConnectedWindowsStructure/';
 import GestionClassWindow from '../GestionClassWindow';
-
 import { Input, Modal, Form } from 'antd';
-
 import classes from '../../Providers/classes';
 
+/**
+ * A form that allow user to create a new class
+ */
 const ClassCreationForm = Form.create({ name: 'form_in_modal' })(
     // eslint-disable-next-line
     class extends React.Component {
@@ -34,8 +34,15 @@ const ClassCreationForm = Form.create({ name: 'form_in_modal' })(
     },
   );
 
+/**
+ * The window that build the menus and associated
+ * actions for the class module
+ */
 class ClassesWindow extends Component {
 
+    /**
+     * constructor method
+     */
     constructor() {
         super();
         this.state = {
@@ -45,14 +52,24 @@ class ClassesWindow extends Component {
         }
     }
 
+    /**
+     * show the modal of class creation
+     */
     showModal = () => {
         this.setState({ visible: true });
     };
 
+    /**
+     * hide the modal of class creation
+     */
     handleCancel = () => {
     this.setState({ visible: false });
     };
 
+    /**
+     * handle the action of creating a class,
+     * after validating the text input
+     */
     handleCreate = () => {
         const { form } = this.formRef.props;
         form.validateFields((err, values) => {
@@ -66,11 +83,16 @@ class ClassesWindow extends Component {
         });
     };
 
+    /**
+     * get the formref and save it
+     */
     saveFormRef = formRef => {
         this.formRef = formRef;
     };
 
-
+    /**
+     * action for click on presentation
+     */
     presentation() {
         return new Promise((resolve, reject) => { resolve([(
             <div>
@@ -79,17 +101,27 @@ class ClassesWindow extends Component {
         ), "not-collapsed"]); });
     }
 
+    /**
+     * action for click on a class
+     */
     clickOnClass(id, teacher) {
         return new Promise((resolve, reject) => { resolve([(
             <GestionClassWindow id={id} teacher={teacher} />
         ), "collapsed"]); });
     }
 
+    /**
+     * action for click on create class
+     */
     createClass() {
         this.showModal();
         return new Promise((resolve, reject) => { resolve(null)});
     }
 
+    /**
+     * build the menus with the datas of
+     * classes from the databases
+     */
     async componentWillMount() {
         var allClasses = await classes.getMines();
 
@@ -136,6 +168,9 @@ class ClassesWindow extends Component {
         });
     }
 
+    /**
+     * render method
+     */
     render() {
         return (
             <div>

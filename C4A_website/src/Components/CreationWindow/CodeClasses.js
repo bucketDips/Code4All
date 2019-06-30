@@ -1,3 +1,6 @@
+/**
+ * class grid represents a grid in code
+ */
 export class Grid {
     constructor(lines, columns, patternId) {
       this.lines = lines;
@@ -12,6 +15,12 @@ export class Grid {
       this.states = [];
     }
 
+    /**
+     * method called by the teacher
+     * save the actual state of the grid in the array
+     * this will be retrieved in the server to display
+     * differents states of the grid
+     */
     saveState() {
         this.states.push(JSON.parse(JSON.stringify({
             lines: this.lines,
@@ -24,14 +33,25 @@ export class Grid {
         })));
     }
 
+    /**
+     * method called by the teacher
+     * if message it's an error, if not it's
+     * just the end of the exercice
+     */
     end(message) {
         throw new Error(message);
     }
 
+    /**
+     * change the pattern of the grid
+     */
     changePattern(n) {
         this.patternId = n;
     }
 
+    /**
+     * copy this grid by value
+     */
     copy() {
         var grid = new Grid(this.lines, this.columns, this.patternId);
         for(var i = 0; i < this.blocks.length; i++) {
@@ -55,6 +75,10 @@ export class Grid {
         return grid;
     }
   
+    /**
+     * check if an element of the id exists
+     * in the array elements
+     */
     checkIfIdAlreadyExists(elements, id) {
         elements.forEach(element => {
             if(element.id === id) {
@@ -63,42 +87,69 @@ export class Grid {
         });
     }
 
+    /**
+     * method called by teacher
+     * add a block to the grid
+     */
     addBlock(block) {
         if(!(block instanceof Block)) throw new Error("The added element should be of type 'block'");
         this.checkIfIdAlreadyExists(this.blocks, block.id);
         this.blocks.push(block);
     };
 
+    /**
+     * method called by teacher
+     * add a npc to the grid
+     */
     addNpc(npc) {
         if(!(npc instanceof Npc)) throw new Error("The added element should be of type 'npc'");
         this.checkIfIdAlreadyExists(this.npcs, npc.id);
         this.npcs.push(npc);
     };
 
+    /**
+     * method called by teacher
+     * add a pc to the grid
+     */
     addPc(pc) {
         if(!(pc instanceof Pc)) throw new Error("The added element should be of type 'pc'");
         this.checkIfIdAlreadyExists(this.pcs, pc.id);
         this.pcs.push(pc);
     };
 
+    /**
+     * method called by teacher
+     * add a label to the grid
+     */
     addLabel(label) {
         if(!(label instanceof Label)) throw new Error("The added element should be of type 'label'");
         this.checkIfIdAlreadyExists(this.labels, label.id);
         this.labels.push(label);
     };
 
+    /**
+     * method called by teacher
+     * add a function to the grid
+     */
     addFunction(func) {
         if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
         //this.functions.push(new Func(name, String(code), description));
         this.functions.push(func);
     }
 
+    /**
+     * method called by teacher
+     * add a test to the grid
+     */
     addTest(func) {
         if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
         //this.functions.push(new Func(name, String(code), description));
         this.tests.push(func);
     }
 
+    /**
+     * remove an element by id for the grid
+     */
     removeElement(elements, id) {
         for(var i = 0; i < elements.length; i++) {
             if(elements[i].id === id) {
@@ -108,46 +159,90 @@ export class Grid {
         }
     }
 
+    /**
+     * method called by teacher
+     * remove a block to the grid
+     */
     removeBlock(id) {
         this.removeElement(this.blocks, id);
     }
 
+    /**
+     * method called by teacher
+     * remove a npc to the grid
+     */
     removeNpc(id) {
         this.removeElement(this.npcs, id);
     }
 
+    /**
+     * method called by teacher
+     * remove a pc to the grid
+     */
     removePc(id) {
         this.removeElement(this.pcs, id);
     }
 
+    /**
+     * method called by teacher
+     * remove a label to the grid
+     */
     removeLabel(id) {
         this.removeElement(this.labels, id);
     }
   
+    /**
+     * method called by teacher
+     * get the blocks of the grid
+     */
     getBlocks() {
         return this.blocks;
     }
 
+    /**
+     * method called by teacher
+     * get the npcs of the grid
+     */
     getNpcs() {
         return this.npcs;
     }
 
+    /**
+     * method called by teacher
+     * get the pcs of the grid
+     */
     getPcs() {
         return this.pcs;
     }
 
+    /**
+     * method called by teacher
+     * get the labels of the grid
+     */
     getLabels() {
         return this.labels;
     }
 
+    /**
+     * method called by teacher
+     * get the functions of the grid
+     */
     getFunctions() {
         return this.functions;
     }
 
+    /**
+     * method called by teacher
+     * get the tests of the grid
+     */
     getTests() {
         return this.tests;
     }
 
+    /**
+     * get an element by if from the
+     * array elements
+     */
     getElementById(id, elements) {
         for(var i = 0; i < elements.length; i++) {
             if(elements[i].id === id) {
@@ -157,22 +252,42 @@ export class Grid {
         throw new Error("Il n'y a pas d'élément avec cet id");
     }
 
+    /**
+     * method called by teacher
+     * get a block by his id
+     */
     getBlock(id) {
         return this.getElementById(id, this.blocks);
     }
 
+    /**
+     * method called by teacher
+     * get a npc by his id
+     */
     getNpc(id) {
         return this.getElementById(id, this.npcs);
     }
 
+    /**
+     * method called by teacher
+     * get a pc by his id
+     */
     getPc(id) {
         return this.getElementById(id, this.pcs);
     }
 
+    /**
+     * method called by teacher
+     * get a label by his id
+     */
     getLabel(id) {
         return this.getElementById(id, this.labels);
     }
 
+    /**
+     * check if an element of this id
+     * exists in the array elements
+     */
     elementExists(id, elements) {
         for(var i = 0; i < elements.length; i++) {
             if(elements[i].id === id) {
@@ -182,18 +297,34 @@ export class Grid {
         return false;
     }
 
+    /**
+     * method called by teacher
+     * check if a block of this id exists
+     */
     blockExists(id) {
         return this.elementExists(id, this.blocks);
     }
 
+    /**
+     * method called by teacher
+     * check if a npc of this id exists
+     */
     npcExists(id) {
         return this.elementExists(id, this.npcs);
     }
 
+    /**
+     * method called by teacher
+     * check if a pc of this id exists
+     */
     pcExists(id) {
         return this.elementExists(id, this.pcs);
     }
 
+    /**
+     * method called by teacher
+     * check if a label of this id exists
+     */
     labelExists(id) {
         return this.elementExists(id, this.labels);
     }

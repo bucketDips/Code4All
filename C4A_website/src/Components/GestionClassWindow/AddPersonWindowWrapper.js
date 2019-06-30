@@ -3,6 +3,7 @@ import AddPersonWindow from './AddPersonWindow';
 import styles from './style.css';
 import classes from '../../Providers/classes';
 
+
 class AddPersonWindowWrapper extends Component {
     state = {
       visible: false
