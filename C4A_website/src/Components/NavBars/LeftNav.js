@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Layout } from 'antd';
-
 // eslint-disable-next-line
 import styles from '../NavBars/style.css';
 
 const SubMenu = Menu.SubMenu;
 const Sider = Layout.Sider;
 
+/**
+* correspond to the left navigation in every window,
+contained menus and submenus defined in connectedwindows
+classes
+*/
 class LeftNav extends Component {
 
   state = {
     collapsed: false,
   };
 
+  /**
+  * action when clicking on a menu or submenu 
+  */
   onClick(action, optional) {
     var tempContent = this.state.content;
     this.setState({
@@ -40,6 +47,10 @@ class LeftNav extends Component {
     });
   }
 
+  /**
+  * recreating menus from the menus defined in connectedwindows
+  * classes
+  */
   reinitMenus() {
     var menus = [];
     for(var menu in this.props.menus) {
@@ -76,10 +87,16 @@ class LeftNav extends Component {
     return menus;
   }
 
+  /**
+  * action when collapsing menu
+  */
   onCollapse = collapsed => {
     this.setState({ collapsed });
   };
 
+  /**
+  * render method
+  */
   render() {
     var content = this.state.content === undefined ? this.props.content : this.state.content;
     var menus = this.reinitMenus();
