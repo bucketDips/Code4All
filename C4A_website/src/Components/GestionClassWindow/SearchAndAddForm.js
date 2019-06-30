@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { Input } from 'antd';
 import Person from './Person';
 import styles from './style.css';
-
 import persons from '../../Providers/persons';
 
 const Search = Input.Search;
 
+/**
+ * form that allow the user to search a user and
+ * add it to the list (professor or student)
+ */
 class SearchAndAddForm extends Component {
     constructor() {
         super();
@@ -18,25 +21,39 @@ class SearchAndAddForm extends Component {
         }
     }
 
+    /**
+    * set the persons that can't be found 
+    */
     componentWillMount() {
         this.setState({persons: JSON.parse(JSON.stringify(this.props.persons))});
     }
 
+    /**
+    * action when searching for a username/mail
+    */
     async onSearch(value) {
         var users = await persons.getUsersForName(value);
         this.setState({foundPersons: users});
     }
 
+    /**
+    * check if a person with this id exists in the props persons
+    */
     alreadyIsIn(id) {
         var present = false;
         this.state.persons.map(person => {
             if(person.id === id) {
                 present = true;
             }
+            return person;
         });
         return present;
     }
 
+    /**
+    * action for clicking on a person to add
+    * in the foundPersons list
+    */
     add(person) {
         var persons = this.state.persons;
         var toAdd = this.state.toAdd;
@@ -52,17 +69,19 @@ class SearchAndAddForm extends Component {
         this.props.setToAdd(toAdd);
     }
 
+    /**
+    * action for clicking on a person to remove
+    * in the toAddList
+    */
     remove(person) {
-        var toAdd = this.state.toAdd;
-        var addedPersons = this.state.addedPersons;
         var filteredPersons = this.state.persons.filter(function(value, index, arr){
-            return value != person;
+            return value !== person;
         });
         var filteredToAdd = this.state.toAdd.filter(function(value, index, arr){
-            return value != person.id;
+            return value !== person.id;
         });
         var filteredAddedPersons = this.state.addedPersons.filter(function(value, index, arr){
-            return value != person;
+            return value !== person;
         });
         this.setState({
             persons: filteredPersons,
@@ -72,6 +91,9 @@ class SearchAndAddForm extends Component {
         this.props.setToAdd(filteredToAdd);
     }
 
+    /**
+    * render method 
+    */
     render() {
         var foundPersons = this.state.foundPersons.map(person => {
             if(this.alreadyIsIn(person.id)) {

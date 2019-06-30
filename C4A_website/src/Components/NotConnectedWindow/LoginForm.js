@@ -4,14 +4,20 @@ import {
   Input,
   Button,
 } from 'antd';
-
 import auth from '../../Providers/auth';
 
+/**
+* correspond to the login form present in the same window 
+*/
 class LoginWindow extends Component {
+
   state = {
     confirmDirty: false,
   };
 
+  /**
+  * action when clicking on login button
+  */
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -21,6 +27,9 @@ class LoginWindow extends Component {
     });
   };
 
+  /**
+  * render method
+  */
   render() {
     const { getFieldDecorator } = this.props.form;
 

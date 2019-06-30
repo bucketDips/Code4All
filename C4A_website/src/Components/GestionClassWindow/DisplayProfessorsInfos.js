@@ -7,13 +7,21 @@ import classes from '../../Providers/classes';
 
 const confirm = Modal.confirm;
 
-
+/**
+* module containing all the professors of the class
+*/
 class DisplayProfessorsInfos extends Component {
 
+    /**
+    * reload the professors in class details
+    */
     refill() {
         this.props.refill();
     }
 
+    /**
+    * show the modal of person suppression in the class
+    */
     showConfirm(idPerson, idClass, cb) {
         confirm({
             title: 'Etes-vous sûr de vouloir supprimer cette personne de la classe ?',
@@ -25,12 +33,15 @@ class DisplayProfessorsInfos extends Component {
         });
     }
 
+    /**
+    * render method
+    */
     render() {
         var profs = this.props.infos.map(prof => {
             if(this.props.teacher) {
-                return <Person name={prof.name} id={prof.id} email={prof.email} delete={this.showConfirm.bind(this, prof.id, this.props.idClass, this.refill.bind(this))} />
+                return <Person key={prof.id} name={prof.name} id={prof.id} email={prof.email} delete={this.showConfirm.bind(this, prof.id, this.props.idClass, this.refill.bind(this))} />
             }
-            return <Person name={prof.name} id={prof.id} email={prof.email} />
+            return <Person key={prof.id} name={prof.name} id={prof.id} email={prof.email} />
         });
 
         return (

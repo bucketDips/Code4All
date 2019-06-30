@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import styles from './style.css';
 
+/**
+ * class represents a npc in the grid
+ */
 class Npc extends Component {
+
+    /**
+     * action for the click on the npc
+     */
     askEditNpc() {
         let parameters = {
             type: "NPC",
@@ -17,6 +24,9 @@ class Npc extends Component {
         this.props.changeParametersWindow(parameters);
     }
 
+    /**
+     * render method
+     */
     render() {
         return (
             <div style={{

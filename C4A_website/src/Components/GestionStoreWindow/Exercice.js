@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
 import { Card, Icon, Modal } from 'antd';
+// eslint-disable-next-line
 import style from './style.css';
 import exercices from '../../Providers/exercices';
 
 const confirm = Modal.confirm;
 
+/**
+ * correspond to an exercice in the store window 
+ */
 class Exercice extends Component {
 
-    constructor() {
-        super();
-    }
-
+    /**
+    * refill the store exercices
+    */
     refill(element){
         element.props.refill();
     }
 
+    /**
+    * show the fork modal
+    */
     showConfirm(element) {
         confirm({
           title: 'Etes-vous sûr de vouloir forker cet exercice ? Il sera ajouté à votre propres exercies.',
@@ -26,10 +32,16 @@ class Exercice extends Component {
         });
       }
 
+    /**
+    * action when clicking on the button fork 
+    */
     fork() {
         this.showConfirm(this);
     }
 
+    /**
+    * render method
+    */
     render() {
         return (
             <Card 

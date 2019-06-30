@@ -1,5 +1,3 @@
-import { Grid, Block, Npc, Pc, Label, Func } from '../CreationWindow/CodeClasses';
-import { func } from 'prop-types';
 import consts from '../../Providers/consts';
 
 export default class Compilator {

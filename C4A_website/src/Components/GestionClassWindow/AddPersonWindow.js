@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-
+import React from 'react';
+// eslint-disable-next-line
 import styles from './style.css';
-import { Input, Button, Modal, Form } from 'antd';
+import { Modal, Form } from 'antd';
 import SearchAndAddForm from './SearchAndAddForm';
 
-const confirm = Modal.confirm;
-const TextArea = Input.TextArea;
-
+/**
+ * form of adding a person to the class
+ */
 const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class extends React.Component {
@@ -14,13 +14,19 @@ const AddPersonWindow = Form.create({ name: 'form_in_modal' })(
       toAdd: []
     }
 
+    /**
+     * change the value of the ids of persons
+     * to add to the class
+     */
     setToAdd(toAdd) {
       this.setState({toAdd: toAdd});
     }
 
+    /**
+     * render method
+     */
     render() {
-      const { visible, onCancel, onSave, form } = this.props;
-      const { getFieldDecorator } = form;
+      const { visible, onCancel, onSave } = this.props;
       return (
         <Modal
           destroyOnClose={true}

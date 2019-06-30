@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import WrappedLoginWindow from './LoginForm';
 import WrappedRegistrationForm from './InscriptionForm';
-
 // eslint-disable-next-line
 import styles from './style.css';
 
-
+/**
+* correspond to the login and inscription window 
+*/
 class NotConnectedWindow extends Component {
 
+  /**
+  * constructor
+  */
   constructor() {
     super();
     this.state = {
@@ -16,10 +20,16 @@ class NotConnectedWindow extends Component {
     }
   }
 
+  /**
+  * delay like in the thread sleep in c#
+  */
   sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
 
+  /**
+  * action when clicking on an arrow (changing from inscription to login)
+  */
   handleClick() {
     this.setState({
       fade: true
@@ -37,6 +47,9 @@ class NotConnectedWindow extends Component {
     });
   }
 
+  /**
+  * render method
+  */
   render() {
     if(this.state.type === 'login') {
       var form = (<WrappedLoginWindow />);

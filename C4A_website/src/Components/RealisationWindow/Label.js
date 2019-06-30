@@ -9,7 +9,7 @@ class Label extends Component {
                 gridColumnEnd: this.props.columnStart + this.props.width,
                 gridRowEnd: this.props.rowStart + this.props.height,
                 zIndex: 10,
-                fontSize: this.props.caseSize * 0.4 * this.props.width
+                fontSize: (this.props.caseSize * 0.4 * this.props.width) ? (this.props.caseSize * 0.4 * this.props.width) : 14
               }}>
               {this.props.text}
             </div>

@@ -1,25 +1,35 @@
 import React, { Component } from 'react';
-
 import styles from './style.css';
 import CustomSlider from './CustomSlider'
-
 import consts from '../../Providers/consts';
 
-
+/**
+ * parameters of the grid for the parameters
+ * module of creation window
+ */
 class ParametersGrid extends Component {
 
+  /**
+   * action when changing the line slider value
+   */
   changeLinesValue(e) {
     let params = this.props.parameters;
     params.lines = e;
     this.props.changeGridParameters(params);
   }
 
+  /**
+   * action when changing the columns slider value
+   */
   changeColumnsValue(e) {
     let params = this.props.parameters;
     params.columns = e;
     this.props.changeGridParameters(params);
   }
 
+  /**
+   * caction when changing the pattern id dropdown value
+   */
   changePatternValue(e) {
     let params = this.props.parameters;
     if(e.target.value === "0") {
@@ -33,6 +43,9 @@ class ParametersGrid extends Component {
     this.props.changeGridParameters(params);
   }
 
+  /**
+   * render method
+   */
   render() {
     let patterns = [];
     if(this.props.patterns) {

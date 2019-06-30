@@ -4,8 +4,15 @@ import classes from '../../Providers/classes';
 import ClassDetails from './ClassDetails';
 import ExercicesDetails from './ExercicesDetails';
 
+/**
+* window of gestion class, called when accessing
+* to a class from the menu
+*/
 class GestionClassWindow extends Component {
 
+  /**
+    * constructor
+    */
   constructor() {
     super();
     this.state = {
@@ -17,6 +24,9 @@ class GestionClassWindow extends Component {
     }
   }
 
+  /**
+    * reload all of the class informations
+    */
   async refill() {
     var classInfo = await classes.getClassInfo(this.props.id);
     this.setState({
@@ -27,14 +37,23 @@ class GestionClassWindow extends Component {
     });
   }
 
+  /**
+    * action when the user click on show exercices 
+    */
   showExosPanel() {
     this.setState({exercicesDetailsVisible: this.state.exercicesDetailsVisible ? false : true});
   }
 
+  /**
+    * auto refill when component start
+    */
   componentWillMount() {
     this.refill();
   }
 
+  /**
+    * render method
+    */
   render() {
     return (
         <div className={style.class} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "blackboard.jpg)", backgroundSize: "cover"}}>

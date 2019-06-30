@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import style from './style.css';
 
+/**
+* module containing classroom informations (name, count, etc)
+*/
 class DisplayClassroomInfos extends Component {
+
+    /**
+    * render method
+    */
     render() {
         return (
             <div className={style.classroom_infos}>

@@ -12,8 +12,6 @@ import "brace/ext/searchbox";
 import styles from './style.css';
 import CustomSlider from './CustomSlider';
 
-import consts from '../../Providers/consts';
-
 class Code extends Component {
 
   constructor() {

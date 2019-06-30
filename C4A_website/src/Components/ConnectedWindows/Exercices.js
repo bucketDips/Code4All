@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
-
 import ConnectedWindowsStructure from '../ConnectedWindowsStructure/';
 import CreateExerciseWindow from '../CreationWindow/';
-
 import exercices from '../../Providers/exercices';
 import { Block, Npc, Pc, Label, Func, Grid } from '../CreationWindow/CodeClasses';
 import RealisationExerciseWindow from '../RealisationWindow';
 
+/**
+ * The window that build the menus
+ * and associated actions for the module
+ * exercices
+ */
 class ExercicesWindow extends Component {
 
+    /**
+     * constructor method
+     */
     constructor() {
         super();
         this.state = {
@@ -17,58 +23,61 @@ class ExercicesWindow extends Component {
         }
     }
 
+    /**
+     * action for click on an exercice in my exercices
+     */
     modifyExercice(code) {
         return exercices.getMyExercice(code.id, (exos) => {
             return [(<CreateExerciseWindow code={exos.data.exercice.code} id={exos.data.exercice.id} details={exos.data.exercice.description} name={exos.data.exercice.title} store={exos.data.exercice.isPublic} />), "collapsed"];
         });
     }
 
-    
-    launchModalWindow(bddResponse) {
-        var bundle = bddResponse.data.exercice;
-        bundle.gridObject = this.copy(bundle.rows, bundle.columns, bundle.patternId, bundle.blocks, bundle.npcs, bundle.pcs, bundle.labels, bundle.functions, bundle.tests);
-
-        this.setState({
-            launchBundle: bundle
-        }, () => {
-            this.setState({visible: true});
-        });
-    }
-
+    /**
+     * action for click on an exercice in forked exercices
+     */
     async launchExercice(code) {
         var bundle = await exercices.getMyExercice(code.id);
         bundle = bundle.data.exercice;
         bundle.gridObject = this.copy(bundle.rows, bundle.columns, bundle.patternId, bundle.blocks, bundle.npcs, bundle.pcs, bundle.labels, bundle.functions, bundle.tests);
-        return new Promise((resolve, reject) => { resolve([(<RealisationExerciseWindow bundle={bundle} />), "collapsed"]); });
+        return new Promise((resolve, reject) => { resolve([(<RealisationExerciseWindow bundle={bundle} fork={true} />), "collapsed"]); });
     }
 
+    /**
+     * create a gridObject with all datas from the database
+     */
     copy(lines, columns, patternId, blocks, npcs, pcs, labels, functions, tests) {
         var grid = new Grid(lines, columns, patternId);
         for(var i = 0; i < blocks.length; i++) {
             grid.addBlock(new Block(blocks[i].id, blocks[i].row, blocks[i].column, blocks[i].width, blocks[i].height, blocks[i].patternId));
         }
-        for(var i = 0; i < npcs.length; i++) {
+        for(i = 0; i < npcs.length; i++) {
             grid.addNpc(new Npc(npcs[i].id, npcs[i].row, npcs[i].column, npcs[i].width, npcs[i].height, npcs[i].patternId));
         }
-        for(var i = 0; i < pcs.length; i++) {
+        for(i = 0; i < pcs.length; i++) {
             grid.addPc(new Pc(pcs[i].id, pcs[i].row, pcs[i].column, pcs[i].width, pcs[i].height, pcs[i].patternId));
         }
-        for(var i = 0; i < labels.length; i++) {
+        for(i = 0; i < labels.length; i++) {
             grid.addLabel(new Label(labels[i].id, labels[i].row, labels[i].column, labels[i].width, labels[i].height, labels[i].text));
         }
-        for(var i = 0; i < functions.length; i++) {
+        for(i = 0; i < functions.length; i++) {
             grid.addFunction(new Func(functions[i].name, functions[i].code, functions[i].description));
         }
-        for(var i = 0; i < tests.length; i++) {
+        for(i = 0; i < tests.length; i++) {
             grid.addTest(new Func(tests[i].name, tests[i].code, tests[i].description));
         }
         return grid;
     }
 
+    /**
+     * action for click on an exercice
+     */
     createExercice() {
         return new Promise((resolve, reject) => { resolve([(<CreateExerciseWindow />), "collapsed"]); });
     }
 
+    /**
+     * action for click on presentation
+     */
     presentation() {
         return new Promise((resolve, reject) => { resolve([(
             <div>
@@ -77,6 +86,10 @@ class ExercicesWindow extends Component {
         ), "not-collapsed"]); });
     }
 
+    /**
+     * build the menus with the datas of
+     * exercices from the database
+     */
     async componentWillMount() {
         var allExercices = await exercices.getMines("coucou");
         var myExercices = [];
@@ -130,6 +143,9 @@ class ExercicesWindow extends Component {
         });
     }
 
+    /**
+     * render method
+     */
     render() {
         return (
             <ConnectedWindowsStructure type="exercices" menus={this.state.menus} content={this.state.content} />

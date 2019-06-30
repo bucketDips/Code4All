@@ -1,12 +1,7 @@
 import Axios from 'axios';
 import qs from 'qs';
-import { Input } from 'antd';
 import consts from '../Providers/consts'
 import files from '../Providers/files';
-
-const Search = Input.Search;
-
-
 
 class Exercices {
     async getMines() {
@@ -39,7 +34,7 @@ class Exercices {
     }
 
     extractPatternsFromArray(array, patterns) {
-        var newElements = array.map((element) => {
+        array.map((element) => {
             if(element.patternId !== null && element.patternId !== undefined && !patterns.includes(element.patternId)) {
                 patterns.push(element.patternId);
             }
@@ -186,6 +181,22 @@ class Exercices {
         });
     }
 
+    removeExerciceFromUser(id) {
+        Axios.post(consts.url() + 'exercices/removeExerciceFromUser/' + id, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            window.location.href = "/exercices";
+        })
+        .catch(function (error) {
+            console.log(error);
+            alert(JSON.stringify(error.response));
+        });
+    }
+
     setNewCodeForExercice(idExo, code){
         let data = {'solution': code};
 
@@ -208,13 +219,13 @@ class Exercices {
         }
 
         Axios.get(consts.url() + "exercices/getUserExerciceSolutionWeb/" + idExo, {headers: headers}).then(response => {
-            if(response.data){
-                this.getUserPassedTestsForExercice(idExo, response.data, cb);
+            if(response.data.length > 0){
+                this.getUserPassedTestsForExercice(idExo, response.data[0].solution, cb);
                 return;
             }
             this.getUserPassedTestsForExercice(idExo, "", cb);
         }).catch(error => {
-            this.getUserPassedTestsForExercice(idExo, "", cb);
+            alert(JSON.stringify(error));
         });
     }
 

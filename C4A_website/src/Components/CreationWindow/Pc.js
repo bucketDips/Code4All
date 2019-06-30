@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import styles from './style.css';
 
+/**
+ * class represents a pc in the grid
+ */
 class Pc extends Component {
+
+    /**
+     * action for the click on the pc
+     */
     askEditPc() {
         let parameters = {
             type: "PC",
@@ -13,10 +20,12 @@ class Pc extends Component {
             background: this.props.background,
             backgroundId: this.props.backgroundId
         }
-
         this.props.changeParametersWindow(parameters);
     }
 
+    /**
+     * render method
+     */
     render() {
         return (
             <div style={{

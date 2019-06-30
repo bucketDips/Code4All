@@ -12,3 +12,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+:local(.error_window) {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+:local(.text) {
+  padding-top: 20vh;
+  color: white;
+  font-size: 6vw !important;
+  font-family: lfl;
+  color: white;
+  text-align: center;
+  height: 100% !important;
+}
