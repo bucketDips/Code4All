@@ -86,7 +86,7 @@ export class Grid {
     checkIfIdAlreadyExists(elements, id) {
         elements.forEach(element => {
             if(element.id === id) {
-                throw new Error("There can't be 2 elements of this type with same id.");
+                throw new Error("Il ne peut pas y avoir deux éléments avec le même id de ce type");
             }
         });
     }
@@ -96,7 +96,7 @@ export class Grid {
      * add a block to the grid
      */
     addBlock(block) {
-        if(!(block instanceof Block)) throw new Error("The added element should be of type 'block'");
+        if(!(block instanceof Block)) throw new Error("L'élément ajouté doit être de type 'block'");
         this.checkIfIdAlreadyExists(this.blocks, block.id);
         this.blocks.push(block);
     };
@@ -106,7 +106,7 @@ export class Grid {
      * add a npc to the grid
      */
     addNpc(npc) {
-        if(!(npc instanceof Npc)) throw new Error("The added element should be of type 'npc'");
+        if(!(npc instanceof Npc)) throw new Error("L'élément ajouté doit être de type'npc'");
         this.checkIfIdAlreadyExists(this.npcs, npc.id);
         this.npcs.push(npc);
     };
@@ -116,7 +116,7 @@ export class Grid {
      * add a pc to the grid
      */
     addPc(pc) {
-        if(!(pc instanceof Pc)) throw new Error("The added element should be of type 'pc'");
+        if(!(pc instanceof Pc)) throw new Error("L'élément ajouté doit être de type 'pc'");
         this.checkIfIdAlreadyExists(this.pcs, pc.id);
         this.pcs.push(pc);
     };
@@ -126,18 +126,30 @@ export class Grid {
      * add a label to the grid
      */
     addLabel(label) {
-        if(!(label instanceof Label)) throw new Error("The added element should be of type 'label'");
+        if(!(label instanceof Label)) throw new Error("L'élément ajouté doit être de type 'label'");
         this.checkIfIdAlreadyExists(this.labels, label.id);
         this.labels.push(label);
     };
+
+    /**
+     * check if a function name already exists
+     * in the array functions
+     */
+    checkIfNameAlreadyExists(functions, name) {
+        functions.forEach(element => {
+            if(element.name === name) {
+                throw new Error("Il ne peut pas y avoir deux fonctions ou tests avec ce même id");
+            }
+        });
+    }
 
     /**
      * method called by teacher
      * add a function to the grid
      */
     addFunction(func) {
-        if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
-        //this.functions.push(new Func(name, String(code), description));
+        if(!(func instanceof Func)) throw new Error("L'élément ajouté doit être de type 'function'");
+        this.checkIfNameAlreadyExists(this.functions, func.name);
         this.functions.push(func);
     }
 
@@ -146,8 +158,8 @@ export class Grid {
      * add a test to the grid
      */
     addTest(func) {
-        if(!(func instanceof Func)) throw new Error("The added element should be of type 'function'");
-        //this.functions.push(new Func(name, String(code), description));
+        if(!(func instanceof Func)) throw new Error("L'élément ajouté doit être de type 'function'");
+        this.checkIfNameAlreadyExists(this.tests, func.name);
         this.tests.push(func);
     }
 
