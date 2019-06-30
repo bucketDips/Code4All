@@ -772,7 +772,7 @@ router.get('/getUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function(r
     var userId = request.decoded.id;
     function getUserExerciceSolutionWeb(userId, exerciceId) {
         return new Promise(function(resolve, reject) {
-            var sql = "select * from user_exercice_solution_web where userId= ? and exercice_id = ?";
+            var sql = "select solution from user_exercice_solution_web where userId= ? and exercice_id = ?";
             console.log(sql)
             con.query(sql, [userId,exerciceId],function (err, rows, fields) {
                 if (err) return reject(err);
@@ -783,7 +783,7 @@ router.get('/getUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function(r
     getUserExerciceSolutionWeb(userId, exerciceId).then(function(rows){
 
         // rows[0].solution =  rows[0].solution.substring(1,  rows[0].solution.length - 1);
-        res.send(rows[0].solution);
+        res.send(rows);
 
     }).catch(function(err){
         return res.status(403).json(err);
