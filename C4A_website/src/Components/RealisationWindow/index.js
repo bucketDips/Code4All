@@ -107,7 +107,10 @@ class RealisationExerciseWindow extends Component {
     }
 
     if(this.props.bundle.id) {
-      exercices.getCodeForExercice(this.props.bundle.id, this.init.bind(this));  
+      exercices.getCodeForExercice(this.props.bundle.id, this.init.bind(this)); 
+      for(var i = 0; i < this.props.bundle.functions.length; i++) {
+        this.props.bundle.description += ("\n" + this.props.bundle.functions[i].name + " : " + this.props.bundle.functions[i].description);
+      } 
     }
     else {
       this.init("", null);
@@ -248,6 +251,7 @@ class RealisationExerciseWindow extends Component {
    * render method
    */
   render() {
+    console.log(this.props);
     if(this.state.buttonCompile) {
       var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
     }
