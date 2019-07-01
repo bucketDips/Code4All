@@ -22,7 +22,8 @@ class Files {
 
         Axios.post(consts.url() + "fichiers/uploadToUser/" + options.file.name + "/-1", data, config).then((res) => {
           options.onSuccess(res.data, options.file)
-        }).catch((err) => {
+        }).catch((error) => {
+          consts.errorDatabaseMessage(error);
         })
     }
 
@@ -40,7 +41,7 @@ class Files {
         cb();
       })
       .catch(function (error) {
-        alert(error);
+        consts.errorDatabaseMessage(error);
       });
     }
 
@@ -59,7 +60,7 @@ class Files {
       })
       .catch(function (error) {
         if(error.response.data.code === "ER_DUP_ENTRY") return;
-        alert(JSON.stringify(error.response));
+        consts.errorDatabaseMessage(error);
       });
   }
 
@@ -74,7 +75,7 @@ class Files {
       return Axios.get(consts.url() + "fichiers/getAllUserImages", {headers: headers}).then(response => {
           return response;
       }).catch(error => {
-          alert(JSON.stringify(error));
+        consts.errorDatabaseMessage(error);
       });
   }
 }

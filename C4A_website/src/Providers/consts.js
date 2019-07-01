@@ -1,3 +1,5 @@
+import { notification } from 'antd';
+
 /**
  * used at multiple places functions
  */
@@ -34,6 +36,9 @@ class Consts {
         }
     }
 
+    /**
+     * adding throw errors in case of infinites loops
+     */
     formatCodeToIncludeInfiniteLoops(code) {
         code = "var loops = 0;\n" + code; 
         var matching = code.match(/(for\(.*\)\s*\{|while\(.*\)\s*\{)/g);
@@ -73,6 +78,21 @@ class Consts {
         this.checkIfForbiddenWordIn(buildedCode);
         // eslint-disable-next-line
         eval(this.formatCodeToIncludeInfiniteLoops(buildedCode));
+    }
+
+    /**
+     * error notification global
+     */
+    errorDatabaseMessage(error) {
+        console.log(JSON.stringify(error));
+        var message = "erreur inconnue";
+        if(error && error.response && error.response.data && error.response.data.message) {
+            message = error.response.data.message;
+        }
+        notification["error"]({
+            message: 'Erreur rencontré',
+            description: message
+        });
     }
 }
 

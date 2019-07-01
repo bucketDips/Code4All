@@ -17,7 +17,7 @@ class Persons {
         return Axios.get(consts.url() + "users/findUser/" + name, {headers: headers}).then(users => {
             return users.data;
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 }
