@@ -657,7 +657,11 @@ router.get('/getClassStudentPassedTests/:classId', AUTH.VERIFYAUTH, AUTH.isProfe
                         Promise.all(promises)
                             .then(function(data){
                                 var resultArray = Object.values(JSON.parse(JSON.stringify(data)))
-                                for (var i = 0; i < resultArray.length - 1; ++i){
+
+                                for (var i = 0; i < resultArray.length ; ++i){
+                                    if (resultArray[i].length === 0){
+                                        continue;
+                                    }
                                     for (var j = 0; j < rowsStudent.length; ++j){
                                         if (rowsStudent[j].id === resultArray[i][0].user_id){
                                             var exerciceInfo = {};
@@ -690,7 +694,6 @@ router.get('/getClassStudentPassedTests/:classId', AUTH.VERIFYAUTH, AUTH.isProfe
                                                 }
 
                                             }
-                                            // rowsStudent[j].exercices.push(resultArray[i]);
                                             rowsStudent[j].exercices.push(exerciceInfo);
                                         }
                                     }
