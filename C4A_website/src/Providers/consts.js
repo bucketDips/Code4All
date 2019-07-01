@@ -34,13 +34,27 @@ class Consts {
         }
     }
 
+    formatCodeToIncludeInfiniteLoops(code) {
+        code = "var loops = 0;\n" + code; 
+        var matching = code.match(/(for\(.*\)\s*\{|while\(.*\)\s*\{)/g);
+        if(!matching) return;
+        code = "var loops = 0;\n" + code; 
+        var singleMatching = matching.filter(function(item, pos) {
+            return matching.indexOf(item) === pos;
+        });
+        for(var i = 0; i < singleMatching.length; i++) {
+            code = code.replace(singleMatching[i], singleMatching[i] + "\nloops += 1;\nif(loops >= 100000) { throw new Error('Une boucle infinie a été détectée ! (maximum -> 100000 itérations)'); }\n");
+        }
+        return code;
+    }
+
     /**
      * safe eval of code
      */
     customEval(toEval, createGrid, createBlock, createNpc, createPc, createLabel, createFunction, synchronise, changeGridObject) {
         this.checkIfForbiddenWordIn(toEval);
         // eslint-disable-next-line
-        eval(toEval);
+        eval(this.formatCodeToIncludeInfiniteLoops(toEval));
     }
 
     /**
@@ -49,7 +63,7 @@ class Consts {
     customEvalOfCode(grid, buildedCode) {
         this.checkIfForbiddenWordIn(buildedCode);
         // eslint-disable-next-line
-        eval(buildedCode);
+        eval(this.formatCodeToIncludeInfiniteLoops(buildedCode));
     }
 
     /**
@@ -58,7 +72,7 @@ class Consts {
     customEvalOfTests(grid, setTestResult, buildedCode) {
         this.checkIfForbiddenWordIn(buildedCode);
         // eslint-disable-next-line
-        eval(buildedCode);
+        eval(this.formatCodeToIncludeInfiniteLoops(buildedCode));
     }
 }
 

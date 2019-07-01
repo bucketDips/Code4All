@@ -347,6 +347,7 @@ class Exercices {
         }
 
         return Axios.get(consts.url() + "exercices/getClassStudentPassedTests/" + idClass, {headers: headers}).then(response => {
+            console.log(response);
             return response.data.studentList;
         }).catch(error => {
             alert(JSON.stringify(error));

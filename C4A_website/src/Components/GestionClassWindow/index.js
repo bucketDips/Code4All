@@ -30,16 +30,21 @@ class GestionClassWindow extends Component {
     */
   async refill() {
     var classInfo = await classes.getClassInfo(this.props.id);
+    console.log(classInfo);
     if(this.props.teacher) {
       var studentsInfo = await exercices.getResultsOfStudents(this.props.id);
-      for(var i = 0; i < classInfo.studentList.length; i++) {
-        for(var j = 0; j < studentsInfo.length; j++) {
-          if(classInfo.studentList[i].id === studentsInfo[j].id) {
-            classInfo.studentList[i].exercices = studentsInfo[j].exercices;
+      console.log(studentsInfo);
+      if(studentsInfo) {
+        for(var i = 0; i < classInfo.studentList.length; i++) {
+          for(var j = 0; j < studentsInfo.length; j++) {
+            if(classInfo.studentList[i].id === studentsInfo[j].id) {
+              classInfo.studentList[i].exercices = studentsInfo[j].exercices;
+            }
           }
         }
       }
     }
+    console.log(classInfo);
     this.setState({
       classRoom: classInfo.classRoom,
       studentList: classInfo.studentList,
