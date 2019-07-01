@@ -42,7 +42,7 @@ class Consts {
     formatCodeToIncludeInfiniteLoops(code) {
         code = "var loops = 0;\n" + code; 
         var matching = code.match(/(for\(.*\)\s*\{|while\(.*\)\s*\{)/g);
-        if(!matching) return;
+        if(!matching) return code;
         code = "var loops = 0;\n" + code; 
         var singleMatching = matching.filter(function(item, pos) {
             return matching.indexOf(item) === pos;
@@ -57,7 +57,6 @@ class Consts {
      * safe eval of code
      */
     customEval(toEval, createGrid, createBlock, createNpc, createPc, createLabel, createFunction, synchronise, changeGridObject) {
-        this.checkIfForbiddenWordIn(toEval);
         // eslint-disable-next-line
         eval(this.formatCodeToIncludeInfiniteLoops(toEval));
     }
