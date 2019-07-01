@@ -320,7 +320,6 @@ class Exercices {
      * define test that i compiled for an exercice
      */
     uploadTestsForExercice(idExo, testArray) {
-        if(testArray.length === 0) return;
         let data = {'tests': JSON.stringify(testArray)};
 
         Axios.post(consts.url() + 'exercices/addSuccessTest/' + idExo, qs.stringify(data),
