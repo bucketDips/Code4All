@@ -21,10 +21,10 @@ class Classes {
                     professor: professorClasses.data
                 }
             }).catch(error => {
-                alert(JSON.stringify(error));
+                consts.errorDatabaseMessage(error);
             });
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -39,7 +39,7 @@ class Classes {
         return Axios.get(consts.url() + "exercices/getUserExercices", {headers: headers}).then(response => {
             return response.data.perso;
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -57,7 +57,7 @@ class Classes {
             window.location.href = "/classes";
         })
         .catch(function (error) {
-        alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -72,7 +72,7 @@ class Classes {
         return Axios.get(consts.url() + "classes/getClassDetail/" + id, {headers: headers}).then(response => {
             return response.data;
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -90,7 +90,7 @@ class Classes {
             return response;
         })
         .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -108,7 +108,7 @@ class Classes {
             return response;
         })
         .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -126,10 +126,7 @@ class Classes {
             cb();
         })
         .catch(function (error) {
-            if(error.response.data.message)
-                alert(error.response.data.message);
-            else
-                alert("une erreur est survenue");
+            consts.errorDatabaseMessage(error);
         });
     }
     
@@ -147,10 +144,7 @@ class Classes {
             cb();
         })
         .catch(function (error) {
-            if(error.response.data.message)
-                alert(error.response.data.message);
-            else
-                alert("une erreur est survenue");
+            consts.errorDatabaseMessage(error);
         });
     }
 

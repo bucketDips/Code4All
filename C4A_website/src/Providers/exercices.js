@@ -19,7 +19,7 @@ class Exercices {
         return Axios.get(consts.url() + "exercices/getUserExercices", {headers: headers}).then(response => {
             return response;
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -39,7 +39,7 @@ class Exercices {
                 return response;
             }
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -105,7 +105,7 @@ class Exercices {
             window.location.href = "/exercices";
           })
           .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
           });
     }
     
@@ -128,7 +128,7 @@ class Exercices {
             window.location.href = "/exercices";
           })
           .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
           });
     }
 
@@ -145,7 +145,7 @@ class Exercices {
             window.location.href = "/exercices";
           })
         .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -160,7 +160,7 @@ class Exercices {
         return Axios.get(consts.url() + "exercices/getAllStoreExercicesNotOwned", {headers: headers}).then(response => {
             return response.data;
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -178,7 +178,7 @@ class Exercices {
             cb();
         })
         .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -196,7 +196,7 @@ class Exercices {
             window.location.href = "/exercices";
         })
         .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -214,7 +214,7 @@ class Exercices {
             .then(function (response) {
             })
             .catch(function (error) {
-                alert(JSON.stringify(error.response))
+                consts.errorDatabaseMessage(error);
             });
         }
         cb();
@@ -234,8 +234,7 @@ class Exercices {
             cb();
         })
         .catch(function (error) {
-            console.log(error);
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -253,8 +252,7 @@ class Exercices {
             window.location.href = "/exercices";
         })
         .catch(function (error) {
-            console.log(error);
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -347,6 +345,7 @@ class Exercices {
         }
 
         return Axios.get(consts.url() + "exercices/getClassStudentPassedTests/" + idClass, {headers: headers}).then(response => {
+            console.log(response);
             return response.data.studentList;
         }).catch(error => {
             alert(JSON.stringify(error));

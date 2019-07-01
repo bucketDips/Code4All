@@ -16,7 +16,7 @@ class Auth {
                 window.location.href = "/";
             }
         }).catch(error => {
-            alert(error.response.data.message);
+            consts.errorDatabaseMessage(error);
         });
     }
 
@@ -47,12 +47,14 @@ class Auth {
      */
     inscription(user, password, mail) {
         Axios.get(consts.url() + "users/create/" + user + "/" + password + "/" + mail).then(response => {
-            if(response.success) {
-                window.location.href = "/login";
+            if(response && response.data && response.data.success) {
+                window.location.href = "/";
             }
             else {
-                alert("Erreur lors de l'inscription : " + response.data);
+                consts.errorDatabaseMessage("Erreur lors de l'inscription : " + JSON.stringify(response.data));
             }
+        }).catch(error => {
+            consts.errorDatabaseMessage(error);
         });
     }
 }

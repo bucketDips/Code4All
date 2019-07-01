@@ -28,7 +28,7 @@ class RegistrationForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        auth.inscription(values.nickname, values.password, values.email);
+        auth.inscription(values.pseudo, values.password, values.email);
       }
     });
   };
@@ -105,7 +105,7 @@ class RegistrationForm extends Component {
             </span>
           }
         >
-          {getFieldDecorator('Pseudo', {
+          {getFieldDecorator('pseudo', {
             rules: [{ required: true, message: 'Entrez votre pseudo svp !', whitespace: true }],
           })(<Input />)}
         </Form.Item>

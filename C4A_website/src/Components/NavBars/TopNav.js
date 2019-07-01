@@ -38,7 +38,7 @@ class TopNav extends Component {
     else {
       return (
           <Navbar bg="primary" variant="dark">
-              <Navbar.Brand href="/home">CodeInSchool</Navbar.Brand>
+              <Navbar.Brand href="/accueil">CodeInSchool</Navbar.Brand>
               <Nav className="mr-auto">
               
                   <Nav.Link href="/accueil">Accueil</Nav.Link>
