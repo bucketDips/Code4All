@@ -183,6 +183,24 @@ class Exercices {
     }
 
     /**
+     * delete an exercice from a user
+     */
+    deleteExerciceFromUser(idExercice) {
+        Axios.post(consts.url() + 'exercices/removeExerciceFromUser/' + idExercice, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            window.location.href = "/exercices";
+        })
+        .catch(function (error) {
+            alert(JSON.stringify(error.response));
+        });
+    }
+
+    /**
      * add an exercice to the class
      */
     async addExercicesToClass(idClass, exercices, cb) {

@@ -76,7 +76,6 @@ class Code extends Component {
                 enableSnippets: true,
                 tabSize: 2
               }}/>
-              <div id="info-text">{this.state.infoText}</div>
             </div>
             <CustomSlider className="custom-slider-code" changeSize={this.changeSizeValue.bind(this)} min={5} max={30} default={this.state.fontSize}/>
         </div>
