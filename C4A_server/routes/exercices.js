@@ -518,6 +518,9 @@ router.post('/addSuccessTest/:exerciceId', AUTH.VERIFYAUTH,function(request, res
     function getTestIds(tests, exerciceId) {
 
         return new Promise(function(resolve, reject) {
+            if (tests.length == 0){
+                resolve({});
+            }
             var sql = "select exercice_tests.id from exercice_tests where name in (?) and exercice_id = ?";
 
             con.query(sql, [tests, exerciceId], function (err, rows, fields) {
@@ -538,6 +541,9 @@ router.post('/addSuccessTest/:exerciceId', AUTH.VERIFYAUTH,function(request, res
     }
     function saveUserExerciceTest(testIds, exerciceId, user_id) {
         return new Promise(function(resolve, reject) {
+            if (testIds.length == 0){
+                resolve({});
+            }
             var reccords = [];
             for (var i = 0 ;i < testIds.length; ++i){
                 var tmp = []
