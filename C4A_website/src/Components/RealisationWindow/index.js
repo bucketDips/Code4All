@@ -212,7 +212,7 @@ class RealisationExerciseWindow extends Component {
     confirm({
       title: 'Etes-vous sûr de vouloir supprimer cet exercice ? Il ne sera plus utilisable dans vos classes.',
       onOk() {
-        exercices.deleteExercice(element.props.bundle.id);
+        exercices.deleteExerciceFromUser(element.props.bundle.id);
       },
       onCancel() {
       },
