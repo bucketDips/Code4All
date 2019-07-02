@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.Button;
@@ -21,9 +22,11 @@ import com.codinschool.android.data_pojo.grid_exercice_element.MyExclusionStrate
 import com.codinschool.android.data_pojo.solution_data.Boucle;
 import com.codinschool.android.data_pojo.solution_data.Condition;
 import com.codinschool.android.data_pojo.tests.Test;
+import com.codinschool.android.error.ErrorNetwork;
 import com.codinschool.android.serverhandler.IAPICallbackJsonObject;
 import com.codinschool.android.tools.DialogBoxBuilder;
 import com.codinschool.android.tools.IBasicDialogCallBack;
+import com.codinschool.android.viewtools.SnackbarBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -137,7 +140,8 @@ public class CodeExerciceFragment extends Fragment implements View.OnLongClickLi
 
             @Override
             public void onErrorResponse(@NotNull VolleyError error) {
-                String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                String responseBody = ErrorNetwork.parseVolleyError(error, getContext());
+                SnackbarBuilder.make(parent.getRootView(), responseBody, Snackbar.LENGTH_LONG, R.color.white);
                 enableButtonRun();
             }
         });

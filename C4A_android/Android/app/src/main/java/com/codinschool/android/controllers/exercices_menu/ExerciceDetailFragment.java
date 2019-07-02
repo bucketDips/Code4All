@@ -112,7 +112,6 @@ public class ExerciceDetailFragment extends Fragment {
                 @Override
                 public void onErrorResponse(@NotNull VolleyError error) {
                     showExerciceDetails(exercice);
-
                 }
             });
 

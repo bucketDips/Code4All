@@ -250,7 +250,7 @@ public class FunctionListWindow extends CardView {
 
     private int getColor(boolean isPrimary) {
         if(isPrimary){
-            if(indexPrimay > primaryColors.length)
+            if(indexPrimay == primaryColors.length)
                 index = 0;
 
             int color = primaryColors[indexPrimay];
@@ -258,7 +258,7 @@ public class FunctionListWindow extends CardView {
             return color;
 
         } else {
-            if(index > colors.length)
+            if(index == colors.length)
                 index = 0;
 
             int color = colors[index];

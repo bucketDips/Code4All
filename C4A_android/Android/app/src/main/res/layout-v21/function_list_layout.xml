@@ -5,9 +5,10 @@
                                     android:layout_width="250dp"
                                     app:cardBackgroundColor="@color/blue"
                                     app:cardCornerRadius="6dp"
+                                    android:elevation="10dp"
+                                    android:translationZ="1dp"
                                     android:maxHeight="400dp"
-                                    android:id="@+id/cardViewRoot" android:layout_height="wrap_content"
-                                    >
+                                    android:id="@+id/cardViewRoot" android:layout_height="wrap_content">
 
     <LinearLayout
             android:orientation="vertical"

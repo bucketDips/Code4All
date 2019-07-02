@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -198,7 +199,6 @@ public class GridExerciceFactory extends Factory{
         return root;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void imageSetBackground(View view, File[] files, GridExerciceElement element) {
         if(files == null)
             return;
@@ -212,7 +212,7 @@ public class GridExerciceFactory extends Factory{
                 }
             }
             if(gridBackground != null)
-                gridBackground.setBackground(context.getDrawable(R.drawable.texturenotfound));
+                gridBackground.setBackground(ContextCompat.getDrawable(context, R.drawable.texturenotfound));
         }
 
         if(view instanceof GifImageView){
