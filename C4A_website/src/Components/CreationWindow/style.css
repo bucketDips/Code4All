@@ -68,8 +68,8 @@ html, body {
 }
 
 .grid-edit {
-    width: 1vw;
-    margin-left: 1vw;
+    width: 15px;
+    margin-left: 3px;
 }
 
 .form-edit-grid {
@@ -81,6 +81,7 @@ html, body {
     background-color: white;
     border-radius: 10px;
     z-index: 5000;
+    width: 31px;
 }
 
 .custom-slider {
@@ -223,8 +224,8 @@ html, body {
     padding-right: 6px;
     padding-left: 6px;
     padding-bottom: 12px;
-    left: 30px;
-    bottom: 40px;
+    right: 30px;
+    top: 70px;
     background-color: white;
     border-radius: 10px;
     z-index: 5000;
