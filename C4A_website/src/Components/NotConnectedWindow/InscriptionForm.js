@@ -73,7 +73,7 @@ class RegistrationForm extends Component {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 },
+        sm: { span: this.props.fromClass ? 10 : 8 },
       },
       wrapperCol: {
         xs: { span: 24 },
@@ -166,7 +166,7 @@ class RegistrationForm extends Component {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">
-            S'enregistrer
+            {this.props.fromClass ? "Enregistrer l'élève" : "S'enregistrer"}
           </Button>
         </Form.Item>
       </Form>
