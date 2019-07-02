@@ -35,6 +35,12 @@ function stand(str) {
     var find = "\\\\r\\\\n"
     var re = new RegExp(find, 'g');
     str = str.replace(re, "\r\n")
+    find = "\\\\r"
+    re = new RegExp(find, 'g');
+    str = str.replace(re, "\r")
+    find = "\\\\n"
+    re = new RegExp(find, 'g');
+    str = str.replace(re, "\n")
     find = "\\\\"
     re = new RegExp(find, 'g');
     str = str.replace(re, "")
@@ -377,20 +383,11 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
 
 
                     rows[0].title = rows[0].title.substring(1, rows[0].title.length - 1)
-                    rows[0].description = rows[0].description.substring(1, rows[0].description.length - 1)
+                    // rows[0].description = rows[0].description.substring(1, rows[0].description.length - 1)
+                    rows[0].description = stand(rows[0].description)
+                    console.log("rows[0].description")
+                    console.log(rows[0].description)
                     rows[0].code = stand(rows[0].code)
-                    // var find = "\\\\r\\\\n"
-                    // var re = new RegExp(find, 'g');
-                    // rows[0].code = rows[0].code.replace(re, "\r\n")
-                    // find = "rn"
-                    // re = new RegExp(find, 'g');
-                    // rows[0].code = rows[0].code.replace(re, "\r\n")
-                    // find = ";nn"
-                    // re = new RegExp(find, 'g');
-                    // rows[0].code = rows[0].code.replace(re, ";\n\n")
-                    // find = ";n"
-                    // re = new RegExp(find, 'g');
-                    // rows[0].code = rows[0].code.replace(re, ";\n")
                     rows[0].blocks = JSON.parse(stand(rows[0].blocks))
                     rows[0].npcs = JSON.parse(stand(rows[0].npcs))
                     rows[0].pcs = JSON.parse(stand(rows[0].pcs))
