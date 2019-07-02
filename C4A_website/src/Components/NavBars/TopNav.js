@@ -45,7 +45,7 @@ class TopNav extends Component {
                   <Nav.Link href="/classes">Classes</Nav.Link>
                   <Nav.Link href="/exercices">Exercices</Nav.Link>
                   <Nav.Link href="/magasin">Magasin</Nav.Link>
-              
+                  <Nav.Link href="/android">Android</Nav.Link>
               </Nav>
               <Form inline>
               <Button variant="outline-light" onClick={this.onLogout.bind(this)}>Se déconnecter</Button>

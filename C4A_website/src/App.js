@@ -5,6 +5,7 @@ import HomeWindow from './Components/ConnectedWindows/Home';
 import ExercicesWindow from './Components/ConnectedWindows/Exercices';
 import ClassesWindow from './Components/ConnectedWindows/Classes';
 import StoreWindow from './Components/ConnectedWindows/Store';
+import AndroidWindow from './Components/ConnectedWindows/Android';
 import NotConnectedWindow from './Components/NotConnectedWindow/';
 import { ProtectedRoute } from './Components/ProtectedRoute';
 import { NotConnectedRoute } from './Components/NotConnectedRoute';
@@ -22,6 +23,7 @@ class App extends Component {
             <ProtectedRoute exact path="/exercices" component={ExercicesWindow} />
             <ProtectedRoute exact path="/classes" component={ClassesWindow} />
             <ProtectedRoute exact path="/magasin" component={StoreWindow} />
+            <ProtectedRoute exact path="/android" component={AndroidWindow} />
             <NotConnectedRoute exact path="/" component={NotConnectedWindow} />
             <Route exact path="/terms" component={TermsWindow} />
             <Route component={ErrorWindow} />

@@ -15,11 +15,12 @@ class ConnectedWindow extends Component {
    * render method
    */
   render() {
-    var leftNav = this.props.type === "home" ? "" : (<LeftNav menus={this.props.menus} content={this.props.content} />);
+    var leftNav = this.props.type === "home" || this.props.type === "android" ? "" : (<LeftNav menus={this.props.menus} content={this.props.content} />);
     return (
         <div className="connected-window">
             <TopNav />
             {leftNav}
+            {this.props.singleContent}
         </div>
     );
   }
