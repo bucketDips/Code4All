@@ -111,7 +111,7 @@ class ParametersElement extends Component {
     }
     return (
     <div>
-      <label>Pattern : </label>
+      <label>Motif : </label>
       <select id="select" onChange={this.changePatternValue.bind(this)}>
         <option value="0">none</option>
         {patterns}
@@ -137,7 +137,7 @@ class ParametersElement extends Component {
     return (
         <div className={styles.parametersblock}>
             <div className="content">
-                <label>Start column : </label>
+                <label>Colonne : </label>
                 <CustomSlider
                     min={1} 
                     max={this.props.gridProperties.columns - this.props.parameters.width + 1} 
@@ -145,7 +145,7 @@ class ParametersElement extends Component {
                     changeSize={this.changeColumnsValue.bind(this)}
                 />
 
-                <label>Start row : </label>
+                <label>Ligne : </label>
                 <CustomSlider
                     min={1} 
                     max={this.props.gridProperties.lines - this.props.parameters.height + 1} 
@@ -153,7 +153,7 @@ class ParametersElement extends Component {
                     changeSize={this.changeRowsValue.bind(this)}
                 />
 
-                <label>Width : </label>
+                <label>Largeur : </label>
                 <CustomSlider
                     min={1} 
                     max={this.props.gridProperties.columns - this.props.parameters.columnStart + 1} 
@@ -161,7 +161,7 @@ class ParametersElement extends Component {
                     changeSize={this.changeWidth.bind(this)}
                 />
 
-                <label>Height : </label>
+                <label>Hauteur : </label>
                 <CustomSlider
                     min={1} 
                     max={this.props.gridProperties.lines - this.props.parameters.rowStart + 1}
@@ -173,7 +173,7 @@ class ParametersElement extends Component {
                 { this.getText() }
 
                 <form onSubmit={this.handleDelete.bind(this)}>
-                    <input type="submit" value="delete" />
+                    <input type="submit" value="supprimer" />
                 </form>
             </div>
         </div>
