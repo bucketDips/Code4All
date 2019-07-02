@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import GestionStoreWindow from '../GestionStoreWindow';
 import ConnectedWindowsStructure from '../ConnectedWindowsStructure/';
+import style from './style.css';
+import bigpages from '../../Providers/bigpages';
 
 /**
  * The window that build the menus
@@ -24,11 +26,7 @@ class StoreWindow extends Component {
      * action for the click on presentation
      */
     presentation() {
-        return new Promise((resolve, reject) => { resolve([(
-            <div>
-                <h1>Voici l'explication du store</h1>
-            </div>
-        ), "not-collapsed"]); });
+        return new Promise((resolve, reject) => { resolve([(bigpages.store(style)), "not-collapsed"]); });
     }
 
     /**

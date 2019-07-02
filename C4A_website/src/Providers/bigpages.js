@@ -284,6 +284,74 @@ class BigPages {
         </div>
         );
     }
+
+    store(style) {
+        return (
+            <div className={style.bodyRoot} style={{minHeight: "100%", backgroundImage: "url(" + process.env.PUBLIC_URL + "blackboard.jpg" + ")", backgroundAttachment: "fixed", backgroundSize: "cover"}} >
+            <h1>Le store</h1>
+
+                    <p style={{marginTop: "10%"}} className={style.centeredParagraph}>
+                    Le store est un des éléments les plus intéressant de notre système, car il est participatif !<br />
+                    Lorsque vous créer un exercice, il est possible de le définir comme public ou privé. Si vous le mettez en public,
+                    tout le monde pourra y accéder et le voir sur le store. Il sera alors possible aux gens de le récupérer pour le réaliser de leur côté,
+                    ou bien même pour le donner à leurs élèves dans les classes créées !<br /><br />
+
+                    Il est possible de voir tous les exercices en cliquant sur "voir tout", la liste s'affichera et il vous sera ensuite possible de récupérer 
+                    n'importe quel exercice en cliquant sur sa petite étoile. Il sera alors présent dans la partie "exercices récupérés" de la page d'exercices.
+                    </p>
+                        
+            </div>
+        );
+    }
+
+    classe(style) {
+        return (
+            <div className={style.bodyRoot} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "blackboard.jpg" + ")", backgroundAttachment: "fixed", backgroundSize: "cover"}} >
+            <h1>Manuel de gestion d'une classe</h1>
+
+                <img className={style.webImage} src={process.env.PUBLIC_URL + "classe1.png"} ></img>
+
+                <h2>Rôle de la fenêtre</h2>
+
+                    <p className={style.centeredParagraph}>
+                    La création et réalisation d'exercice sont certes les fonctionnalités les plus avancées de notre système, mais en 
+                    plus de ça il vous est possible d'administrer des classes, dans le but de faire des programmes adaptés pour vos élèves.
+                    Cette page va donc vous permettre de gérer une classe en particulier. Comme on peut voir dans le menu déroulant, on peut 
+                    consulter les classes où on est élève, celles où on est professeur, et enfin on peut créer une nouvelle classe (le nom nous sera 
+                    demandé puis la classe sera ajoutée aux classes où on est professeur). Tandis que la page de gestion professeur nous offrira plusieurs éléments 
+                    de gestion que nous allons décrire, la page élève n'offrira que la possibilité de consulter les détails de la classe et de répondre à des exercices.
+                    </p>
+                
+                <h2>Gérer sa classe</h2><br />
+                        <h3>Gérer les personnes</h3>
+                        <img className={style.webImage} src={process.env.PUBLIC_URL + "classe2.png"} ></img>
+                        <p className={style.centeredParagraph}>
+                        Comme on peut le voir, on a déjà accès aux détails de la classe en tant que professeur. Il est possible d'ajouter un élève ou un professeur grâce 
+                        aux deux croix blanches présentes à côté des comptes élèves et professeurs. On peut aussi supprimer un professeur ou un élève (mais pas soit-même) de la 
+                        classe grâce à la croix rouge sur les post-its pour chaque personnes. Lors de l'ajout, une fenêtre spécifique s'ouvrira, exemple ci-dessus. Vous pourrez rechercher 
+                        un élève ou professeur par nom, et cliquer sur ceux que vous voulez ajouter. Une fois votre sélection faite, un clic sur sauvegarder les ajoutera au rôle sélectionné.
+                        Il est aussi possible si l'étudiant a répondu à des exercices ajoutés à la classe qu'une autre icone apparaisse en dessous de la croix rouge. Cliquer dessus 
+                        permettra de consulter son avancement dans une nouvelle fenêtre.
+                        </p>
+
+                        <h3>Gérer les exercices</h3>
+                        <img className={style.webImage} src={process.env.PUBLIC_URL + "classe3.png"} ></img>
+                        <p className={style.centeredParagraph}>
+                        On aura la possibilité d'ajouter des exercices réalisables par les étudiants à la classe en cliquant sur "gérer les exercices". Cela ouvre un panel qu'on peut voir ici 
+                        à droite en transparence. S'y afficheront les exercices déjà ajoutés, qu'on pourra supprimer de la casse via la croix rouges. Enfin la croix blanche nous permettra d'ajouter 
+                        des exercices et ouvrira la fenêtre qu'on peut voir sur l'image ci-dessus. Tout comme pour les personnes, il faut cliquer sur les exercices que l'on veut ajouter dans la 
+                        liste de gauche, puis sur sauvegarder lorsque l'on a finit. Les exercices apparaitront dans le panel et seront accessible par les étudiants.
+                        </p>
+
+                        <h3>Ajouter des élèves</h3>
+                        <img className={style.appImage} src={process.env.PUBLIC_URL + "classe4.png"} ></img>
+                        <p className={style.centeredParagraph}>
+                        On aura la possibilité d'inscrire de nouveaux étudiants en cliquant sur "ajouter des élèves à l'application". Cela ouvrira la fenêtre ci-dessus similaire à 
+                        la fenêtre d'inscription. Les élèves n'auront ainsi pas à passer par ce processus et pourront se connecter plus simplement sur l'application android.
+                        </p>
+            </div>
+        );
+    }
 }
 
 export default new BigPages();

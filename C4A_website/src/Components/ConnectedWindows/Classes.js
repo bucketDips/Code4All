@@ -3,6 +3,8 @@ import ConnectedWindowsStructure from '../ConnectedWindowsStructure/';
 import GestionClassWindow from '../GestionClassWindow';
 import { Input, Modal, Form } from 'antd';
 import classes from '../../Providers/classes';
+import style from './style.css';
+import bigpages from '../../Providers/bigpages';
 
 /**
  * A form that allow user to create a new class
@@ -94,11 +96,7 @@ class ClassesWindow extends Component {
      * action for click on presentation
      */
     presentation() {
-        return new Promise((resolve, reject) => { resolve([(
-            <div>
-                <h1>Voici l'explication des classes</h1>
-            </div>
-        ), "not-collapsed"]); });
+        return new Promise((resolve, reject) => { resolve([(bigpages.classe(style)), "not-collapsed"]); });
     }
 
     /**

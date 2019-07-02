@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Navbar, Nav, Form, Button } from 'react-bootstrap';
 import  { Redirect } from 'react-router-dom'
 import auth from '../../Providers/auth';
+import style from './style.css'
 
 /**
 * correspond to the top navigation that contains the
