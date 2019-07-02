@@ -6,7 +6,6 @@
              tools:context=".controllers.classes_menu.ClasseDetailsFragment"
              android:background="@color/white" android:id="@+id/root">
 
-    <!-- TODO: Update blank fragment layout -->
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
