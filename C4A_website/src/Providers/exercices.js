@@ -3,7 +3,14 @@ import qs from 'qs';
 import consts from '../Providers/consts'
 import files from '../Providers/files';
 
+/**
+ * correspond the requested of API for the "exercices/" routes
+ */
 class Exercices {
+
+    /**
+     * get my exercices
+     */
     async getMines() {
         var headers = {
             'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -12,10 +19,13 @@ class Exercices {
         return Axios.get(consts.url() + "exercices/getUserExercices", {headers: headers}).then(response => {
             return response;
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 
+    /**
+     * get one exercice
+     */
     getMyExercice(id, cb) {
         var headers = {
             'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -29,10 +39,13 @@ class Exercices {
                 return response;
             }
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 
+    /**
+     * get patterns objects from the array (can be block, npc, etc)
+     */
     extractPatternsFromArray(array, patterns) {
         array.map((element) => {
             if(element.patternId !== null && element.patternId !== undefined && !patterns.includes(element.patternId)) {
@@ -42,6 +55,9 @@ class Exercices {
         });
     }
 
+    /**
+     * get patterns from code (changePattern(id))
+     */
     extractPatternsFromCode(code, patterns) {
         var matches = code.match(/changePattern\(\d+\)/g);
         if(matches === null) {
@@ -55,6 +71,9 @@ class Exercices {
         }
     }
 
+    /**
+     * get patterns from elements and code
+     */
     extractPatterns(exercice) {
         var patterns = [];
         if(exercice.patternId !== null && exercice.patternId !== undefined) {
@@ -67,6 +86,9 @@ class Exercices {
         return patterns;
     }
 
+    /**
+     * create an exercices
+     */
     async createExercice(exercice) {
         var patterns = this.extractPatterns(exercice);
 
@@ -83,10 +105,13 @@ class Exercices {
             window.location.href = "/exercices";
           })
           .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
           });
     }
-
+    
+    /**
+     * modify an exercice
+     */
     async modifyExercice(exercice, id) {
         var patterns = this.extractPatterns(exercice);
 
@@ -103,10 +128,13 @@ class Exercices {
             window.location.href = "/exercices";
           })
           .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
           });
     }
 
+    /**
+     * deleting an exercice
+     */
     deleteExercice(id) {
         Axios.post(consts.url() + 'exercices/delete/' + id, {}, {
             headers: {
@@ -117,10 +145,13 @@ class Exercices {
             window.location.href = "/exercices";
           })
         .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
+    /**
+     * get all exercices from store that i don't own and don't have forked
+     */
     async getFromStore() {
         var headers = {
             'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -129,10 +160,13 @@ class Exercices {
         return Axios.get(consts.url() + "exercices/getAllStoreExercicesNotOwned", {headers: headers}).then(response => {
             return response.data;
         }).catch(error => {
-            alert(JSON.stringify(error));
+            consts.errorDatabaseMessage(error);
         });
     }
 
+    /**
+     * delete an exercice from the class
+     */
     deleteExerciceFromClass(idClass, idExercice, cb) {
         Axios.post(consts.url() + 'exercices/deleteFromClass/' + idExercice + '/' + idClass, {},
         {
@@ -144,10 +178,31 @@ class Exercices {
             cb();
         })
         .catch(function (error) {
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
+    /**
+     * delete an exercice from a user
+     */
+    deleteExerciceFromUser(idExercice) {
+        Axios.post(consts.url() + 'exercices/removeExerciceFromUser/' + idExercice, {},
+        {
+            headers: {
+                'Authorization': 'Bearer ' +  localStorage.sessionToken
+            }
+        })
+        .then(function (response) {
+            window.location.href = "/exercices";
+        })
+        .catch(function (error) {
+            consts.errorDatabaseMessage(error);
+        });
+    }
+
+    /**
+     * add an exercice to the class
+     */
     async addExercicesToClass(idClass, exercices, cb) {
         for(var i = 0; i < exercices.length; i++) {
             await Axios.post(consts.url() + 'exercices/addExerciceToClass/' + exercices[i].id + '/' + idClass, {},
@@ -159,12 +214,15 @@ class Exercices {
             .then(function (response) {
             })
             .catch(function (error) {
-                alert(JSON.stringify(error.response))
+                consts.errorDatabaseMessage(error);
             });
         }
         cb();
     }
 
+    /**
+     * fork an exercice
+     */
     addExercicesToUser(id, cb) {
         Axios.post(consts.url() + 'exercices/addExerciceToUser/' + id, {},
         {
@@ -176,11 +234,13 @@ class Exercices {
             cb();
         })
         .catch(function (error) {
-            console.log(error);
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
+    /**
+     * unfork an exercice
+     */
     removeExerciceFromUser(id) {
         Axios.post(consts.url() + 'exercices/removeExerciceFromUser/' + id, {},
         {
@@ -192,11 +252,13 @@ class Exercices {
             window.location.href = "/exercices";
         })
         .catch(function (error) {
-            console.log(error);
-            alert(JSON.stringify(error.response));
+            consts.errorDatabaseMessage(error);
         });
     }
 
+    /**
+     * define code that i compiled for an exercice
+     */
     setNewCodeForExercice(idExo, code){
         let data = {'solution': code};
 
@@ -213,6 +275,9 @@ class Exercices {
         });
     }
 
+    /**
+     * get code that i compiled for an exercice
+     */
     getCodeForExercice(idExo, cb) {
         var headers = {
             'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -229,6 +294,9 @@ class Exercices {
         });
     }
 
+    /**
+     * get tests that i compiled for an exercice
+     */
     getUserPassedTestsForExercice(idExo, code, cb) {
         var headers = {
             'Authorization': 'Bearer ' +  localStorage.sessionToken
@@ -248,8 +316,10 @@ class Exercices {
         });
     }
 
+    /**
+     * define test that i compiled for an exercice
+     */
     uploadTestsForExercice(idExo, testArray) {
-        if(testArray.length === 0) return;
         let data = {'tests': JSON.stringify(testArray)};
 
         Axios.post(consts.url() + 'exercices/addSuccessTest/' + idExo, qs.stringify(data),
@@ -262,6 +332,22 @@ class Exercices {
         })
         .catch(function (error) {
             alert(JSON.stringify(error.response));
+        });
+    }
+
+    /**
+     * get all of students of the class and theirs results
+     */
+    async getResultsOfStudents(idClass) {
+        var headers = {
+            'Authorization': 'Bearer ' +  localStorage.sessionToken
+        }
+
+        return Axios.get(consts.url() + "exercices/getClassStudentPassedTests/" + idClass, {headers: headers}).then(response => {
+            console.log(response);
+            return response.data.studentList;
+        }).catch(error => {
+            alert(JSON.stringify(error));
         });
     }
 }

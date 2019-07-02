@@ -2,6 +2,9 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import auth from '../Providers/auth';
 
+/**
+ * correspond to a connected route (classes, exercices, etc)
+ */
 export const ProtectedRoute = ({component: Component, ...rest}) => {
     return (
         <Route 

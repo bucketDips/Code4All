@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import AceEditor from 'react-ace';
-
 import 'brace/mode/javascript';
 import 'brace/snippets/javascript';
-
 import 'brace/theme/monokai';
-
 import "brace/ext/language_tools";
 import "brace/ext/searchbox";
-
 import styles from './style.css';
 import CustomSlider from './CustomSlider';
 
+/**
+ * class correspond to the ace editor in the realisationwindow
+ */
 class Code extends Component {
 
+  /**
+   * constructor
+   */
   constructor() {
     super();
     this.state = {
@@ -23,21 +25,34 @@ class Code extends Component {
     }
   }
 
+  /**
+   * new props from the code editor
+   */
   componentWillReceiveProps(props) {
     if(props.code) {
       this.setState({editorValue: props.code});
     }
   }
 
+  /**
+   * action called by the customslider,
+   * modify the size of the code
+   */
   changeSizeValue(newSize) {
     this.setState({fontSize: newSize});
   }
 
+  /**
+   * action for the student changing the editor value
+   */
   onChange(newValue, e) {
     this.setState({editorValue: newValue});
     this.props.changeCode(newValue);
   }
 
+  /**
+   * render method
+   */
   render() {
     return (
         <div className={styles.code}>
@@ -61,7 +76,6 @@ class Code extends Component {
                 enableSnippets: true,
                 tabSize: 2
               }}/>
-              <div id="info-text">{this.state.infoText}</div>
             </div>
             <CustomSlider className="custom-slider-code" changeSize={this.changeSizeValue.bind(this)} min={5} max={30} default={this.state.fontSize}/>
         </div>

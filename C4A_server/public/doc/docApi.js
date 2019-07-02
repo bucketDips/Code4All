@@ -213,11 +213,11 @@ $(document).ready(function() {
 				list: []
 			})
 		}
-		console.log(routes)
+
 		routes.find(function(elem){return elem && elem.name == categorie;}).list.push(route);
 
 	})
-	console.log(routes)
+
 	routes.forEach(function(categorie, index){
 		var div = "<div style='border: solid; display: inline-flex' class=\"container\" \">" +
 						"<h2>"+categorie.name+"</h2>\n" +

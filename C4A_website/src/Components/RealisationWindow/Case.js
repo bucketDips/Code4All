@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 
+/**
+ * class represents a case in the grid
+ */
 class Case extends Component {
 
+    /**
+     * constructor
+     */
     constructor() {
         super();
         this.state = {
@@ -9,6 +15,10 @@ class Case extends Component {
         }
     }
 
+    /**
+     * action for mouseover, mouseleaver and mouseclick,
+     * change the color of the case
+     */
     setStyle(color) {
         if(this.props.size) {
             var style = {
@@ -24,10 +34,16 @@ class Case extends Component {
         }
     }
 
+    /**
+     * init the default color of the cases
+     */
     componentWillMount() {
         this.setStyle("darkgrey");
     }
 
+    /**
+     * render method
+     */
     render() {
         return (
             <div 

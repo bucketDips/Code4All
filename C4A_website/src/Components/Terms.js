@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import style from '../index.css';
 
 /**
- * correspond to the 404 window
+ * correspond to the terms window
  */
-class ErrorWindow extends Component {
+class TermsWindow extends Component {
 
   /**
    * render method 
@@ -13,11 +13,11 @@ class ErrorWindow extends Component {
     return (
         <div className={style.error_window} style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "/blackboard.jpg)", backgroundSize: "cover"}}>
             <div className={style.text}>
-              <p>Erreur 404<br></br>la page demandée n'est pas disponible !</p>
+              <p>Ici les termes</p>
             </div>
         </div>
     );
   }
 }
 
-export default ErrorWindow;
+export default TermsWindow;

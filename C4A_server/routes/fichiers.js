@@ -67,8 +67,8 @@ function getFileNameFromBatabase(fileId,userId) {
 }
 router.post('/deleteFile/:fileId', AUTH.VERIFYAUTH, function(request, res, next) {
     var userId = request.decoded.id;
-    console.log("userId")
-    console.log(userId)
+
+
     var fileId = request.params.fileId;
     function deleteFile(userId,fileId) {
         return new Promise(function(resolve, reject) {
@@ -290,8 +290,7 @@ router.post('/uploadToUser/:filename/:dest', AUTH.VERIFYAUTH, function(request, 
     var filename = request.params.filename;
     var dest = request.params.dest;
     var sender = request.decoded.id
-    console.log("request")
-    console.log(request)
+
     var form = new formidable.IncomingForm();
     form.parse(request, function (err, fields, files) {
         insertFile(filename, sender).then(function(rows){

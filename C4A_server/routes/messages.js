@@ -15,7 +15,7 @@ router.post('/sendMessage/:IdDest/:subject/:msg',AUTH.VERIFYAUTH, function(reque
     function createMessage(IdSender) {
         return new Promise(function(resolve, reject) {
             var sql = "insert into messages(sender,subject,text) values ('"+IdSender+"','"+subject+"','"+msg+"')";
-            console.log(sql)
+
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -23,11 +23,7 @@ router.post('/sendMessage/:IdDest/:subject/:msg',AUTH.VERIFYAUTH, function(reque
         });
     }
     function addMessageToUser(target, idMessage) {
-        console.log("addMessageToUser")
-        console.log("target")
-        console.log(target)
-        console.log("idMessage")
-        console.log(idMessage)
+
         return new Promise(function(resolve, reject) {
             var sql = "insert into user_messages(target,message) values ("+target+","+idMessage+")";
             con.query(sql, function (err, rows, fields) {
@@ -55,7 +51,7 @@ router.post('/sendMessageToClass/:classId/:subject/:msg', AUTH.VERIFYAUTH, AUTH.
     function createMessage(IdSender) {
         return new Promise(function(resolve, reject) {
             var sql = "insert into messages(sender,subject,text) values ('"+IdSender+"','"+subject+"','"+msg+"')";
-            console.log(sql)
+
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -63,14 +59,10 @@ router.post('/sendMessageToClass/:classId/:subject/:msg', AUTH.VERIFYAUTH, AUTH.
         });
     }
     function addMessageToClass(target, idMessage) {
-        console.log("addMessageToClass")
-        console.log("target")
-        console.log(target)
-        console.log("idMessage")
-        console.log(idMessage)
+
         return new Promise(function(resolve, reject) {
             var sql = "insert into classroom_messages(idClassRoom,idMessage) values ("+target+","+idMessage+")";
-            console.log(sql);
+
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -111,7 +103,7 @@ router.get('/getUserMsg', AUTH.VERIFYAUTH,function(request, res, next) {
                 "target='"+userId+"' " +
                 "group by messages.id " +
                 "order by messages.id desc;";
-            console.log(sql)
+
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);

@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 
+/**
+ * class represents a npc in the grid
+ */
 class Npc extends Component {
+
+    /**
+     * render method
+     */
     render() {
         return (
             <div style={{

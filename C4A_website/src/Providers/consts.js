@@ -1,3 +1,8 @@
+import { notification } from 'antd';
+
+/**
+ * used at multiple places functions
+ */
 class Consts {
     forbiddenWords = [
     "boucle", "condition", "this", "setState", "state", "process", "window", "await",
@@ -13,10 +18,16 @@ class Consts {
     "select",   "self", "setInterval",  "setTimeout", "status",   "submit",   "taint", "textarea", "top",  "unescape", "untaint"   
     ];
 
+    /**
+     * url of the API
+     */
     url() {
         return "http://212.47.235.40:3000/";
     }
 
+    /**
+     * check if a forbidden word is in the string
+     */
     checkIfForbiddenWordIn(str) {
         for(var i = 0; i < this.forbiddenWords.length; i++) {
             if(str.includes(this.forbiddenWords[i])){
@@ -25,22 +36,62 @@ class Consts {
         }
     }
 
-    customEval(toEval, createGrid, createBlock, createNpc, createPc, createLabel, createFunction, synchronise, changeGridObject) {
-        this.checkIfForbiddenWordIn(toEval);
-        // eslint-disable-next-line
-        eval(toEval);
+    /**
+     * adding throw errors in case of infinites loops
+     */
+    formatCodeToIncludeInfiniteLoops(code) {
+        code = "var loops = 0;\n" + code; 
+        var matching = code.match(/(for\(.*\)\s*\{|while\(.*\)\s*\{)/g);
+        if(!matching) return code;
+        code = "var loops = 0;\n" + code; 
+        var singleMatching = matching.filter(function(item, pos) {
+            return matching.indexOf(item) === pos;
+        });
+        for(var i = 0; i < singleMatching.length; i++) {
+            code = code.replace(singleMatching[i], singleMatching[i] + "\nloops += 1;\nif(loops >= 100000) { throw new Error('Une boucle infinie a été détectée ! (maximum -> 100000 itérations)'); }\n");
+        }
+        return code;
     }
 
+    /**
+     * safe eval of code
+     */
+    customEval(toEval, createGrid, createBlock, createNpc, createPc, createLabel, createFunction, synchronise, changeGridObject) {
+        // eslint-disable-next-line
+        eval(this.formatCodeToIncludeInfiniteLoops(toEval));
+    }
+
+    /**
+     * safe eval of code
+     */
     customEvalOfCode(grid, buildedCode) {
         this.checkIfForbiddenWordIn(buildedCode);
         // eslint-disable-next-line
-        eval(buildedCode);
+        eval(this.formatCodeToIncludeInfiniteLoops(buildedCode));
     }
 
+    /**
+     * safe eval of tests
+     */
     customEvalOfTests(grid, setTestResult, buildedCode) {
         this.checkIfForbiddenWordIn(buildedCode);
         // eslint-disable-next-line
-        eval(buildedCode);
+        eval(this.formatCodeToIncludeInfiniteLoops(buildedCode));
+    }
+
+    /**
+     * error notification global
+     */
+    errorDatabaseMessage(error) {
+        console.log(JSON.stringify(error));
+        var message = "erreur inconnue";
+        if(error && error.response && error.response.data && error.response.data.message) {
+            message = error.response.data.message;
+        }
+        notification["error"]({
+            message: 'Erreur rencontré',
+            description: message
+        });
     }
 }
 

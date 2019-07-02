@@ -16,11 +16,7 @@ var evalContext = {
     evalContext: this,
     sEval:sEval,
 };
-var tmpFuncJson = {
-    name: "michel",
-    code: "function() {console.log('chocapic');}",
-    description: "merde"
-}
+
 var funcString = [
     {
         "name":"i",
@@ -39,6 +35,12 @@ function stand(str) {
     var find = "\\\\r\\\\n"
     var re = new RegExp(find, 'g');
     str = str.replace(re, "\r\n")
+    find = "\\\\r"
+    re = new RegExp(find, 'g');
+    str = str.replace(re, "\r")
+    find = "\\\\n"
+    re = new RegExp(find, 'g');
+    str = str.replace(re, "\n")
     find = "\\\\"
     re = new RegExp(find, 'g');
     str = str.replace(re, "")
@@ -50,7 +52,7 @@ function getUserPassedTests(exerciceId, userId) {
         var sql = "select name from exercice_tests, user_exercice_passed_tests " +
             "where exercice_tests.id = user_exercice_passed_tests.test_id " +
             "and exercice_tests.exercice_id = ? and user_id = ?";
-        console.log(sql)
+
         con.query(sql, [exerciceId, userId], function (err, rows, fields) {
             if (err) return reject(err);
             resolve(rows);
@@ -100,7 +102,7 @@ function insertExerciceFunctions(functions, exercice_id) {
         }
         str = str.substring(0,str.length - 1)
         var sql = "INSERT INTO exercice_functions (exercice_id, code, name, description) VALUES " + str
-        console.log(sql)
+
         con.query(sql,function (err, rows, fields) {
             if (err) return reject(err);
             resolve(rows);
@@ -120,7 +122,7 @@ function insertExerciceTests(tests, exercice_id) {
         }
         str = str.substring(0,str.length - 1)
         var sql = "INSERT INTO exercice_tests (exercice_id, code, name, description) VALUES " + str
-        console.log(sql)
+
         con.query(sql,function (err, rows, fields) {
             if (err) return reject(err);
             resolve(rows);
@@ -129,25 +131,8 @@ function insertExerciceTests(tests, exercice_id) {
 }
 /* GET users listing. */
 router.get('/test', function(request, res, next) {
-    // var id = request.params.id;
-    // var temp = {}
-    // function getLastRecord(id) {
-    //     return new Promise(function(resolve, reject) {
-    //         var sql = "select * from users where id='"+id+"';";
-    //         con.query(sql, function (err, rows, fields) {
-    //             if (err) return reject(err);
-    //             resolve(rows);
-    //         });
-    //     });
-    // }
-    // temp[funcString[0].name] = createFunction(funcString[0].code);
-    // var ret = temp[funcString[0].name]();
-    // console.log("res")
-    // console.log(ret)
-    // console.log("res")
     var grille = new gridClass.Grid(5,5,1)
-    console.log("grille")
-    console.log(grille)
+
     res.send("toto");
 });
 router.post('/addExerciceToClass/:id/:classId', AUTH.VERIFYAUTH, AUTH.isProfessorInThisClassRoom ,function(request, res, next) {
@@ -223,7 +208,7 @@ router.get('/getAllStoreExercicesNotOwned', AUTH.VERIFYAUTH,function(request, re
                 "(select exercices.id from exercices, user_exercices " +
                 "where user_exercices.exerciceId = exercices.id " +
                 "and user_exercices.userID = ?);"
-            console.log(sql)
+
             con.query(sql, [userId,userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -343,7 +328,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
     function getExerciceFiles(id) {
         return new Promise(function(resolve, reject) {
             var sql = "select * from fichier, exercices_Files where fichier.id = exercices_Files.file_id and exercices_Files.exercice_id ='"+id+"';";
-            console.log(sql)
+
             con.query(sql, function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -381,10 +366,6 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
                         var publicName = text;
                         var url = config.HOST + ":" + config.PORTSERVEUR + "/" + publicName;
                         var newpath = __dirname.substring(0, __dirname.indexOf("/routes")) + "/public/" + publicName;
-                        console.log("newpath")
-                        console.log(newpath)
-                        console.log("url")
-                        console.log(url)
                         fileExo[i].url = url;
                         console.log(pathFile + ' will be  copied to ' + newpath);
 
@@ -402,25 +383,16 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
 
 
                     rows[0].title = rows[0].title.substring(1, rows[0].title.length - 1)
-                    rows[0].description = rows[0].description.substring(1, rows[0].description.length - 1)
+                    // rows[0].description = rows[0].description.substring(1, rows[0].description.length - 1)
+                    rows[0].description = stand(rows[0].description)
+                    console.log("rows[0].description")
+                    console.log(rows[0].description)
                     rows[0].code = stand(rows[0].code)
-                    // var find = "\\\\r\\\\n"
-                    // var re = new RegExp(find, 'g');
-                    // rows[0].code = rows[0].code.replace(re, "\r\n")
-                    // find = "rn"
-                    // re = new RegExp(find, 'g');
-                    // rows[0].code = rows[0].code.replace(re, "\r\n")
-                    // find = ";nn"
-                    // re = new RegExp(find, 'g');
-                    // rows[0].code = rows[0].code.replace(re, ";\n\n")
-                    // find = ";n"
-                    // re = new RegExp(find, 'g');
-                    // rows[0].code = rows[0].code.replace(re, ";\n")
                     rows[0].blocks = JSON.parse(stand(rows[0].blocks))
                     rows[0].npcs = JSON.parse(stand(rows[0].npcs))
                     rows[0].pcs = JSON.parse(stand(rows[0].pcs))
                     rows[0].labels = JSON.parse(stand(rows[0].labels))
-                    // console.log(rows[0].labels)
+
                     rows[0].functions = rows1;
                     rows[0].fichiers = fileExo;
                     rows[0].tests = rowsTests;
@@ -430,7 +402,7 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
 
                     res.send(resultJson);
                 }).catch(function (err) {
-                    console.log("err1")
+
                     return res.status(403).json(err);
                 });
 
@@ -444,7 +416,6 @@ router.get('/getExercice/:id', AUTH.VERIFYAUTH,function(request, res, next) {
             return res.status(403).json(err);
         });
     }).catch(function(err){
-        console.log("err3")
         return res.status(403).json(err);
     });
 });
@@ -483,7 +454,7 @@ router.get('/getUserExerciceSolutionAndroid/:exerciceId', AUTH.VERIFYAUTH,functi
     function getUserExerciceSolutionAndroid(userId, exerciceId) {
         return new Promise(function(resolve, reject) {
             var sql = "select * from user_exercice_solution_android where userId= ? and exercice_id = ?";
-            console.log(sql)
+
             con.query(sql, [userId,exerciceId],function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -508,7 +479,7 @@ router.post('/saveUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function
     function deleteUserExerciceSolutionWeb(userId, exerciceId) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from user_exercice_solution_web where userId= ? and exercice_id = ?";
-            console.log(sql)
+
             con.query(sql, [userId, exerciceId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -518,7 +489,7 @@ router.post('/saveUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function
     function saveUserExerciceSolutionWeb(userId, exerciceId, sol) {
         return new Promise(function(resolve, reject) {
             var sql = "insert into user_exercice_solution_web( userId,exercice_id, solution) values (?);";
-            console.log(sql)
+
             con.query(sql, [[userId,exerciceId,sol]],function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -544,8 +515,11 @@ router.post('/addSuccessTest/:exerciceId', AUTH.VERIFYAUTH,function(request, res
     function getTestIds(tests, exerciceId) {
 
         return new Promise(function(resolve, reject) {
+            if (tests.length == 0){
+                resolve({});
+            }
             var sql = "select exercice_tests.id from exercice_tests where name in (?) and exercice_id = ?";
-            console.log(sql)
+
             con.query(sql, [tests, exerciceId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -555,7 +529,7 @@ router.post('/addSuccessTest/:exerciceId', AUTH.VERIFYAUTH,function(request, res
     function deleteUserExerciceTest(exerciceId, userId) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from user_exercice_passed_tests where exercice_id = ? and user_id = ?";
-            console.log(sql)
+
             con.query(sql, [exerciceId, userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -564,6 +538,9 @@ router.post('/addSuccessTest/:exerciceId', AUTH.VERIFYAUTH,function(request, res
     }
     function saveUserExerciceTest(testIds, exerciceId, user_id) {
         return new Promise(function(resolve, reject) {
+            if (testIds.length == 0){
+                resolve({});
+            }
             var reccords = [];
             for (var i = 0 ;i < testIds.length; ++i){
                 var tmp = []
@@ -573,7 +550,7 @@ router.post('/addSuccessTest/:exerciceId', AUTH.VERIFYAUTH,function(request, res
                 reccords.push(tmp)
             }
             var sql = "insert into user_exercice_passed_tests( user_id,exercice_id, test_id) values ?;";
-            console.log(sql)
+
             con.query(sql, [reccords],function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -583,8 +560,7 @@ router.post('/addSuccessTest/:exerciceId', AUTH.VERIFYAUTH,function(request, res
     getTestIds(tests, exerciceId).then(function(rowsTestIds){
         var testIds = [];
         for ( var i = 0; i < rowsTestIds.length; ++i){
-            // console.log("rowsTestIds[i].id")
-            // console.log(rowsTestIds[i].id)
+
             testIds.push(rowsTestIds[i].id)
         }
         deleteUserExerciceTest(exerciceId, userId).then(function(rows){
@@ -643,7 +619,7 @@ router.get('/getClassStudentPassedTests/:classId', AUTH.VERIFYAUTH, AUTH.isProfe
             var sql = "select name, user_exercice_passed_tests.exercice_id, user_id from exercice_tests, user_exercice_passed_tests " +
                 "where exercice_tests.id = user_exercice_passed_tests.test_id " +
                 "and exercice_tests.exercice_id = ? and user_id = ?";
-            // console.log(sql)
+
             con.query(sql, [exerciceId, userId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -653,7 +629,7 @@ router.get('/getClassStudentPassedTests/:classId', AUTH.VERIFYAUTH, AUTH.isProfe
     function getExerciceTests(exerciceId) {
         return new Promise(function(resolve, reject) {
             var sql = "select exercices.title, name, exercice_id from exercice_tests, exercices where exercices.id = exercice_id and exercice_id = ?";
-            // console.log(sql + " " + exerciceId)
+
             con.query(sql, [exerciceId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -684,7 +660,11 @@ router.get('/getClassStudentPassedTests/:classId', AUTH.VERIFYAUTH, AUTH.isProfe
                         Promise.all(promises)
                             .then(function(data){
                                 var resultArray = Object.values(JSON.parse(JSON.stringify(data)))
-                                for (var i = 0; i < resultArray.length - 1; ++i){
+
+                                for (var i = 0; i < resultArray.length ; ++i){
+                                    if (resultArray[i].length === 0){
+                                        continue;
+                                    }
                                     for (var j = 0; j < rowsStudent.length; ++j){
                                         if (rowsStudent[j].id === resultArray[i][0].user_id){
                                             var exerciceInfo = {};
@@ -717,7 +697,6 @@ router.get('/getClassStudentPassedTests/:classId', AUTH.VERIFYAUTH, AUTH.isProfe
                                                 }
 
                                             }
-                                            // rowsStudent[j].exercices.push(resultArray[i]);
                                             rowsStudent[j].exercices.push(exerciceInfo);
                                         }
                                     }
@@ -729,27 +708,27 @@ router.get('/getClassStudentPassedTests/:classId', AUTH.VERIFYAUTH, AUTH.isProfe
                                 res.send(resultJson);
                             })
                         .catch(function(err){
-                             console.log("error multiple promises")
+
                              return res.status(403).json(err);
                          });
                     })
                      .catch(function(err){
-                            console.log("error multiple promises")
+
                             return res.status(403).json(err);
                         });
 
 
                 }).catch(function(err){
-                    console.log("err1")
+
                     return res.status(403).json(err);
                 });
             }).catch(function(err){
-                console.log("err2")
+
                 return res.status(403).json(err);
             });
 
     }).catch(function(err){
-        console.log("err4")
+
         return res.status(403).json(err);
     });
 
@@ -773,7 +752,7 @@ router.get('/getUserExerciceSolutionWeb/:exerciceId', AUTH.VERIFYAUTH,function(r
     function getUserExerciceSolutionWeb(userId, exerciceId) {
         return new Promise(function(resolve, reject) {
             var sql = "select solution from user_exercice_solution_web where userId= ? and exercice_id = ?";
-            console.log(sql)
+
             con.query(sql, [userId,exerciceId],function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -800,14 +779,14 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
     var grid = instanciateGrid(exercice);
     // var exerciceSteps = [];
     var addState = function(){
-        console.log("addState")
+
         exerciceSteps.push(JSON.parse(JSON.stringify(grid)))
     }
     // addState();
     function deleteUserExerciceSolutionAndroid(userId, exerciceId) {
         return new Promise(function(resolve, reject) {
             var sql = "delete from user_exercice_solution_android where userId= ? and exercice_id = ?";
-            console.log(sql)
+
             con.query(sql, [userId, exerciceId], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -817,7 +796,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
     function saveUserExerciceSolutionAndroid(userId, exerciceId, sol) {
         return new Promise(function(resolve, reject) {
             var sql = "insert into user_exercice_solution_android( userId,exercice_id, solution) values (?);";
-            console.log(sql)
+
             con.query(sql, [[userId,exerciceId,sol]],function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -890,7 +869,7 @@ router.post('/executeExercice', AUTH.VERIFYAUTH,function(request, res, next) {
                 grid.boucle(currentAction.start,currentAction.end, currentAction.actions)
             }
             else if (currentAction.type === "condition"){
-                //console.log("UNE CONDITION")
+
                 grid.condition(currentAction.cond, currentAction.actions)
             }
             else{
@@ -1240,7 +1219,7 @@ router.post('/executeExerciceTest', AUTH.VERIFYAUTH,function(request, res, next)
     var exerciceSteps = [];
     // exerciceSteps.push(grid)
     var addState = function(){
-        console.log("addState")
+
         exerciceSteps.push(JSON.parse(JSON.stringify(grid)))
     }
     addState();
@@ -1294,13 +1273,12 @@ router.post('/executeExerciceTest', AUTH.VERIFYAUTH,function(request, res, next)
     }
     for (var i = 0; i < exerciceData.solution.length; ++i){
         var currentAction = exerciceData.solution[i];
-        console.log("currentAction")
-        console.log(currentAction)
+
         if (currentAction.type === "boucle"){
             grid.boucle(currentAction.start,currentAction.end, currentAction.actions)
         }
         else if (currentAction.type === "condition"){
-            console.log("UNE CONDITION")
+
             grid.condition(currentAction.cond, currentAction.actions)
         }
         else{
@@ -1346,7 +1324,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
             var values = [];
             values.push(SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,author_id,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
             values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)),SqlString.escape(JSON.stringify(contentOjb.gridObject)))
-            console.log(sql)
+
             con.query(sql, [values], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -1375,7 +1353,7 @@ router.post('/add', AUTH.VERIFYAUTH,function(request, res, next) {
 function deleteExerciceFunctions(exo_id) {
     return new Promise(function(resolve, reject) {
         var sql = "delete from exercice_functions where exercice_id='"+exo_id+"';"
-        console.log(sql)
+
         con.query(sql, function (err, rows, fields) {
             if (err) return reject(err);
             resolve(rows);
@@ -1386,7 +1364,7 @@ function deleteExerciceFunctions(exo_id) {
 function deleteExerciceTests(exo_id) {
     return new Promise(function(resolve, reject) {
         var sql = "delete from exercice_tests where exercice_id='"+exo_id+"';"
-        console.log(sql)
+
         con.query(sql, function (err, rows, fields) {
             if (err) return reject(err);
             resolve(rows);
@@ -1407,7 +1385,7 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
     var contentOjb =JSON.parse(request.body.exercice);
     var author_id = request.decoded.id
     var exo_id = request.params.exerciceId
-    // console.log(contentOjb)
+
 
 
     function modifyExercice(exo_id,contentOjb,author_id) {
@@ -1422,7 +1400,7 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
             var values = [];
             values.push(exo_id,SqlString.escape(contentOjb.title),SqlString.escape(contentOjb.text),contentOjb.public,author_id,SqlString.escape(contentOjb.code),SqlString.escape(JSON.stringify(contentOjb.blocks)), contentOjb.columns)
             values.push(SqlString.escape(JSON.stringify(contentOjb.labels)), contentOjb.lines, SqlString.escape(JSON.stringify(contentOjb.npcs)), contentOjb.patternId, SqlString.escape(JSON.stringify(contentOjb.pcs)),SqlString.escape(JSON.stringify(contentOjb.gridObject)))
-            // console.log(sql)
+
             con.query(sql, [values], function (err, rows, fields) {
                 if (err) return reject(err);
                 resolve(rows);
@@ -1436,7 +1414,7 @@ router.post('/modify/:exerciceId', AUTH.VERIFYAUTH,function(request, res, next) 
 
             deleteExerciceTests(exo_id).then(function(rowst) {
                 deleteExerciceFunctions(exo_id).then(function (rowsf) {
-                    // console.log(rows)
+
 
                     insertExerciceFunctions(contentOjb.functions, exo_id).then(function (rows1) {
                         insertExerciceTests(contentOjb.tests, exo_id).then(function (rows1) {

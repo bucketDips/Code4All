@@ -11,7 +11,7 @@ class HomeWindow extends Component {
    */
   render() {
     return (
-        <ConnectedWindowsStructure type="home" />
+        <ConnectedWindowsStructure type="home" singleContent={(<h1>Bienvenue sur le site</h1>)} />
     );
   }
 }

@@ -7,6 +7,7 @@ import {
   Checkbox,
   Button,
 } from 'antd';
+import { Link } from 'react-router-dom';
 import auth from '../../Providers/auth';
 // eslint-disable-next-line
 import styles from './style.css';
@@ -27,7 +28,7 @@ class RegistrationForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        auth.inscription(values.nickname, values.password, values.email);
+        auth.inscription(values.pseudo, values.password, values.email);
       }
     });
   };
@@ -46,7 +47,7 @@ class RegistrationForm extends Component {
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
+      callback('Les deux mots de passe ne correspondent pas!');
     } else {
       callback();
     }
@@ -97,15 +98,15 @@ class RegistrationForm extends Component {
         <Form.Item
           label={
             <span>
-              Nickname&nbsp;
-              <Tooltip title="What do you want others to call you?">
+              Pseudo&nbsp;
+              <Tooltip title="Comment voulez-vous être appellé ?">
                 <Icon type="question-circle-o" />
               </Tooltip>
             </span>
           }
         >
-          {getFieldDecorator('nickname', {
-            rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+          {getFieldDecorator('pseudo', {
+            rules: [{ required: true, message: 'Entrez votre pseudo svp !', whitespace: true }],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="E-mail">
@@ -113,21 +114,21 @@ class RegistrationForm extends Component {
             rules: [
               {
                 type: 'email',
-                message: 'The input is not valid E-mail!',
+                message: 'Ce n\'est pas un email valide !',
               },
               {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: 'Entrez votre email svp !',
               },
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="Password" hasFeedback>
+        <Form.Item label="Mot de passe" hasFeedback>
           {getFieldDecorator('password', {
             rules: [
               {
                 required: true,
-                message: 'Please input your password!',
+                message: 'Entrez votre mot de passe svp !',
               },
               {
                 validator: this.validateToNextPassword,
@@ -135,12 +136,12 @@ class RegistrationForm extends Component {
             ],
           })(<Input.Password />)}
         </Form.Item>
-        <Form.Item label="Confirm Password" hasFeedback>
+        <Form.Item label="Confirmation mot de passe" hasFeedback>
           {getFieldDecorator('confirm', {
             rules: [
               {
                 required: true,
-                message: 'Please confirm your password!',
+                message: 'Confirmez votre mot de passe svp !',
               },
               {
                 validator: this.compareToFirstPassword,
@@ -150,16 +151,22 @@ class RegistrationForm extends Component {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           {getFieldDecorator('agreement', {
+            rules: [
+              {
+                required: true,
+                message: 'Vous devez valider les termes !',
+              }
+            ],
             valuePropName: 'checked',
           })(
             <Checkbox>
-              I have read the agreement
+              J'ai bien lu les <Link to="/terms">termes</Link>
             </Checkbox>,
           )}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">
-            Register
+            S'enregistrer
           </Button>
         </Form.Item>
       </Form>

@@ -39,7 +39,7 @@ class DisplayStudentsInfos extends Component {
     render() {
         var students = this.props.infos.map(student => {
             if(this.props.teacher) {
-                return <Person key={student.id} name={student.name} id={student.id} email={student.email} delete={this.showConfirm.bind(this, student.id, this.props.idClass, this.refill.bind(this))} />
+                return <Person key={student.id} name={student.name} id={student.id} email={student.email} exercices={student.exercices} delete={this.showConfirm.bind(this, student.id, this.props.idClass, this.refill.bind(this))} />
             }
             return <Person key={student.id} name={student.name} id={student.id} email={student.email} />
         })

@@ -141,6 +141,14 @@
     cursor: pointer;
 }
 
+:local(.exercices_button) {
+    width: 10%;
+    top: 30%;
+    right: 9%;
+    position: absolute;
+    cursor: pointer;
+}
+
 :local(.person) {
     position: relative;
     overflow: hidden;
@@ -267,6 +275,10 @@ h3 {
 
 .add_exercices_modal .ant-modal-footer {
     height: 12% !important;
+}
+
+.show_student_exercices .ant-collapse-extra {
+    min-width: 40%;
 }
 
 :local(.search_add_form) {

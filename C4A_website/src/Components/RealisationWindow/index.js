@@ -3,7 +3,6 @@ import Grid from './Grid';
 import Code from './Code';
 import Compilator from './Compilator';
 import TestsResults from './TestsResults';
-
 import { Input, notification, Modal } from 'antd';
 import style from './style.css';
 import { Button } from 'antd/lib/radio';
@@ -12,9 +11,15 @@ import exercices from '../../Providers/exercices';
 const TextArea = Input.TextArea;
 const confirm = Modal.confirm;
 
-
+/**
+ * corresponds to the window of realisation of an exercice
+ * (similar to creation window without parameters/toolbox/patterns/etc)
+ */
 class RealisationExerciseWindow extends Component {
 
+  /**
+   * constructor
+   */
   constructor() {
     super();
     this.state = {
@@ -31,10 +36,16 @@ class RealisationExerciseWindow extends Component {
     }
   }
 
+  /**
+   * get the url for the pattern id (from state)
+   */
   getUrlForPatternId(id) {
     return this.state.files[id];
   }
 
+  /**
+   * init the files from props bundle (depend on if called from classe or realisation window)
+   */
   initFiles() {
     var files = {};
 
@@ -49,6 +60,10 @@ class RealisationExerciseWindow extends Component {
     return files;
   }
 
+  /**
+   * init code and tests from bdd (if it had been found) and fill
+   * it in the editor and tests modules
+   */
   init(code, tests) {
     var initedTests = JSON.parse(JSON.stringify(this.props.bundle.tests));
     if(tests !== null) {
@@ -83,19 +98,28 @@ class RealisationExerciseWindow extends Component {
     });
   }
 
+  /**
+   * get code and tests if exercice exists in bdd
+   */
   componentWillMount() {
     if(this.props.bundle === null || this.props.bundle === undefined) {
       return;
     }
 
     if(this.props.bundle.id) {
-      exercices.getCodeForExercice(this.props.bundle.id, this.init.bind(this));  
+      exercices.getCodeForExercice(this.props.bundle.id, this.init.bind(this)); 
+      for(var i = 0; i < this.props.bundle.functions.length; i++) {
+        this.props.bundle.description += ("\n" + this.props.bundle.functions[i].name + " : " + this.props.bundle.functions[i].description);
+      } 
     }
     else {
       this.init("", null);
     }
   }
 
+  /**
+   * action called when user change editor value
+   */
   changeCode(newCode) {
     this.setState({code: newCode});
     if(this.state.buttonCompile){
@@ -103,6 +127,9 @@ class RealisationExerciseWindow extends Component {
     }
   }
 
+  /**
+   * change the state
+   */
   setNewState(newState) {
     this.setState({
       gridProperties: {
@@ -119,6 +146,10 @@ class RealisationExerciseWindow extends Component {
     })
   }
   
+  /**
+   * display results of tests of the compilator in state
+   * and in notification
+   */
   displayResults(error, results) {
     var tests = this.state.tests;
     for(var i = 0; i < tests.length; i++) {
@@ -174,17 +205,23 @@ class RealisationExerciseWindow extends Component {
     }
   }
 
+  /**
+   * action when click on unfork element
+   */
   unfork(element) {
     confirm({
       title: 'Etes-vous sûr de vouloir supprimer cet exercice ? Il ne sera plus utilisable dans vos classes.',
       onOk() {
-        exercices.deleteExercice(element.props.bundle.id);
+        exercices.deleteExerciceFromUser(element.props.bundle.id);
       },
       onCancel() {
       },
     });
   }
 
+  /**
+   * action when click on compile button
+   */
   compile() {
     this.setNewState(this.props.bundle.gridObject);
     this.setState({buttonCompile: false, load: true});
@@ -210,6 +247,9 @@ class RealisationExerciseWindow extends Component {
     }
   }
 
+  /**
+   * render method
+   */
   render() {
     if(this.state.buttonCompile) {
       var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
