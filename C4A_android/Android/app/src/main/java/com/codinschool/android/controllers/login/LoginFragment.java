@@ -92,7 +92,6 @@ public class LoginFragment extends Fragment{
                         String token = result.getString("token");
 
                         saveUserInfos(username.getText().toString(), token, intent);
-                    }else{
                     }
 
                 } catch (JSONException e) {

@@ -11,7 +11,7 @@
     <string name="network_error_time_out">"Temps maximal de connexion dépassée... Verifiez votre connexion internet "</string>
     <string name="button_label_delete">supprimer</string>
     <string name="message_classe_list_error">La classe est vide</string>
-    <string name="welcoming_msg">Bonjour %s</string>
+    <string name="welcoming_msg">Bonjour %1$s</string>
     <string name="background_powered_by_pixabay_api">Fond d\'ecran fourni par l\'API Pixabay</string>
     <string name="datalabel">%1$s</string>
     <string name="message_user_connected">Connecté en tant que %1$s .</string>
@@ -57,7 +57,7 @@
     <string name="congratulations">Félicitation :)</string>
     <string name="fail">Echec :(</string>
     <string name="fork_succes">Exercice ajouté avec succès !</string>
-    <string name="icon_label_credits">Icons réalisées part %1$s sur www.flaticon.com</string>
+    <string name="icon_label_credits">Icons réalisées par %1$s sur www.flaticon.com</string>
     <string name="list_of_tests">Liste des tests</string>
     <string name="replay">rejouer</string>
     <string name="result_details">Détail des résultats</string>
