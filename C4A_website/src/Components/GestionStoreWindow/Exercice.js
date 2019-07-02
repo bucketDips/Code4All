@@ -23,7 +23,7 @@ class Exercice extends Component {
     */
     showConfirm(element) {
         confirm({
-          title: 'Etes-vous sûr de vouloir forker cet exercice ? Il sera ajouté à votre propres exercies.',
+          title: 'Etes-vous sûr de vouloir forker cet exercice ? Il sera ajouté à vos propres exercies.',
           onOk() {
             exercices.addExercicesToUser(element.props.id, element.refill.bind(this, element));
           },

@@ -161,76 +161,126 @@ class BigPages {
                         </p>
                     
 
-                <h2>2. Comment utiliser Codinschool ? </h2>
+                <h2>Comment coder un exercice ?</h2>
+                        
+                        <p className={style.centeredParagraph}>
+                        D'abord il faut réfléchir à ce qu'on veut comme exercice. Ici le but sera que mario atteigne l'arrivée sans toucher goomba. Quatre méthodes seront 
+                        offertes à l'étudiant : haut, bas, droite et ennemiDevant. L'unique test sera de vérifier si la position de mario correspond bien à celle de la ligne d'arrivée.
+                        </p>
 
-                  <h3>Connexion</h3>
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen1.png"} ></img>
-                
-                  <p className={style.centeredParagraph}>
-                  Pour se connecter il suffit de renseigner un mail et un mot de passe valable puis cliquer sur le bouton de connection.
-                  Pour avoir un compte il suffit d'accéder à la page d'inscription du site web codinschool.fr.
-                  </p>
+                    <h3>Ajouter les éléments</h3>
+                        <img className={style.webImage} src={process.env.PUBLIC_URL + "tuto1.png"} ></img>
+                        <p className={style.centeredParagraph}>
+                        Premièrement il est nécessaire d'ajouter ses éléments, en faisant glisser déposer depuis la toolbox sur la grille. Comme on peut le voir, ceux-ci 
+                        s'affichent directement dans le code, avec des identifiants générer incrémentalement, de même que leurs noms. Ici on a donc ajouté un block (bloc à atteindre), 
+                        un pc (personnage que l'étudiant déplacera) et un npc (personnage qui tuera l'étudiant s'il le touche).
+                        </p>
 
-                  <h3>Navigation</h3>
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen2.png"} ></img>
+                    <h3>Styliser les éléments</h3>
+                        <img className={style.webImage} src={process.env.PUBLIC_URL + "tuto2.png"} ></img>
+                        <p className={style.centeredParagraph}>
+                        En cliquant sur chaque élément et en modifiant le pattern dans les paramètres, ou bien directement en le modifiant dans le code, il nous sera possible
+                        de rendre l'exercice plus joli.
+                        </p>
 
-                  <p className={style.centeredParagraph}>
-                  Pour naviguer entre les différents menu de l'application, il suffit de cliquer sur l'un des boutons situés verticalement au milieu de l'écran.
-                  </p>
+                    <h3>Ajouter les fonctions utilisables</h3>
+                        <img className={style.webImage} src={process.env.PUBLIC_URL + "tuto3.png"} ></img>
+                        <p className={style.centeredParagraph}>
+                        Ici on va ajouter les fonctions qui seront utilisables par l'élève. Pour cela on définit d'abord la fonction,
+                        puis on créé un object fonction avec la méthode createFunction() de la même manière qu'on aurait créé un block. Cette fonction 
+                        prendre en paramètre en premier le nom de la fonction (qui doit être le même qu'au moment de sa définition /!\), la fonction puis une description pour 
+                        l'élève. Enfin, on ajoutera ce nouvel object à la grille. Les fonctions peuvent être de vérification et retourner des choses, ou juste des actions sur 
+                        la grille. Ici deux autres méthodes importantes :<br />
+                        - grid.end : permet de terminer le jeu. Si on ne prend pas de paramètre à la méthode end le jeu se terminera et les tests seront effectués, si on met un 
+                        message l'erreur s'affichera pour l'élève et remplacera les tests. <br />
+                        - grid.saveState : à appeller à chaque fois qu'il y a une modification sur la grille, sinon les changement des positions des éléments ne s'afficheront pas 
+                        au fur et à mesure pour l'élève.
+                        </p>
 
-                  <h3>Classes</h3>	
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen3.png"} ></img>
-                  
-                  <p className={style.centeredParagraph}>
-                  Pour créer une classe il suffit de cliquer sur le bouton "+"
-                  </p>
-                  
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen6.png"} ></img>
-                  <p className={style.centeredParagraph}>
-                  Puis cliquer sur le bouton bleu pour valider.
-                  </p>
+                    <h3>Ajouter les tests qui se lanceront</h3>
+                        <img className={style.webImage} src={process.env.PUBLIC_URL + "tuto4.png"} ></img>
+                        <p className={style.centeredParagraph}>
+                        Cela marche exactement de la même manière que pour créer une fonction sauf qu'il faut l'ajouter à la liste de tests à la fin du code. Autre particularité : 
+                        il faut retourner impérativement /!\ un tableau qui ressemble à [true si réussi sinon false, "message à afficher en résultat du test"]. Les tests générés 
+                        de cette manière seront directement passés à la fin de l'exercice si aucun end avec message n'est appelé.
+                        </p>
 
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen4.png"} ></img>
-                  <p className={style.centeredParagraph}>
-                  En cliquant sur la ligne de classe, vous avez accès au détail de l'exercice.
-                  </p>
-                  
-                  
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen5.png"} ></img>
-                  <p className={style.centeredParagraph}>
-                  Vous pouvez saisir un email pour ajouter l'utilisateur dans la classe, par défaut il sera ajouté en tant qu'élève, mais en cochant "en tant que professeur" en haut à droite <br />
-                  Vous pouvez en ajouter plusieurs d'un coup avant de cliquer sur le bouton ajouter en bas de la fenêtre.
-                  </p>
-
-                  <h3>Exercice</h3>
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen7.png"} ></img>
-                  <p className={style.centeredParagraph}>
-                  Pour jouer un exercice il suffit de cliquer sur un élément dans la liste pour afficher son détail et cliquer sur le bouton jouer.
-                  </p>
-                  
-                  
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen8.png"} ></img>
-                  <p className={style.centeredParagraph}>
-                  Une fois sur le menu vous avez accès à l'exercice sur la gauche, vous pouvez cliquer sur le bouton "Fonctions" pour dérouler la liste de fonctions.
-                  Vous pouvez afficher la liste des objectifs de l'exercice en cliquant sur le petit bouton information bleue.
-                  </p>
-
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen10.png"} ></img>
-                  <p className={style.centeredParagraph}>
-                  Dans Codinschool, résoudre un exercice consiste à placer des blocs en chaine pour éxecuter une suite d'actions.
-                  Une fois la solution prête, vous pouvez éxecuter votre solution en cliquant sur le bouton play.
-                  </p>
-
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen9.png"} ></img>
-                  
-                  
-                  
-                  <h3>Store</h3>
-                  <img className={style.appImage} src={process.env.PUBLIC_URL + "screen11.png"} ></img>
-                  <p className={style.centeredParagraph}>
-                  Ici vous pouvez rechercher un exercice en tapant dans la barre de recherche son titre, puis cliquer sur ajouter pour l'ajouter à votre liste d'exercices personnel.
-                  </p>
-
+                    <h3>Listing des méthodes</h3>
+                        <p className={style.centeredParagraph}>
+                        <b>Méthodes de la grille : </b>
+                        <ul>
+                            <li>grid.end(message optionnel) : termine le jeu, si erreur mettre un message</li>
+                            <li>grid.saveState() : sauvegarde l'état de la grille en cours, pour pouvoir animer le jeu</li>
+                            <li>grid.changePattern(id du pattern) : change le motif de la grille</li>
+                            <li>grid.addBlock(l'object block) : ajoute un block à la grille</li>
+                            <li>grid.addNpc(l'object npc) : ajoute un npc à la grille</li>
+                            <li>grid.addPc(l'object pc) : ajoute un pc à la grille</li>
+                            <li>grid.addLabel(l'object label) : ajoute un label à la grille</li>
+                            <li>grid.addFunction(l'object function) : ajoute une nouvelle fonction disponible pour l'étudiant</li>
+                            <li>grid.addTest(l'object function) : ajoute un nouveau test à éxecuter</li>
+                            <li>grid.removeBlock(id du block) : enlève un block de la grille</li>
+                            <li>grid.removeNpc(id du npc) : enlève un npc de la grille</li>
+                            <li>grid.removePc(id du pc) : enlève un pc de la grille</li>
+                            <li>grid.removeLabel(id du label) : enlève un label de la grille</li>
+                            <li>grid.getBlocks() : retourne les blocks de la grille</li>
+                            <li>grid.getNpcs() : retourne les npcs de la grille</li>
+                            <li>grid.getPcs() : retourne les pcs de la grille</li>
+                            <li>grid.getLabels() : retourne les labels de la grille</li>
+                            <li>grid.getBlock(id du block) : retourne un block de la grille</li>
+                            <li>grid.getNpc(id du npc) : retourne un npc de la grille</li>
+                            <li>grid.getPc(id du pc) : retourne un pc de la grille</li>
+                            <li>grid.getLabel(id du label) : retourne un label de la grille</li>
+                            <li>grid.blockExists(id du block) : vérifie si un block existe</li>
+                            <li>grid.npcExists(id du npc) : vérifie si un npc existe</li>
+                            <li>grid.pcExists(id du pc) : vérifie si un pc existe</li>
+                            <li>grid.labelExists(id du label) : vérifie si un label existe</li>
+                        </ul>
+                        <b>Méthodes des blocks : </b>
+                        <ul>
+                            <li>new Block(id du block, ligne du block, colonne du block, largeur du block, hauteur du block, id du motif à utiliser) : permet de créer un nouvel object block,
+                                qu'on ajoutera à la grille
+                            </li>
+                            <li>block.changeRow(nouvelle ligne) : change la ligne de placement de l'élément</li>
+                            <li>block.changeColumn(nouvelle colonne) : change la colonne de placement de l'élément</li>
+                            <li>block.changeWidth(nouvelle largeur) : change la largeur de l'élément</li>
+                            <li>block.changeHeight(nouvelle hauteur) : change la hauteur de l'élément</li>
+                            <li>block.changePattern(id du motif) : change le motif de l'élément</li>
+                        </ul>
+                        <b>Méthodes des npcs : </b>
+                        <ul>
+                            <li>new Npc(id du npc, ligne du npc, colonne du npc, largeur du npc, hauteur du npc, id du motif à utiliser) : permet de créer un nouvel object npc,
+                                qu'on ajoutera à la grille
+                            </li>
+                            <li>npc.changeRow(nouvelle ligne) : change la ligne de placement de l'élément</li>
+                            <li>npc.changeColumn(nouvelle colonne) : change la colonne de placement de l'élément</li>
+                            <li>npc.changeWidth(nouvelle largeur) : change la largeur de l'élément</li>
+                            <li>npc.changeHeight(nouvelle hauteur) : change la hauteur de l'élément</li>
+                            <li>npc.changePattern(id du motif) : change le motif de l'élément</li>
+                        </ul>
+                        <b>Méthodes des pcs : </b>
+                        <ul>
+                            <li>new Pc(id du pc, ligne du pc, colonne du pc, largeur du pc, hauteur du pc, id du motif à utiliser) : permet de créer un nouvel object pc,
+                                qu'on ajoutera à la grille
+                            </li>
+                            <li>pc.changeRow(nouvelle ligne) : change la ligne de placement de l'élément</li>
+                            <li>pc.changeColumn(nouvelle colonne) : change la colonne de placement de l'élément</li>
+                            <li>pc.changeWidth(nouvelle largeur) : change la largeur de l'élément</li>
+                            <li>pc.changeHeight(nouvelle hauteur) : change la hauteur de l'élément</li>
+                            <li>pc.changePattern(id du motif) : change le motif de l'élément</li>
+                        </ul>
+                        <b>Méthodes des labels : </b>
+                        <ul>
+                            <li>new Label(id du label, ligne du label, colonne du label, largeur du label, hauteur du label, texte du label) : permet de créer un nouvel object label,
+                                qu'on ajoutera à la grille
+                            </li>
+                            <li>label.changeRow(nouvelle ligne) : change la ligne de placement de l'élément</li>
+                            <li>label.changeColumn(nouvelle colonne) : change la colonne de placement de l'élément</li>
+                            <li>label.changeWidth(nouvelle largeur) : change la largeur de l'élément</li>
+                            <li>label.changeHeight(nouvelle hauteur) : change la hauteur de l'élément</li>
+                            <li>label.changeText(nouveau texte) : change le texte de l'élément</li>
+                        </ul>
+                        </p>
+                        
         </div>
         );
     }
