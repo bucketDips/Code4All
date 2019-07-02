@@ -30,6 +30,7 @@ class RealisationExerciseWindow extends Component {
       labels: [],
       tests: [],
       files: {},
+      updateState: false,
       code: "",
       buttonCompile: true,
       load: false
@@ -118,12 +119,28 @@ class RealisationExerciseWindow extends Component {
   }
 
   /**
+   * if modif of editor or updatestate no update
+   */
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextState.code !== this.state.code) {
+      return false;
+    }
+    else if(nextState.updateState !== this.state.updateState) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
+  /**
    * action called when user change editor value
    */
   changeCode(newCode) {
     this.setState({code: newCode});
-    if(this.state.buttonCompile){
+    if(this.state.buttonCompile && this.state.updateState){
       this.setNewState(this.props.bundle.gridObject);
+      this.setState({updateState: false});
     }
   }
 
@@ -245,12 +262,14 @@ class RealisationExerciseWindow extends Component {
       }
       exercices.uploadTestsForExercice(this.props.bundle.id, winnedTests);
     }
+    this.setState({updateState: true});
   }
 
   /**
    * render method
    */
   render() {
+    console.log("reup");
     if(this.state.buttonCompile) {
       var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
     }
