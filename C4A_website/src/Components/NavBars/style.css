@@ -4,6 +4,7 @@
     left: 0;
     height: 100vh;
     padding: 5vh;
+    z-index: 20;
 }
 
 .ant-layout-sider {

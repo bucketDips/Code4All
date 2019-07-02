@@ -37,7 +37,7 @@ class TopNav extends Component {
     }
     else {
       return (
-          <Navbar bg="primary" variant="dark">
+          <Navbar style={{zIndex: 20}} bg="primary" variant="dark">
               <Navbar.Brand href="/accueil">CodeInSchool</Navbar.Brand>
               <Nav className="mr-auto">
               

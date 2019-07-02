@@ -1,6 +1,7 @@
 :local(.bodyRoot) {
     color: white;
     font-family: 'lfl';
+    z-index: 10;
 }
 
 :local(.centeredParagraph){

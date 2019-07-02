@@ -4,6 +4,8 @@ import CreateExerciseWindow from '../CreationWindow/';
 import exercices from '../../Providers/exercices';
 import { Block, Npc, Pc, Label, Func, Grid } from '../CreationWindow/CodeClasses';
 import RealisationExerciseWindow from '../RealisationWindow';
+import bigpages from '../../Providers/bigpages';
+import style from './style.css';
 
 /**
  * The window that build the menus
@@ -79,11 +81,7 @@ class ExercicesWindow extends Component {
      * action for click on presentation
      */
     presentation() {
-        return new Promise((resolve, reject) => { resolve([(
-            <div>
-                <h1>Voici l'explication des exercices</h1>
-            </div>
-        ), "not-collapsed"]); });
+        return new Promise((resolve, reject) => { resolve([(bigpages.exercice(style)), "not-collapsed"]); });
     }
 
     /**
