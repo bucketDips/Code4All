@@ -140,7 +140,9 @@ public class StoreActivity extends MyAppCompatActivity{
             @Override
             public void afterTextChanged(Editable s) {
                 ArrayList<Exercice> exerciceArrayList =lookForAnExercce(s.toString());
-                exerciceGridAdapter.changeData(exerciceArrayList);
+                if(exerciceGridAdapter != null){
+                    exerciceGridAdapter.changeData(exerciceArrayList);
+                }
             }
         });
     }
@@ -166,9 +168,11 @@ public class StoreActivity extends MyAppCompatActivity{
             return exercicesOfTheStore;
 
         ArrayList<Exercice> tempsList = new ArrayList<>();
-        for(Exercice exercice :exercicesOfTheStore){
-            if(exercice.getTitle().contains(titleOfTheExercice)){
-                tempsList.add(exercice);
+        if(exercicesOfTheStore != null && exercicesOfTheStore.size() > 0){
+            for(Exercice exercice :exercicesOfTheStore){
+                if(exercice.getTitle().contains(titleOfTheExercice)){
+                    tempsList.add(exercice);
+                }
             }
         }
 
