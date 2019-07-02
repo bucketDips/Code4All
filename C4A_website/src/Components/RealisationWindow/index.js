@@ -122,7 +122,9 @@ class RealisationExerciseWindow extends Component {
    * if modif of editor or updatestate no update
    */
   shouldComponentUpdate(nextProps, nextState) {
-    if(nextState.code !== this.state.code) {
+    console.log(nextState);
+    console.log(this.state);
+    if(this.state.code !== "" && nextState.code !== this.state.code) {
       return false;
     }
     else if(nextState.updateState !== this.state.updateState) {
