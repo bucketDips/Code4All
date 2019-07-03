@@ -160,7 +160,7 @@ class RegistrationForm extends Component {
             valuePropName: 'checked',
           })(
             <Checkbox>
-              J'ai bien lu les <Link to="/terms">termes</Link>
+              J'ai bien lu les <a href={"/CGU.pdf"} download={process.env.PUBLIC_URL + '/CGU.pdf'}>termes</a>
             </Checkbox>,
           )}
         </Form.Item>
