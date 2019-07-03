@@ -362,7 +362,7 @@ class BigPages {
                     <div className={style.description}>
                         <h3>Bienvenue sur CodInSchool !</h3><br />
                         <p className={style.desc_txt}>CodInSchool est une plateforme en ligne disponible sur ordinateur portable ou tablette android
-                        destinée à l'apprentissage du code, au travers de mini-jeux ludiques et créés parcipatitivement !</p>
+                        destinée à l'apprentissage du code, au travers de mini-jeux ludiques et créés participativement !</p>
                     </div>
                 </div>
                 <Parallax
