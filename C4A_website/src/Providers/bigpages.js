@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Parallax, Background } from 'react-parallax';
 
 /**
  * correspond the html big pages of the application
@@ -349,6 +350,166 @@ class BigPages {
                         On aura la possibilité d'inscrire de nouveaux étudiants en cliquant sur "ajouter des élèves à l'application". Cela ouvrira la fenêtre ci-dessus similaire à 
                         la fenêtre d'inscription. Les élèves n'auront ainsi pas à passer par ce processus et pourront se connecter plus simplement sur l'application android.
                         </p>
+            </div>
+        );
+    }
+
+    home(style) {
+        return (
+            <div className={style.homeRoot}>
+                <div className={style.first_panel} >
+                    <img className={style.biglogo} src={process.env.PUBLIC_URL + "logo.png"} ></img>
+                    <div className={style.description}>
+                        <h3>Bienvenue sur CodInSchool !</h3><br />
+                        <p className={style.desc_txt}>CodInSchool est une plateforme en ligne disponible sur ordinateur portable ou tablette android
+                        destinée à l'apprentissage du code, au travers de mini-jeux ludiques et créés parcipatitivement !</p>
+                    </div>
+                </div>
+                <Parallax
+                    blur={0.1}
+                    bgImage={process.env.PUBLIC_URL + "imgparallax.jpeg"}
+                    bgImageAlt="code"
+                    strength={500}
+                >
+
+                    <div style={{ height: '340px' }} />
+                </Parallax>
+                <div className={style.public} >
+                    <div className={style.public_title}>
+                        <h3 style={{width: "100%", textAlign: "center", color: "black"}}>A qui CodInSchool s'adresse-t-il ?</h3>
+                    </div>
+                    <div className={style.public_public}>
+                        <div className={style.role}>
+                            <div className={style.logo}>
+                                <img src={process.env.PUBLIC_URL + "student.png"} ></img>
+                            </div>
+                            <div className={style.text_logo}>
+                                <h3><i>Aux étudiants</i></h3>
+                                <p className={style.sub_text}>De 7 à 77 ans, il n'y a pas d'âge pour apprendre à coder !
+                                Alors que la tablette est réservée aux plus jeunes étudiants, le site web 
+                                permettra d'effectuer des exercices plus complexes, alors à vous de choisir.
+                                </p>
+                            </div>
+                        </div>
+                        <div className={style.role}>
+                            <div className={style.logo}>
+                                <img src={process.env.PUBLIC_URL + "teacher.png"} ></img>
+                            </div>
+                            <div className={style.text_logo}>
+                                <h3><i>Aux professeurs</i></h3>
+                                <p className={style.sub_text}>
+                                    Le programme scolaire devient en plus en plus dur avec l'intégration du code 
+                                    dans les cursus, et nous avons la solution ! 
+                                    Qu'ils soient du store ou de votre imagination, les exercices seront beaucoup plus ludiques 
+                                    et vos étudiants progresseront plus vite.
+                                </p>
+                            </div>
+                        </div>
+                        <div className={style.role}>
+                            <div className={style.logo}>
+                                <img src={process.env.PUBLIC_URL + "autodidact.png"} ></img>
+                            </div>
+                            <div className={style.text_logo}>
+                                <h3><i>Aux autodidactes</i></h3>
+                                <p className={style.sub_text}>
+                                    Pas besoin de suivre des cours où d'être au sein d'un cursus pour apprendre le code ! CodInSchool 
+                                    sera un vrai tremplin pour vous lancer dans ce domaine. Récupérez quelques exercices du store, lancez-les, 
+                                    et le tour est joué !
+                                </p>
+                            </div>
+                        </div>
+                        <div className={style.role}>
+                            <div className={style.logo}>
+                                <img src={process.env.PUBLIC_URL + "creative.png"} ></img>
+                            </div>
+                            <div className={style.text_logo}>
+                                <h3><i>Aux créatifs</i></h3>
+                                <p className={style.sub_text}>
+                                    Vous aimez aider les gens ? Ou bien créer des jeux, ou juste coder ? Alors empressez-vous 
+                                    d'aller créer des exercices via l'éditeur et de les proposer sur le store ! Les professeurs seront contents 
+                                    et notre contenu pourra se renforcer. Nous vous en remercions d'avance.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={style.inside_gif}>
+                    <div className={style.public_title}>
+                        <h3 style={{width: "100%", textAlign: "center", color: "black"}}>Un exemple de jeu créé avec CodInSchool ?</h3>
+                    </div>
+                    <div className={style.public_public}>
+                        <div className={style.gif_box}>
+                            <img className={style.gif} src={process.env.PUBLIC_URL + "mario.gif"} ></img>
+                        </div>
+                    </div>
+                    <div className={style.public_title}>
+                        <i><h3 style={{fontSize: "1vh", width: "100%", textAlign: "center", color: "black"}}>
+                            Ce jeu a été créé via l'éditeur du jeu. Il est facilement accessible sur tablette et ordinateur mais est réservé aux plus jeunes.
+                        </h3></i>
+                    </div>
+                </div>
+                <Parallax
+                    blur={0.1}
+                    bgImage={process.env.PUBLIC_URL + "imgparallax2.jpeg"}
+                    bgImageAlt="code"
+                    strength={500}
+                >
+
+                    <div style={{ height: '340px' }} />
+                </Parallax>
+                <div className={style.how_to}>
+                    <div className={style.public_title}>
+                        <h3>Je suis intéressé ! Comment commencer ?</h3>
+                    </div>
+                    <div className={style.public_how_tos}>
+                        <h3>Pour cela, laissez-moi vous présenter les différentes pages de l'application</h3>
+                        <div className={style.contents}>
+                            <div className={style.content}>
+                                <div className={style.content_img} >
+                                    <img src={process.env.PUBLIC_URL + "classes.png"} ></img>
+                                </div>
+                                <div className={style.content_text}>
+                                    La page classe va être utilisée pour tout ce qui est gestion d'une classe et des élèves qu'elle contient. Il sera possible 
+                                    de créer des classes à loisir, d'y ajouter ou enlever élèves et professeurs. Une partie exercice permettra aussi de rajouter 
+                                    des exercices créés ou récupérés du magasin dans la classe, ainsi les élèves pourront les résoudre et vous pourrez observer leur parcours.
+                                    Enfin, en tant qu'élève vous pourrez consulter dans les classes auxquels vous appartenez les exercices disponibles et les résoudre.
+                                </div>
+                            </div>
+                            <div className={style.content}>
+                                <div className={style.content_text}><br />
+                                    La page exercices est la plus importante de ce site ! Elle contient l'éditeur d'exercice qui vous permettra de créer de nouveaux mini-jeux à proposer 
+                                    à vos élèves. De plus, tous les exercices que vous avez récupéré du store seront présents dans cette page, mais pas modifiable ! Il sera 
+                                    aussi possible d'enregistrer vos exercices pour les modifier plus tard.
+                                </div>
+                                <div className={style.content_img} >
+                                    <img src={process.env.PUBLIC_URL + "exercices.png"} ></img>
+                                </div>
+                            </div>
+                            <div className={style.content}>
+                                <div className={style.content_img} >
+                                    <img src={process.env.PUBLIC_URL + "magasin.png"} ></img>
+                                </div>
+                                <div className={style.content_text}><br />
+                                    Le magasin est l'endroit du site où vous pourrez consulter tous les exercices disponibles, c'est-à-dire ceux que les utilisateurs ont enregistré 
+                                    en "public". Il vous sera alors possible de récupérer ces exercices, que vous retrouvez dans la page associée.    
+                                </div>  
+                            </div>
+                            <div className={style.content}>
+                                <div className={style.content_text}><br />
+                                    Enfin, la partie android contient un manuel d'utilisation de notre application, disponible sur le playstore. Celle-ci est assez facile de prise en 
+                                    main, et il ne vous faudra que peu de temps pour la maitriser ! Mais n'hésitez pas à lire le manuel, pour ne pas être perdu.
+                                </div>
+                                <div className={style.content_img} >
+                                    <img src={process.env.PUBLIC_URL + "android.png"} ></img>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 style={{marginBottom:"2%", marginTop:"5%"}}>Il est à savoir que toutes ces pages possèdent une présentation explicative pour mieux comprendre leur usage.<br />
+                        Nous vous conseillons donc de commencer par récupérer des exercices du store et les essayer, puis à tenter d'en créer vous-même !<br />
+                        Maintenant que vous avez tout assimilé, je vous laisse naviguer à loisir sur le site, bonne visite !</h3>
+                    </div>
+                </div>
+                <div className={style.footer} ><i>En cas de question sur le site ou commerciale, n'hésitez pas à nous contacter à l'addresse codinschool@gmail.com</i></div>
             </div>
         );
     }

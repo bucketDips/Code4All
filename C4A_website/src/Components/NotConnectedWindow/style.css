@@ -43,7 +43,7 @@ html, body {
      
  }
 
- h1 {
+ .main-bubble-title h1 {
     margin-top: 1.3vw !important;
     font-size: 3.4vw !important;
     font-family: lfl;
@@ -52,14 +52,14 @@ html, body {
     margin-bottom: 0 !important;
  }
 
- h2 {
+ .main-bubble-title h2 {
     font-size: 2vw !important;
     font-family: lfl;
     color: white;
     margin-bottom: 0 !important;
  }
 
- h3 {
+ .main-bubble-title h3 {
     font-size: 1.3vw !important;
     font-family: lfl;
     color: white;

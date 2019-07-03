@@ -38,7 +38,7 @@ class TopNav extends Component {
     }
     else {
       return (
-          <Navbar style={{zIndex: 20}} bg="primary" variant="dark">
+          <Navbar fixed={this.props.type === "home" ? "top" : ""} style={{zIndex: 20}} bg="primary" variant="dark">
               <Navbar.Brand href="/accueil">CodeInSchool</Navbar.Brand>
               <Nav className="mr-auto">
               

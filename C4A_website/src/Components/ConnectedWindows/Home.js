@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ConnectedWindowsStructure from '../ConnectedWindowsStructure/';
+import style from './style.css';
+import bigpages from '../../Providers/bigpages';
 
 /**
  * The home page
@@ -11,7 +13,7 @@ class HomeWindow extends Component {
    */
   render() {
     return (
-        <ConnectedWindowsStructure type="home" singleContent={(<h1>Bienvenue sur le site</h1>)} />
+        <ConnectedWindowsStructure type="home" singleContent={bigpages.home(style)} />
     );
   }
 }

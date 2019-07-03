@@ -4,6 +4,11 @@
     z-index: 10;
 }
 
+:local(.homeRoot) {
+    color: white;
+    z-index: 10;
+}
+
 :local(.centeredParagraph){
     text-align: center;
     font-size: 3vh;
@@ -41,15 +46,220 @@
     color: white !important;
 }
 
-:local(.bodyRoot) h2 {
+
+:local(.biglogo) {
+    height: 100%;
+    margin-left: 2vh;
+}
+
+:local(.first_panel) {
+    padding-top: 8vh;
+    background-color: #007bff;
+    height: 27vh;
+    width: 100%;
+}
+
+:local(.marg) {
+    min-height: 100vh;
+}
+
+:local(.description) {
+    color: white;
+    float: right;
+    width: 40%;
+    text-align: center;
+    margin-right: 20%;
+    overflow: hidden;
+}
+
+:local(.bodyRoot) h1 {
+    margin-top: 1.3vw !important;
+    font-size: 3.4vw !important;
+    font-family: lfl;
+    color: white;
+    text-align: center;
+    margin-bottom: 0 !important;
+ }
+
+ :local(.bodyRoot) h2 {
+    font-size: 2vw !important;
+    font-family: lfl;
+    color: white;
+    margin-bottom: 0 !important;
     padding-left: 15%;
     padding-top: 3%;
     padding-bottom: 3%;
-}
+ }
 
-:local(.bodyRoot) h3 {
+ :local(.bodyRoot) h3 {
+    font-size: 1.3vw !important;
+    font-family: lfl;
+    margin-bottom: 0 !important;
     color: white !important;
     padding-left: 20%;
-    font-size: 4vh !important;
+ }
+
+ .react-parallax {
+     margin: 0 !important;
+ }
+
+ :local(.homeRoot) h3 {
+    font-size: 1.1vw !important;
+    color: white !important;
+ }
+
+ :local(.desc_txt) {
+     font-size: 0.9vw !important;
+     color: white !important;
+ }
+
+ :local(.public) {
+     min-height: 60vh;
+     background-color: aliceblue;
+     display: flex;
+     flex-direction: column;
+ }
+
+ :local(.public_title) {
+     flex: 1;
+     padding-top: 2vh;
+     padding-bottom: 2vh;
+ }
+
+ :local(.public_public) {
+     flex: 8;
+     display: flex;
+     padding-left: 10%;
+     padding-right: 10%;
+ }
+
+ 
+ :local(.public_how_tos) {
+    flex: 8;
+    display: flex;
+    flex-direction: column;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
+ :local(.public_public) h3 {
+    margin-top: 2vh;
+    color: black !important;
+    opacity: 0.5;
+}
+
+:local(.public_title) h3 {
+     margin-top: 2vh;
+    color: black !important;
+    opacity: 0.5;
+    text-align: center;
+}
+
+:local(.public_how_tos) h3 {
+    margin-top: 2vh;
+   color: black !important;
+   opacity: 0.5;
+   flex: 1;
+}
+
+:local(.contents) {
+    padding-left: 10%;
+    padding-right: 10%;
+    margin-top: 3%;
+    flex: 10;
+    display: flex;
+    flex-direction: column;
+}
+
+:local(.content) {
+    flex: 1;
+    display: flex;
+}
+
+:local(.content_img){
+    flex: 1;
+}
+
+:local(.content_img) img{
+    max-width: 100%;
+}
+
+:local(.content_text) {
+    flex: 5;
+    color: black;
+    opacity: 0.6;
+    font-size: 0.8vw;
+    text-align: justify;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: 2%;
+}
+
+:local(.text_logo) h3 {
+   margin-top: 3vh;
+   margin-bottom: 3vh;
+   color: black !important;
+   opacity: 0.5;
+   text-align: center;
+}
+
+:local(.role) {
+    flex: 1;
+    margin: 20px;
+}
+
+:local(.logo) img{
+    width: 60%;
+    margin-left: 20%;
+}
+
+:local(.sub_text) {
+    color: black;
+    opacity: 0.6;
+    font-size: 0.8vw;
+    text-align: justify;
+}
+
+:local(.gif_box) {
+    margin-top: 2%;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: #007bff;
+    border-radius: 25px;
+}
+
+:local(.gif) {
+    width: 80%;
+    margin-left: 10%;
+    height: 70%;
+    margin-top: 7%;
+    border-radius: 18px;
+}
+
+:local(.inside_gif){
+    display: flex;
+    flex-direction: column;
+    min-height: 85vh;
+    background-color: aliceblue;
+}
+
+:local(.inside_gif) :local(.public_public){
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+:local(.how_to){
+    display: flex;
+    flex-direction: column;
+    min-height: 85vh;
+    background-color: aliceblue;
+    padding-bottom: 7%;
+}
+
+:local(.footer) {
+    width: 100%;
+    padding-top: 0.8vh;
+    height: 6vh;
+    background-color: #007bff;
+    text-align: center;
+}

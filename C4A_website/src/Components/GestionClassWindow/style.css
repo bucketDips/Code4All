@@ -315,3 +315,26 @@ h3 {
     transform: rotate(0.8deg);
     cursor: pointer;
 }
+
+:local(.class) h1 {
+    margin-top: 1.3vw !important;
+    font-size: 3.4vw !important;
+    font-family: lfl;
+    color: white;
+    text-align: center;
+    margin-bottom: 0 !important;
+ }
+
+ :local(.class) h2 {
+    font-size: 2vw !important;
+    font-family: lfl;
+    color: white;
+    margin-bottom: 0 !important;
+ }
+
+ :local(.class) h3 {
+    font-size: 1.3vw !important;
+    font-family: lfl;
+    color: white;
+    margin-bottom: 0 !important;
+ }

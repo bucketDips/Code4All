@@ -18,7 +18,7 @@ class ConnectedWindow extends Component {
     var leftNav = this.props.type === "home" || this.props.type === "android" ? "" : (<LeftNav menus={this.props.menus} content={this.props.content} />);
     return (
         <div className="connected-window">
-            <TopNav />
+            <TopNav type={this.props.type} />
             {leftNav}
             {this.props.singleContent}
         </div>
