@@ -83,7 +83,6 @@ class Consts {
      * error notification global
      */
     errorDatabaseMessage(error) {
-        console.log(JSON.stringify(error));
         var message = "erreur inconnue";
         if(error && error.response && error.response.data && error.response.data.message) {
             message = error.response.data.message;

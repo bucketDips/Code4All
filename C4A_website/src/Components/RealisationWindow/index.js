@@ -122,8 +122,6 @@ class RealisationExerciseWindow extends Component {
    * if modif of editor or updatestate no update
    */
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextState);
-    console.log(this.state);
     if(this.state.code !== "" && nextState.code !== this.state.code) {
       return false;
     }
@@ -271,7 +269,6 @@ class RealisationExerciseWindow extends Component {
    * render method
    */
   render() {
-    console.log("reup");
     if(this.state.buttonCompile) {
       var buttonCompile = (<Button style={{flex: 1}} onClick={this.compile.bind(this)}>compiler</Button>);
     }
