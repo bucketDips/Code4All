@@ -509,7 +509,7 @@ class BigPages {
                         Maintenant que vous avez tout assimilé, je vous laisse naviguer à loisir sur le site, bonne visite !</h3>
                     </div>
                 </div>
-                <div className={style.footer} ><i>En cas de question sur le site ou commerciale, n'hésitez pas à nous contacter à l'addresse codinschool@gmail.com</i></div>
+                <div className={style.footer} ><i>En cas de question sur le site ou commerciale, n'hésitez pas à nous contacter à l'adresse codinschool@gmail.com</i></div>
             </div>
         );
     }
