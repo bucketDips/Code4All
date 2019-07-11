@@ -41,6 +41,9 @@ function stand(str) {
     find = "\\\\n"
     re = new RegExp(find, 'g');
     str = str.replace(re, "\n")
+    find = "\\\\t"
+    re = new RegExp(find, 'g');
+    str = str.replace(re, "\t")
     find = "\\\\"
     re = new RegExp(find, 'g');
     str = str.replace(re, "")
