@@ -8,7 +8,7 @@
     "boostrap": "^2.0.0",
     "core-js": "^3",
     "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "mobx": "^5.10.1",
     "mobx-persist": "^0.4.1",
     "mobx-react": "^6.0.4",
